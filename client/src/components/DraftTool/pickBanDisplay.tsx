@@ -14,7 +14,7 @@ const FirstPicks = memo(
       pickDivs.push(
         <div
           key={i}
-          className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}
+          className={`pick${i + 1} w-64 h-28 overflow-hidden border-2 border-gray bg-gray rounded-md`}
         >
           {DisplayPickImage(i, picks, championRoles)}
         </div>
@@ -36,7 +36,7 @@ const LastPicks = memo(
       pickDivs.push(
         <div
           key={i}
-          className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}
+          className={`pick${i + 1} w-64 h-28 overflow-hidden border-2 border-gray bg-gray rounded-md`}
         >
           {DisplayPickImage(i, picks, championRoles)}
         </div>
@@ -65,7 +65,6 @@ const FirstBans = memo(
   ({
     bans,
     side,
-    championRoles,
   }: {
     bans: string[];
     side: string;
@@ -76,9 +75,9 @@ const FirstBans = memo(
       banDivs.push(
         <div
           key={i}
-          className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}
+          className={`ban${i + 1} w-24 h-24 border-2 border-gray bg-gray rounded-md overflow-hidden`}
         >
-          {DisplayBanImage(i, bans, championRoles)}
+          {DisplayBanImage(i, bans)}
         </div>
       );
     }
@@ -90,7 +89,6 @@ const LastBans = memo(
   ({
     bans,
     side,
-    championRoles,
   }: {
     bans: string[];
     side: string;
@@ -101,9 +99,9 @@ const LastBans = memo(
       banDivs.push(
         <div
           key={i}
-          className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}
+          className={`ban${i + 1} w-24 h-24 border-2 border-gray bg-gray rounded-md overflow-hidden`}
         >
-          {DisplayBanImage(i, bans, championRoles)}
+          {DisplayBanImage(i, bans)}
         </div>
       );
     }
