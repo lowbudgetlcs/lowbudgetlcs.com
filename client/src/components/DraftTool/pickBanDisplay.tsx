@@ -1,7 +1,14 @@
+import { memo } from "react";
+import { Champion } from "./draftInterfaces";
 import { DisplayBanImage, DisplayPickImage } from "./LoadChampLargeImages";
-
-export const DisplayPicks = ({ picks }: { picks: string[] }) => {
-  const FirstPicks = () => {
+const FirstPicks = memo(
+  ({
+    picks,
+    championRoles,
+  }: {
+    picks: string[];
+    championRoles: Champion[];
+  }) => {
     const pickDivs = [];
     for (let i = 0; i < 3; i++) {
       pickDivs.push(
@@ -9,13 +16,21 @@ export const DisplayPicks = ({ picks }: { picks: string[] }) => {
           key={i}
           className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}
         >
-          {DisplayPickImage(i, picks)}
+          {DisplayPickImage(i, picks, championRoles)}
         </div>
       );
     }
     return pickDivs;
-  };
-  const LastPicks = () => {
+  }
+);
+const LastPicks = memo(
+  ({
+    picks,
+    championRoles,
+  }: {
+    picks: string[];
+    championRoles: Champion[];
+  }) => {
     const pickDivs = [];
     for (let i = 3; i < 5; i++) {
       pickDivs.push(
@@ -23,29 +38,39 @@ export const DisplayPicks = ({ picks }: { picks: string[] }) => {
           key={i}
           className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}
         >
-          {DisplayPickImage(i, picks)}
+          {DisplayPickImage(i, picks, championRoles)}
         </div>
       );
     }
     return pickDivs;
-  };
+  }
+);
+export const DisplayPicks = ({
+  picks,
+  championRoles,
+}: {
+  picks: string[];
+  championRoles: Champion[];
+}) => {
   return (
     <>
-      <FirstPicks />
+      <FirstPicks picks={picks} championRoles={championRoles} />
       <div className="space h-4"></div>
-      <LastPicks />
+      <LastPicks picks={picks} championRoles={championRoles} />
     </>
   );
 };
 
-export const DisplayBans = ({
-  bans,
-  side,
-}: {
-  bans: string[];
-  side: string;
-}) => {
-  const FirstBans = () => {
+const FirstBans = memo(
+  ({
+    bans,
+    side,
+    championRoles,
+  }: {
+    bans: string[];
+    side: string;
+    championRoles: Champion[];
+  }) => {
     const banDivs = [];
     for (let i = 0; i < 3; i++) {
       banDivs.push(
@@ -53,14 +78,24 @@ export const DisplayBans = ({
           key={i}
           className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}
         >
-          {DisplayBanImage(i, bans)}
+          {DisplayBanImage(i, bans, championRoles)}
         </div>
       );
     }
     return side === "blue" ? banDivs : banDivs.reverse();
-  };
+  }
+);
 
-  const LastBans = () => {
+const LastBans = memo(
+  ({
+    bans,
+    side,
+    championRoles,
+  }: {
+    bans: string[];
+    side: string;
+    championRoles: Champion[];
+  }) => {
     const banDivs = [];
     for (let i = 3; i < 5; i++) {
       banDivs.push(
@@ -68,24 +103,34 @@ export const DisplayBans = ({
           key={i}
           className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}
         >
-          {DisplayBanImage(i, bans)}
+          {DisplayBanImage(i, bans, championRoles)}
         </div>
       );
     }
     return side === "blue" ? banDivs : banDivs.reverse();
-  };
+  }
+);
 
+export const DisplayBans = ({
+  bans,
+  side,
+  championRoles,
+}: {
+  bans: string[];
+  side: string;
+  championRoles: Champion[];
+}) => {
   return side === "blue" ? (
     <>
-      <FirstBans />
+      <FirstBans bans={bans} side={side} championRoles={championRoles} />
       <div className="space h-4"></div>
-      <LastBans />
+      <LastBans bans={bans} side={side} championRoles={championRoles} />
     </>
   ) : (
     <>
-      <LastBans />
+      <LastBans bans={bans} side={side} championRoles={championRoles} />
       <div className="space h-4"></div>
-      <FirstBans />
+      <FirstBans bans={bans} side={side} championRoles={championRoles} />
     </>
   );
 };

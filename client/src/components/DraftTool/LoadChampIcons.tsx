@@ -107,7 +107,4 @@ export function LoadChampIcons({
   return <>{championList}</>;
 }
 
-// export function LoadLargeChampImages (
-
-// )
 export default LoadChampIcons;

@@ -1,6 +1,7 @@
 export interface Champion {
     name: string;
     roles: string[];
+    displayName: string;
   }
   
   export interface DraftStateProps {

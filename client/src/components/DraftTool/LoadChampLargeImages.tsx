@@ -1,12 +1,19 @@
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
+import { Champion } from "./draftInterfaces";
 
 export const DisplayBanImage = (
   banIndex: number,
-  bannedChampions: string[]
+  bannedChampions: string[],
+  championRoles: Champion[]
 ) => {
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
     : "nothing";
+
+  const selectedChampion = championRoles.find(
+    (champion) => champion.name.toLowerCase() === championName
+  );
+  const displayName = selectedChampion?.displayName;
 
   if (bannedChampions[banIndex] === "nothing") {
     return (
@@ -24,18 +31,27 @@ export const DisplayBanImage = (
         style={{
           backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`,
         }}
-        className={`w-full h-full bg-[51%_20%] bg-[size:420%]`}
-      ></div>
+        className={`relative w-full h-full bg-[51%_20%] bg-[size:420%]`}
+      >
+        <p className="absolute bottom-0 right-0">{displayName}</p>
+      </div>
     );
   }
 };
+
 export const DisplayPickImage = (
   pickIndex: number,
-  pickedChampions: string[]
+  pickedChampions: string[],
+  championRoles: Champion[]
 ) => {
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
     : "nothing";
+
+  const selectedChampion = championRoles.find(
+    (champion) => champion.name.toLowerCase() === championName
+  );
+  const displayName = selectedChampion?.displayName;
 
   if (pickedChampions[pickIndex] === "nothing") {
     return (
@@ -55,8 +71,10 @@ export const DisplayPickImage = (
             style={{
               backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`,
             }}
-            className="w-full h-full bg-[51%_20%] bg-[size:180%]"
-          ></div>
+            className="relative w-full h-full bg-[51%_20%] bg-[size:180%]"
+          >
+            <p className="absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md">{displayName}</p>
+          </div>
         )}
       </>
     );
