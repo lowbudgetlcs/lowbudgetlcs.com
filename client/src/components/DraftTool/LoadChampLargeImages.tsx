@@ -4,16 +4,16 @@ import { Champion } from "./draftInterfaces";
 export const DisplayBanImage = (
   banIndex: number,
   bannedChampions: string[],
-  championRoles: Champion[]
+  // championRoles: Champion[]
 ) => {
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
     : "nothing";
 
-  const selectedChampion = championRoles.find(
-    (champion) => champion.name.toLowerCase() === championName
-  );
-  const displayName = selectedChampion?.displayName;
+  // const selectedChampion = championRoles.find(
+  //   (champion) => champion.name.toLowerCase() === championName
+  // );
+  // const displayName = selectedChampion?.displayName;
 
   if (bannedChampions[banIndex] === "nothing") {
     return (
@@ -33,7 +33,6 @@ export const DisplayBanImage = (
         }}
         className={`relative w-full h-full bg-[51%_20%] bg-[size:420%]`}
       >
-        <p className="absolute bottom-0 right-0">{displayName}</p>
       </div>
     );
   }

@@ -9,7 +9,7 @@ import championsData from "./championRoles.json";
 import { Champion, DraftStateProps } from "./draftInterfaces";
 import { DisplayPicks, DisplayBans } from "./pickBanDisplay";
 import RoleSelect from "./RoleSelect";
-import { IoSearch, IoSearchCircleOutline } from "react-icons/io5";
+import { IoSearch } from "react-icons/io5";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -225,7 +225,7 @@ function DraftPage() {
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
-          <DisplayPicks picks={bluePicks} />
+          <DisplayPicks picks={bluePicks} championRoles={championRoles} />
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col w-full ">
@@ -238,7 +238,7 @@ function DraftPage() {
             </div>
             <form className="bg-gray flex items-center">
               <label htmlFor="championSearch">
-              <IoSearch className="text-3xl"/>
+                <IoSearch className="text-3xl" />
               </label>
               <input
                 type="text"
@@ -267,14 +267,18 @@ function DraftPage() {
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
-          <DisplayPicks picks={redPicks} />
+          <DisplayPicks picks={redPicks} championRoles={championRoles} />
         </div>
       </div>
       {/* Champion Bans*/}
       <div className="champBans flex w-full justify-between gap-8 items-center py-8 px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
-          <DisplayBans bans={blueBans} side={"blue"} />
+          <DisplayBans
+            bans={blueBans}
+            side={"blue"}
+            championRoles={championRoles}
+          />
         </div>
         {/* Ready Button */}
         {draftState?.activePhase !== "finished" ? (
@@ -320,7 +324,11 @@ function DraftPage() {
         )}
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
-          <DisplayBans bans={redBans} side={"red"} />
+          <DisplayBans
+            bans={redBans}
+            side={"red"}
+            championRoles={championRoles}
+          />
         </div>
       </div>
     </div>
