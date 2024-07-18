@@ -4,7 +4,7 @@ import NavSocials from "./NavSocials";
 
 function Navbar() {
   return (
-    <header className="bg-light-blue sticky top-0 z-[20] mx-auto flex w-full items-center justify-between px-4">
+    <header className="bg-light-blue sticky top-0 z-[20] mx-auto flex w-full items-center justify-between px-4 text-lg">
       <Logo />
       <Nav />
       <NavSocials />
