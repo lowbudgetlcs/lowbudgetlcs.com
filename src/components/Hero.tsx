@@ -1,4 +1,4 @@
-import video from '../assets/LeagueVideoPlaceholder.webm'
+import video from '../assets/Coriander_Beer_Commercial.mp4'
 //! Autoplay Before Uploading
 
 function Hero() {
