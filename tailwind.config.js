@@ -11,6 +11,7 @@ export default {
       'gray': '#f4f4f4',
       'white': '#ffffff',
       'black': '#1a1a1a',
+      'light-blue': '#d9dbf1',
     },
     fontFamily: {},
     extend: {},

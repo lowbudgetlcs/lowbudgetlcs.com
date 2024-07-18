@@ -1,8 +1,8 @@
-import logo from '../assets/lblcs_logo.svg';
+import logo from '../assets/lblcsLogo.svg';
 function Logo() {
   return (
     <div className="logo rounded-sm">
-      <img src={logo} alt="logo" width={50}/>
+      <img src={logo} alt="logo" width={80}/>
     </div>
   );
 }
