@@ -4,7 +4,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 function Nav() {
   return (
     <nav>
-      <ul className="flex gap-4 justify-center items-center">
+      <ul className="text-white flex gap-4 justify-center items-center">
         <li>
           <NavLink className="hover:text-orange transition" to="/">
             Home
