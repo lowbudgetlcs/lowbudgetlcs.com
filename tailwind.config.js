@@ -16,10 +16,8 @@ export default {
     },
     fontFamily: {},
     backgroundImage: {
-      'gradient-radial': 'radial-gradient(ellipse, rgba(0,0,0,0) 48%, rgba(0,0,0,100) 76%)'
-    },
-    height: {
-      '47': '47rem',
+      'gradient-radial-dark': 'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(36,46,34,1) 65%);',
+      'gradient-radial-light': 'linear-gradient(180deg, rgba(0,0,0,0) 60%,  #F4F5FB 86%);'
     },
     extend: {},
   },
