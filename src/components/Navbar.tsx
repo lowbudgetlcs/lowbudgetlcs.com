@@ -12,7 +12,7 @@ function Navbar() {
   }
 
   return (
-    <header className="sticky top-0 z-[20] mx-auto flex w-full items-center justify-between px-4 text-lg h-20">
+    <header className="fixed top-0 z-[20] mx-auto flex w-full items-center justify-between px-4 text-lg h-20">
       <Logo />
       <div className={isHidden ? 'hidden' : ''}>
         <Nav />
@@ -23,9 +23,9 @@ function Navbar() {
         onClick={toggleHidden}
         className="burger flex flex-col gap-1 hover:cursor-pointer"
       >
-        <line className="px-3 py-0.5 rounded-xl bg-white"></line>
-        <line className="px-3 py-0.5 rounded-xl bg-white"></line>
-        <line className="px-3 py-0.5 rounded-xl bg-white"></line>
+        <div className="px-3 py-0.5 rounded-xl bg-white"></div>
+        <div className="px-3 py-0.5 rounded-xl bg-white"></div>
+        <div className="px-3 py-0.5 rounded-xl bg-white"></div>
       </div>
     </header>
   );
