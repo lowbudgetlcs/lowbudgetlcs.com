@@ -12,41 +12,41 @@ function FullNav({ isOpen }: FullNavProps) {
     <div
       className={
         isOpen
-          ? "fullnav fixed w-1/3 h-screen font-serif -z-10 opacity-100 translate-x-0 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out flex flex-col"
-          : "fullnav fixed w-1/3 h-screen font-serif -z-10 opacity-0 -translate-x-32 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out"
+          ? "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-100 translate-x-0 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out flex flex-col"
+          : "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-0 -translate-x-32 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out"
       }
     >
       <div className="w-full h-20"></div>
       <ul
         className={
           isOpen
-            ? "text-white font-semibold text-2xl flex flex-col gap-2 justify-around"
+            ? "text-white font-semibold text-2xl flex flex-col gap-0 justify-around"
             : "hidden"
         }
       >
         <li className="text-left animate-slide-in-100 opacity-0">
           <NavLink className="hover:text-orange transition" to="/">
-            <div className="navBox border-y-2 pl-14 py-6">Home</div>
+            <div className="navBox border-b-2 pl-14 py-10">Home</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-200 opacity-0">
           <NavLink className="hover:text-orange transition" to="/about">
-          <div className="navBox border-y-2 pl-14 py-6">About</div>
+          <div className="navBox border-b-2 pl-14 py-10">About</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-300 opacity-0">
           <NavLink className="hover:text-orange transition" to="/rules">
-          <div className="navBox border-y-2 pl-14 py-6">Rules</div>
+          <div className="navBox border-b-2 pl-14 py-10">Rules</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-400 opacity-0">
           <NavLink className="hover:text-orange transition" to="/stats">
-          <div className="navBox border-y-2 pl-14 py-6">Rosters</div>
+          <div className="navBox border-b-2 pl-14 py-10">Rosters</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-500 opacity-0">
           <NavLink className="hover:text-orange transition" to="/stats">
-          <div className="navBox border-y-2 pl-14 py-6">Stats</div>
+          <div className="navBox border-b-2 pl-14 py-10">Stats</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-600 opacity-0">
