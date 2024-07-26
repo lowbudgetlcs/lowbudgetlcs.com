@@ -1,32 +1,93 @@
 import Logo from "./Logo";
-import Nav from "./Nav";
-import NavSocials from "./NavSocials";
+import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
 
-function Navbar() {
-  const [isHidden, setIsHidden] = useState(true);
+interface FullNavProps {
+  isOpen: boolean;
+}
 
-  function toggleHidden() {
-    setIsHidden(!isHidden)
+function FullNav({ isOpen }: FullNavProps) {
+  return (
+    <div
+      className={
+        isOpen
+          ? "fullnav fixed w-1/3 h-screen font-serif -z-10 opacity-100 translate-x-0 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out flex flex-col"
+          : "fullnav fixed w-1/3 h-screen font-serif -z-10 opacity-0 -translate-x-32 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out"
+      }
+    >
+      <div className="w-full h-20"></div>
+      <ul
+        className={
+          isOpen
+            ? "text-white font-semibold text-2xl flex flex-col gap-2 justify-around"
+            : "hidden"
+        }
+      >
+        <li className="text-left animate-slide-in-100 opacity-0">
+          <NavLink className="hover:text-orange transition" to="/">
+            <div className="navBox border-y-2 pl-14 py-6">Home</div>
+          </NavLink>
+        </li>
+        <li className="text-left animate-slide-in-200 opacity-0">
+          <NavLink className="hover:text-orange transition" to="/about">
+          <div className="navBox border-y-2 pl-14 py-6">About</div>
+          </NavLink>
+        </li>
+        <li className="text-left animate-slide-in-300 opacity-0">
+          <NavLink className="hover:text-orange transition" to="/rules">
+          <div className="navBox border-y-2 pl-14 py-6">Rules</div>
+          </NavLink>
+        </li>
+        <li className="animate-slide-in-400 opacity-0">
+          <NavLink className="hover:text-orange transition" to="/stats">
+          <div className="navBox border-y-2 pl-14 py-6">Rosters</div>
+          </NavLink>
+        </li>
+        <li className="animate-slide-in-500 opacity-0">
+          <NavLink className="hover:text-orange transition" to="/stats">
+          <div className="navBox border-y-2 pl-14 py-6">Stats</div>
+          </NavLink>
+        </li>
+        <li className="animate-slide-in-600 opacity-0">
+          <NavLink to="/https://discord.com/invite/XfsEEq4aPC">
+            <i className="hover:text-orange transition bi bi-instagram text-3xl"></i>
+          </NavLink>
+        </li>
+        <li className="animate-slide-in-700 opacity-0">
+          <NavLink to="/https://discord.com/invite/XfsEEq4aPC">
+            <i className="hover:text-orange transition bi bi-discord text-3xl"></i>
+          </NavLink>
+        </li>
+        <li className="animate-slide-in-800 opacity-0">
+          <NavLink to="https://www.twitch.tv/lowbudgetlcs">
+            <i className="hover:text-orange transition bi bi-twitch block text-3xl"></i>
+          </NavLink>
+        </li>
+      </ul>
+    </div>
+  );
+}
+
+function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  function toggleNavbar() {
+    setIsOpen(!isOpen);
   }
 
   return (
     <header className="fixed top-0 z-[20] mx-auto flex w-full items-center justify-between px-4 text-lg h-20">
-      <Logo />
-      <div className={isHidden ? 'hidden' : ''}>
-        <Nav />
-        <NavSocials />
-      </div>
-
       <div
-        onClick={toggleHidden}
+        onClick={toggleNavbar}
         className="burger flex flex-col gap-1 hover:cursor-pointer"
       >
         <div className="px-3 py-0.5 rounded-xl bg-white"></div>
         <div className="px-3 py-0.5 rounded-xl bg-white"></div>
         <div className="px-3 py-0.5 rounded-xl bg-white"></div>
       </div>
+      <FullNav isOpen={isOpen} />
+      <Logo />
     </header>
   );
 }
