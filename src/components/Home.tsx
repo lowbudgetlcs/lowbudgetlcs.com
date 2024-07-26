@@ -4,7 +4,7 @@ import Twitch from "./Twitch";
 
 function Home() {
   return (
-    <div className="bg-white">
+    <div className="bg-white dark:bg-black text-black dark:text-white">
       <Hero />
       <Summary />
       <Twitch />
