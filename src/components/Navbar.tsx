@@ -26,42 +26,27 @@ function FullNav({ isOpen }: FullNavProps) {
       >
         <li className="text-left animate-slide-in-100 opacity-0">
           <NavLink className="hover:text-orange transition" to="/">
-            <div className="navBox border-b-2 pl-14 py-10">Home</div>
+            <div className="navBox pl-14 py-10">Home</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-200 opacity-0">
           <NavLink className="hover:text-orange transition" to="/about">
-          <div className="navBox border-b-2 pl-14 py-10">About</div>
+          <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-300 opacity-0">
           <NavLink className="hover:text-orange transition" to="/rules">
-          <div className="navBox border-b-2 pl-14 py-10">Rules</div>
+          <div className="navBox pl-14 py-10">Rules</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-400 opacity-0">
           <NavLink className="hover:text-orange transition" to="/stats">
-          <div className="navBox border-b-2 pl-14 py-10">Rosters</div>
+          <div className="navBox pl-14 py-10">Rosters</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-500 opacity-0">
           <NavLink className="hover:text-orange transition" to="/stats">
-          <div className="navBox border-b-2 pl-14 py-10">Stats</div>
-          </NavLink>
-        </li>
-        <li className="animate-slide-in-600 opacity-0">
-          <NavLink to="/https://discord.com/invite/XfsEEq4aPC">
-            <i className="hover:text-orange transition bi bi-instagram text-3xl"></i>
-          </NavLink>
-        </li>
-        <li className="animate-slide-in-700 opacity-0">
-          <NavLink to="/https://discord.com/invite/XfsEEq4aPC">
-            <i className="hover:text-orange transition bi bi-discord text-3xl"></i>
-          </NavLink>
-        </li>
-        <li className="animate-slide-in-800 opacity-0">
-          <NavLink to="https://www.twitch.tv/lowbudgetlcs">
-            <i className="hover:text-orange transition bi bi-twitch block text-3xl"></i>
+          <div className="navBox pl-14 py-10">Stats</div>
           </NavLink>
         </li>
       </ul>

@@ -5,7 +5,7 @@ function Hero() {
   return (
     <div id="hero" className="hero relative w-full overflow-hidden h-[47rem]">
       <video
-        className="mt-[-1.5rem] heroVideo w-full h-[47rem] object-cover absolute scale-110 top-0 left-0 z-[1] overflow-hidden"
+        className="mt-[-1.5rem] heroVideo w-full h-[47rem] object-cover absolute scale-110 lg:translate-y-8 top-0 left-0 z-[1] overflow-hidden"
         autoPlay
         muted
         loop
