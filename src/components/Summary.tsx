@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 function Summary() {
   return (
     <div className="summary p-8 flex flex-col items-center">
@@ -9,25 +11,13 @@ function Summary() {
         catastrophic financial disaster. Season 13 is starting in the fall! Our
         Discord has update
       </p>
-
-      <div className="btnList flex py-2 text-xl px-0 md:px-20 lg:px-48 xl:px-80">
-        {" "}
-        <button className="m-2 hover:cursor-pointer hover:bg-light-orange rounded-lg bg-orange py-3 px-6 text-sm font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40">
-          About us
-        </button>
-        <button className="m-2 hover:cursor-pointer hover:bg-light-orange rounded-lg bg-orange py-3 px-6 text-sm font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40">
-          Rules
-        </button>
-        <button className="m-2 hover:cursor-pointer hover:bg-light-orange rounded-lg bg-orange py-3 px-6 text-sm font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40">
-          Rosters
-        </button>
-        <button className="m-2 hover:cursor-pointer hover:bg-light-orange rounded-lg bg-orange py-3 px-6 text-sm font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40">
-          Stats
-        </button>
-        <button className="m-2 hover:cursor-pointer hover:bg-light-orange rounded-lg bg-orange py-3 px-6 text-sm font-bold uppercase text-white shadow-md shadow-black/20 transition-all hover:shadow-lg hover:shadow-black/40">
-          Discord
-        </button>
-        
+      <div className="btnList grid sm:grid-cols-2 gap-2 sm:gap-8 py-2 font-bold text-4xl px-0 md:px-10 lg:px-24 xl:px-40">
+        <Button>About</Button>
+        <Button>Rules</Button>
+        <Button>Rosters</Button>
+        <Button>Stats</Button>
+        <Button>Discord</Button>
+        <Button>Youtube</Button>
       </div>
     </div>
   );
