@@ -8,7 +8,7 @@ export default {
     colors: {
       'orange': '#e8a012',
       'light-orange': '#da9b22',
-      'gray': '#f4f4f4',
+      'gray': '#363636',
       'white': '#F5F5F5',
       'black': '#1a1a1a',
       'light-blue': '#d9dbf1',
@@ -36,6 +36,12 @@ export default {
       'serif': ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
     },
     extend: {},
+    screens: {
+      xl: '1440px',
+      lg: '1024px',
+      md: '768px',
+      
+    }
   },
   plugins: [],
 }
