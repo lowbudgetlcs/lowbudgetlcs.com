@@ -16,14 +16,14 @@ export default {
       'transparent': '#1a1a1a00'
     },
     animation: {
-      'slide-in-100': 'slide-in 0.8s 100ms forwards',
-      'slide-in-200': 'slide-in 0.8s 200ms forwards',
       'slide-in-300': 'slide-in 0.8s 300ms forwards',
       'slide-in-400': 'slide-in 0.8s 400ms forwards',
       'slide-in-500': 'slide-in 0.8s 500ms forwards',
       'slide-in-600': 'slide-in 0.8s 600ms forwards',
       'slide-in-700': 'slide-in 0.8s 700ms forwards',
       'slide-in-800': 'slide-in 0.8s 800ms forwards',
+      'slide-in-900': 'slide-in 0.8s 900ms forwards',
+      'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
       
     },
     keyframes: {
