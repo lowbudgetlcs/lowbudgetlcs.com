@@ -30,7 +30,7 @@ function Summary() {
             <p className="py-2 text-md">
               Watch matches from all brackets live on Twitch! Cheer on your
               favorite team as they win big (or int big) while interacting with
-              both the casters and community. Schmeckles galore!
+              both the casters and community. Earn all the Schmeckles you can!
             </p>
             <div className="font-semibold mt-4">
               <Button>Watch Here</Button>
