@@ -1,9 +1,10 @@
+import { NavLink } from "react-router-dom";
 import Button from "./Button";
 
 function Summary() {
   return (
-    <div className="summary p-8 flex flex-col items-center">
-      <div className="cardContainer flex flex-col gap-16">
+    <div className="summary p-8 flex flex-col items-center -mt-28">
+      <div className="cardContainer flex flex-col gap-16 z-10">
         <div className="flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/40">
           <div className="w-full h-96 bg-cover bg-center text-center bg-[url('src/assets/summaryImg.jpg')] border-b-orange border-b-4 md:border-r-orange md:border-r-4"></div>
           <div className=" w-full md:w-1/2 p-2 md:p-4">
@@ -18,7 +19,9 @@ function Summary() {
               in the fall!
             </p>
             <div className="font-semibold">
-              <Button>Learn More</Button>
+              <NavLink to="/about">
+                <Button>Learn More</Button>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -33,7 +36,12 @@ function Summary() {
               both the casters and community. Earn all the Schmeckles you can!
             </p>
             <div className="font-semibold mt-4">
-              <Button>Watch Here</Button>
+              <NavLink
+                target="_blank"
+                to={"https://www.twitch.tv/lowbudgetlcs"}
+              >
+                <Button>Watch Here</Button>
+              </NavLink>
             </div>
           </div>
           <div className="w-full h-96 bg-cover bg-center text-center bg-[url('src/assets/twitchPhone.jpg')] border-t-orange border-t-4 md:border-l-orange md:border-l-4"></div>
@@ -51,7 +59,9 @@ function Summary() {
               share cool memes, and talk it up with the community!
             </p>
             <div className="font-semibold">
-              <Button>Join The Discord</Button>
+              <NavLink target="_blank" to={"https://discord.gg/lblcs"}>
+                <Button>Join The Discord</Button>
+              </NavLink>
             </div>
           </div>
         </div>
