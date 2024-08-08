@@ -13,7 +13,8 @@ export default {
       'black': '#1a1a1a',
       'light-blue': '#d9dbf1',
       'dark-blue': '#1B1E48',
-      'transparent': '#1a1a1a00'
+      'transparent': '#1a1a1a00',
+      'blue': '#125AE8'
     },
     animation: {
       'slide-in-300': 'slide-in 0.8s 300ms forwards',
