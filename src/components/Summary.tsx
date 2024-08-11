@@ -13,7 +13,7 @@ function Summary() {
     triggerOnce: true,
   });
   const [ ref2, inView2 ]= useInView({
-    threshold: 0.25,
+    threshold: 0.3,
     triggerOnce: true,
   });
   return (
@@ -39,7 +39,7 @@ function Summary() {
             </div>
           </div>
         </div>
-        <div ref={ref1} className={`card ${inView1 ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"} transition duration-700 flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/40`}>
+        <div ref={ref1} className={`card ${inView1 ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"} transition duration-700 flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/40`}>
           <div className=" w-full md:w-1/2 p-2 md:p-4">
             <h2 className="text-xl text-white text-center font-semibold p-2">
               Watch Games Live
