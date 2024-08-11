@@ -12,15 +12,15 @@ function FullNav({ isOpen }: FullNavProps) {
     <div
       className={
         isOpen
-          ? "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-100 translate-x-0 bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out flex flex-col"
-          : "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-0 -translate-x-full bg-gradient-to-r from-black left-0 top-0 duration-500 ease-in-out"
+          ? "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-100 translate-x-0 bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col"
+          : "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-0 -translate-x-full bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out"
       }
     >
       <div className="w-full h-20"></div>
       <ul
         className={
           isOpen
-            ? "text-white font-semibold text-2xl flex flex-col gap-0 justify-around"
+            ? "text-white font-semibold text-2xl transition-all flex flex-col gap-0 justify-around"
             : "hidden"
         }
       >
