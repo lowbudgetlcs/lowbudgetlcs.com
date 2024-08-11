@@ -11,7 +11,7 @@ function Summary() {
             <h2 className="text-xl text-white text-center font-semibold p-2">
               Amateurs Unite!
             </h2>
-            <p className="py-2 text-md">
+            <p className="py-2 text-sm md:text-md">
               The LowBudget LCS is a competitive, free, and friendly amateur rec
               league. We have 4 leagues that range across all skill levels. We
               provide an experience that mirrors what would happen if Riot Games
@@ -30,7 +30,7 @@ function Summary() {
             <h2 className="text-xl text-white text-center font-semibold p-2">
               Watch Games Live
             </h2>
-            <p className="py-2 text-md">
+            <p className="py-2 text-sm md:text-md">
               Watch matches from all brackets live on Twitch! Cheer on your
               favorite team as they win big (or int big) while interacting with
               both the casters and community. Earn all the Schmeckles you can!
@@ -52,7 +52,7 @@ function Summary() {
             <h2 className="text-xl text-white text-center font-semibold p-2">
               Have a Blast with Friends
             </h2>
-            <p className="py-2 text-md">
+            <p className="py-2 text-sm md:text-md">
               The LBLCS is a community where players of all ranks can meet
               awesome people, play organized League of Legends, and find a
               welcome environment for just about everything! Show off your pets,
