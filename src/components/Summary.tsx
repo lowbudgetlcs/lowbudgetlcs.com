@@ -5,11 +5,11 @@ import Button from "./Button";
 function Summary() {
 
   const [ ref, inView ] = useInView({
-    threshold: 0.25,
+    threshold: 0.3,
     triggerOnce: true,
   });
   const [ ref1, inView1 ] = useInView({
-    threshold: 0.25,
+    threshold: 0.3,
     triggerOnce: true,
   });
   const [ ref2, inView2 ]= useInView({
