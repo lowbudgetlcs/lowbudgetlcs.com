@@ -11,7 +11,7 @@ interface CardProps {
   reverse: boolean;
 }
 
-function Card({ title, text, link, btnText, image, reverse }: CardProps) {
+function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
   const [ref, inView] = useInView({
     threshold: 0.3,
     triggerOnce: true,
@@ -67,4 +67,4 @@ function Card({ title, text, link, btnText, image, reverse }: CardProps) {
     );
 }
 
-export default Card;
+export default HomeCard;

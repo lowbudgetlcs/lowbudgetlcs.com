@@ -1,4 +1,4 @@
-import Card from "./Card";
+import HomeCard from "./HomeCard";
 
 function Summary() {
   const aboutCard = {
@@ -37,7 +37,7 @@ function Summary() {
   return (
     <div className="summary p-8 flex flex-col items-center -mt-28 text-white/60">
       <div className="cardContainer flex flex-col gap-16 z-10 overflow-hidden">
-        <Card
+        <HomeCard
           reverse={false}
           title={aboutCard.title}
           text={aboutCard.text}
@@ -45,7 +45,7 @@ function Summary() {
           btnText={aboutCard.btnText}
           image={aboutCard.image}
         />
-        <Card
+        <HomeCard
           reverse
           title={twitchCard.title}
           text={twitchCard.text}
@@ -53,7 +53,7 @@ function Summary() {
           btnText={twitchCard.btnText}
           image={twitchCard.image}
         />
-        <Card
+        <HomeCard
           reverse={false}
           title={discordCard.title}
           text={discordCard.text}
