@@ -1,4 +1,7 @@
 import HomeCard from "./HomeCard";
+import aboutImage from "../assets/summaryImg.jpg"
+import twitchImage from "../assets/twitchPhone.jpg"
+import discordImage from "../assets/smilingGamer.jpg"
 
 function Summary() {
   const aboutCard = {
@@ -10,7 +13,7 @@ function Summary() {
               in the fall!`,
     link: "/about",
     btnText: "Learn More",
-    image: "src/assets/summaryImg.jpg",
+    image: aboutImage,
   };
 
   const twitchCard = {
@@ -20,7 +23,7 @@ function Summary() {
               both the casters and community. Earn all the Schmeckles you can!`,
     link: "https://www.twitch.tv/lowbudgetlcs",
     btnText: "Watch Here",
-    image: "src/assets/twitchPhone.jpg",
+    image: twitchImage,
   };
 
   const discordCard = {
@@ -31,7 +34,7 @@ function Summary() {
               share cool memes, and talk it up with the community!`,
     link: "https://discord.gg/lblcs",
     btnText: "Join The Discord",
-    image: "src/assets/smilingGamer.jpg",
+    image: discordImage,
   }
 
   return (
