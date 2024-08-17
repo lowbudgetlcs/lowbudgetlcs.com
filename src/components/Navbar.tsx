@@ -10,19 +10,18 @@ interface FullNavProps {
 function FullNav({ isOpen }: FullNavProps) {
   return (
     <div
-      className={
-        isOpen
-          ? "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-100 translate-x-0 bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col"
-          : "fullnav fixed w-2/5 h-screen font-serif -z-10 opacity-0 -translate-x-full bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out"
-      }
+      className={`fullNav fixed w-2/5 h-screen font-serif -z-10 ${
+        isOpen ? "opacity-100" : "opacity-0"
+      } ${
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      } translate-x-0 bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
+      `}
     >
       <div className="w-full h-20"></div>
       <ul
-        className={
-          isOpen
-            ? "text-white font-semibold text-2xl transition-all flex flex-col gap-0 justify-around"
-            : "hidden"
-        }
+        className={` ${
+          isOpen ? "" : "hidden"
+        } text-white font-semibold text-3xl transition-all flex flex-col gap-0 justify-around`}
       >
         <li className="text-left animate-slide-in-300 opacity-0">
           <NavLink className="hover:text-orange transition" to="/">
