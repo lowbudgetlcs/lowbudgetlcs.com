@@ -6,6 +6,7 @@ export default {
   ],
   theme: {
     colors: {
+      // Main Colors
       'orange': '#e8a012',
       'light-orange': '#F3C363',
       'gray': '#363636',
@@ -14,7 +15,17 @@ export default {
       'light-blue': '#d9dbf1',
       'dark-blue': '#1B1E48',
       'transparent': '#1a1a1a00',
-      'blue': '#125AE8'
+      'blue': '#125AE8',
+      // For Gradients
+      'gold-light': '#C89B5F',
+      'gold-dark': '#44311A',
+      'platinum-light': '#86E1ED',
+      'platinum-dark': '#074754',
+      'emerald-light': '#5EE0A4',
+      'emerald-dark': '#064035',
+      'challenger-blue': '#6485E3',
+      'challenger-gold': '#B49A5E',
+
     },
     animation: {
       'slide-in-300': 'slide-in 0.8s 300ms forwards',
@@ -25,7 +36,7 @@ export default {
       'slide-in-800': 'slide-in 0.8s 800ms forwards',
       'slide-in-900': 'slide-in 0.8s 900ms forwards',
       'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
-      
+
     },
     keyframes: {
       'slide-in': {
@@ -42,7 +53,7 @@ export default {
       lg: '1024px',
       md: '768px',
       sm: '375px',
-      
+
     }
   },
   plugins: [],
