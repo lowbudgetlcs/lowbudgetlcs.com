@@ -34,7 +34,7 @@ function About() {
         <h1 className="text-6xl">About</h1>
       </div>
       <div className="flex flex-col items-center pb-8">
-        <p className="summary text-lg md:text-xl px-16 py-8">
+        <p className="summary text-lg md:text-xl px-16 py-8 text-center">
           The Low Budget LCS has four separate leagues defined by both max rank
           and a points system.
         </p>
