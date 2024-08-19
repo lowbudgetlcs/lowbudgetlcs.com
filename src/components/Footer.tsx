@@ -2,9 +2,9 @@ import { NavLink } from "react-router-dom";
 
 function Footer() {
   return (
-    <div className="footer h-auto flex flex-col justify-around items-center text-white bg-black border-t-2 border-gray">
+    <div className="footer h-auto flex flex-col justify-around items-center text-black dark:text-white bg-light-blue dark:bg-black border-t-2 border-orange dark:border-gray">
       <div className="footerText pt-4">
-        <ul className="text-white font-semibold text-xl flex flex-wrap gap-4 justify-around">
+        <ul className="font-semibold text-xl flex flex-wrap gap-4 justify-around">
           <li className="">
             <NavLink className="hover:text-orange transition" to="/">
               <div className="">Home</div>

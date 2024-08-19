@@ -23,7 +23,7 @@ function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
         ref={ref}
         className={`card ${
           inView ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"
-        } transition duration-700 flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/40`}
+        } transition duration-700 flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/80 dark:bg-gray/40`}
       >
         <div
           className={`w-full h-96 bg-cover bg-center text-center border-b-orange border-b-4 md:border-r-orange md:border-r-4`}
@@ -48,7 +48,7 @@ function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
         ref={ref}
         className={`card ${
           inView ? "translate-x-0 opacity-100" : "-translate-x-20 opacity-0"
-        } transition duration-700 flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/40`}
+        } transition duration-700 flex flex-col md:flex-row items-center max-w-md md:max-w-4xl min-h-72 md:h-80 overflow-hidden gap-4 rounded-lg bg-gray/80 dark:bg-gray/40`}
       >
         <div className=" w-full md:w-1/2 p-2 md:p-4">
           <h2 className="text-xl text-white text-center font-semibold p-2">

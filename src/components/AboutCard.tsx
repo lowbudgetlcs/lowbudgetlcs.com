@@ -18,7 +18,7 @@ function AboutCard({ title, rank, average, color }: AboutCardProps) {
       ref={ref}
       className={`card ${
         inView ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0"
-      } transition duration-1000 flex flex-col md:flex-row items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden gap-4 rounded-lg bg-gray/40`}
+      } transition duration-1000 flex flex-col md:flex-row items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden gap-4 rounded-lg bg-gray/80 dark:bg-gray/40`}
     >
       <div
         className={`relative w-full h-24 md:w-56 md:h-full flex items-center justify-center text-center`}
