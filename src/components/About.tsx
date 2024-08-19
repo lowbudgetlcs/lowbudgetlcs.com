@@ -6,25 +6,25 @@ const economy = {
   title: "Economy",
   rank: "Platinum I",
   average: "Gold",
-  color: "bg-gradient-to-b from-gold-light to-gold-dark",
+  color: "bg-gradient-to-r md:bg-gradient-to-b from-gold-light to-gold-dark",
 };
 const commercial = {
   title: "Commercial",
   rank: "Emerald I",
   average: "Platinum",
-  color: "bg-gradient-to-b from-platinum-light to-platinum-dark",
+  color: "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark",
 };
 const financial = {
   title: "Financial",
   rank: "Diamond II",
   average: "Emerald",
-  color: "bg-gradient-to-b from-emerald-light to-emerald-dark",
+  color: "bg-gradient-to-r md:bg-gradient-to-b from-emerald-light to-emerald-dark",
 };
 const executive = {
   title: "Executive",
   rank: "Challenger",
   average: "Diamond",
-  color: "bg-gradient-to-b from-challenger-blue to-challenger-gold",
+  color: "bg-gradient-to-r md:bg-gradient-to-b from-challenger-blue to-challenger-gold",
 };
 
 function About() {

@@ -27,7 +27,7 @@ function AboutCard({ title, rank, average, color }: AboutCardProps) {
           {title}
 
         </h2>
-        <div className={`absolute right-0 h-full w-2 ${color}`}></div>
+        <div className={`absolute right-0 bottom-0 h-2 w-full md:h-full md:w-2 ${color}`}></div>
       </div>
       <div className="min-w-48 h-24 flex items-center max-w-lg p-2 md:p-4">
         <ul>
