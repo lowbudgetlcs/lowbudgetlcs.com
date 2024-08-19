@@ -4,15 +4,18 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import About from "./components/About";
-
+import Error from "./components/Error";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="*" element={<Error />} />
       </Routes>
       <Footer />
     </BrowserRouter>
