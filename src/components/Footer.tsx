@@ -23,7 +23,7 @@ function Footer() {
               <div className="">Rules</div>
             </NavLink>
           </li>
-          <li className="">
+          {/* <li className="">
             <NavLink className="hover:text-orange transition" to="/stats">
               <div className="">Rosters</div>
             </NavLink>
@@ -32,7 +32,7 @@ function Footer() {
             <NavLink className="hover:text-orange transition" to="/stats">
               <div className="">Stats</div>
             </NavLink>
-          </li>
+          </li> */}
         </ul>
       </div>
 

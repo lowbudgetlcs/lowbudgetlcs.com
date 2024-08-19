@@ -42,13 +42,13 @@ function FullNav({ isOpen }: FullNavProps) {
           </NavLink>
         </li>
         <li className="animate-slide-in-600 opacity-0">
-          <NavLink className="hover:text-orange transition" to="/stats">
-            <div className="navBox pl-14 py-10">Rosters</div>
+          <NavLink className="hover:text-orange transition" to="#">
+            <div className="navBox pl-14 py-10">Rosters <br/> <span className="text-sm">(Coming Really Soon)</span></div>
           </NavLink>
         </li>
         <li className="animate-slide-in-700 opacity-0">
-          <NavLink className="hover:text-orange transition" to="/stats">
-            <div className="navBox pl-14 py-10">Stats</div>
+          <NavLink className="hover:text-orange transition" to="#">
+            <div className="navBox pl-14 py-10">Stats <br/> <span className="text-lg">(Coming Soon)</span></div>
           </NavLink>
         </li>
       </ul>
