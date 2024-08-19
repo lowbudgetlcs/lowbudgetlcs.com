@@ -14,7 +14,7 @@ function FullNav({ isOpen }: FullNavProps) {
         isOpen ? "opacity-100" : "opacity-0"
       } ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } translate-x-0 bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
+      } bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
       `}
     >
       <div className="w-full h-20"></div>
