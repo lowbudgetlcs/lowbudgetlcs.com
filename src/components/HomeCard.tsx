@@ -9,9 +9,10 @@ interface CardProps {
   btnText: string;
   image: string;
   reverse: boolean;
+  newTab: boolean;
 }
 
-function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
+function HomeCard({ title, text, link, btnText, image, reverse, newTab }: CardProps) {
   const [ref, inView] = useInView({
     threshold: 0.2,
   });
@@ -34,7 +35,7 @@ function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
           </h2>
           <p className="py-2 text-sm md:text-md">{text}</p>
           <div className="font-semibold">
-            <NavLink to={link}>
+            <NavLink target={newTab ? '_blank' : '_self'} to={link}>
               <Button>{btnText}</Button>
             </NavLink>
           </div>
@@ -55,7 +56,7 @@ function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
           </h2>
           <p className="py-2 text-sm md:text-md">{text}</p>
           <div className="font-semibold mt-4">
-            <NavLink target="_blank" to={link}>
+            <NavLink target={newTab ? '_blank' : '_self'} to={link}>
               <Button>{btnText}</Button>
             </NavLink>
           </div>

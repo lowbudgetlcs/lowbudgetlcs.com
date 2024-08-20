@@ -18,6 +18,7 @@ function Footer() {
           <li className="">
             <NavLink
               className="hover:text-orange transition"
+              target="_blank"
               to="https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing"
             >
               <div className="">Rules</div>
@@ -38,17 +39,17 @@ function Footer() {
 
       <ul className="flex gap-8 p-4">
         <li className="w-8 h-auto">
-          <NavLink to="https://www.instagram.com/lowbudgetlcs">
+          <NavLink target="_blank" to="https://www.instagram.com/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-instagram text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink to="https://discord.com/invite/XfsEEq4aPC">
+          <NavLink target="_blank" to="https://discord.com/invite/XfsEEq4aPC">
             <i className="hover:text-orange transition duration-300 bi bi-discord text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink to="https://www.twitch.tv/lowbudgetlcs">
+          <NavLink target="_blank" to="https://www.twitch.tv/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
           </NavLink>
         </li>

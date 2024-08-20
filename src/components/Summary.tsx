@@ -42,6 +42,7 @@ function Summary() {
       <div className="cardContainer flex flex-col gap-16 z-10 overflow-hidden">
         <HomeCard
           reverse={false}
+          newTab={false}
           title={aboutCard.title}
           text={aboutCard.text}
           link={aboutCard.link}
@@ -50,6 +51,7 @@ function Summary() {
         />
         <HomeCard
           reverse
+          newTab
           title={twitchCard.title}
           text={twitchCard.text}
           link={twitchCard.link}
@@ -58,6 +60,7 @@ function Summary() {
         />
         <HomeCard
           reverse={false}
+          newTab
           title={discordCard.title}
           text={discordCard.text}
           link={discordCard.link}

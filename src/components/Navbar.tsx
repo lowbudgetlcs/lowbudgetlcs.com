@@ -42,6 +42,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           <NavLink
             className="hover:text-orange transition duration-300"
             to="https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing"
+            target="_blank"
           >
             <div className="navBox pl-14 py-10">Rules</div>
           </NavLink>
