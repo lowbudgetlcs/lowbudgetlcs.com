@@ -4,7 +4,6 @@ import corianderVideo from "../assets/Coriander_Beer_Commercial.mp4";
 function Hero() {
   const num: number = Math.floor(Math.random() * 81);
   let video: string;
-  console.log(num);
   if (num === 69) {
     video = corianderVideo;
   } else {
