@@ -1,0 +1,13 @@
+services:
+  lblcs-frontend:
+    image: lblcs/lblcs-frontend:latest
+    container_name: lblcs-frontend
+    ports:
+      - "3001:3000"
+    networks:
+      - nginx.docker
+
+  networks:
+    nginx.docker:
+      name: nginx.docker
+      external: true
