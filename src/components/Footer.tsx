@@ -39,17 +39,17 @@ function Footer() {
       <ul className="flex gap-8 p-4">
         <li className="w-8 h-auto">
           <NavLink to="https://www.instagram.com/lowbudgetlcs">
-            <i className="hover:text-orange transition bi bi-instagram text-4xl"></i>
+            <i className="hover:text-orange transition duration-300 bi bi-instagram text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
           <NavLink to="https://discord.com/invite/XfsEEq4aPC">
-            <i className="hover:text-orange transition bi bi-discord text-4xl"></i>
+            <i className="hover:text-orange transition duration-300 bi bi-discord text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
           <NavLink to="https://www.twitch.tv/lowbudgetlcs">
-            <i className="hover:text-orange bi bi-twitch text-4xl"></i>
+            <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
           </NavLink>
         </li>
       </ul>

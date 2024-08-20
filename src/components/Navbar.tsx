@@ -24,30 +24,30 @@ function FullNav({ isOpen }: FullNavProps) {
         } text-white font-semibold text-3xl transition-all flex flex-col gap-0 justify-around`}
       >
         <li className="text-left animate-slide-in-300 opacity-0">
-          <NavLink className="hover:text-orange transition" to="/">
+          <NavLink className="hover:text-orange transition duration-300" to="/">
             <div className="navBox pl-14 py-10">Home</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
-          <NavLink className="hover:text-orange transition" to="/about">
+          <NavLink className="hover:text-orange transition duration-300" to="/about">
             <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-500 opacity-0">
           <NavLink
-            className="hover:text-orange transition"
+            className="hover:text-orange transition duration-300"
             to="https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing"
           >
             <div className="navBox pl-14 py-10">Rules</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-600 opacity-0">
-          <NavLink className="hover:text-orange transition" to="#">
+          <NavLink className="hover:text-orange transition duration-300" to="#">
             <div className="navBox pl-14 py-10">Rosters <br/> <span className="text-sm">(Coming Really Soon)</span></div>
           </NavLink>
         </li>
         <li className="animate-slide-in-700 opacity-0">
-          <NavLink className="hover:text-orange transition" to="#">
+          <NavLink className="hover:text-orange transition duration-300" to="#">
             <div className="navBox pl-14 py-10">Stats <br/> <span className="text-lg">(Coming Soon)</span></div>
           </NavLink>
         </li>
