@@ -5,12 +5,17 @@ import { useState } from "react";
 
 interface FullNavProps {
   isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function FullNav({ isOpen }: FullNavProps) {
+function FullNav({ isOpen, setIsOpen }: FullNavProps) {
+
+  function close () {
+   setIsOpen(false)
+  }
   return (
     <div
-      className={`fullNav fixed w-2/5 h-screen font-serif -z-10 ${
+      className={`fullNav fixed w-10/12 md:w-3/5 h-screen font-serif -z-10 ${
         isOpen ? "opacity-100" : "opacity-0"
       } ${
         isOpen ? "translate-x-0" : "-translate-x-full"
@@ -21,15 +26,15 @@ function FullNav({ isOpen }: FullNavProps) {
       <ul
         className={` ${
           isOpen ? "" : "hidden"
-        } text-white font-semibold text-3xl transition-all flex flex-col gap-0 justify-around`}
+        } text-white font-semibold text-3xl w-fit transition-all duration-100 flex flex-col gap-0 justify-around`}
       >
         <li className="text-left animate-slide-in-300 opacity-0">
-          <NavLink className="hover:text-orange transition duration-300" to="/">
+          <NavLink onClick={close} className="hover:text-orange transition duration-300" to="/">
             <div className="navBox pl-14 py-10">Home</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
-          <NavLink className="hover:text-orange transition duration-300" to="/about">
+          <NavLink onClick={close} className="hover:text-orange transition duration-300" to="/about">
             <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
@@ -37,6 +42,7 @@ function FullNav({ isOpen }: FullNavProps) {
           <NavLink
             className="hover:text-orange transition duration-300"
             to="https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing"
+            target="_blank"
           >
             <div className="navBox pl-14 py-10">Rules</div>
           </NavLink>
@@ -85,7 +91,7 @@ function Navbar() {
           } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
         ></div>
       </div>
-      <FullNav isOpen={isOpen} />
+      <FullNav isOpen={isOpen} setIsOpen={setIsOpen} />
       <Logo />
     </header>
   );
