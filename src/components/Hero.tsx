@@ -1,6 +1,15 @@
-import video from "../assets/LBLCSHeroVideo.mp4";
+import lblcsVideo from "../assets/LBLCSHeroVideo.mp4";
+import corianderVideo from "../assets/Coriander_Beer_Commercial.mp4";
 
 function Hero() {
+  const num: number = Math.floor(Math.random() * 81);
+  let video: string;
+  console.log(num);
+  if (num === 69) {
+    video = corianderVideo;
+  } else {
+    video = lblcsVideo;
+  }
   return (
     <div id="hero" className="hero relative w-full overflow-hidden h-[47rem]">
       <video
