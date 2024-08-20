@@ -13,8 +13,7 @@ interface CardProps {
 
 function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
   const [ref, inView] = useInView({
-    threshold: 0.3,
-    triggerOnce: true,
+    threshold: 0.2,
   });
 
   if (!reverse)
