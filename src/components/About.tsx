@@ -4,25 +4,25 @@ import Button from "./Button";
 
 const economy = {
   title: "Economy",
-  rank: "Platinum I",
+  rank: "Platinum III",
   average: "Gold",
   color: "bg-gradient-to-r md:bg-gradient-to-b from-gold-light to-gold-dark",
 };
 const commercial = {
   title: "Commercial",
-  rank: "Emerald I",
+  rank: "Emerald III",
   average: "Platinum",
   color: "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark",
 };
 const financial = {
   title: "Financial",
-  rank: "Diamond II",
+  rank: "Diamond III",
   average: "Emerald",
   color: "bg-gradient-to-r md:bg-gradient-to-b from-emerald-light to-emerald-dark",
 };
 const executive = {
   title: "Executive",
-  rank: "Challenger",
+  rank: "Uncapped",
   average: "Diamond",
   color: "bg-gradient-to-r md:bg-gradient-to-b from-challenger-blue to-challenger-gold",
 };
