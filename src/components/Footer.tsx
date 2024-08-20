@@ -38,7 +38,7 @@ function Footer() {
 
       <ul className="flex gap-8 p-4">
         <li className="w-8 h-auto">
-          <NavLink to="/https://discord.com/invite/XfsEEq4aPC">
+          <NavLink to="https://www.instagram.com/lowbudgetlcs">
             <i className="hover:text-orange transition bi bi-instagram text-4xl"></i>
           </NavLink>
         </li>

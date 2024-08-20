@@ -32,7 +32,7 @@ function Summary() {
               awesome people, play organized League of Legends, and find a
               welcome environment for just about everything! Show off your pets,
               share cool memes, and talk it up with the community!`,
-    link: "https://discord.gg/lblcs",
+    link: "https://discord.com/invite/XfsEEq4aPC",
     btnText: "Join The Discord",
     image: discordImage,
   }
