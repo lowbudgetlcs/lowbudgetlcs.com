@@ -23,7 +23,7 @@ function Twitch() {
 
       <div className="flex justify-center items-center py-8">
         <iframe
-          src="https://player.twitch.tv/?lowbudgetlcs&parent=lowbudgetlcs.com"
+          src="https://player.twitch.tv/?lowbudgetlcs&parent=https://lowbudgetlcs.com"
           height="480"
           width="720"
           allowFullScreen
