@@ -1,7 +1,7 @@
 services:
   lblcs-frontend:
     image: lblcs/lblcs-frontend:latest
-    container_name: lblcs-frontend
+    container_name: lblcs_frontend
     ports:
       - "3001:3000"
     networks:

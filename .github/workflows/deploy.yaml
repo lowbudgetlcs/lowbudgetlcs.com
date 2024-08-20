@@ -37,6 +37,7 @@ jobs:
       - name: Build and push Docker image
         run: |
           docker build -t lblcs/${{ env.APP }}:latest .
+          docker tag lblcs/${{ env.APP }}:latest lblcs/${{ env.APP }}:latest
           docker tag lblcs/${{ env.APP }}:latest lblcs/${{ env.APP }}:${{ env.VERSION }}
           docker push lblcs/${{ env.APP }}:latest
 
