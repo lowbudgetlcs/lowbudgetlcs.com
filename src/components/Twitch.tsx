@@ -1,4 +1,21 @@
 function Twitch() {
+  const username: string = "lowbudgetlcs";
+  async function checkIfLive(username: string) {
+    try {
+      const response = await fetch(`https://twitch.tv/${username}`);
+      const sourceCode = await response.text();
+
+      if (sourceCode.includes("isLiveBroadcast")) {
+        console.log(`${username} is live`);
+      } else {
+        console.log(`${username} is not live`);
+      }
+    } catch (error) {
+      console.log("Error occurred:", error);
+    }
+  }
+
+  checkIfLive(username);
   //! Change the parent attribute before deploying to production
   return (
     <div>
@@ -6,7 +23,7 @@ function Twitch() {
 
       <div className="flex justify-center items-center py-8">
         <iframe
-          src="https://player.twitch.tv/?lowbudgetlcs&parent=http://localhost/anything"
+          src="https://player.twitch.tv/?lowbudgetlcs&parent=localhost&quot"
           height="480"
           width="720"
           allowFullScreen
