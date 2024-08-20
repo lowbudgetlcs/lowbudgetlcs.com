@@ -62,7 +62,7 @@ function HomeCard({ title, text, link, btnText, image, reverse }: CardProps) {
           </div>
         </div>
         <div
-          className={`w-full h-96 bg-cover bg-center text-center border-b-orange border-b-4 md:border-l-orange md:border-l-4`}
+          className={`w-full h-96 bg-cover bg-center text-center border-t-orange border-t-4 md:border-l-orange md:border-l-4`}
           style={{ backgroundImage: `url(${image})` }}
         ></div>
       </div>
