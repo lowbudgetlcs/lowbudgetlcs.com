@@ -71,6 +71,8 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd docker/lblcs/${{ env.APP }}
+            echo CLIENT_ID="${{ secrets.CLIENT_ID }}" > .env
+            echo CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" >> .env
             docker-compose down
             docker-compose pull
             docker-compose up -d
