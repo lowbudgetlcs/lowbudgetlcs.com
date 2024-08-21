@@ -6,7 +6,14 @@ const port = 8080;
 const clientSecret = process.env.CLIENT_SECRET
 const clientID = process.env.CLIENT_ID
 
-app.get("/api/checklive", cors(), async (req, res) => {
+const corsOptions = {
+    origin: 'https://lowbudgetlcs.com',
+    methods: 'GET',
+};
+
+app.use(cors(corsOptions))
+
+app.get("/api/checklive", async (req, res) => {
     try {
         const accessToken = await getTwitchToken(clientID, clientSecret);
         const isLive = await checkIfLive(clientID, accessToken);
