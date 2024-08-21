@@ -30,7 +30,6 @@ function Twitch() {
   };
 
   checkIfLive();
-  isLive = true;
   //! Change the parent attribute before deploying to production
   if (isLive && !isClosed) {
     return (
