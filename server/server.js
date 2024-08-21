@@ -7,7 +7,7 @@ const clientSecret = process.env.CLIENT_SECRET
 const clientID = process.env.CLIENT_ID
 
 const corsOptions = {
-    origin: 'https://lowbudgetlcs.com',
+    origin: 'http://localhost:8080',
     methods: 'GET',
 };
 
