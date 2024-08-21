@@ -1,11 +1,17 @@
 services:
-  lblcs-frontend:
-    image: lblcs/lblcs-frontend:latest
-    container_name: lblcs_frontend
+  lblcs-frontend-client:
+    image: lblcs/lblcs-frontend:latest-client
+    container_name: lblcs_frontend_client
     ports:
       - "3001:3000"
     networks:
       - nginx.docker
+
+  lblcs-frontend-server:
+    image: lblcs/lblcs-frontend:latest-server
+    container_name: lblcs_frontend_server
+    env_file: .env
+    
 
   networks:
     nginx.docker:

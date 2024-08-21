@@ -6,7 +6,6 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import About from "./components/About";
 import Error from "./components/Error";
 import ScrollToTop from "./components/ScrollToTop";
-import Twitch from "./components/Twitch";
 
 function App() {
   return (
@@ -17,7 +16,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<Error />} />
-        <Route path="/twitch" element={<Twitch />} />
       </Routes>
       <Footer />
     </BrowserRouter>
