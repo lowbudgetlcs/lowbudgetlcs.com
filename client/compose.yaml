@@ -10,6 +10,7 @@ services:
   lblcs-frontend-server:
     image: lblcs/lblcs-frontend:latest-server
     container_name: lblcs_frontend_server
+    env_file: .env
     
 
   networks:
