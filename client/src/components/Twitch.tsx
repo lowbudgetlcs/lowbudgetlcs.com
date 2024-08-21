@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const url =
-  process.env.BACKEND_URL || "http://localhost:8080/api/checklive";
+const url = "http://lblcs_frontend_server:8080/api/checklive"
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
