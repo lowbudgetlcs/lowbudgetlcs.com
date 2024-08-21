@@ -37,19 +37,15 @@ jobs:
       - name: Build and push Docker image
         run: |
           # Build client
-          pwd
           cd ./client
-          pwd
           docker build -t lblcs/${{ env.APP }}:latest-client .
           docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:latest-client
           docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:${{ env.VERSION }}-client
           docker push lblcs/${{ env.APP }}:latest-client
           docker push lblcs/${{ env.APP}}:${{ env.VERSION }}-client
           # Build server
-          pwd
           cd ../server
-          pwd
-          docker build -t lblcs/${{ env.APP }}:latest-server -f ./server/Dockerfile .
+          docker build -t lblcs/${{ env.APP }}:latest-server -f .
           docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:latest-server
           docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:${{ env.VERSION }}-server
           docker push lblcs/${{ env.APP }}:latest-server
