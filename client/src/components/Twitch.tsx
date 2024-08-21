@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const url =
@@ -6,30 +6,31 @@ const url =
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
+  const [isLive, setIsLive] = useState();
 
   function toggleClose() {
     setIsClosed(!isClosed);
   }
-  let isLive;
-  const checkIfLive = async () => {
-    try {
-      const response = await fetch(url, {
-        method: "GET",
-      });
+  useEffect(() => {
+    const checkIfLive = async () => {
+      try {
+        const response = await fetch(url, {
+          method: "GET",
+        });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setIsLive(data.isLive);
+      } catch (error) {
+        console.error("Error occurred:", error);
       }
+    };
+    checkIfLive();
+  }, []);
 
-      const data = await response.json();
-      isLive = data.isLive;
-      return isLive;
-    } catch (error) {
-      console.error("Error occurred:", error);
-    }
-  };
-
-  checkIfLive();
   //! Change the parent attribute before deploying to production
   if (isLive && !isClosed) {
     return (
@@ -58,15 +59,15 @@ function Twitch() {
     return (
       <div>
         <div className="fixed mx-auto inset-x-0 w-1/3 h-10 bg-blue z-40 rounded-b-lg flex justify-center items-center gap-2">
-        <h2 className="text-xl font-normal">We are Live!</h2>
-        <NavLink target="_blank" to={'https://www.twitch.tv/lowbudgetlcs'}>
-        <h3 className="text-xl font-bold underline">Watch Here</h3>
-        </NavLink>
+          <h2 className="text-xl font-normal">We are Live!</h2>
+          <NavLink target="_blank" to={"https://www.twitch.tv/lowbudgetlcs"}>
+            <h3 className="text-xl font-bold underline">Watch Here</h3>
+          </NavLink>
         </div>
       </div>
     );
   } else {
-    return
+    return;
   }
 }
 
