@@ -14,7 +14,7 @@ jobs:
           touch ./.env.art
           VER=$(cat VERSION)
           echo "VERSION=$VER" >> ./.env.art
-          echo "APP=lblcs" >> ./.env.art
+          echo "APP=lblcs-frontend" >> ./.env.art
 
       - name: Upload env artifact
         uses: actions/upload-artifact@v4
