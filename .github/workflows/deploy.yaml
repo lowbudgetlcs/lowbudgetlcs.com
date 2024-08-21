@@ -41,13 +41,15 @@ jobs:
           docker build -t lblcs/${{ env.APP }}:latest-client .
           docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:latest-client
           docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:${{ env.VERSION }}-client
-          docker push lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP}}:${{ env.VERSION }}-client
+          docker push lblcs/${{ env.APP }}:latest-client
+          docker push lblcs/${{ env.APP}}:${{ env.VERSION }}-client
           # Build server
           cd ../server
           docker build -t lblcs/${{ env.APP }}:latest-server -f ./server/Dockerfile .
           docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:latest-server
           docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:${{ env.VERSION }}-server
-          docker push lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP}}:${{ env.VERSION }}-server
+          docker push lblcs/${{ env.APP }}:latest-server
+          docker push lblcs/${{ env.APP}}:${{ env.VERSION }}-server
 
   deploy:
     needs: build
