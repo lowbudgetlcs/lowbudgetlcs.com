@@ -9,7 +9,8 @@ RUN npm install
 COPY . .
 
 RUN npm run build
+#IDK WHAT PORT THIS USES (PROBABLY 8080?)
+EXPOSE 8080
 
-#EXPOSE 3000 IDK WHAT PORT THIS USES (PROBABLY 8080?)
-
-# CMD [ "serve", "-s", "dist" ] IDK HOW TO RUN THIS APP
+#IDK HOW TO RUN THIS APP
+CMD [ "npm", "run", "start" ]
