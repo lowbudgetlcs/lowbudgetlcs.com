@@ -1,12 +1,12 @@
 const express = require("express");
 const axios = require('axios');
-
+const cors = require('cors')
 const app = express();
 const port = 8080;
 const clientSecret = process.env.CLIENT_SECRET
 const clientID = process.env.CLIENT_ID
 
-app.get("/api/checklive", async (req, res) => {
+app.get("/api/checklive", cors(), async (req, res) => {
     try {
         const accessToken = await getTwitchToken(clientID, clientSecret);
         const isLive = await checkIfLive(clientID, accessToken);
