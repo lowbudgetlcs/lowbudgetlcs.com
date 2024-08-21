@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const url = "http://lblcs_frontend_server:8080/api/checklive"
+const url = "https://backend.lowbudgetlcs.com/"
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
@@ -14,6 +14,7 @@ function Twitch() {
     const checkIfLive = async () => {
       try {
         const response = await fetch(url, {
+          mode: "no-cors",
           method: "GET",
         });
 
