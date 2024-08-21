@@ -8,7 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
 #IDK WHAT PORT THIS USES (PROBABLY 8080?)
 EXPOSE 8080
 
