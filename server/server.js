@@ -11,7 +11,7 @@ const corsOptions = {
     methods: 'GET',
 };
 
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 
 app.get("/api/checklive", async (req, res) => {
     try {
