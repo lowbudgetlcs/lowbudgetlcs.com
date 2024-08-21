@@ -17,7 +17,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<Error />} />
-        <Route path="/twitch" element={<Twitch />} />
       </Routes>
       <Footer />
     </BrowserRouter>
