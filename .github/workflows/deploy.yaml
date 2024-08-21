@@ -37,15 +37,15 @@ jobs:
       - name: Build and push Docker image
         run: |
           # Build client
-          docker build -t lblcs/${{ env.APP }}-client:latest -f ./client/Dockerfile .
-          docker tag lblcs/${{ env.APP }}-client:latest lblcs/${{ env.APP }}-client:latest
-          docker tag lblcs/${{ env.APP }}-client:latest lblcs/${{ env.APP }}-client:${{ env.VERSION }}
-          docker push lblcs/${{ env.APP }}-client:latest lblcs/${{ env.APP}}-client:${{ env.VERSION }}
+          docker build -t lblcs/${{ env.APP }}:latest-client -f ./client/Dockerfile .
+          docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:latest-client
+          docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:${{ env.VERSION }}-client
+          docker push lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP}}:${{ env.VERSION }}-client
           # Build server
-          docker build -t lblcs/${{ env.APP }}-server:latest -f ./server/Dockerfile .
-          docker tag lblcs/${{ env.APP }}-server:latest lblcs/${{ env.APP }}-server:latest
-          docker tag lblcs/${{ env.APP }}-server:latest lblcs/${{ env.APP }}-server:${{ env.VERSION }}
-          docker push lblcs/${{ env.APP }}-server:latest lblcs/${{ env.APP}}-server:${{ env.VERSION }}
+          docker build -t lblcs/${{ env.APP }}:latest-server -f ./server/Dockerfile .
+          docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:latest-server
+          docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:${{ env.VERSION }}-server
+          docker push lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP}}:${{ env.VERSION }}-server
 
   deploy:
     needs: build
@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd docker/lblcs/${{ env.APP }}-frontend
+            cd docker/lblcs/${{ env.APP }}
             docker-compose down
             docker-compose pull
             docker-compose up -d
