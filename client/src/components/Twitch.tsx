@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const url = "https://backend.lowbudgetlcs.com/"
+const url = "https://backend.lowbudgetlcs.com/api/checklive"
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
