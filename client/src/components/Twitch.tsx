@@ -14,7 +14,6 @@ function Twitch() {
     const checkIfLive = async () => {
       try {
         const response = await fetch(url, {
-          mode: "no-cors",
           method: "GET",
         });
 
