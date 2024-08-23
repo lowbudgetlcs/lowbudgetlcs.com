@@ -9,10 +9,19 @@ interface FullNavProps {
 }
 
 function FullNav({ isOpen, setIsOpen }: FullNavProps) {
+  const toggleTop = () => {
+    window.scrollTo(0, 0);
+  };
 
-  function close () {
-   setIsOpen(false)
-  }
+  const close = () => {
+    setIsOpen(false);
+  };
+
+  const closeToTop = () => {
+    close();
+    toggleTop();
+  };
+
   return (
     <div
       className={`fullNav fixed w-10/12 md:w-3/5 h-screen font-serif -z-10 ${
@@ -29,12 +38,20 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         } text-white font-semibold text-3xl w-fit transition-all duration-100 flex flex-col gap-0 justify-around`}
       >
         <li className="text-left animate-slide-in-300 opacity-0">
-          <NavLink onClick={close} className="hover:text-orange transition duration-300" to="/">
+          <NavLink
+            onClick={closeToTop}
+            className="hover:text-orange transition duration-300"
+            to="/"
+          >
             <div className="navBox pl-14 py-10">Home</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
-          <NavLink onClick={close} className="hover:text-orange transition duration-300" to="/about">
+          <NavLink
+            onClick={close}
+            className="hover:text-orange transition duration-300"
+            to="/about"
+          >
             <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
@@ -49,12 +66,17 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         </li>
         <li className="animate-slide-in-600 opacity-0">
           <NavLink className="hover:text-orange transition duration-300" to="#">
-            <div className="navBox pl-14 py-10">Rosters <br/> <span className="text-sm">(Coming Really Soon)</span></div>
+            <div className="navBox pl-14 py-10">
+              Rosters <br />{" "}
+              <span className="text-sm">(Coming Really Soon)</span>
+            </div>
           </NavLink>
         </li>
         <li className="animate-slide-in-700 opacity-0">
           <NavLink className="hover:text-orange transition duration-300" to="#">
-            <div className="navBox pl-14 py-10">Stats <br/> <span className="text-lg">(Coming Soon)</span></div>
+            <div className="navBox pl-14 py-10">
+              Stats <br /> <span className="text-lg">(Coming Soon)</span>
+            </div>
           </NavLink>
         </li>
       </ul>
