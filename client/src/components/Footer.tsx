@@ -54,12 +54,12 @@ function Footer() {
           </NavLink>
         </li>
       </ul>
-      <div className="riotDisclaimer text-xs p-2 text-white/70">
+      <div className="riotDisclaimer text-xs md:text-sm md:text-center p-10 md:p-6 text-white/70">
         <p className="mb-2">
           This competition is not affiliated with or sponsored by Riot Games,
           Inc. or League of Legends Esports.
         </p>
-        <p>
+        <p className="mb-4">
           LowBudgetLCS isn't endorsed by Riot Games and doesn't reflect the
           views or opinions of Riot Games or anyone officially involved in
           producing or managing Riot Games properties. Riot Games, and all
