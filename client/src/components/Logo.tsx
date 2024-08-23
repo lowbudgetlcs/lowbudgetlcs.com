@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
 import logo from "../assets/Transparent_LBLCS_Logo_White_Text.png";
-const toggleTop = () => {
-  window.scrollTo(0, 0);
-}
+
 function Logo() {
+  const toggleTop = () => {
+    window.scrollTo(0, 0);
+  }
   return (
     <div className="logo scale-125">
       <NavLink onClick={toggleTop} to={"/"}>
