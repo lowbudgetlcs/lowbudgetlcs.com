@@ -5,10 +5,15 @@ const url = "https://backend.lowbudgetlcs.com/api/checklive"
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
-  const [isLive, setIsLive] = useState();
+  const [isLive, setIsLive] = useState(true);
+  const [isTopClosed, setIsTopClosed] = useState(false)
 
   function toggleClose() {
-    setIsClosed(!isClosed);
+    setIsClosed(true);
+  }
+
+  function toggleTopClose() {
+    setIsTopClosed(true)
   }
   useEffect(() => {
     const checkIfLive = async () => {
@@ -37,16 +42,16 @@ function Twitch() {
         className={`popup fixed justify-center items-center z-50 inset-0 transition duration-1000 flex bg-black/85`}
       >
         <div onClick={toggleClose} className="absolute w-full h-full"></div>
-        <div className="relative px-8 pt-12 rounded-lg bg-gray z-10">
+        <div className="relative px-8 pt-12 rounded-lg w-full md:w-fit bg-gray z-10">
           <h2 className="text-3xl text-center font-bold">LBLCS is Live!</h2>
           <i
             onClick={toggleClose}
-            className="absolute bi bi-x-lg text-3xl hover:cursor-pointer right-10 top-8"
+            className="absolute bi bi-x-lg text-3xl hover:cursor-pointer right-5 md:right-10 top-4 md:top-8"
           ></i>
-          <div className="flex justify-center items-center py-8">
+          <div className="flex justify-center w-full items-center py-8">
             <iframe
               src="https://player.twitch.tv/?channel=lowbudgetlcs&parent=localhost"
-              height="480"
+              height="576"
               width="720"
               allowFullScreen
             ></iframe>
@@ -54,14 +59,18 @@ function Twitch() {
         </div>
       </div>
     );
-  } else if (isLive && isClosed) {
+  } else if (isLive && isClosed && !isTopClosed) {
     return (
       <div>
-        <div className="fixed mx-auto inset-x-0 w-1/3 h-10 bg-blue z-40 rounded-b-lg flex justify-center items-center gap-2">
-          <h2 className="text-xl font-normal">We are Live!</h2>
+        <div className="fixed bottom-0 md:top-0 mx-auto inset-x-0 md:w-1/2 h-10 bg-blue z-40 rounded-t-lg md:rounded-t-none md:rounded-b-lg flex justify-center items-center gap-2">
+          <h2 className="text-md md:text-xl font-normal">We are Live on Twitch!</h2>
           <NavLink target="_blank" to={"https://www.twitch.tv/lowbudgetlcs"}>
-            <h3 className="text-xl font-bold underline">Watch Here</h3>
+            <h3 className="text-lg md:text-xl font-bold underline">Watch Here</h3>    
           </NavLink>
+          <i
+            onClick={toggleTopClose}
+            className="bi bi-x-lg text-xl hover:cursor-pointer right-5 md:right-10 top-4 md:top-8"
+          ></i>
         </div>
       </div>
     );
