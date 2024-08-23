@@ -5,7 +5,7 @@ const url = "https://backend.lowbudgetlcs.com/api/checklive"
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
-  const [isLive, setIsLive] = useState(true);
+  const [isLive, setIsLive] = useState();
   const [isTopClosed, setIsTopClosed] = useState(false)
 
   function toggleClose() {
