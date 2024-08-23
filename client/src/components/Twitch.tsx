@@ -42,7 +42,7 @@ function Twitch() {
         className={`popup fixed justify-center items-center z-50 inset-0 transition duration-1000 flex bg-black/85`}
       >
         <div onClick={toggleClose} className="absolute w-full h-full"></div>
-        <div className="relative px-8 pt-12 rounded-lg w-full md:w-fit bg-gray z-10">
+        <div className="relative px-8 pt-12 rounded-lg w-full md:w-fit text-white bg-gray z-10">
           <h2 className="text-3xl text-center font-bold">LBLCS is Live!</h2>
           <i
             onClick={toggleClose}
@@ -62,7 +62,7 @@ function Twitch() {
   } else if (isLive && isClosed && !isTopClosed) {
     return (
       <div>
-        <div className="fixed bottom-0 md:top-0 mx-auto inset-x-0 md:w-1/2 h-10 bg-blue z-40 rounded-t-lg md:rounded-t-none md:rounded-b-lg flex justify-center items-center gap-2">
+        <div className="fixed bottom-0 md:top-0 mx-auto inset-x-0 md:w-1/2 h-10 text-white bg-blue z-40 rounded-t-lg md:rounded-t-none md:rounded-b-lg flex justify-center items-center gap-2">
           <h2 className="text-md md:text-xl font-normal">We are Live on Twitch!</h2>
           <NavLink target="_blank" to={"https://www.twitch.tv/lowbudgetlcs"}>
             <h3 className="text-lg md:text-xl font-bold underline">Watch Here</h3>    

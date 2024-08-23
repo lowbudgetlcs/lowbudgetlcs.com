@@ -6,12 +6,14 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import About from "./components/About";
 import Error from "./components/Error";
 import ScrollToTop from "./components/ScrollToTop";
+import Twitch from "./components/Twitch";
 
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Navbar />
+      <Twitch/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
