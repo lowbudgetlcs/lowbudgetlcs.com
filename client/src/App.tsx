@@ -7,17 +7,18 @@ import About from "./components/About";
 import Error from "./components/Error";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
+import Roster from "./components/Roster";
 
 function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
       <Navbar />
-      <Twitch/>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="*" element={<Error />} />
+        <Route path="/roster" element={<Roster />} />
       </Routes>
       <Footer />
     </BrowserRouter>
