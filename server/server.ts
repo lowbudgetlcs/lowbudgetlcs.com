@@ -7,12 +7,12 @@ const port = 8080;
 const clientSecret: string | undefined = process.env.CLIENT_SECRET
 const clientID: string | undefined = process.env.CLIENT_ID
 
-const corsOptions = {
-    origin: 'https://lowbudgetlcs.com',
-    methods: 'GET',
-};
+// const corsOptions = {
+//     origin: 'https://lowbudgetlcs.com',
+//     methods: 'GET',
+// };
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.get("/api/checklive", async (req: Request, res: Response) => {
     try {
@@ -33,9 +33,12 @@ app.get("/api/checklive", async (req: Request, res: Response) => {
 
 app.get("/api/getPlayers", async (req: Request, res: Response) => {
     try {
-        getPlayers(); 
-    } catch (err) {
+      const response = await getPlayers(); 
+      res.json(response)
+
+    } catch (err:any) {
         console.error("ERROR: " + err)
+        res.status(500).json({ error: err.message });
     }
 })
 
