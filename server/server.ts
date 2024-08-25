@@ -1,10 +1,11 @@
-const express = require("express");
-const axios = require('axios');
-const cors = require('cors')
+import express, {Express, Request, Response} from "express";
+import axios from 'axios';
+import cors from 'cors';
+import { getPlayers } from "./db/queries/select";
 const app = express();
 const port = 8080;
-const clientSecret = process.env.CLIENT_SECRET
-const clientID = process.env.CLIENT_ID
+const clientSecret: string | undefined = process.env.CLIENT_SECRET
+const clientID: string | undefined = process.env.CLIENT_ID
 
 const corsOptions = {
     origin: 'https://lowbudgetlcs.com',
@@ -13,24 +14,37 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
-app.get("/api/checklive", async (req, res) => {
+app.get("/api/checklive", async (req: Request, res: Response) => {
     try {
+        if (!clientID || !clientSecret) {
+            throw new Error("Missing Twitch client ID or secret.");
+        }
         const accessToken = await getTwitchToken(clientID, clientSecret);
+        if (!accessToken) {
+            throw new Error("Missing Access Token")
+        }
         const isLive = await checkIfLive(clientID, accessToken);
         res.json({ isLive })
-    } catch (err) {
+    } catch (err: any) {
         console.error("ERROR: " + err)
         res.status(500).json({ error: err.message });
     }
 });
 
-
-let twitchToken;
-let tokenExpiration;
-
-async function getTwitchToken(clientID, clientSecret) {
+app.get("/api/getPlayers", async (req: Request, res: Response) => {
     try {
-        if (!twitchToken || new Date() >= tokenExpiration) {
+        getPlayers(); 
+    } catch (err) {
+        console.error("ERROR: " + err)
+    }
+})
+
+let twitchToken: string | undefined;
+let tokenExpiration:Date | undefined;
+
+async function getTwitchToken(clientID: string, clientSecret: string) {
+    try {
+        if (!twitchToken ||!tokenExpiration || new Date() >= tokenExpiration) {
             const response = await axios.post('https://id.twitch.tv/oauth2/token', null, {
                 params: {
                     client_id: clientID,
@@ -53,7 +67,7 @@ async function getTwitchToken(clientID, clientSecret) {
     }
 }
 
-async function checkIfLive(clientID, accessToken) {
+async function checkIfLive(clientID: string, accessToken: string) {
     let isLive
     try {
 
