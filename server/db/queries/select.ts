@@ -1,28 +1,13 @@
 import { db } from "../index";
-import { playersTable, teamsTable } from "../schema";
+import { players, teams } from "../schema";
 
-export async function getPlayers(): Promise<
-  Array<{
-    id: Number;
-    primaryRiotPuuid: String;
-    teamId: Number | null;
-    summonerName: String;
-  }>
-> {
-  const allPlayers = db.select().from(playersTable);
+export async function getPlayers()
+{
+  const allPlayers = await db.select().from(players);
   return allPlayers;
 }
 
-export async function getTeams(): Promise<
-Array<{
-  id: number;
-  teamName: string;
-  divisionId: number;
-  groupId: string;
-  captainId: number | null;
-  logo: string | null;
-}>
-> {
-  const allTeams = db.select().from(teamsTable);
+export async function getTeams(){
+  const allTeams = await db.select().from(teams);
   return allTeams;
 }
