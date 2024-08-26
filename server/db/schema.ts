@@ -10,7 +10,7 @@ export const playersTable = pgTable("players", {
 export const teamsTable = pgTable("teams", {
   id: integer("id").primaryKey(),
   teamName: varchar("name").notNull(),
-  divisionId: integer("division").notNull(),
+  divisionId: integer("division_id").notNull(),
   groupId: char("group_id").notNull(),
   captainId: integer("captain_id"),
   logo: varchar("logo"),
