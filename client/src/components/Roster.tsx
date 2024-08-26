@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import supabase from "../supabaseClient";
 
 interface PlayerProps {
   id: number;
@@ -12,21 +11,8 @@ function Roster() {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
 
   useEffect(() => {
-    getPlayers();
+    
   }, []);
-
-  const getPlayers = async () => {
-    try {
-      const { data: players, error } = await supabase.from("players").select();
-
-      if (error) throw error;
-
-      console.log(players);
-      setPlayers(players as PlayerProps[]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white">
