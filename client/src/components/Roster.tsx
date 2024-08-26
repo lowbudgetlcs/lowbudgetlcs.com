@@ -87,12 +87,13 @@ function Roster() {
           The Low Budget LCS has four separate leagues defined by both max rank
           and a points system.
         </p>
-      </div>
-      <div className="teamContainer">
+        <div className="teamContainer flex flex-col gap-8 w-3/5 overflow-hidden justify-center">
         {teams.map((team) => {
-          return <TeamCard key={team.id} teamName={team.teamName} groupId={team.groupId} logo={team.logo} playerList={team.playerList}/>
+          return <TeamCard key={team.id} teamName={team.teamName} groupId={team.groupId} divisionId={team.divisionId} logo={team.logo} playerList={team.playerList}/>
         })}
       </div>
+      </div>
+
     </div>
   );
 }
