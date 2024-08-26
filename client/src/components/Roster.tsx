@@ -1,18 +1,81 @@
 import { useEffect, useState } from "react";
+import TeamCard from "./TeamCard";
 
+// const url = "https://backend.lowbudgetlcs.com/api/getPlayers"
+const playesrUrl = "http://localhost:8080/api/getPlayers";
+const teamsUrl = "http://localhost:8080/api/getTeams";
 interface PlayerProps {
   id: number;
-  primary_riot_id: string;
-  team_id?: number;
-  summoner_name: string;
+  primaryRiotId: string;
+  teamId?: number;
+  summonerName: string;
+}
+
+interface TeamProps {
+  id: number;
+  teamName: string;
+  divisionId: number;
+  groupId: string;
+  captainId: number | null;
+  logo: string | null;
+  playerList: string[];
 }
 
 function Roster() {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
+  const [teams, setTeams] = useState<TeamProps[]>([]);
 
   useEffect(() => {
-    
+    const getAllPlayers = async () => {
+      try {
+        console.log("getting players...");
+        const response = await fetch(playesrUrl, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setPlayers(data as PlayerProps[]);
+        console.log(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getAllPlayers();
+    const getAllTeams = async () => {
+      try {
+        console.log("getting teams...");
+        const response = await fetch(teamsUrl, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setTeams(data as TeamProps[]);
+        console.log(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getAllPlayers();
+    getAllTeams();
   }, []);
+
+  //Adds player names to each team under the playerList key
+  teams.forEach((team) => {
+    const playerList: string[] = [];
+    players.forEach((player) => {
+      if (player.teamId === team.id) {
+        playerList.push(player.summonerName);
+      }
+    });
+    team.playerList = playerList;
+  });
+
 
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white">
@@ -25,12 +88,11 @@ function Roster() {
           and a points system.
         </p>
       </div>
-      <ul>
-        {players.map((player: PlayerProps) => {
-            const summonerName = player.summoner_name.split("#")
-          return <li key={player.id}>Player: {summonerName[0]} { "#" + summonerName[1]}</li>;
+      <div className="teamContainer">
+        {teams.map((team) => {
+          return <TeamCard key={team.id} teamName={team.teamName} groupId={team.groupId} logo={team.logo} playerList={team.playerList}/>
         })}
-      </ul>
+      </div>
     </div>
   );
 }
