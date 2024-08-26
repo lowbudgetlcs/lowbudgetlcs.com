@@ -1,12 +1,13 @@
 import express, {Express, Request, Response} from "express";
 import axios from 'axios';
 import cors from 'cors';
-import { getPlayers } from "./db/queries/select";
+import { getPlayers, getTeams } from "./db/queries/select";
 const app = express();
 const port = 8080;
 const clientSecret: string | undefined = process.env.CLIENT_SECRET
 const clientID: string | undefined = process.env.CLIENT_ID
 
+//! Add Cors Options on prod
 // const corsOptions = {
 //     origin: 'https://lowbudgetlcs.com',
 //     methods: 'GET',
@@ -34,6 +35,17 @@ app.get("/api/checklive", async (req: Request, res: Response) => {
 app.get("/api/getPlayers", async (req: Request, res: Response) => {
     try {
       const response = await getPlayers(); 
+      res.json(response)
+
+    } catch (err:any) {
+        console.error("ERROR: " + err)
+        res.status(500).json({ error: err.message });
+    }
+})
+
+app.get("/api/getTeams", async (req: Request, res: Response) => {
+    try {
+      const response = await getTeams(); 
       res.json(response)
 
     } catch (err:any) {
