@@ -1,29 +1,32 @@
-import { Link, Outlet, useLocation, useOutletContext } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { PlayerProps, TeamProps } from "./Roster";
 interface LeaguePlayersProps {
   league: string;
+  teams: TeamProps[];
+  players: PlayerProps[];
   group: string;
 }
 
 function LeaguePlayers() {
-  const { teams, players } = useOutletContext<{
-    teams: TeamProps[];
-    players: PlayerProps[];
-  }>();
-  const { group, league }: LeaguePlayersProps = useLocation().state;
+  const { league, teams, players, group }: LeaguePlayersProps =
+    useLocation().state;
 
   let leagueId: number;
 
   switch (league) {
-    case "Economy": leagueId = 1
-    break;
-    case "Commercial": leagueId = 2
-    break;
-    case "Financial": leagueId = 3
-    break;
-    case "Executive": leagueId = 4
-    break; 
+    case "Economy":
+      leagueId = 1;
+      break;
+    case "Commercial":
+      leagueId = 2;
+      break;
+    case "Financial":
+      leagueId = 3;
+      break;
+    case "Executive":
+      leagueId = 4;
+      break;
   }
   //Adds player names to each team under the playerList key
   teams.forEach((team) => {
@@ -39,13 +42,12 @@ function LeaguePlayers() {
   return (
     <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <Link
-        state={{ league: league }}
-        to={".."}
+        state={{ league: league, teams: teams, players: players }}
+        to={`/rosters/${league.toLowerCase()}`}
         className="absolute top-16 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
       >
         Back
       </Link>
-      <Outlet />
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl">
           {league}: Group {group}
@@ -56,9 +58,8 @@ function LeaguePlayers() {
           Click the dropdown to view team members
         </p>
         <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8"></div>
-        <div className="teamContainer flex flex-col gap-8 md:w-3/5 lg:w-3/6 overflow-hidden justify-center">
+        <div className="teamContainer flex flex-col gap-8 md:w-3/5 lg:w-3/6 overflow-hidden justify-center py-8">
           {teams.map((team) => {
-
             if (team.groupId === group && team.divisionId === leagueId) {
               return (
                 <TeamCard
