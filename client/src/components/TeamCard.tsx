@@ -23,13 +23,28 @@ interface TeamProps {
 function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
   const [playerListVisible, setPlayerListVisible] = useState(false);
   const [isMultiSelected, setIsMultiSelected] = useState(false);
+  const multiArray: Array<string> = [];
+  const multiPlayersArray: Array<string> = [];
+  const [multi, setMulti] = useState(multiArray);
+  const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
 
   const togglePlayerList = () => {
     setPlayerListVisible(!playerListVisible);
   };
   const toggleIsMultiSelected = () => {
     setIsMultiSelected(!isMultiSelected);
-  }
+  };
+
+  const addToMulti = (newValue: string) => {
+    setMulti((prevArray) => {
+      if (!prevArray) {
+        return [newValue];
+      } else {
+        return [...prevArray, newValue];
+      }
+    });
+  };
+
   let gradient;
   switch (divisionId) {
     case 1:
@@ -93,7 +108,10 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
           >
             <div className="titleText flex flex-col justify-center gap-4">
               <h3 className="text-2xl font-bold text-center">Players</h3>
-              <div onClick={toggleIsMultiSelected} className="buttonContainer flex justify-center items-center hover:cursor-pointer">
+              <div
+                onClick={toggleIsMultiSelected}
+                className="buttonContainer flex justify-center items-center hover:cursor-pointer"
+              >
                 <Button>Multi.gg Select</Button>
               </div>
             </div>
@@ -171,9 +189,17 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
               {playerList.map((player) => {
                 const summonerName = player.split("#");
                 return (
-                  <Link
-                    target="_blank"
-                    to={`https://www.op.gg/summoners/na/${summonerName[0]}-${summonerName[1]}`}
+                  <div
+                    onClick={() => {
+                      //Grab player name, tag, and add "#" and "," for URL
+                      let player = encodeURIComponent(`${summonerName[0]}#${summonerName[1]}`);
+                      // Cut all whitespace from string
+                      player = player.replace(/\s+/g, "");
+                      console.log(player)
+                      if (multi.length < 5) {
+                        addToMulti(player);
+                      }
+                    }}
                     key={player}
                     className="text-center hover:underline"
                   >
@@ -181,9 +207,20 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
                     <span className="text-white/40">
                       {"#" + summonerName[1]}
                     </span>
-                  </Link>
+                  </div>
                 );
               })}
+            </div>
+            <div className="multi flex flex-col justify-center items-center p-4">
+              <h3 className="text-xl text-center font-semibold break-all">
+                {" "}
+                Multi
+                <Link
+                target="_blank"
+                  to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
+                  className="font-bold"
+                ><Button>To op.gg</Button></Link>
+              </h3>
             </div>
           </div>
         </div>
