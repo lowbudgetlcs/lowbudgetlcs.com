@@ -76,7 +76,7 @@ function TeamCard({
           <div className={`w-full h-3 md:w-3 md:h-full ${gradient}`}></div>
         </div>
         <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
-          <h3 className="teamName text-xl text-center font-semibold">
+          <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
             {teamName}
           </h3>
         </div>
