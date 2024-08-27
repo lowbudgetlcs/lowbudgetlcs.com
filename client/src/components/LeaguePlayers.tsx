@@ -46,7 +46,7 @@ function LeaguePlayers() {
         to={`/rosters/${league.toLowerCase()}`}
         className="absolute top-16 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
       >
-        Back
+        Back to Groups
       </Link>
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl">
