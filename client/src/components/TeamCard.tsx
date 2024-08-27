@@ -24,9 +24,9 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
   const [playerListVisible, setPlayerListVisible] = useState(false);
   const [isMultiSelected, setIsMultiSelected] = useState(false);
   const multiArray: Array<string> = [];
-  const multiPlayersArray: Array<string> = [];
+  // const multiPlayersArray: Array<string> = [];
   const [multi, setMulti] = useState(multiArray);
-  const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
+  // const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
 
   const togglePlayerList = () => {
     if (!playerListVisible) {
@@ -232,7 +232,7 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
                       }
                     }}
                     key={player}
-                    className="text-center hover:underline"
+                    className="text-center hover:underline cursor-pointer"
                   >
                     {summonerName[0]}{" "}
                     <span className="text-white/40">
