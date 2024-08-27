@@ -8,12 +8,12 @@ const clientSecret: string | undefined = process.env.CLIENT_SECRET
 const clientID: string | undefined = process.env.CLIENT_ID
 
 //! Add Cors Options on prod
-// const corsOptions = {
-//     origin: 'https://lowbudgetlcs.com',
-//     methods: 'GET',
-// };
+const corsOptions = {
+    origin: 'https://lowbudgetlcs.com',
+    methods: 'GET',
+};
 
-app.use(cors())
+app.use(cors(corsOptions))
 
 app.get("/api/checklive", async (req: Request, res: Response) => {
     try {
