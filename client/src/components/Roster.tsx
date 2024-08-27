@@ -29,7 +29,6 @@ function Roster() {
   useEffect(() => {
     const getAllPlayers = async () => {
       try {
-        console.log("getting players...");
         const response = await fetch(playesrUrl, {
           method: "GET",
         });
@@ -39,7 +38,6 @@ function Roster() {
         }
         const data = await response.json();
         setPlayers(data as PlayerProps[]);
-        console.log(data);
       } catch (err) {
         console.error(err);
       }
@@ -47,7 +45,6 @@ function Roster() {
     getAllPlayers();
     const getAllTeams = async () => {
       try {
-        console.log("getting teams...");
         const response = await fetch(teamsUrl, {
           method: "GET",
         });
@@ -57,7 +54,6 @@ function Roster() {
         }
         const data = await response.json();
         setTeams(data as TeamProps[]);
-        console.log(data);
       } catch (err) {
         console.error(err);
       }
