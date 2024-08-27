@@ -20,7 +20,6 @@ interface TeamProps {
 
 function TeamCard({
   teamName,
-  groupId,
   logo,
   playerList,
   divisionId,
@@ -77,12 +76,9 @@ function TeamCard({
           <div className={`w-full h-3 md:w-3 md:h-full ${gradient}`}></div>
         </div>
         <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
-            <h3 className="teamName text-xl text-center font-semibold">
-              {teamName}
-            </h3>
-        </div>
-        <div className="teamGroupContainer">
-          <div className="teamGroup text-center md:text-right md:mr-20">Group: {groupId}</div>
+          <h3 className="teamName text-xl text-center font-semibold">
+            {teamName}
+          </h3>
         </div>
       </div>
 
