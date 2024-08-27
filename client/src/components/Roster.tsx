@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink} from "react-router-dom";
 
 // const url = "https://backend.lowbudgetlcs.com/api/getPlayers"
 const playesrUrl = "http://localhost:8080/api/getPlayers";
@@ -65,10 +65,8 @@ function Roster() {
     getAllTeams();
   }, []);
 
-
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
-      <Outlet context={{teams, players}} />
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl">All Rosters</h1>
       </div>
@@ -79,7 +77,7 @@ function Roster() {
         <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8">
           <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
             <NavLink
-              state={{ league: "Economy" }}
+              state={{ league: "Economy", teams: teams, players: players }}
               to={"economy"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -88,7 +86,7 @@ function Roster() {
               </h2>
             </NavLink>
             <NavLink
-              state={{ league: "Commercial" }}
+              state={{ league: "Commercial", teams: teams, players: players }}
               to={"commercial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-platinum-light to-platinum-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -99,7 +97,7 @@ function Roster() {
           </div>
           <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
             <NavLink
-              state={{ league: "Financial" }}
+              state={{ league: "Financial", teams: teams, players: players }}
               to={"financial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-emerald-light to-emerald-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -108,7 +106,7 @@ function Roster() {
               </h2>
             </NavLink>
             <NavLink
-              state={{ league: "Executive" }}
+              state={{ league: "Executive", teams: teams, players: players }}
               to={"executive"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-challenger-blue to-challenger-gold transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
