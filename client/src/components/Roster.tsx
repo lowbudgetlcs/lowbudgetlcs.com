@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink} from "react-router-dom";
 
-// const url = "https://backend.lowbudgetlcs.com/api/getPlayers"
-const playesrUrl = "http://localhost:8080/api/getPlayers";
-const teamsUrl = "http://localhost:8080/api/getTeams";
+const playesrUrl = "https://backend.lowbudgetlcs.com/api/getPlayers"
+const teamsUrl = "https://backend.lowbudgetlcs.com/api/getTeams"
+// const playesrUrl = "http://localhost:8080/api/getPlayers";
+// const teamsUrl = "http://localhost:8080/api/getTeams";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
