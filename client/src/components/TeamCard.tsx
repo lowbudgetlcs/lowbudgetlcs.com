@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const commercialGradient =
   "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark";
@@ -92,13 +93,14 @@ function TeamCard({
         >
           <h3 className="text-2xl font-bold text-center">Players</h3>
           <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
+
             {playerList.map((player) => {
               const summonerName = player.split("#");
               return (
-                <div key={player} className="text-center">
+                <Link target="_blank" to={`https://www.op.gg/summoners/na/${summonerName[0]}-${summonerName[1]}`} key={player} className="text-center hover:underline">
                   {summonerName[0]}{" "}
                   <span className="text-white/40">{"#" + summonerName[1]}</span>
-                </div>
+                </Link>
               );
             })}
           </div>
