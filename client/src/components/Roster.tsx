@@ -79,9 +79,9 @@ function Roster() {
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <div className="title h-64 w-full flex items-center justify-center">
-        <h1 className="text-6xl">All Teams</h1>
+        <h1 className="text-6xl">All Rosters</h1>
       </div>
-      <div className="flex flex-col items-center pb-8">
+      <div className="flex flex-col items-center">
         <p className="summary text-lg md:text-xl px-16 py-8 text-center">
           Click below to navigate leagues, groups, and teams
         </p>
