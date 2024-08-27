@@ -32,14 +32,15 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
     if (!playerListVisible) {
       setPlayerListVisible(true);
     } else if (playerListVisible && isMultiSelected) {
-      setPlayerListVisible(!playerListVisible)
-     setTimeout(() => {
-      setIsMultiSelected(!isMultiSelected)
-     }, 300)
+      setPlayerListVisible(!playerListVisible);
+      setMulti([]);
+      setTimeout(() => {
+        setIsMultiSelected(!isMultiSelected);
+      }, 300);
     } else {
-      setPlayerListVisible(!playerListVisible)
+      setPlayerListVisible(!playerListVisible);
+      setMulti([]);
     }
-
   };
   const toggleIsMultiSelected = () => {
     setIsMultiSelected(!isMultiSelected);
@@ -69,6 +70,24 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
     case 4:
       gradient = executiveGradient;
       break;
+  }
+
+  const showMultiBtn = () => {
+    if (multi.length <= 0) {
+      return <p className="text-lg font-normal text-orange">Select players to add to link</p>
+    } else {
+      return (
+        <Link
+          target="_blank"
+          to={`https://www.op.gg/multisearch/na?summoners=${multi.join(
+            ","
+          )}`}
+          className="font-bold"
+        >
+          <Button>To op.gg</Button>
+        </Link>
+      );
+    }
   }
   if (!isMultiSelected) {
     return (
@@ -202,10 +221,12 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
                   <div
                     onClick={() => {
                       //Grab player name, tag, and add "#" and "," for URL
-                      let player = encodeURIComponent(`${summonerName[0]}#${summonerName[1]}`);
+                      let player = encodeURIComponent(
+                        `${summonerName[0]}#${summonerName[1]}`
+                      );
                       // Cut all whitespace from string
                       player = player.replace(/\s+/g, "");
-                      console.log(player)
+                      console.log(player);
                       if (multi.length < 5) {
                         addToMulti(player);
                       }
@@ -225,11 +246,7 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
               <h3 className="text-xl text-center font-semibold break-all">
                 {" "}
                 Multi
-                <Link
-                target="_blank"
-                  to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
-                  className="font-bold"
-                ><Button>To op.gg</Button></Link>
+                {showMultiBtn()}
               </h3>
             </div>
           </div>
