@@ -21,32 +21,35 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="*" element={<Error />} />
-        <Route path="rosters" element={<Roster />}>
-          <Route path="economy" element={<LeagueGroups />}>
-            <Route path="a" element={<LeaguePlayers />} />
-            <Route path="b" element={<LeaguePlayers />} />
-            <Route path="c" element={<LeaguePlayers />} />
-            <Route path="d" element={<LeaguePlayers />} />
-          </Route>
-          <Route path="commercial" element={<LeagueGroups />}>
-            <Route path="a" element={<LeaguePlayers />} />
-            <Route path="b" element={<LeaguePlayers />} />
-            <Route path="c" element={<LeaguePlayers />} />
-            <Route path="d" element={<LeaguePlayers />} />
-          </Route>
-          <Route path="financial" element={<LeagueGroups />}>
-            <Route path="a" element={<LeaguePlayers />} />
-            <Route path="b" element={<LeaguePlayers />} />
-            <Route path="c" element={<LeaguePlayers />} />
-            <Route path="d" element={<LeaguePlayers />} />
-          </Route>
-          <Route path="executive" element={<LeagueGroups />}>
-            <Route path="a" element={<LeaguePlayers />} />
-            <Route path="b" element={<LeaguePlayers />} />
-            <Route path="c" element={<LeaguePlayers />} />
-            <Route path="d" element={<LeaguePlayers />} />
-          </Route>
-        </Route>
+        <Route path="rosters" element={<Roster />} />
+
+        {/* Economy League */}
+        <Route path="rosters/economy" element={<LeagueGroups />} />
+        <Route path="rosters/economy/a" element={<LeaguePlayers />} />
+        <Route path="rosters/economy/b" element={<LeaguePlayers />} />
+        <Route path="rosters/economy/c" element={<LeaguePlayers />} />
+        <Route path="rosters/economy/d" element={<LeaguePlayers />} />
+
+        {/* Commercial League */}
+        <Route path="rosters/commercial" element={<LeagueGroups />} />
+        <Route path="rosters/commercial/a" element={<LeaguePlayers />} />
+        <Route path="rosters/commercial/b" element={<LeaguePlayers />} />
+        <Route path="rosters/commercial/c" element={<LeaguePlayers />} />
+        <Route path="rosters/commercial/d" element={<LeaguePlayers />} />
+
+        {/* Financial League */}
+        <Route path="rosters/financial" element={<LeagueGroups />} />
+        <Route path="rosters/financial/a" element={<LeaguePlayers />} />
+        <Route path="rosters/financial/b" element={<LeaguePlayers />} />
+        <Route path="rosters/financial/c" element={<LeaguePlayers />} />
+        <Route path="rosters/financial/d" element={<LeaguePlayers />} />
+
+        {/* Executive League */}
+        <Route path="rosters/executive" element={<LeagueGroups />} />
+        <Route path="rosters/executive/a" element={<LeaguePlayers />} />
+        <Route path="rosters/executive/b" element={<LeaguePlayers />} />
+        <Route path="rosters/executive/c" element={<LeaguePlayers />} />
+        <Route path="rosters/executive/d" element={<LeaguePlayers />} />
       </Routes>
       <Footer />
     </BrowserRouter>
