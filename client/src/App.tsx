@@ -17,6 +17,7 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Navbar />
+      <Twitch />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="about" element={<About />} />
