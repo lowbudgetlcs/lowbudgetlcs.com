@@ -29,7 +29,17 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
   const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
 
   const togglePlayerList = () => {
-    setPlayerListVisible(!playerListVisible);
+    if (!playerListVisible) {
+      setPlayerListVisible(true);
+    } else if (playerListVisible && isMultiSelected) {
+      setPlayerListVisible(!playerListVisible)
+     setTimeout(() => {
+      setIsMultiSelected(!isMultiSelected)
+     }, 300)
+    } else {
+      setPlayerListVisible(!playerListVisible)
+    }
+
   };
   const toggleIsMultiSelected = () => {
     setIsMultiSelected(!isMultiSelected);
@@ -100,7 +110,7 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
 
         <div className="relative">
           <div
-            className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+            className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               playerListVisible
                 ? "max-h-[500px] opacity-100"
                 : "max-h-0 opacity-0"
@@ -178,7 +188,7 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
 
         <div className="relative">
           <div
-            className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+            className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               playerListVisible
                 ? "max-h-[500px] opacity-100"
                 : "max-h-0 opacity-0"
