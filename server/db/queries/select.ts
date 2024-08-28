@@ -1,5 +1,5 @@
 import { db } from "../index";
-import { players, teams } from "../schema";
+import { divisions, players, teams } from "../schema";
 
 export async function getPlayers()
 {
@@ -10,4 +10,9 @@ export async function getPlayers()
 export async function getTeams(){
   const allTeams = await db.select().from(teams);
   return allTeams;
+}
+
+export async function getDivisions(){
+  const allDivisions = await db.select().from(divisions);
+  return allDivisions;
 }
