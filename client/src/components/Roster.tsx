@@ -62,7 +62,7 @@ function Roster() {
                 error: error,
                 loading: loading
               }}
-              to={"economy"}
+              to={"/rosters/economy"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
               <h2 className="text-3xl text-white text-center font-semibold">
@@ -78,7 +78,7 @@ function Roster() {
                 error: error,
                 loading: loading
               }}
-              to={"commercial"}
+              to={"/rosters/commercial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-platinum-light to-platinum-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
               <h2 className="text-3xl text-white text-center font-semibold">
@@ -96,7 +96,7 @@ function Roster() {
                 error: error,
                 loading: loading
               }}
-              to={"financial"}
+              to={"/rosters/financial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-emerald-light to-emerald-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
               <h2 className="text-3xl text-white text-center font-semibold">
@@ -112,7 +112,7 @@ function Roster() {
                 error: error,
                 loading: loading
               }}
-              to={"executive"}
+              to={"/rosters/executive"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-challenger-blue to-challenger-gold transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
               <h2 className="text-3xl text-white text-center font-semibold">
