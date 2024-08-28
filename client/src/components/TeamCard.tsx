@@ -46,9 +46,8 @@ function TeamCard({
       ) {
         onToggle();
         setTimeout(() => {
-          setIsMultiSelected(false)
-        }, 400)
-
+          setIsMultiSelected(false);
+        }, 400);
       }
     };
 
@@ -100,12 +99,12 @@ function TeamCard({
 
   const removeFromMulti = (index: number) => {
     setMulti((prevArray) => {
-      return prevArray.filter((_, i) => i !== index)
-    })
+      return prevArray.filter((_, i) => i !== index);
+    });
     setMultiPlayers((prevArray) => {
-      return prevArray.filter((_, i) => i !== index)
-    })
-  }
+      return prevArray.filter((_, i) => i !== index);
+    });
+  };
 
   let gradient;
   switch (divisionId) {
@@ -152,7 +151,7 @@ function TeamCard({
         <Link
           target="_blank"
           to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
-          className="font-bold"
+          className="flex justify-center items-center hover:cursor-pointer"
         >
           <Button>To op.gg</Button>
         </Link>
@@ -160,6 +159,7 @@ function TeamCard({
     }
   };
   if (!isMultiSelected) {
+    // Single op.gg Select Dropdown
     return (
       <div
         ref={cardRef}
@@ -198,14 +198,16 @@ function TeamCard({
 
         <div className="relative">
           <div
-            className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+            className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
                 ? "max-h-[1000px] opacity-100 visible"
                 : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
-              <h3 className="text-2xl font-bold text-center">Players: Single Select</h3>
+              <h3 className="text-2xl font-bold text-center">
+                Players: Single Select
+              </h3>
               <div className="absolute -right-6 top-0">
                 <div
                   onClick={togglePlayerList}
@@ -250,6 +252,7 @@ function TeamCard({
       </div>
     );
   } else {
+    // Multi op.gg Select Dropdown
     return (
       <div
         ref={cardRef}
@@ -288,14 +291,16 @@ function TeamCard({
 
         <div className="relative">
           <div
-            className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+            className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
                 ? "max-h-[1000px] opacity-100"
                 : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
-              <h3 className="text-2xl font-bold text-center">Players: Multi Select</h3>
+              <h3 className="text-2xl font-bold text-center">
+                Players: Multi Select
+              </h3>
               <div
                 onClick={toggleIsMultiSelected}
                 className="buttonContainer flex justify-center items-center hover:cursor-pointer"
@@ -333,17 +338,23 @@ function TeamCard({
                 );
               })}
             </div>
-            <div className="multi flex flex-col justify-center items-center p-4">
+            <div className="multi flex flex-col justify-center items-center px-2">
               <h3 className="text-xl text-center font-semibold break-all">
                 {" "}
                 Multi with:{" "}
-                <span className="font-normal text-orange flex flex-wrap gap-2 py-4 justify-center items-center">
+                <span className="font-normal text-orange flex flex-wrap gap-2 p-2 justify-center items-center">
                   {multiPlayers.map((player, index) => {
-                    return <p key={index} className="cursor-pointer hover:underline underline-offset-4" onClick={() => removeFromMulti(index)}>{`${player}, `}</p>;
+                    return (
+                      <p
+                        key={index}
+                        className="cursor-pointer hover:underline underline-offset-4"
+                        onClick={() => removeFromMulti(index)}
+                      >{`${player}, `}</p>
+                    );
                   })}
                 </span>
-                {showMultiBtn()}
               </h3>
+              <div className="">{showMultiBtn()}</div>
             </div>
           </div>
         </div>
