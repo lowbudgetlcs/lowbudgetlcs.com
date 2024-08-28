@@ -1,16 +1,17 @@
 import { Link, useLocation } from "react-router-dom";
 import TeamCard from "./TeamCard";
-import { PlayerProps, TeamProps } from "./Roster";
+import { DivisionProps, PlayerProps, TeamProps } from "./Roster";
 import { useState } from "react";
 interface LeaguePlayersProps {
   league: string;
   teams: TeamProps[];
   players: PlayerProps[];
   group: string;
+  divisions: DivisionProps[];
 }
 
 function LeaguePlayers() {
-  const { league, teams, players, group }: LeaguePlayersProps =
+  const { league, teams, players, group, divisions }: LeaguePlayersProps =
     useLocation().state;
   const [openCardId, setOpenCardId] = useState<number | null>(null);
 
@@ -47,7 +48,7 @@ function LeaguePlayers() {
   return (
     <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <Link
-        state={{ league: league, teams: teams, players: players }}
+        state={{ league: league, teams: teams, players: players, divisions: divisions }}
         to={`/rosters/${league.toLowerCase()}`}
         className="absolute top-16 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
       >
