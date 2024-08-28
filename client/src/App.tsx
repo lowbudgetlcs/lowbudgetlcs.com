@@ -4,13 +4,13 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import About from "./components/About";
-import Error from "./components/Error";
 import ScrollToTop from "./components/ScrollToTop";
 //! Enable Twitch on prod
 import Twitch from "./components/Twitch";
 import Roster from "./components/Roster";
 import LeagueGroups from "./components/LeagueGroups";
 import LeaguePlayers from "./components/LeaguePlayers";
+import ErrorPage from "./components/ErrorPage";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="about" element={<About />} />
-        <Route path="*" element={<Error />} />
+        <Route path="*" element={<ErrorPage />} />
         <Route path="rosters" element={<Roster />} />
 
         {/* Economy League */}
