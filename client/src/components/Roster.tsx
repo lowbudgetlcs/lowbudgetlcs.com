@@ -1,12 +1,6 @@
-import { useEffect, useState } from "react";
-import { NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
-
-// const playesrUrl = "https://backend.lowbudgetlcs.com/api/getPlayers"
-// const teamsUrl = "https://backend.lowbudgetlcs.com/api/getTeams"
-const playersUrl = "http://localhost:8080/api/getPlayers";
-const teamsUrl = "http://localhost:8080/api/getTeams";
-const divisionsUrl = "http://localhost:8080/api/getDivisions";
+import { useFetchData } from "../leagueData";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -34,44 +28,19 @@ export interface DivisionProps {
 }
 
 function Roster() {
-  const [error, setError] = useState(false);
-  const [players, setPlayers] = useState<PlayerProps[]>([]);
-  const [teams, setTeams] = useState<TeamProps[]>([]);
-  const [divisions, setDivisions] = useState<DivisionProps[]>([]);
-  useEffect(() => {
-    const fetchAllData = async () => {
-       try {
-          const [playersResponse, teamsResponse, divisionsResponse] = await Promise.all([
-             fetch(playersUrl),
-             fetch(teamsUrl),
-             fetch(divisionsUrl),
-          ]);
- 
-          if (!playersResponse.ok || !teamsResponse.ok || !divisionsResponse.ok) {
-             throw new Error('Error fetching data');
-          }
- 
-          const [playersData, teamsData, divisionsData] = await Promise.all([
-             playersResponse.json(),
-             teamsResponse.json(),
-             divisionsResponse.json(),
-          ]);
- 
-          setPlayers(playersData);
-          setTeams(teamsData);
-          setDivisions(divisionsData);
-       } catch (err) {
-          console.error(err);
-          setError(true);
-       }
-    };
- 
-    fetchAllData();
- }, []);
+  const { players, teams, divisions, error, loading } = useFetchData();
+  if (loading)
+    return (
+      <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
+        <div className="title h-64 w-full flex items-center justify-center">
+          <h1 className="text-6xl">All Rosters</h1>
+        </div>
 
-  if (error) {
-    return <ErrorPage />;
- }
+        <div className="absolute m-auto top-0 left-0 right-0 bottom-0 animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>
+      </div>
+    );
+  if (error) return <ErrorPage/>;
+
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <div className="title h-64 w-full flex items-center justify-center">
@@ -84,7 +53,13 @@ function Roster() {
         <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8">
           <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
             <NavLink
-              state={{ league: "Economy", teams: teams, players: players, divisions: divisions }}
+              state={{
+                league: "Economy",
+                teams: teams,
+                players: players,
+                divisions: divisions,
+                error: error,
+              }}
               to={"economy"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -93,7 +68,13 @@ function Roster() {
               </h2>
             </NavLink>
             <NavLink
-              state={{ league: "Commercial", teams: teams, players: players, divisions: divisions }}
+              state={{
+                league: "Commercial",
+                teams: teams,
+                players: players,
+                divisions: divisions,
+                error: error,
+              }}
               to={"commercial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-platinum-light to-platinum-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -104,7 +85,13 @@ function Roster() {
           </div>
           <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
             <NavLink
-              state={{ league: "Financial", teams: teams, players: players, divisions: divisions }}
+              state={{
+                league: "Financial",
+                teams: teams,
+                players: players,
+                divisions: divisions,
+                error: error,
+              }}
               to={"financial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-emerald-light to-emerald-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -113,7 +100,13 @@ function Roster() {
               </h2>
             </NavLink>
             <NavLink
-              state={{ league: "Executive", teams: teams, players: players, divisions: divisions }}
+              state={{
+                league: "Executive",
+                teams: teams,
+                players: players,
+                divisions: divisions,
+                error: error,
+              }}
               to={"executive"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-challenger-blue to-challenger-gold transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >

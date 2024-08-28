@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { DivisionProps, PlayerProps, TeamProps } from "./Roster";
 import ErrorPage from "./ErrorPage";
+import { useFetchData } from "../leagueData";
 interface LeagueGroupsProps {
   league: string;
   teams: TeamProps[];
@@ -10,16 +11,29 @@ interface LeagueGroupsProps {
 }
 
 function LeagueGroups() {
-  const { league, teams, players, divisions, error }: LeagueGroupsProps =
-    useLocation().state;
-    console.log(error)
-    if (error) {
-      return <ErrorPage/>
-    }
+  const { league }: LeagueGroupsProps = useLocation().state;
+  const { players, teams, divisions, error, loading } = useFetchData();
+
+  if (loading)
+    return (
+      <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
+        <div className="title h-64 w-full flex items-center justify-center">
+          <h1 className="text-6xl">{league}</h1>
+        </div>
+
+        <div className="absolute m-auto top-0 left-0 right-0 bottom-0 animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>
+      </div>
+    );
+  if (error) return <ErrorPage />;
+
   const groupLetters = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const displayGroups = () => {
     if (!divisions || divisions.length === 0) {
-      return <div className="animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>;
+      return (
+        <div className="">
+          No Divisions for this League? Must be an error. Try reloading!
+        </div>
+      );
     }
 
     const currentDivision = divisions.find(
