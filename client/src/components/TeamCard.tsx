@@ -148,13 +148,18 @@ function TeamCard({
       );
     } else {
       return (
-        <Link
-          target="_blank"
-          to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
-          className="flex justify-center items-center hover:cursor-pointer"
-        >
-          <Button>To op.gg</Button>
-        </Link>
+        <div className="flex flex-col">
+          <p className="text-white/60 text-sm font-normal pb-2">
+            click on a player listed to remove them
+          </p>
+          <Link
+            target="_blank"
+            to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
+            className="flex justify-center items-center hover:cursor-pointer"
+          >
+            <Button>To op.gg</Button>
+          </Link>
+        </div>
       );
     }
   };
@@ -341,7 +346,7 @@ function TeamCard({
             <div className="multi flex flex-col justify-center items-center px-2">
               <h3 className="text-xl text-center font-semibold break-all">
                 {" "}
-                Multi with:{" "}
+                Multi with:
                 <span className="font-normal text-orange flex flex-wrap gap-2 p-2 justify-center items-center">
                   {multiPlayers.map((player, index) => {
                     return (
