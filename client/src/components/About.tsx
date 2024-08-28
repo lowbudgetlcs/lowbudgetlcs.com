@@ -29,15 +29,16 @@ const executive = {
 
 function About() {
   return (
-    <div className="aboutbg-white text-black dark:bg-black dark:text-white">
+    <div className="aboutbg-white text-black dark:bg-black dark:text-white font-serif">
       <div className="title h-64 w-full flex items-center justify-center">
-        <h1 className="text-6xl">About</h1>
+        <h1 className="text-6xl">Leagues</h1>
       </div>
       <div className="flex flex-col items-center pb-8">
-        <p className="summary text-lg md:text-xl px-16 py-8 text-center">
+        <p className="summary text-lg md:text-xl px-16 w-full md:w-2/3 pt-8 text-center">
           The Low Budget LCS has four separate leagues defined by both max rank
-          and a points system.
+          and a points system. We have 2 seasons a year starting in the spring and the fall. Currently we are in season 13!
         </p>
+        <p className="text-white/60 text-lg pb-8">Click on a league title to look at this season's roster!</p>
         <div className="cardContainer flex flex-col gap-8 z-10 w-3/5 overflow-hidden">
           <AboutCard
             title={economy.title}

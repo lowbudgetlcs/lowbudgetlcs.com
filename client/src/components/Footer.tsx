@@ -12,7 +12,7 @@ function Footer() {
           </li>
           <li className="">
             <NavLink className="hover:text-orange transition" to="/about">
-              <div className="">About</div>
+              <div className="">Leagues</div>
             </NavLink>
           </li>
           <li className="">
