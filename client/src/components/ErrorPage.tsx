@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
 
-function Error() {
+function ErrorPage() {
     return(
         <div className="h-[87vh] flex flex-col items-center justify-center bg-black text-white">
             <h1 className="text-3xl m-4 font-bold">Whoops! You're not supposed to be here!</h1>
@@ -12,4 +12,4 @@ function Error() {
     )
 }
 
-export default Error;
+export default ErrorPage;
