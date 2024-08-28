@@ -1,6 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { PlayerProps, TeamProps } from "./Roster";
+import { useState } from "react";
 interface LeaguePlayersProps {
   league: string;
   teams: TeamProps[];
@@ -11,9 +12,13 @@ interface LeaguePlayersProps {
 function LeaguePlayers() {
   const { league, teams, players, group }: LeaguePlayersProps =
     useLocation().state;
+  const [openCardId, setOpenCardId] = useState<number | null>(null);
+
+  const handleCardToggle = (teamId: number) => {
+    setOpenCardId(openCardId === teamId ? null : teamId);
+  };
 
   let leagueId: number;
-
   switch (league) {
     case "Economy":
       leagueId = 1;
@@ -69,6 +74,8 @@ function LeaguePlayers() {
                   divisionId={team.divisionId}
                   logo={team.logo}
                   playerList={team.playerList}
+                  isOpen={openCardId === team.id}
+                  onToggle={() => handleCardToggle(team.id)}
                 />
               );
             }

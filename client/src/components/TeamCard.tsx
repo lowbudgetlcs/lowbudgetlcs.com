@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "./Button";
 
@@ -18,30 +18,52 @@ interface TeamProps {
   logo: string | null;
   playerList: string[];
   divisionId: number;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
-  const [playerListVisible, setPlayerListVisible] = useState(false);
+function TeamCard({
+  teamName,
+  logo,
+  playerList,
+  divisionId,
+  isOpen,
+  onToggle,
+}: TeamProps) {
   const [isMultiSelected, setIsMultiSelected] = useState(false);
   const multiArray: Array<string> = [];
   // const multiPlayersArray: Array<string> = [];
   const [multi, setMulti] = useState(multiArray);
   // const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        cardRef.current &&
+        !cardRef.current.contains(event.target as Node) &&
+        isOpen
+      ) {
+        onToggle();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, onToggle]);
 
   const togglePlayerList = () => {
-    if (!playerListVisible) {
-      setPlayerListVisible(true);
-    } else if (playerListVisible && isMultiSelected) {
-      setPlayerListVisible(!playerListVisible);
+    onToggle();
+    if (isOpen && isMultiSelected) {
       setMulti([]);
       setTimeout(() => {
-        setIsMultiSelected(!isMultiSelected);
+        setIsMultiSelected(false);
       }, 300);
-    } else {
-      setPlayerListVisible(!playerListVisible);
-      setMulti([]);
     }
   };
+
   const toggleIsMultiSelected = () => {
     setIsMultiSelected(!isMultiSelected);
   };
@@ -74,26 +96,29 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
 
   const showMultiBtn = () => {
     if (multi.length <= 0) {
-      return <p className="text-lg font-normal text-orange">Select players to add to link</p>
+      return (
+        <p className="text-lg font-normal text-orange">
+          Select players to add to link
+        </p>
+      );
     } else {
       return (
         <Link
           target="_blank"
-          to={`https://www.op.gg/multisearch/na?summoners=${multi.join(
-            ","
-          )}`}
+          to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
           className="font-bold"
         >
           <Button>To op.gg</Button>
         </Link>
       );
     }
-  }
+  };
   if (!isMultiSelected) {
     return (
       <div
+      ref={cardRef}
         className={`teamCard relative transition duration-300 ${
-          playerListVisible ? "rounded-t-lg" : "rounded-lg"
+          isOpen ? "rounded-t-lg" : "rounded-lg"
         } bg-gray/80 dark:bg-gray/40`}
       >
         <div className="dropBtn absolute bottom-0 right-0 self-end">
@@ -103,12 +128,12 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
           >
             <div
               className={`absolute ${
-                playerListVisible ? "-rotate-45" : "rotate-45"
+                isOpen ? "-rotate-45" : "rotate-45"
               } top-4 -left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
             <div
               className={`absolute ${
-                playerListVisible ? "rotate-45" : "-rotate-45"
+                isOpen ? "rotate-45" : "-rotate-45"
               } top-4 left-4 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
           </div>
@@ -130,7 +155,7 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
         <div className="relative">
           <div
             className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              playerListVisible
+              isOpen
                 ? "max-h-[500px] opacity-100"
                 : "max-h-0 opacity-0"
             }`}
@@ -170,8 +195,9 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
   } else {
     return (
       <div
+      ref={cardRef}
         className={`teamCard relative transition duration-300 ${
-          playerListVisible ? "rounded-t-lg" : "rounded-lg"
+          isOpen ? "rounded-t-lg" : "rounded-lg"
         } bg-gray/80 dark:bg-gray/40`}
       >
         <div className="dropBtn absolute bottom-0 right-0 self-end">
@@ -181,12 +207,12 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
           >
             <div
               className={`absolute ${
-                playerListVisible ? "-rotate-45" : "rotate-45"
+                isOpen ? "-rotate-45" : "rotate-45"
               } top-4 -left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
             <div
               className={`absolute ${
-                playerListVisible ? "rotate-45" : "-rotate-45"
+                isOpen ? "rotate-45" : "-rotate-45"
               } top-4 left-4 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
           </div>
@@ -208,7 +234,7 @@ function TeamCard({ teamName, logo, playerList, divisionId }: TeamProps) {
         <div className="relative">
           <div
             className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              playerListVisible
+              isOpen
                 ? "max-h-[500px] opacity-100"
                 : "max-h-0 opacity-0"
             }`}
