@@ -32,9 +32,9 @@ function TeamCard({
 }: TeamProps) {
   const [isMultiSelected, setIsMultiSelected] = useState(false);
   const multiArray: Array<string> = [];
-  // const multiPlayersArray: Array<string> = [];
+  const multiPlayersArray: Array<string> = [];
   const [multi, setMulti] = useState(multiArray);
-  // const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
+  const [multiPlayers, setMultiPlayers] = useState(multiPlayersArray);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,6 +45,10 @@ function TeamCard({
         isOpen
       ) {
         onToggle();
+        setTimeout(() => {
+          setIsMultiSelected(false)
+        }, 400)
+
       }
     };
 
@@ -58,18 +62,34 @@ function TeamCard({
     onToggle();
     if (isOpen && isMultiSelected) {
       setMulti([]);
+      setMultiPlayers([]);
       setTimeout(() => {
         setIsMultiSelected(false);
       }, 300);
+    } else {
+      setMulti([]);
+      setMultiPlayers([]);
     }
   };
 
   const toggleIsMultiSelected = () => {
+    setMulti([]);
+    setMultiPlayers([]);
     setIsMultiSelected(!isMultiSelected);
   };
 
   const addToMulti = (newValue: string) => {
     setMulti((prevArray) => {
+      if (!prevArray) {
+        return [newValue];
+      } else {
+        return [...prevArray, newValue];
+      }
+    });
+  };
+
+  const addToDisplayMulti = (newValue: string) => {
+    setMultiPlayers((prevArray) => {
       if (!prevArray) {
         return [newValue];
       } else {
@@ -171,12 +191,12 @@ function TeamCard({
           <div
             className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
-                ? "max-h-[500px] opacity-100 visible"
+                ? "max-h-[1000px] opacity-100 visible"
                 : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
-              <h3 className="text-2xl font-bold text-center">Players</h3>
+              <h3 className="text-2xl font-bold text-center">Players: Single Select</h3>
               <div className="absolute -right-6 top-0">
                 <div
                   onClick={togglePlayerList}
@@ -261,12 +281,12 @@ function TeamCard({
           <div
             className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
-                ? "max-h-[500px] opacity-100"
+                ? "max-h-[1000px] opacity-100"
                 : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
-              <h3 className="text-2xl font-bold text-center">Players</h3>
+              <h3 className="text-2xl font-bold text-center">Players: Multi Select</h3>
               <div
                 onClick={toggleIsMultiSelected}
                 className="buttonContainer flex justify-center items-center hover:cursor-pointer"
@@ -284,11 +304,13 @@ function TeamCard({
                       let player = encodeURIComponent(
                         `${summonerName[0]}#${summonerName[1]}`
                       );
+                      const unChangedPlayer = `${summonerName[0]} #${summonerName[1]}`;
                       // Cut all whitespace from string
                       player = player.replace(/\s+/g, "");
                       console.log(player);
                       if (multi.length < 5) {
                         addToMulti(player);
+                        addToDisplayMulti(unChangedPlayer);
                       }
                     }}
                     key={player}
@@ -305,7 +327,12 @@ function TeamCard({
             <div className="multi flex flex-col justify-center items-center p-4">
               <h3 className="text-xl text-center font-semibold break-all">
                 {" "}
-                Multi
+                Multi with:{" "}
+                <span className="font-normal text-orange flex flex-wrap gap-2 py-4 justify-center items-center">
+                  {multiPlayers.map((player) => {
+                    return <p >{`${player}, `}</p>;
+                  })}
+                </span>
                 {showMultiBtn()}
               </h3>
             </div>
