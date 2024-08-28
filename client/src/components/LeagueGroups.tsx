@@ -12,10 +12,13 @@ function LeagueGroups() {
     useLocation().state;
   const groupLetters = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const displayGroups = () => {
+    if (!divisions || divisions.length === 0) {
+      return <div>No divisions available</div>;
+    }
+
     const currentDivision = divisions.find(division => division.divisionName === league);
-    
     if (!currentDivision) {
-      return <div>No Groups :(</div>;
+      return <div>No Groups for this league</div>;
     }
 
     return Array.from({ length: currentDivision.groups }, (_, i) => {
@@ -27,6 +30,8 @@ function LeagueGroups() {
             league: league,
             teams: teams,
             players: players,
+            group: groupLetter,
+            divisions: divisions
           }}
           to={groupLetter.toLowerCase()}
           className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
