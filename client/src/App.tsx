@@ -13,6 +13,7 @@ import { LeagueDataProvider } from "./components/leagueDataContext";
 
 function App() {
   return (
+    <div className="font-serif">
     <BrowserRouter>
       <ScrollToTop />
       <Twitch/>
@@ -29,6 +30,7 @@ function App() {
       </LeagueDataProvider>
       <Footer />
     </BrowserRouter>
+    </div>
   );
 }
 
