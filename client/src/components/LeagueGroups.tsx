@@ -73,7 +73,7 @@ function LeagueGroups() {
             divisions: divisions,
           }}
           to={groupLetter.toLowerCase()}
-          className={`relative card cursor-pointer ${gradient} flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+          className={`relative card cursor-pointer ${gradient} flex items-center justify-center w-full min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
         >
           <h2 className="text-3xl text-white text-center font-semibold z-10">
             Group {groupLetter}
@@ -98,10 +98,8 @@ function LeagueGroups() {
         <p className="summary text-lg md:text-xl px-16 py-8 text-center">
           Click below to navigate groups, and teams
         </p>
-        <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8">
-          <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
-            {displayGroups()}
-          </div>
+        <div className="cardContainer grid grid-cols-1 md:grid-cols-2 md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
+          {displayGroups()}
         </div>
       </div>
     </div>
