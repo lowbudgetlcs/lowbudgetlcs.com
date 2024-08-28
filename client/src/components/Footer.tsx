@@ -12,7 +12,7 @@ function Footer() {
           </li>
           <li className="">
             <NavLink className="hover:text-orange transition" to="/about">
-              <div className="">About</div>
+              <div className="">Leagues</div>
             </NavLink>
           </li>
           <li className="">
@@ -24,12 +24,12 @@ function Footer() {
               <div className="">Rules</div>
             </NavLink>
           </li>
-          {/* <li className="">
-            <NavLink className="hover:text-orange transition" to="/stats">
+          <li className="">
+            <NavLink className="hover:text-orange transition" to="/rosters">
               <div className="">Rosters</div>
             </NavLink>
           </li>
-          <li className="">
+          {/* <li className="">
             <NavLink className="hover:text-orange transition" to="/stats">
               <div className="">Stats</div>
             </NavLink>
@@ -51,6 +51,11 @@ function Footer() {
         <li className="w-8 h-auto">
           <NavLink target="_blank" to="https://www.twitch.tv/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
+          </NavLink>
+        </li>
+        <li className="w-8 h-auto">
+          <NavLink target="_blank" to="https://www.youtube.com/@lowbudgetlcs9513">
+            <i className="hover:text-orange transition duration-300 bi bi-youtube text-4xl"></i>
           </NavLink>
         </li>
       </ul>
