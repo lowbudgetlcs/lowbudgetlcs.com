@@ -1,4 +1,5 @@
 import { useInView } from "react-intersection-observer";
+import { NavLink } from "react-router-dom";
 
 interface AboutCardProps {
   title: string;
@@ -23,10 +24,10 @@ function AboutCard({ title, rank, average, color }: AboutCardProps) {
       <div
         className={`relative w-full h-24 md:w-56 md:h-full flex items-center justify-center text-center`}
       >
-        <h2 className="text-3xl text-white text-center font-semibold">
+        <NavLink to={`/rosters/${title.toLowerCase()}`} state={{league: title}} className="text-3xl text-white text-center font-semibold cursor-pointer hover:underline underline-offset-2">
           {title}
 
-        </h2>
+        </NavLink>
         <div className={`absolute right-0 bottom-0 h-2 w-full md:h-full md:w-2 ${color}`}></div>
       </div>
       <div className="min-w-48 h-24 flex items-center max-w-lg p-2 md:p-4">
