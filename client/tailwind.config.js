@@ -39,12 +39,16 @@ export default {
       'slide-in-800': 'slide-in 0.8s 800ms forwards',
       'slide-in-900': 'slide-in 0.8s 900ms forwards',
       'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
-
+      'spin': 'spin 1s linear infinite'
     },
     keyframes: {
       'slide-in': {
         '0%': { opacity: 0, transform: 'translateX(-40px)' },
         '100%': { opacity: 1, transform: 'translateX(0)' },
+      },
+      spin: {
+        '0%': { transform: 'rotate(0deg)' },
+        '100%': { transform: 'rotate(360deg)' },
       },
     },
     fontFamily: {

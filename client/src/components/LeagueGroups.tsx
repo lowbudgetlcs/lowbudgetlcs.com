@@ -1,22 +1,30 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { DivisionProps, PlayerProps, TeamProps } from "./Roster";
+import ErrorPage from "./ErrorPage";
 interface LeagueGroupsProps {
   league: string;
   teams: TeamProps[];
   players: PlayerProps[];
   divisions: DivisionProps[];
+  error: boolean;
 }
 
 function LeagueGroups() {
-  const { league, teams, players, divisions }: LeagueGroupsProps =
+  const { league, teams, players, divisions, error }: LeagueGroupsProps =
     useLocation().state;
+    console.log(error)
+    if (error) {
+      return <ErrorPage/>
+    }
   const groupLetters = ["A", "B", "C", "D", "E", "F", "G", "H"];
   const displayGroups = () => {
     if (!divisions || divisions.length === 0) {
-      return <div>No divisions available</div>;
+      return <div className="animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>;
     }
 
-    const currentDivision = divisions.find(division => division.divisionName === league);
+    const currentDivision = divisions.find(
+      (division) => division.divisionName === league
+    );
     if (!currentDivision) {
       return <div>No Groups for this league</div>;
     }
@@ -31,7 +39,7 @@ function LeagueGroups() {
             teams: teams,
             players: players,
             group: groupLetter,
-            divisions: divisions
+            divisions: divisions,
           }}
           to={groupLetter.toLowerCase()}
           className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
