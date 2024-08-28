@@ -63,7 +63,7 @@ export const schedules = pgTable("schedules", {
 
 export const divisions = pgTable("divisions", {
 	id: serial("id").primaryKey().notNull(),
-	name: varchar("name", { length: 20 }).notNull(),
+	divisionName: varchar("name", { length: 20 }).notNull(),
 	description: text("description"),
 	providerId: integer("provider_id").notNull(),
 	tournamentId: integer("tournament_id").notNull(),
