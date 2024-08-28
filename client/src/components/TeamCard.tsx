@@ -98,6 +98,15 @@ function TeamCard({
     });
   };
 
+  const removeFromMulti = (index: number) => {
+    setMulti((prevArray) => {
+      return prevArray.filter((_, i) => i !== index)
+    })
+    setMultiPlayers((prevArray) => {
+      return prevArray.filter((_, i) => i !== index)
+    })
+  }
+
   let gradient;
   switch (divisionId) {
     case 1:
@@ -226,7 +235,7 @@ function TeamCard({
                     target="_blank"
                     to={`https://www.op.gg/summoners/na/${summonerName[0]}-${summonerName[1]}`}
                     key={player}
-                    className="text-center hover:underline"
+                    className="text-center hover:underline underline-offset-4"
                   >
                     {summonerName[0]}{" "}
                     <span className="text-white/40">
@@ -314,7 +323,7 @@ function TeamCard({
                       }
                     }}
                     key={player}
-                    className="text-center hover:underline cursor-pointer"
+                    className="text-center hover:underline underline-offset-4 cursor-pointer"
                   >
                     {summonerName[0]}{" "}
                     <span className="text-white/40">
@@ -329,8 +338,8 @@ function TeamCard({
                 {" "}
                 Multi with:{" "}
                 <span className="font-normal text-orange flex flex-wrap gap-2 py-4 justify-center items-center">
-                  {multiPlayers.map((player) => {
-                    return <p >{`${player}, `}</p>;
+                  {multiPlayers.map((player, index) => {
+                    return <p key={index} className="cursor-pointer hover:underline underline-offset-4" onClick={() => removeFromMulti(index)}>{`${player}, `}</p>;
                   })}
                 </span>
                 {showMultiBtn()}
