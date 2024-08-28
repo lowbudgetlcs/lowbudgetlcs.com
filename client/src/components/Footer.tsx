@@ -53,6 +53,11 @@ function Footer() {
             <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
           </NavLink>
         </li>
+        <li className="w-8 h-auto">
+          <NavLink target="_blank" to="https://www.youtube.com/@lowbudgetlcs9513">
+            <i className="hover:text-orange transition duration-300 bi bi-youtube text-4xl"></i>
+          </NavLink>
+        </li>
       </ul>
       <div className="riotDisclaimer text-xs md:text-sm md:text-center p-10 md:p-6 text-white/70">
         <p className="mb-2">
