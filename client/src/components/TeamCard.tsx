@@ -94,6 +94,23 @@ function TeamCard({
       break;
   }
 
+  const displayLogo = () => {
+    if (logo) {
+      return (
+        <img
+          src={logo}
+          className="logo flex-shrink-0 w-[150px] text-center text-3xl h-[150px]"
+        />
+      );
+    } else {
+      return (
+        <div className="logo flex-shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
+          No logo 😢
+        </div>
+      );
+    }
+  };
+
   const showMultiBtn = () => {
     if (multi.length <= 0) {
       return (
@@ -140,9 +157,7 @@ function TeamCard({
         </div>
         <div className="flex flex-col md:flex-row py-4 md:py-0 md:pl-4 gap-4 items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden">
           <div className="logoContainer flex flex-col md:flex-row gap-4 w-full md:w-auto md:h-full items-center">
-            <div className="logo flex-shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
-              {logo || "No logo :)"}
-            </div>
+            {displayLogo()}
             <div className={`w-full h-3 md:w-3 md:h-full ${gradient}`}></div>
           </div>
           <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
@@ -155,7 +170,9 @@ function TeamCard({
         <div className="relative">
           <div
             className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              isOpen ? "max-h-[500px] opacity-100 visible" : "max-h-0 opacity-0 invisible"
+              isOpen
+                ? "max-h-[500px] opacity-100 visible"
+                : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
@@ -230,9 +247,7 @@ function TeamCard({
         </div>
         <div className="flex flex-col md:flex-row py-4 md:py-0 md:pl-4 gap-4 items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden">
           <div className="logoContainer flex flex-col md:flex-row gap-4 w-full md:w-auto md:h-full items-center">
-            <div className="logo flex-shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
-              {logo || "No logo :)"}
-            </div>
+            {displayLogo()}
             <div className={`w-full h-3 md:w-3 md:h-full ${gradient}`}></div>
           </div>
           <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
@@ -245,7 +260,9 @@ function TeamCard({
         <div className="relative">
           <div
             className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 invisible"
+              isOpen
+                ? "max-h-[500px] opacity-100"
+                : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
