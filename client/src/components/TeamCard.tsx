@@ -154,19 +154,19 @@ function TeamCard({
 
         <div className="relative">
           <div
-            className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+            className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
                 ? "max-h-[500px] opacity-100"
                 : "max-h-0 opacity-0"
             }`}
           >
-            <div className="titleText flex flex-col justify-center gap-4">
+            <div className="titleText flex flex-col items-center justify-center gap-4">
               <h3 className="text-2xl font-bold text-center">Players</h3>
               <div
                 onClick={toggleIsMultiSelected}
                 className="buttonContainer flex justify-center items-center hover:cursor-pointer"
               >
-                <Button>Multi.gg Select</Button>
+                <Button>Multi op.gg Select</Button>
               </div>
             </div>
 
@@ -233,13 +233,16 @@ function TeamCard({
 
         <div className="relative">
           <div
-            className={`teamMembers absolute left-0 right-0 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+            className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
                 ? "max-h-[500px] opacity-100"
                 : "max-h-0 opacity-0"
             }`}
           >
-            <h3 className="text-2xl font-bold text-center">Players</h3>
+            <div className="titleText relative flex flex-col items-center justify-center gap-4">
+              <h3 className="text-2xl font-bold text-center">Players</h3>
+              <div onClick={toggleIsMultiSelected} className="absolute right-4 text-lg font-bold cursor-pointer"><Button>Back</Button></div>
+            </div>
             <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
               {playerList.map((player) => {
                 const summonerName = player.split("#");
