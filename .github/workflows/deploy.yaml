@@ -77,6 +77,11 @@ jobs:
             cd docker/lblcs/${{ env.APP }}
             echo CLIENT_ID="${{ secrets.CLIENT_ID }}" > .env
             echo CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" >> .env
+            echo VITE_PLAYERS_URL="${{ secrets.VITE_PLAYERS_URL }}" >> .env
+            echo VITE_TEAMS_URL="${{ secrets.VITE_TEAMS_URL }}" >> .env
+            echo VITE_DIVISIONS_URL="${{ secrets.VITE_DIVISIONS_URL }}" >> .env
+            echo PRODUCTION="${{ env.PRODUCTION }}" >> .env
+            echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
             docker-compose down
             docker-compose pull
             docker-compose up -d
