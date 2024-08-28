@@ -93,29 +93,31 @@ function Navbar() {
   }
 
   return (
-    <header className="fixed top-0 z-[20] mx-auto flex w-full items-center justify-between px-4 text-lg h-20">
-      <div
-        onClick={toggleNavbar}
-        className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer"
-      >
+    <header className="fixed top-0 z-[20] mx-auto w-full h-20">
+      <div className="flex items-center justify-between px-4 text-lg h-full">
         <div
-          className={`absolute ${
-            isOpen ? "top-2 rotate-45" : "top-0"
-          } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-        ></div>
-        <div
-          className={`absolute ${
-            isOpen ? "opacity-0" : "opacity-100"
-          } transition-all duration-300  top-2 px-3 py-0.5 rounded-xl bg-white`}
-        ></div>
-        <div
-          className={`absolute ${
-            isOpen ? "top-2 -rotate-45" : "top-4"
-          } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-        ></div>
+          onClick={toggleNavbar}
+          className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer"
+        >
+          <div
+            className={`absolute ${
+              isOpen ? "top-2 rotate-45" : "top-0"
+            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
+          ></div>
+          <div
+            className={`absolute ${
+              isOpen ? "opacity-0" : "opacity-100"
+            } transition-all duration-300  top-2 px-3 py-0.5 rounded-xl bg-white`}
+          ></div>
+          <div
+            className={`absolute ${
+              isOpen ? "top-2 -rotate-45" : "top-4"
+            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
+          ></div>
+        </div>
+        <Logo />
       </div>
       <FullNav isOpen={isOpen} setIsOpen={setIsOpen} />
-      <Logo />
     </header>
   );
 }
