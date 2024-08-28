@@ -116,7 +116,7 @@ function TeamCard({
   if (!isMultiSelected) {
     return (
       <div
-      ref={cardRef}
+        ref={cardRef}
         className={`teamCard relative transition duration-300 ${
           isOpen ? "rounded-t-lg" : "rounded-lg"
         } bg-gray/80 dark:bg-gray/40`}
@@ -155,18 +155,29 @@ function TeamCard({
         <div className="relative">
           <div
             className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              isOpen
-                ? "max-h-[500px] opacity-100"
-                : "max-h-0 opacity-0"
+              isOpen ? "max-h-[500px] opacity-100 visible" : "max-h-0 opacity-0 invisible"
             }`}
           >
-            <div className="titleText flex flex-col items-center justify-center gap-4">
+            <div className="titleText relative flex flex-col items-center justify-center gap-4">
               <h3 className="text-2xl font-bold text-center">Players</h3>
+              <div className="absolute -right-6 top-0">
+                <div
+                  onClick={togglePlayerList}
+                  className="burger cursor-pointer relative h-12 w-12 gap-1 hover:cursor-pointer self-baseline"
+                >
+                  <div
+                    className={`absolute top-4 rotate-45 -left-0 transition-all duration-500 px-4 py-0.5 rounded-xl bg-white`}
+                  ></div>
+                  <div
+                    className={`absolute top-4 -rotate-45 left-0 transition-all duration-500 px-4 py-0.5 rounded-xl bg-white`}
+                  ></div>
+                </div>
+              </div>
               <div
                 onClick={toggleIsMultiSelected}
                 className="buttonContainer flex justify-center items-center hover:cursor-pointer"
               >
-                <Button>Multi op.gg Select</Button>
+                <Button>To Multi op.gg Select</Button>
               </div>
             </div>
 
@@ -195,7 +206,7 @@ function TeamCard({
   } else {
     return (
       <div
-      ref={cardRef}
+        ref={cardRef}
         className={`teamCard relative transition duration-300 ${
           isOpen ? "rounded-t-lg" : "rounded-lg"
         } bg-gray/80 dark:bg-gray/40`}
@@ -234,14 +245,17 @@ function TeamCard({
         <div className="relative">
           <div
             className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-lg rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              isOpen
-                ? "max-h-[500px] opacity-100"
-                : "max-h-0 opacity-0"
+              isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0 invisible"
             }`}
           >
             <div className="titleText relative flex flex-col items-center justify-center gap-4">
               <h3 className="text-2xl font-bold text-center">Players</h3>
-              <div onClick={toggleIsMultiSelected} className="absolute right-4 text-lg font-bold cursor-pointer"><Button>Back</Button></div>
+              <div
+                onClick={toggleIsMultiSelected}
+                className="buttonContainer flex justify-center items-center hover:cursor-pointer"
+              >
+                <Button>Back to Single Select</Button>
+              </div>
             </div>
             <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
               {playerList.map((player) => {
