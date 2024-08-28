@@ -15,8 +15,8 @@ if (!clientID || !clientSecret) {
 }
 //Rate limiting
 const apiLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 500, // Limit each IP to 500 requests per windowMs
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 300, // Limit each IP to 300 requests per windowMs
 });
 app.use("/api/", apiLimiter);
 
