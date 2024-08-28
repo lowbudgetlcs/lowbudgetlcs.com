@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink} from "react-router-dom";
+import ErrorPage from "./ErrorPage";
 
 // const playesrUrl = "https://backend.lowbudgetlcs.com/api/getPlayers"
 // const teamsUrl = "https://backend.lowbudgetlcs.com/api/getTeams"
-const playesrUrl = "http://localhost:8080/api/getPlayers";
+const playersUrl = "http://localhost:8080/api/getPlayers";
 const teamsUrl = "http://localhost:8080/api/getTeams";
 const divisionsUrl = "http://localhost:8080/api/getDivisions";
 export interface PlayerProps {
@@ -33,61 +34,44 @@ export interface DivisionProps {
 }
 
 function Roster() {
+  const [error, setError] = useState(false);
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   const [teams, setTeams] = useState<TeamProps[]>([]);
   const [divisions, setDivisions] = useState<DivisionProps[]>([]);
   useEffect(() => {
-    const getAllPlayers = async () => {
-      try {
-        const response = await fetch(playesrUrl, {
-          method: "GET",
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setPlayers(data as PlayerProps[]);
-      } catch (err) {
-        console.error(err);
-      }
+    const fetchAllData = async () => {
+       try {
+          const [playersResponse, teamsResponse, divisionsResponse] = await Promise.all([
+             fetch(playersUrl),
+             fetch(teamsUrl),
+             fetch(divisionsUrl),
+          ]);
+ 
+          if (!playersResponse.ok || !teamsResponse.ok || !divisionsResponse.ok) {
+             throw new Error('Error fetching data');
+          }
+ 
+          const [playersData, teamsData, divisionsData] = await Promise.all([
+             playersResponse.json(),
+             teamsResponse.json(),
+             divisionsResponse.json(),
+          ]);
+ 
+          setPlayers(playersData);
+          setTeams(teamsData);
+          setDivisions(divisionsData);
+       } catch (err) {
+          console.error(err);
+          setError(true);
+       }
     };
-    getAllPlayers();
-    const getAllTeams = async () => {
-      try {
-        const response = await fetch(teamsUrl, {
-          method: "GET",
-        });
+ 
+    fetchAllData();
+ }, []);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setTeams(data as TeamProps[]);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    const getAllDivisions = async () => {
-      try {
-        const response = await fetch(divisionsUrl, {
-          method: "GET",
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setDivisions(data as DivisionProps[]);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getAllDivisions();
-    getAllPlayers();
-    getAllTeams();
-  }, []);
-
+  if (error) {
+    return <ErrorPage />;
+ }
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <div className="title h-64 w-full flex items-center justify-center">
