@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import ErrorPage from "./ErrorPage";
-import { useFetchData } from "../leagueData";
+import { useLeagueData } from "./leagueDataContext";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -28,7 +28,8 @@ export interface DivisionProps {
 }
 
 function Roster() {
-  const { players, teams, divisions, error, loading } = useFetchData();
+  const { players, teams, divisions, error, loading } = useLeagueData();
+
   if (loading)
     return (
       <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
@@ -59,6 +60,7 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
+                loading: loading
               }}
               to={"economy"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
@@ -74,6 +76,7 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
+                loading: loading
               }}
               to={"commercial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-platinum-light to-platinum-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
@@ -91,6 +94,7 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
+                loading: loading
               }}
               to={"financial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-emerald-light to-emerald-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
@@ -106,6 +110,7 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
+                loading: loading
               }}
               to={"executive"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-challenger-blue to-challenger-gold transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}

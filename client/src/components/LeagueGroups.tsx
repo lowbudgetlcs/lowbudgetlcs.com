@@ -1,18 +1,12 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { DivisionProps, PlayerProps, TeamProps } from "./Roster";
 import ErrorPage from "./ErrorPage";
-import { useFetchData } from "../leagueData";
-interface LeagueGroupsProps {
-  league: string;
-  teams: TeamProps[];
-  players: PlayerProps[];
-  divisions: DivisionProps[];
-  error: boolean;
-}
+import { useLeagueData } from "./leagueDataContext";
+
+type LeagueGroupsProps = { league: string };
 
 function LeagueGroups() {
   const { league }: LeagueGroupsProps = useLocation().state;
-  const { players, teams, divisions, error, loading } = useFetchData();
+  const { players, teams, divisions, error, loading } = useLeagueData();
 
   if (loading)
     return (

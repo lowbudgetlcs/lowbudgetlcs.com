@@ -1,35 +1,29 @@
 import { Link, useLocation } from "react-router-dom";
 import TeamCard from "./TeamCard";
-import { DivisionProps, PlayerProps, TeamProps } from "./Roster";
 import { useState } from "react";
-import { useFetchData } from "../leagueData";
 import ErrorPage from "./ErrorPage";
-interface LeaguePlayersProps {
-  league: string;
-  teams: TeamProps[];
-  players: PlayerProps[];
-  group: string;
-  divisions: DivisionProps[];
-}
+import { useLeagueData } from "./leagueDataContext";
+
+type LeaguePlayersProps = { league: string; group: string };
 
 function LeaguePlayers() {
   const { league, group }: LeaguePlayersProps = useLocation().state;
-  const { players, teams, error, loading } = useFetchData();
+  const { players, teams, error, loading } = useLeagueData();
   const [openCardId, setOpenCardId] = useState<number | null>(null);
 
   if (loading)
     return (
       <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
         <div className="title h-64 w-full flex items-center justify-center">
-          <h1 className="text-6xl">{league}: Group {group}</h1>
+          <h1 className="text-6xl">
+            {league}: Group {group}
+          </h1>
         </div>
 
         <div className="absolute m-auto top-0 left-0 right-0 bottom-0 animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>
       </div>
     );
   if (error) return <ErrorPage />;
-
-
 
   const handleCardToggle = (teamId: number) => {
     setOpenCardId(openCardId === teamId ? null : teamId);
