@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { NavLink} from "react-router-dom";
 
-const playesrUrl = "https://backend.lowbudgetlcs.com/api/getPlayers"
-const teamsUrl = "https://backend.lowbudgetlcs.com/api/getTeams"
-// const playesrUrl = "http://localhost:8080/api/getPlayers";
-// const teamsUrl = "http://localhost:8080/api/getTeams";
+// const playesrUrl = "https://backend.lowbudgetlcs.com/api/getPlayers"
+// const teamsUrl = "https://backend.lowbudgetlcs.com/api/getTeams"
+const playesrUrl = "http://localhost:8080/api/getPlayers";
+const teamsUrl = "http://localhost:8080/api/getTeams";
+const divisionsUrl = "http://localhost:8080/api/getDivisions";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -22,10 +23,19 @@ export interface TeamProps {
   playerList: string[];
 }
 
+export interface DivisionProps {
+  id: number;
+  divisionName: string;
+  description: string | null;
+  providerId: number;
+  tournamentId: number;
+  groups: number;
+}
+
 function Roster() {
   const [players, setPlayers] = useState<PlayerProps[]>([]);
   const [teams, setTeams] = useState<TeamProps[]>([]);
-
+  const [groups, setGroups] = useState<DivisionProps[]>([]);
   useEffect(() => {
     const getAllPlayers = async () => {
       try {
@@ -58,6 +68,22 @@ function Roster() {
         console.error(err);
       }
     };
+    const getAllDivisions = async () => {
+      try {
+        const response = await fetch(divisionsUrl, {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setGroups(data as DivisionProps[]);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getAllDivisions();
     getAllPlayers();
     getAllTeams();
   }, []);
@@ -74,7 +100,7 @@ function Roster() {
         <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8">
           <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
             <NavLink
-              state={{ league: "Economy", teams: teams, players: players }}
+              state={{ league: "Economy", teams: teams, players: players, groups: groups }}
               to={"economy"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -83,7 +109,7 @@ function Roster() {
               </h2>
             </NavLink>
             <NavLink
-              state={{ league: "Commercial", teams: teams, players: players }}
+              state={{ league: "Commercial", teams: teams, players: players, groups: groups }}
               to={"commercial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-platinum-light to-platinum-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -94,7 +120,7 @@ function Roster() {
           </div>
           <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
             <NavLink
-              state={{ league: "Financial", teams: teams, players: players }}
+              state={{ league: "Financial", teams: teams, players: players, groups: groups }}
               to={"financial"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-emerald-light to-emerald-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -103,7 +129,7 @@ function Roster() {
               </h2>
             </NavLink>
             <NavLink
-              state={{ league: "Executive", teams: teams, players: players }}
+              state={{ league: "Executive", teams: teams, players: players, groups: groups }}
               to={"executive"}
               className={`card cursor-pointer hover:bg-gradient-to-br from-challenger-blue to-challenger-gold transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
             >
@@ -113,11 +139,6 @@ function Roster() {
             </NavLink>
           </div>
         </div>
-        {/* <div className="teamContainer flex flex-col gap-8 md:w-3/5 lg:w-3/6 overflow-hidden justify-center">
-        {teams.map((team) => {
-          return <TeamCard key={team.id} teamName={team.teamName} groupId={team.groupId} divisionId={team.divisionId} logo={team.logo} playerList={team.playerList}/>
-        }) }
-      </div> */}
       </div>
     </div>
   );
