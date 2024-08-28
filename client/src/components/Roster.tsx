@@ -40,7 +40,7 @@ function Roster() {
         <div className="absolute m-auto top-0 left-0 right-0 bottom-0 animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>
       </div>
     );
-  if (error) return <ErrorPage/>;
+  if (error) return <ErrorPage />;
 
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
@@ -60,12 +60,12 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
-                loading: loading
+                loading: loading,
               }}
               to={"/rosters/economy"}
-              className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
+              className={`relative card cursor-pointer  bg-gradient-to-br from-gold-light to-gold-dark flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
-              <h2 className="text-3xl text-white text-center font-semibold">
+              <h2 className="z-10 text-3xl text-white text-center font-semibold">
                 Economy
               </h2>
             </NavLink>
@@ -76,12 +76,12 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
-                loading: loading
+                loading: loading,
               }}
               to={"/rosters/commercial"}
-              className={`card cursor-pointer hover:bg-gradient-to-br from-platinum-light to-platinum-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
+              className={`relative card cursor-pointer bg-gradient-to-br from-platinum-light to-platinum-dark flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
-              <h2 className="text-3xl text-white text-center font-semibold">
+              <h2 className="text-3xl text-white text-center font-semibold z-10">
                 Commercial
               </h2>
             </NavLink>
@@ -94,12 +94,12 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
-                loading: loading
+                loading: loading,
               }}
               to={"/rosters/financial"}
-              className={`card cursor-pointer hover:bg-gradient-to-br from-emerald-light to-emerald-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
+              className={`relative card cursor-pointer bg-gradient-to-br from-emerald-light to-emerald-dark flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
-              <h2 className="text-3xl text-white text-center font-semibold">
+              <h2 className="text-3xl text-white text-center font-semibold z-10">
                 Financial
               </h2>
             </NavLink>
@@ -110,12 +110,12 @@ function Roster() {
                 players: players,
                 divisions: divisions,
                 error: error,
-                loading: loading
+                loading: loading,
               }}
               to={"/rosters/executive"}
-              className={`card cursor-pointer hover:bg-gradient-to-br from-challenger-blue to-challenger-gold transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
+              className={`relative card cursor-pointer bg-gradient-to-br from-challenger-blue to-challenger-gold flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
-              <h2 className="text-3xl text-white text-center font-semibold">
+              <h2 className="text-3xl text-white text-center font-semibold z-10">
                 Executive
               </h2>
             </NavLink>

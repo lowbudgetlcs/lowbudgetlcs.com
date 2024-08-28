@@ -4,6 +4,14 @@ import { useLeagueData } from "./leagueDataContext";
 
 type LeagueGroupsProps = { league: string };
 
+const commercialGradient =
+  "bg-gradient-to-br from-platinum-light to-platinum-dark";
+const financialGradient =
+  "bg-gradient-to-br from-emerald-light to-emerald-dark";
+const economyGradient = "bg-gradient-to-br from-gold-light to-gold-dark";
+const executiveGradient =
+  "bg-gradient-to-br from-challenger-blue to-challenger-gold";
+
 function LeagueGroups() {
   const { league }: LeagueGroupsProps = useLocation().state;
   const { players, teams, divisions, error, loading } = useLeagueData();
@@ -29,6 +37,21 @@ function LeagueGroups() {
         </div>
       );
     }
+    let gradient: string;
+    switch (league) {
+      case "Economy":
+        gradient = economyGradient;
+        break;
+      case "Commercial":
+        gradient = commercialGradient;
+        break;
+      case "Financial":
+        gradient = financialGradient;
+        break;
+      case "Executive":
+        gradient = executiveGradient;
+        break;
+    }
 
     const currentDivision = divisions.find(
       (division) => division.divisionName === league
@@ -50,9 +73,9 @@ function LeagueGroups() {
             divisions: divisions,
           }}
           to={groupLetter.toLowerCase()}
-          className={`card cursor-pointer hover:bg-gradient-to-br from-gold-light to-gold-dark transition-all duration-1000 flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg bg-gray/80 dark:bg-gray/40`}
+          className={`relative card cursor-pointer ${gradient} flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
         >
-          <h2 className="text-3xl text-white text-center font-semibold">
+          <h2 className="text-3xl text-white text-center font-semibold z-10">
             Group {groupLetter}
           </h2>
         </NavLink>
@@ -80,11 +103,6 @@ function LeagueGroups() {
             {displayGroups()}
           </div>
         </div>
-        {/* <div className="teamContainer flex flex-col gap-8 md:w-3/5 lg:w-3/6 overflow-hidden justify-center">
-          {teams.map((team) => {
-            return <TeamCard key={team.id} teamName={team.teamName} groupId={team.groupId} divisionId={team.divisionId} logo={team.logo} playerList={team.playerList}/>
-          }) }
-        </div> */}
       </div>
     </div>
   );
