@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --exec node -r ts-node/register --env-file=.env server.ts",
+    "start": "node ts-node server.ts",
     "dev": "nodemon --exec node -r ts-node/register --env-file=.env server.ts"
   },
   "keywords": [],
