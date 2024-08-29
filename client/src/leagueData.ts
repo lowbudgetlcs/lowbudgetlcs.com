@@ -38,9 +38,9 @@ export const useFetchData = () => {
     const fetchData = async () => {
       try {
         const [playersResponse, teamsResponse, divisionsResponse] = await Promise.all([
-          fetch(import.meta.env.VITE_PLAYERS_URL as string),
-          fetch(import.meta.env.VITE_TEAMS_URL as string),
-          fetch(import.meta.env.VITE_DIVISIONS_URL as string),
+          fetch(process.env.VITE_PLAYERS_URL as string),
+          fetch(process.env.VITE_TEAMS_URL as string),
+          fetch(process.env.VITE_DIVISIONS_URL as string),
         ]);
 
         if (!playersResponse.ok || !teamsResponse.ok || !divisionsResponse.ok) {
