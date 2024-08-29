@@ -22,21 +22,11 @@ app.use("/api/", apiLimiter);
 
 //! Add Cors Options on prod
 const corsOptions = {
-  origin: isProduction ? "https://lowbudgetlcs.com" : "*",
+  origin:"https://lowbudgetlcs.com",
   methods: "GET",
 };
 
 app.use(cors(corsOptions));
-
-if (isProduction) {
-  app.use((req, res, next) => {
-    if (req.header("x-forwarded-proto") !== "https") {
-      res.redirect(`https://${req.header("host")}${req.url}`);
-    } else {
-      next();
-    }
-  });
-}
 
 app.get("/api/checklive", async (req: Request, res: Response) => {
   try {
