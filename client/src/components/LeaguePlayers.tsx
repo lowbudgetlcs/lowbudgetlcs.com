@@ -56,16 +56,16 @@ function LeaguePlayers() {
   });
 
   return (
-    <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
+    <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen pt-12">
       <Link
         state={{ league: league }}
         to={`/rosters/${league.toLowerCase()}`}
-        className="absolute top-16 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
+        className="sticky z-50 bg-black p-4 rounded-lg top-20 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
       >
         Back to Groups
       </Link>
       <div className="title h-64 w-full flex items-center justify-center">
-        <h1 className="text-6xl">
+        <h1 className="text-6xl text-center">
           {league}: Group {group}
         </h1>
       </div>

@@ -18,7 +18,7 @@ function LeagueGroups() {
 
   if (loading)
     return (
-      <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
+      <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen pt-12">
         <div className="title h-64 w-full flex items-center justify-center">
           <h1 className="text-6xl">{league}</h1>
         </div>
@@ -87,12 +87,12 @@ function LeagueGroups() {
     <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <Link
         to={"/rosters"}
-        className="absolute top-16 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
+        className="sticky top-20 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
       >
         Back to Rosters
       </Link>
       <div className="title h-64 w-full flex items-center justify-center">
-        <h1 className="text-6xl">{league}</h1>
+        <h1 className="text-6xl text-center">{league}</h1>
       </div>
       <div className="flex flex-col items-center">
         <p className="summary text-lg md:text-xl px-16 py-8 text-center">
