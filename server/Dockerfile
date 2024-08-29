@@ -8,6 +8,8 @@ RUN npm install
 
 COPY . .
 
+RUN npx tsc
+
 #IDK WHAT PORT THIS USES (PROBABLY 8080?)
 EXPOSE 8080
 
