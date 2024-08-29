@@ -1,4 +1,4 @@
-FROM node:18-alpine as build
+FROM node:18-alpine
 
 WORKDIR /app
 
@@ -6,22 +6,12 @@ COPY package.json .
 
 RUN npm install
 
+RUN npm i -g serve
+
 COPY . .
-
-ARG VITE_PLAYERS_URL
-ARG VITE_TEAMS_URL
-ARG VITE_DIVISIONS_URL
-
-ENV VITE_PLAYERS_URL=$VITE_PLAYERS_URL
-ENV VITE_TEAMS_URL=$VITE_TEAMS_URL
-ENV VITE_DIVISIONS_URL=$VITE_DIVISIONS_URL
 
 RUN npm run build
 
-FROM nginx:alpine
+EXPOSE 3000
 
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "serve", "-s", "dist" ]
