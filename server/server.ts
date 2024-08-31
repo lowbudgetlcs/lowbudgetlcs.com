@@ -16,17 +16,27 @@ if (!clientID || !clientSecret) {
 //Rate limiting
 const apiLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 300, // Limit each IP to 300 requests per windowMs
+  max: 2000, // Limit each IP to 1000 requests per windowMs
 });
 app.use("/api/", apiLimiter);
 
 //! Add Cors Options on prod
 const corsOptions = {
-  origin:"https://lowbudgetlcs.com",
+  origin: isProduction ? "https://lowbudgetlcs.com" : "*",
   methods: "GET",
 };
 
 app.use(cors(corsOptions));
+
+if (isProduction) {
+  app.use((req, res, next) => {
+    if (req.header("x-forwarded-proto") !== "https") {
+      res.redirect(`https://${req.header("host")}${req.url}`);
+    } else {
+      next();
+    }
+  });
+}
 
 app.get("/api/checklive", async (req: Request, res: Response) => {
   try {
