@@ -86,10 +86,18 @@ function LeagueGroups() {
   return (
     <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
       <Link
-        to={"/rosters"}
-        className="sticky top-20 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
+        to={`/rosters`}
+        className="fixed flex z-50 my-2 px-2 rounded-lg bg-black/60 top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
       >
-        Back to Rosters
+        <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
+          <div
+            className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
+          ></div>
+          <div
+            className={`absolute rotate-45 top-7 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
+          ></div>
+        </div>
+        <p className="group-hover:text-orange underline underline-offset-2 transition duration-300 ">Rosters</p>
       </Link>
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl text-center">{league}</h1>
