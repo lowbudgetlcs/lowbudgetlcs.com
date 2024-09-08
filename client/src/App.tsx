@@ -1,13 +1,13 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Home from "./components/Home";
+import Home from "./components/HomePage/Home";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import About from "./components/About";
+import About from "./components/LeaguesPage/About";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
-import Roster from "./components/Roster";
-import LeagueGroups from "./components/LeagueGroups";
-import LeaguePlayers from "./components/LeaguePlayers";
+import Roster from "./components/RosterPage/Roster";
+import LeagueGroups from "./components/RosterPage/LeagueGroups";
+import LeaguePlayers from "./components/RosterPage/LeaguePlayers";
 import ErrorPage from "./components/ErrorPage";
 import { LeagueDataProvider } from "./components/leagueDataContext";
 

@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import { useLeagueData } from "./leagueDataContext";
+import ErrorPage from "../ErrorPage";
+import { useLeagueData } from "../leagueDataContext";
 
 type LeagueGroupsProps = { league: string };
 

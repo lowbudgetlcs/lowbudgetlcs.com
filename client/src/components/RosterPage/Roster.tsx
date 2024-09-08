@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import { useLeagueData } from "./leagueDataContext";
+import ErrorPage from "../ErrorPage";
+import { useLeagueData } from "../leagueDataContext";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;

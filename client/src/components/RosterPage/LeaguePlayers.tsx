@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { useState } from "react";
-import ErrorPage from "./ErrorPage";
-import { useLeagueData } from "./leagueDataContext";
+import ErrorPage from "../ErrorPage";
+import { useLeagueData } from "../leagueDataContext";
 
 type LeaguePlayersProps = { league: string; group: string };
 

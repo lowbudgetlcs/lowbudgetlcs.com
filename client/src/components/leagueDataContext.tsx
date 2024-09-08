@@ -1,6 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import { useFetchData } from '../leagueData';
-import { PlayerProps, TeamProps, DivisionProps } from './Roster';
+import { PlayerProps, TeamProps, DivisionProps } from './RosterPage/Roster';
 
 interface LeagueDataContextType {
   players: PlayerProps[];

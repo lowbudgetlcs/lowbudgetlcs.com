@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import AboutCard from "./AboutCard";
-import Button from "./Button";
+import Button from "../Button";
 
 const economy = {
   title: "Economy",
