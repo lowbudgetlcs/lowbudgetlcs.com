@@ -87,13 +87,25 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isTop, setIsTop] = useState(true);
   function toggleNavbar() {
     setIsOpen(!isOpen);
   }
 
+  document.addEventListener("scroll", () => {
+    if (window.scrollY > 20) {
+      setIsTop(false);
+    } else {
+      setIsTop(true);
+    }
+  });
+
   return (
-    <header className="fixed top-0 z-[20] mx-auto w-full h-20">
+    <header
+      className={`fixed top-0 z-[20] transition duration-500 mx-auto w-full h-20 ${
+        isTop ? "" : "bg-light-gray"
+      }`}
+    >
       <div className="flex items-center justify-between px-4 text-lg h-full">
         <div
           onClick={toggleNavbar}

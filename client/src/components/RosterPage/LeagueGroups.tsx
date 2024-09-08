@@ -87,7 +87,7 @@ function LeagueGroups() {
     <div className=" relative accounts bg-white text-black dark:bg-black dark:text-white pb-12">
       <Link
         to={`/rosters`}
-        className="fixed flex z-50 my-2 px-2 rounded-lg bg-black/60 top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
+        className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
       >
         <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
           <div
