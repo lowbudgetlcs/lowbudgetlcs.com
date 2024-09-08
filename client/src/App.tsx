@@ -13,23 +13,23 @@ import { LeagueDataProvider } from "./components/leagueDataContext";
 
 function App() {
   return (
-    <div className="font-serif">
-    <BrowserRouter>
-      <ScrollToTop />
-      <Twitch/>
-      <Navbar />
-      <LeagueDataProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="rosters" element={<Roster />} />
-          <Route path="rosters/:league" element={<LeagueGroups />} />
-          <Route path="rosters/:league/:group" element={<LeaguePlayers />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Routes>
-      </LeagueDataProvider>
-      <Footer />
-    </BrowserRouter>
+    <div className=" relative font-serif min-h-screen bg-black">
+      <BrowserRouter>
+        <ScrollToTop />
+        <Twitch />
+        <Navbar />
+        <LeagueDataProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="rosters" element={<Roster />} />
+            <Route path="rosters/:league" element={<LeagueGroups />} />
+            <Route path="rosters/:league/:group" element={<LeaguePlayers />} />
+            <Route path="*" element={<ErrorPage />} />
+          </Routes>
+        </LeagueDataProvider>
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }
