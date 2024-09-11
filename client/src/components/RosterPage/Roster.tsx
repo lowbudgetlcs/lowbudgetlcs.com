@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import ErrorPage from "./ErrorPage";
-import { useLeagueData } from "./leagueDataContext";
+import ErrorPage from "../ErrorPage";
+import { useLeagueData } from "../leagueDataContext";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -32,7 +32,7 @@ function Roster() {
 
   if (loading)
     return (
-      <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
+      <div className="relative accounts bg-white text-black dark:bg-black dark:text-white">
         <div className="title h-64 w-full flex items-center justify-center">
           <h1 className="text-6xl">All Rosters</h1>
         </div>
@@ -43,7 +43,7 @@ function Roster() {
   if (error) return <ErrorPage />;
 
   return (
-    <div className="accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
+    <div className="accounts bg-white text-black dark:bg-black dark:text-white pb-12">
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl">All Rosters</h1>
       </div>

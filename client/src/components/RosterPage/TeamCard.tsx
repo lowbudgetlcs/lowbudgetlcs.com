@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "./Button";
+import Button from "../Button";
 
 const commercialGradient =
   "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark";
@@ -213,19 +213,6 @@ function TeamCard({
               <h3 className="text-2xl font-bold text-center">
                 Players: Single Select
               </h3>
-              <div className="absolute -right-6 top-0">
-                <div
-                  onClick={togglePlayerList}
-                  className="burger cursor-pointer relative h-12 w-12 gap-1 hover:cursor-pointer self-baseline"
-                >
-                  <div
-                    className={`absolute top-4 rotate-45 -left-0 transition-all duration-500 px-4 py-0.5 rounded-xl bg-white`}
-                  ></div>
-                  <div
-                    className={`absolute top-4 -rotate-45 left-0 transition-all duration-500 px-4 py-0.5 rounded-xl bg-white`}
-                  ></div>
-                </div>
-              </div>
               <div
                 onClick={toggleIsMultiSelected}
                 className="buttonContainer flex justify-center items-center hover:cursor-pointer"
@@ -326,7 +313,6 @@ function TeamCard({
                       const unChangedPlayer = `${summonerName[0]} #${summonerName[1]}`;
                       // Cut all whitespace from string
                       player = player.replace(/\s+/g, "");
-                      console.log(player);
                       if (multi.length < 5) {
                         addToMulti(player);
                         addToDisplayMulti(unChangedPlayer);

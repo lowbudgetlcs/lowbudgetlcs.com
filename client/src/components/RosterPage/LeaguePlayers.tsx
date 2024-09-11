@@ -1,8 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { useState } from "react";
-import ErrorPage from "./ErrorPage";
-import { useLeagueData } from "./leagueDataContext";
+import ErrorPage from "../ErrorPage";
+import { useLeagueData } from "../leagueDataContext";
 
 type LeaguePlayersProps = { league: string; group: string };
 
@@ -56,13 +56,21 @@ function LeaguePlayers() {
   });
 
   return (
-    <div className=" relativeaccounts bg-white text-black dark:bg-black dark:text-white min-h-screen pt-12">
+    <div className=" relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen pt-12">
       <Link
         state={{ league: league }}
         to={`/rosters/${league.toLowerCase()}`}
-        className="sticky z-50 bg-black p-4 rounded-lg top-20 left-4 text-2xl font-semibold cursor-pointer underline underline-offset-2 transition duration-300 hover:text-orange"
+        className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
       >
-        Back to Groups
+        <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
+          <div
+            className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
+          ></div>
+          <div
+            className={`absolute rotate-45 top-7 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
+          ></div>
+        </div>
+        <p className="group-hover:text-orange underline underline-offset-2 transition duration-300 ">Groups</p>
       </Link>
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl text-center">
