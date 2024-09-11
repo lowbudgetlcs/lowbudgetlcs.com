@@ -21,3 +21,4 @@ jobs:
         with:
           name: env
           path: ./.env.art
+          include-hidden-files: true
