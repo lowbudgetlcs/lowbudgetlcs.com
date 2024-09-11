@@ -213,19 +213,6 @@ function TeamCard({
               <h3 className="text-2xl font-bold text-center">
                 Players: Single Select
               </h3>
-              <div className="absolute -right-6 top-0">
-                <div
-                  onClick={togglePlayerList}
-                  className="burger cursor-pointer relative h-12 w-12 gap-1 hover:cursor-pointer self-baseline"
-                >
-                  <div
-                    className={`absolute top-4 rotate-45 -left-0 transition-all duration-500 px-4 py-0.5 rounded-xl bg-white`}
-                  ></div>
-                  <div
-                    className={`absolute top-4 -rotate-45 left-0 transition-all duration-500 px-4 py-0.5 rounded-xl bg-white`}
-                  ></div>
-                </div>
-              </div>
               <div
                 onClick={toggleIsMultiSelected}
                 className="buttonContainer flex justify-center items-center hover:cursor-pointer"
