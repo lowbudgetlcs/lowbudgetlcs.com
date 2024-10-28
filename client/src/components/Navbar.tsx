@@ -73,6 +73,15 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
             <div className="navBox pl-14 py-10">Rosters</div>
           </NavLink>
         </li>
+        <li className="animate-slide-in-600 opacity-0">
+          <NavLink
+            onClick={close}
+            className="hover:text-orange transition duration-300"
+            to="/allstars"
+          >
+            <div className="navBox pl-14 py-10">All Stars</div>
+          </NavLink>
+        </li>
         <li className="animate-slide-in-700 opacity-0">
           <NavLink className="hover:text-orange transition duration-300" to="#">
             <div className="navBox pl-14 py-10">
