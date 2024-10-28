@@ -10,6 +10,7 @@ import LeagueGroups from "./components/RosterPage/LeagueGroups";
 import LeaguePlayers from "./components/RosterPage/LeaguePlayers";
 import ErrorPage from "./components/ErrorPage";
 import { LeagueDataProvider } from "./components/leagueDataContext";
+import AllStars from "./components/AllStarsPage/AllStars";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="rosters" element={<Roster />} />
             <Route path="rosters/:league" element={<LeagueGroups />} />
             <Route path="rosters/:league/:group" element={<LeaguePlayers />} />
+            <Route path="allstars" element={<AllStars />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </LeagueDataProvider>
