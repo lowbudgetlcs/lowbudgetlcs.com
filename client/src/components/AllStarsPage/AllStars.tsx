@@ -28,7 +28,7 @@ function AllStars() {
         </p>
       </div>
       <div className="navList">
-        <ul className="relative flex gap-4 text-2xl font-semibold justify-center p-4">
+        <ul className="relative flex gap-4 text-sm sm:text-lg md:text-2xl font-semibold justify-center p-4">
           <Link to={"economy"}>
             <li
               onClick={() => toggleActive("Economy")}
