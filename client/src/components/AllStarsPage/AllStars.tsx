@@ -29,52 +29,58 @@ function AllStars() {
       </div>
       <div className="navList">
         <ul className="relative flex gap-4 text-2xl font-semibold justify-center p-4">
-          <Link to={'economy'}>
-          <li
-            onClick={() => toggleActive("Economy")}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
-          >
-            Economy
-            <span
-              className={`line absolute ${
-                activeLink === "Economy" ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
-            ></span>
-          </li>
+          <Link to={"economy"}>
+            <li
+              onClick={() => toggleActive("Economy")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Economy
+              <span
+                className={`line absolute ${
+                  activeLink === "Economy" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+              ></span>
+            </li>
           </Link>
-          <li
-            onClick={() => toggleActive("Commercial")}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
-          >
-            Commercial
-            <span
-              className={`line absolute ${
-                activeLink === "Commercial" ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
-            ></span>
-          </li>
-          <li
-            onClick={() => toggleActive("Financial")}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
-          >
-            Financial
-            <span
-              className={`line absolute ${
-                activeLink === "Financial" ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
-            ></span>
-          </li>
-          <li
-            onClick={() => toggleActive("Executive")}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
-          >
-            Executive
-            <span
-              className={`line absolute ${
-                activeLink === "Executive" ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
-            ></span>
-          </li>
+          <Link to={"commercial"}>
+            <li
+              onClick={() => toggleActive("Commercial")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Commercial
+              <span
+                className={`line absolute ${
+                  activeLink === "Commercial" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+              ></span>
+            </li>
+          </Link>
+          <Link to={"financial"}>
+            <li
+              onClick={() => toggleActive("Financial")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Financial
+              <span
+                className={`line absolute ${
+                  activeLink === "Financial" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+              ></span>
+            </li>
+          </Link>
+          <Link to={"executive"}>
+            <li
+              onClick={() => toggleActive("Executive")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Executive
+              <span
+                className={`line absolute ${
+                  activeLink === "Executive" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+              ></span>
+            </li>
+          </Link>
         </ul>
       </div>
       <Outlet />
