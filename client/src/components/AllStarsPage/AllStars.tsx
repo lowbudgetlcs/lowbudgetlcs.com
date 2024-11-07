@@ -14,7 +14,7 @@ function AllStars() {
       </div>
       <div className="flex flex-col items-center">
         <p className="summary text-lg md:text-xl px-8 md:px-16 w-full md:w-2/3 pt-8  ">
-          After Every LBLCS season, each team votes for players on who is the
+          After every LBLCS season, each team votes for players on who is the
           best in their role. We then take those results and smash all these
           stars into teams of their own and make them compete for charity!
         </p>
