@@ -12,7 +12,7 @@ function AllStars() {
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl">All Stars</h1>
       </div>
-      <div className="flex flex-col items-center pb-8">
+      <div className="flex flex-col items-center">
         <p className="summary text-lg md:text-xl px-8 md:px-16 w-full md:w-2/3 pt-8  ">
           After Every LBLCS season, each team votes for players on who is the
           best in their role. We then take those results and smash all these
@@ -25,6 +25,9 @@ function AllStars() {
         <p className="text-white/60 text-lg md:text-xl px-8 md:px-16 w-full md:w-2/3">
           The 1st all-star teams play in the event. If people are not available,
           2nd and 3rd team members are asked to fill in.
+        </p>
+        <p className="text-white/60 text-center text-base px-8 pt-16 md:px-16 w-full md:w-2/3">
+          Click on the division you want to view below!
         </p>
       </div>
       <div className="navList">
