@@ -10,6 +10,11 @@ import LeagueGroups from "./components/RosterPage/LeagueGroups";
 import LeaguePlayers from "./components/RosterPage/LeaguePlayers";
 import ErrorPage from "./components/ErrorPage";
 import { LeagueDataProvider } from "./components/leagueDataContext";
+import AllStars from "./components/AllStarsPage/AllStars";
+import ASEconomy from "./components/AllStarsPage/ASEconomy";
+import ASCommercial from "./components/AllStarsPage/ASCommercial";
+import ASFinancial from "./components/AllStarsPage/ASFinancial";
+import ASExecutive from "./components/AllStarsPage/ASExecutive";
 
 function App() {
   return (
@@ -25,6 +30,12 @@ function App() {
             <Route path="rosters" element={<Roster />} />
             <Route path="rosters/:league" element={<LeagueGroups />} />
             <Route path="rosters/:league/:group" element={<LeaguePlayers />} />
+            <Route path="allstars" element={<AllStars />}>
+              <Route path="economy" element={<ASEconomy/>}/>
+              <Route path="commercial" element={<ASCommercial/>}/>
+              <Route path="financial" element={<ASFinancial/>}/>
+              <Route path="executive" element={<ASExecutive/>}/>
+            </Route>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </LeagueDataProvider>
