@@ -26,6 +26,10 @@ function AllStars() {
           The 1st all-star teams play in the event. If people are not available,
           2nd and 3rd team members are asked to fill in.
         </p>
+        <p className="text-white/60 text-lg md:text-xl pt-4 px-8 md:px-16 w-full md:w-2/3">
+          Graphics are created by: <span className="italic">b3ar_</span>, <span className="italic">Zoodiac</span>, and <span className="italic">.qiiqo</span> !
+
+        </p>
         <p className="text-white/60 text-center text-base px-8 pt-16 md:px-16 w-full md:w-2/3">
           Click on the division you want to view below!
         </p>
