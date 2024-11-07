@@ -28,7 +28,7 @@ function AllStars() {
         </p>
       </div>
       <div className="navList">
-        <ul className="relative flex gap-4 text-sm sm:text-lg md:text-2xl font-semibold justify-center p-4">
+        <ul className="relative flex gap-4 text-sm sm:text-base md:text-2xl font-semibold justify-center p-4">
           <Link to={"economy"}>
             <li
               onClick={() => toggleActive("Economy")}
@@ -38,7 +38,7 @@ function AllStars() {
               <span
                 className={`line absolute ${
                   activeLink === "Economy" ? "w-full" : "w-0"
-                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
               ></span>
             </li>
           </Link>
@@ -51,7 +51,7 @@ function AllStars() {
               <span
                 className={`line absolute ${
                   activeLink === "Commercial" ? "w-full" : "w-0"
-                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
               ></span>
             </li>
           </Link>
@@ -64,7 +64,7 @@ function AllStars() {
               <span
                 className={`line absolute ${
                   activeLink === "Financial" ? "w-full" : "w-0"
-                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
               ></span>
             </li>
           </Link>
@@ -77,7 +77,7 @@ function AllStars() {
               <span
                 className={`line absolute ${
                   activeLink === "Executive" ? "w-full" : "w-0"
-                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange bottom-0 left-0`}
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
               ></span>
             </li>
           </Link>
