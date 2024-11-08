@@ -83,7 +83,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           </NavLink>
         </li>
         <li className="animate-slide-in-800 opacity-0">
-          <NavLink className="hover:text-orange transition duration-300" to="#">
+          <NavLink className="hover:text-orange transition duration-300" to="/stats">
             <div className="navBox pl-14 py-10 line-through decoration-orange decoration-4">
               Stats
             </div>

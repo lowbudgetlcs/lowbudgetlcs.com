@@ -15,6 +15,7 @@ import ASEconomy from "./components/AllStarsPage/ASEconomy";
 import ASCommercial from "./components/AllStarsPage/ASCommercial";
 import ASFinancial from "./components/AllStarsPage/ASFinancial";
 import ASExecutive from "./components/AllStarsPage/ASExecutive";
+import StatsMain from "./components/StatsPage/StatsMain";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
               <Route path="financial" element={<ASFinancial/>}/>
               <Route path="executive" element={<ASExecutive/>}/>
             </Route>
+            <Route path="stats" element={<StatsMain/>}/>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </LeagueDataProvider>
