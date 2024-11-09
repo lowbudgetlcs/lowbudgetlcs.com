@@ -1,8 +1,8 @@
-import { getTournamentCodes } from "./db/queries/select";
+import { getIdFromPerformance, getTournamentCodes } from "./db/queries/select";
 
-const listTournamentCodes = async () => {
+const getPerformanceIds = async () => {
     try {
-        const response = await getTournamentCodes();
+        const response = await getIdFromPerformance(1);
         return response
     } catch (err) {
         console.error("cookie: ", err)
@@ -10,4 +10,4 @@ const listTournamentCodes = async () => {
 
 }
 
-export default listTournamentCodes;
+export default getPerformanceIds;
