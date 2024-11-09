@@ -1,6 +1,13 @@
 import { eq } from "drizzle-orm";
 import { db } from "../index";
-import { divisions, games, performances, players, teams } from "../schema";
+import {
+  divisions,
+  games,
+  performances,
+  playerData,
+  players,
+  teams,
+} from "../schema";
 import { error } from "console";
 
 export async function getPlayers() {
@@ -37,7 +44,15 @@ export async function getPlayer(summonerName: string) {
     .from(players)
     .where(eq(players.summonerName, summonerName));
   if (player.length < 1) {
-    throw new Error("No Player Found")
+    throw new Error("No Player Found");
   }
   return player;
+}
+
+export async function getPlayerGameStats(id: number) {
+  const gameStats = await db
+    .select()
+    .from(playerData)
+    .where(eq(playerData.performanceId, id));
+  return gameStats;
 }
