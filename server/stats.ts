@@ -1,11 +1,12 @@
-import { getIdFromPerformance, getTournamentCodes } from "./db/queries/select";
+import { getIdFromPerformance, getPlayer, getPlayers, getTournamentCodes } from "./db/queries/select";
 
-const getPerformanceIds = async () => {
+const getPerformanceIds = async (summonerName: string) => {
     try {
-        const response = await getIdFromPerformance(1);
-        return response
+        const playerName = await getPlayer(summonerName)
+        const performanceIds = await getIdFromPerformance(playerName[0].id);
+        return performanceIds;
     } catch (err) {
-        console.error("cookie: ", err)
+        throw err
     }
 
 }

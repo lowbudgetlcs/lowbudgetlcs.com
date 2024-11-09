@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "../index";
 import { divisions, games, performances, players, teams } from "../schema";
+import { error } from "console";
 
 export async function getPlayers() {
   const allPlayers = await db.select().from(players);
@@ -28,4 +29,15 @@ export async function getIdFromPerformance(id: number) {
     .from(performances)
     .where(eq(performances.playerId, id));
   return performanceStats;
+}
+
+export async function getPlayer(summonerName: string) {
+  const player = await db
+    .select({ summonerName: players.summonerName, id: players.id })
+    .from(players)
+    .where(eq(players.summonerName, summonerName));
+  if (player.length < 1) {
+    throw new Error("No Player Found")
+  }
+  return player;
 }

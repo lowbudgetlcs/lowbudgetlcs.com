@@ -4,6 +4,7 @@ import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import { getDivisions, getPlayers, getTeams } from "./db/queries/select";
 import listTournamentCodes from "./stats";
+import getPerformanceIds from "./stats";
 const app = express();
 const port = 8080;
 const clientSecret: string | undefined = process.env.CLIENT_SECRET;
@@ -145,14 +146,18 @@ async function checkIfLive(clientID: string, accessToken: string) {
 }
 
 // Stats Api Routes
-app.get("/api/stats", async (req: Request, res: Response) => {
+app.get("/api/stats/:summonerName", async (req: Request, res: Response) => {
   try {
-    console.log("getting pinged")
-    const response = await listTournamentCodes();
+    const summonerName: string = req.params.summonerName;
+    console.log(summonerName);
+    const response = await getPerformanceIds(summonerName);
     res.json(response);
   } catch (err: any) {
-    console.error("ERROR:", err.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    if (err.message === "No Player Found") {
+      return res.status(404).json({ error: "Player not found" });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
 });
 
