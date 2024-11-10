@@ -4,10 +4,11 @@ import Button from "../Button"
 function StatsMain() {
 
     const [summonerName, setSummonerName] = useState(" ")
-    const [gameList, setGameList] = useState([])
+    const [gameList, setGameList] = useState<Array<object>>([])
 
     const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setGameList([])
     try {
         const splitSummoner = summonerName.trim().split('')
         const hashtagindex = splitSummoner.indexOf('#')
@@ -16,9 +17,13 @@ function StatsMain() {
         }
         const trimmedSummoner = splitSummoner.join('')
         console.log(trimmedSummoner)
-        const gameData = await fetch(`http://localhost:8080/api/stats/${trimmedSummoner}`)
-        console.log(gameData.json())
-        return gameData
+        const gameResponse = await fetch(`http://localhost:8080/api/stats/${trimmedSummoner}`)
+        const gameData: Array<object> = await gameResponse.json()
+        const flatArr = gameData.flat();
+        for(let i = 0; i < flatArr.length; i++) {
+            gameList.push(flatArr[i])
+        }
+        console.log(gameList)
     } catch (err) {
         console.log(err)
     }
