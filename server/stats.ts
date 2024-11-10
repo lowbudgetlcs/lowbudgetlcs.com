@@ -1,14 +1,24 @@
-import { getIdFromPerformance, getPlayer, getPlayers, getTournamentCodes } from "./db/queries/select";
+import {
+  getIdFromPerformance,
+  getPlayer,
+  getPlayerGameStats,
+  getPlayers,
+  getTournamentCodes,
+} from "./db/queries/select";
 
 const getPerformanceIds = async (summonerName: string) => {
-    try {
-        const playerName = await getPlayer(summonerName)
-        const performanceIds = await getIdFromPerformance(playerName[0].id);
-        return performanceIds;
-    } catch (err) {
-        throw err
+  const games: Array<object> = [];
+  try {
+    const playerName = await getPlayer(summonerName);
+    const performanceIds = await getIdFromPerformance(playerName[0].id);
+    for (const performanceID of performanceIds) {
+      const gameStats = await getPlayerGameStats(performanceID.performanceId);
+      games.push(gameStats);
     }
-
-}
+    return games;
+  } catch (err) {
+    throw err;
+  }
+};
 
 export default getPerformanceIds;
