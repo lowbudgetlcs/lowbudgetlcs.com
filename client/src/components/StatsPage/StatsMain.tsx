@@ -40,7 +40,7 @@ function StatsMain() {
         <p className="text-white/60 text-lg px-8 p-8 text-center">Summoner names are <span className="underline">CASE SENSITIVE!</span> (this will be fixed in a later update)</p>
       </div>
       <div className="search">
-        <form onSubmit={handleFormSubmit} className="flex flex-col items-center">
+        <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 p-4 items-center">
             <input id="summonerName" name="summonerName" onChange={(e) => setSummonerName(e.target.value)} placeholder="JohnDoe#NA1" className="w-3/5 h-12 rounded-lg text-2xl p-4 text-black"></input>
             <button type="submit"><Button>Submit</Button></button> 
         </form>
