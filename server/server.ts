@@ -3,8 +3,7 @@ import axios from "axios";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import { getDivisions, getPlayers, getTeams } from "./db/queries/select";
-import listTournamentCodes from "./stats";
-import getPerformanceIds from "./stats";
+import getAllGames from "./stats";
 const app = express();
 const port = 8080;
 const clientSecret: string | undefined = process.env.CLIENT_SECRET;
@@ -150,7 +149,7 @@ app.get("/api/stats/:summonerName", async (req: Request, res: Response) => {
   try {
     const summonerName: string = req.params.summonerName;
     console.log(summonerName);
-    const response = await getPerformanceIds(summonerName);
+    const response = await getAllGames(summonerName);
     res.json(response);
   } catch (err: any) {
     if (err.message === "No Player Found") {
