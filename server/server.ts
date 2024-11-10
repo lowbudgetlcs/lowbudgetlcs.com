@@ -148,7 +148,6 @@ async function checkIfLive(clientID: string, accessToken: string) {
 app.get("/api/stats/:summonerName", async (req: Request, res: Response) => {
   try {
     const summonerName: string = req.params.summonerName;
-    console.log(summonerName);
     const response = await getAllGames(summonerName);
     res.json(response);
   } catch (err: any) {
