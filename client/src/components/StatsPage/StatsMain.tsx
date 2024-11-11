@@ -1,8 +1,9 @@
 import React, { useState } from "react"
 import Button from "../Button"
+import { Navigate, redirect, useNavigate } from "react-router-dom"
 
 function StatsMain() {
-
+    const navigate = useNavigate();
     const [summonerName, setSummonerName] = useState(" ")
     const [gameList, setGameList] = useState<Array<object>>([])
 
@@ -23,7 +24,7 @@ function StatsMain() {
         for(let i = 0; i < flatArr.length; i++) {
             gameList.push(flatArr[i])
         }
-        console.log(gameList)
+         navigate(`/stats/${trimmedSummoner}`, {state: {gameData: gameData}})
     } catch (err) {
         console.log(err)
     }
