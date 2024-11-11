@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 function AllStars() {
-  const [activeLink, setActiveLink] = useState<String>();
+  const [activeLink, setActiveLink] = useState<string>();
 
-  const toggleActive = (navItem: String) => {
+  const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
   return (
