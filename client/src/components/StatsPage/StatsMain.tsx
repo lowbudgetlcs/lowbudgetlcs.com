@@ -1,16 +1,18 @@
-import React, { useState } from "react"
-import Button from "../Button"
-import { handlePlayerSearch } from "./StatsSearch"
+import React, { useState } from "react";
+import Button from "../Button";
+import { handlePlayerSearch } from "./StatsSearch";
+import { useNavigate } from "react-router-dom";
 
 function StatsMain() {
+  const [summonerName, setSummonerName] = useState("");
+  const [gameList, setGameList] = useState<Array<object>>([]);
+  const navigate = useNavigate();
 
-    const [summonerName, setSummonerName] = useState(" ")
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    return handlePlayerSearch(summonerName)
-  }
+    await handlePlayerSearch(summonerName, setGameList, navigate);
+  };
 
- 
   return (
     <div className="aboutbg-white text-black dark:bg-black dark:text-white font-serif">
       <div className="title h-64 w-full flex items-center justify-center">
@@ -20,12 +22,23 @@ function StatsMain() {
         <p className="summary text-lg md:text-xl px-8 w-full md:w-2/3 pt-8 md:text-center">
           Enter a player below to pull up their stats for season 13
         </p>
-        <p className="text-white/60 text-lg px-8 p-8 text-center">Summoner names are <span className="underline">CASE SENSITIVE!</span> (this will be fixed in a later update)</p>
+        <p className="text-white/60 text-lg px-8 p-8 text-center">
+          Summoner names are <span className="underline">CASE SENSITIVE!</span> (this will be fixed in a later update)
+        </p>
       </div>
       <div className="search">
-        <form onSubmit={handleFormSubmit} className="flex flex-col gap-4 p-4 items-center">
-            <input id="summonerName" name="summonerName" onChange={(e) => setSummonerName(e.target.value)} placeholder="JohnDoe#NA1" className="w-3/5 h-12 rounded-lg text-2xl p-4 text-black"></input>
-            <button type="submit"><Button>Submit</Button></button> 
+        <form
+          onSubmit={handleFormSubmit}
+          className="flex flex-col gap-4 p-4 items-center"
+        >
+          <input
+            id="summonerName"
+            name="summonerName"
+            onChange={(e) => setSummonerName(e.target.value)}
+            placeholder="JohnDoe#NA1"
+            className="w-3/5 h-12 rounded-lg text-2xl p-4 text-black"
+          />
+          <button type="submit"><Button>Submit</Button></button> 
         </form>
       </div>
     </div>
