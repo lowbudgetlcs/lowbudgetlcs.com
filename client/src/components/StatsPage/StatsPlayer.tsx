@@ -90,7 +90,7 @@ function StatsPlayer() {
         {allGameData.map((game) => {
           const champImageSrc = champImages[game.championName] || 'default.png';
           return (
-            <div key={game.id} className="gameContainer w-full md:h-44 py-8 bg-gray flex flex-col md:flex-row rounded-md">
+            <div key={game.id} className="gameContainer w-full md:h-44 py-8 bg-gray flex flex-col md:flex-row rounded-md lg:max-w-[78%]">
               <div className="gameInfo flex flex-col items-center justify-center gap-2 py-2 w-full md:w-24 px-4 text-left">
                 <h2>{game.win ? "Win" : "Loss"}</h2>
                 <div className="line h-1 w-16 rounded-md bg-orange"></div>
