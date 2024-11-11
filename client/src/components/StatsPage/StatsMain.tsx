@@ -1,34 +1,16 @@
 import React, { useState } from "react"
 import Button from "../Button"
-import { Navigate, redirect, useNavigate } from "react-router-dom"
+import { handlePlayerSearch } from "./StatsSearch"
 
 function StatsMain() {
-    const navigate = useNavigate();
-    const [summonerName, setSummonerName] = useState(" ")
-    const [gameList, setGameList] = useState<Array<object>>([])
 
-    const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setGameList([])
-    try {
-        const splitSummoner = summonerName.trim().split('')
-        const hashtagindex = splitSummoner.indexOf('#')
-        if (hashtagindex) {
-            splitSummoner[hashtagindex] = "%23"
-        }
-        const trimmedSummoner = splitSummoner.join('')
-        console.log(trimmedSummoner)
-        const gameResponse = await fetch(`http://localhost:8080/api/stats/${trimmedSummoner}`)
-        const gameData: Array<object> = await gameResponse.json()
-        const flatArr = gameData.flat();
-        for(let i = 0; i < flatArr.length; i++) {
-            gameList.push(flatArr[i])
-        }
-         navigate(`/stats/${trimmedSummoner}`, {state: {gameData: gameData}})
-    } catch (err) {
-        console.log(err)
-    }
-    }
+    const [summonerName, setSummonerName] = useState(" ")
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    return handlePlayerSearch(summonerName)
+  }
+
+ 
   return (
     <div className="aboutbg-white text-black dark:bg-black dark:text-white font-serif">
       <div className="title h-64 w-full flex items-center justify-center">
