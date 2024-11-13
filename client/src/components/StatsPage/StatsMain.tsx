@@ -12,9 +12,9 @@ function StatsMain() {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true)
-      await handlePlayerSearch(summonerName, setGameList, setError, navigate);
-      setLoading(false)
+    setLoading(true);
+    await handlePlayerSearch(summonerName, setGameList, setError, navigate);
+    setLoading(false);
   };
 
   return (
@@ -38,9 +38,21 @@ function StatsMain() {
             onChange={(e) => setSummonerName(e.target.value)}
             placeholder="JohnDoe#NA1"
             className="w-3/5 h-12 rounded-lg text-2xl p-4 text-black"
-          /> 
-          {error && <p className="error-message text-orange">{error}</p>}
-          <button type="submit"><Button>{loading ? <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-4"></div>: 'Submit'}</Button></button> 
+          />
+          {error ? (
+            <p className="error-message text-orange">{error}</p>
+          ) : (
+            <br />
+          )}
+          <button type="submit">
+            <Button>
+              {loading ? (
+                <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-3"></div>
+              ) : (
+                "Submit"
+              )}
+            </Button>
+          </button>
         </form>
       </div>
     </div>
