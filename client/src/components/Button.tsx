@@ -1,4 +1,4 @@
-const Button = ({ children}: {children: string}) => {
+const Button = ({ children}: {children: any}) => {
     return (
 <div className="relative bg-blue/60 flex justify-center px-8 py-2 overflow-hidden group rounded-md">
 <span className="absolute top-0 left-0 w-0 h-0 transition-all duration-200 border-t-4 border-orange group-hover:w-full rounded-md ease"></span>
