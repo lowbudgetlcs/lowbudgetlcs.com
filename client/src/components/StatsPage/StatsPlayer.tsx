@@ -129,7 +129,7 @@ function StatsPlayer() {
         });
 
         const totalGameTime = allGameData.reduce(
-          (sum, game) => sum + (game.gameLength || 0),
+          (sum, game) => sum + (game.gameLength / 60 || 0),
           0
         );
         sumTotal.averageCSM =
