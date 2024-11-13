@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 interface Game {
   id: number;
@@ -146,7 +146,24 @@ function StatsPlayer() {
   }, [state, navigate]);
 
   return (
-    <div className="aboutbg-white text-black dark:bg-black dark:text-white font-serif">
+    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif">
+      <Link
+        to={`/stats`}
+        className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
+      >
+        {" "}
+        <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
+          <div
+            className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
+          ></div>
+          <div
+            className={`absolute rotate-45 top-7 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
+          ></div>
+        </div>
+        <p className="group-hover:text-orange underline transition duration-300 ">
+          Back
+        </p>
+      </Link>
       <div className="title min-h-64 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
         <div className="placeHolderImage min-w-[160px] min-h-[160px] bg-gray text-center"></div>
         <h1 className="text-6xl text-center">{summonerName}</h1>
