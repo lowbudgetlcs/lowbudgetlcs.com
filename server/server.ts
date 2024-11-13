@@ -152,7 +152,7 @@ app.get("/api/stats/:summonerName", async (req: Request, res: Response) => {
     res.json(response);
   } catch (err: any) {
     if (err.message === "No Player Found") {
-      return res.status(404).json({ error: "Player not found" });
+      res.status(404).json({ error: "Player not found" });
     } else {
       res.status(500).json({ error: "Internal Server Error" });
     }

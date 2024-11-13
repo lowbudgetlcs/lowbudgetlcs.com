@@ -6,11 +6,15 @@ import { useNavigate } from "react-router-dom";
 function StatsMain() {
   const [summonerName, setSummonerName] = useState("");
   const [gameList, setGameList] = useState<Array<object>>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await handlePlayerSearch(summonerName, setGameList, navigate);
+    setLoading(true)
+      await handlePlayerSearch(summonerName, setGameList, setError, navigate);
+      setLoading(false)
   };
 
   return (
@@ -21,9 +25,6 @@ function StatsMain() {
       <div className="flex flex-col items-center pb-8">
         <p className="summary text-lg md:text-xl px-8 w-full md:w-2/3 pt-8 md:text-center">
           Enter a player below to pull up their stats for season 13
-        </p>
-        <p className="text-white/60 text-lg px-8 p-8 text-center">
-          Summoner names are <span className="underline">CASE SENSITIVE!</span> (this will be fixed in a later update)
         </p>
       </div>
       <div className="search">
@@ -37,8 +38,9 @@ function StatsMain() {
             onChange={(e) => setSummonerName(e.target.value)}
             placeholder="JohnDoe#NA1"
             className="w-3/5 h-12 rounded-lg text-2xl p-4 text-black"
-          />
-          <button type="submit"><Button>Submit</Button></button> 
+          /> 
+          {error && <p className="error-message text-orange">{error}</p>}
+          <button type="submit"><Button>{loading ? <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-4"></div>: 'Submit'}</Button></button> 
         </form>
       </div>
     </div>
