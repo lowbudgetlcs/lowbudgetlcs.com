@@ -40,8 +40,8 @@ function App() {
               <Route path="executive" element={<ASExecutive/>}/>
             </Route>
             <Route path="stats" element={<StatsMain/>}/>
-            <Route path="stats/:player" element={<StatsPlayer/>}/>
-            <Route path="stats/teams" element={<StatsTeam/>}/>
+            <Route path="stats/player/:player" element={<StatsPlayer/>}/>
+            <Route path="stats/team/:team" element={<StatsTeam/>}/>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </LeagueDataProvider>

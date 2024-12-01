@@ -37,7 +37,7 @@ export const handlePlayerSearch = async (
       const flatArr = gameData.flat();
       setGameList(flatArr);
   
-      navigate(`/stats/${trimmedSummoner}`, { state: { gameData: gameData, summonerName: summonerDisplay } });
+      navigate(`/stats/player/${trimmedSummoner}`, { state: { gameData: gameData, summonerName: summonerDisplay } });
     } catch (err: any) {
        setError(err.message || "An unexpected error occurred");   
     }
