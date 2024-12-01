@@ -48,7 +48,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
           <NavLink
-            onClick={close}
+            onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/about"
           >
@@ -66,7 +66,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         </li>
         <li className="animate-slide-in-600 opacity-0">
           <NavLink
-            onClick={close}
+            onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/rosters"
           >
@@ -75,7 +75,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         </li>
         <li className="animate-slide-in-700 opacity-0">
           <NavLink
-            onClick={close}
+            onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/allstars"
           >
@@ -83,7 +83,11 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           </NavLink>
         </li>
         <li className="animate-slide-in-800 opacity-0">
-          <NavLink className="hover:text-orange transition duration-300" to="/stats">
+          <NavLink
+            onClick={closeToTop}
+            className="hover:text-orange transition duration-300"
+            to="/stats"
+          >
             <div className="navBox pl-14 py-10 line-through decoration-orange decoration-4">
               Stats
             </div>
