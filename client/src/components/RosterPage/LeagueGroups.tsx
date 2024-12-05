@@ -52,9 +52,8 @@ function LeagueGroups() {
         gradient = executiveGradient;
         break;
     }
-
     const currentDivision = divisions.find(
-      (division) => division.divisionName === league
+      (division) => division.name === league
     );
     if (!currentDivision) {
       return <div>No Groups for this league</div>;

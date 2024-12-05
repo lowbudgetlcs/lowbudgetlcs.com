@@ -88,7 +88,7 @@ function LeaguePlayers() {
               return (
                 <TeamCard
                   key={team.id}
-                  teamName={team.teamName}
+                  teamName={team.name}
                   groupId={team.groupId}
                   divisionId={team.divisionId}
                   logo={team.logo}
