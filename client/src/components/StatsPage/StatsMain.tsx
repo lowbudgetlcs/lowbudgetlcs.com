@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StatsSearchUI from "./StatsSearchUI";
-import StatsTeam from "./StatsTeam";
+import StatsSeason from "./StatsSeason";
 
 function StatsMain() {
   const [isSearchActive, setIsSearchActive] = useState<Boolean>(false);
@@ -10,7 +10,7 @@ function StatsMain() {
     if (isSearchActive) {
       return <StatsSearchUI />;
     } else if (isTeamsActive) {
-      return <StatsTeam />;
+      return <StatsSeason />;
     } else {
       return (
         <div className="statsMainContainer flex flex-col md:flex-row justify-center p-8 gap-8">
@@ -62,7 +62,7 @@ function StatsMain() {
       <div className="title h-64 w-full flex items-center justify-center">
         <h1 className="text-6xl text-center">LBLCS Stats</h1>
       </div>
-      {displayStatOptions()}
+      { displayStatOptions()}
     </div>
   );
 }
