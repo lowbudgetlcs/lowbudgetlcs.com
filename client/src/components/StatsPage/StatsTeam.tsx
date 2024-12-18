@@ -1,62 +1,30 @@
-import { useState } from "react";
-import Button from "../Button";
-import { useLeagueData } from "../leagueDataContext";
-import StatsTeamCard from "./StatsTeamCard";
+import { useLocation, useParams } from "react-router-dom";
+interface StatsProps {
+  teamName: string;
+  groupId: string;
+  // captainId: number | null;
+  logo: string | null;
+  playerList: string[];
+  divisionId: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}
 
 function StatsTeam() {
-  const [season, setSeason] = useState<number>();
-  const [areTeamsVisible, setAreTeamsVisible] = useState<Boolean>(false);
-  const { players, teams } = useLeagueData();
-
-  teams.forEach((team) => {
-    const playerList: string[] = [];
-    players.forEach((player) => {
-      if (player.teamId === team.id) {
-        playerList.push(player.summonerName);
-      }
-    });
-    team.playerList = playerList;
-  });
-
-
+      const { teamName, groupId, divisionId, logo, playerList }: StatsProps = useLocation().state;
   return (
-    <>
-      {season ? (
-        <div>
-          {teams.map((team) => {
-            return (
-              <StatsTeamCard
-                key={team.id}
-                teamName={team.teamName}
-                groupId={team.groupId}
-                divisionId={team.divisionId}
-                logo={team.logo}
-                playerList={team.playerList}
-              />
-            );
-          })}
-        </div>
+    <div className="statsTeamTitle min-h-64 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      {logo ? (
+        <img
+          src={logo}
+          className="teamLogo w-[160px] h-[160px] text-center"
+        ></img>
       ) : (
-        <div className="seasonList flex flex-col justify-center items-center py-4 text-center">
-          <h2 className="text-center text-2xl font-bold p-4">
-            Choose a Season
-          </h2>
-          <div
-            onClick={() => {
-              setAreTeamsVisible(true);
-              setSeason(13);
-            }}
-            className="cursor-pointer"
-          >
-            <Button>
-              Season 13
-              <br />
-              <span>Summer/Fall 2024</span>
-            </Button>
-          </div>
-        </div>
+        <div className="placeholderImg min-w-[160px] min-h-[160px] bg-gray text-center"></div>
       )}
-    </>
+
+      <h1 className="text-6xl text-center text-white">{teamName}</h1>
+    </div>
   );
 }
 
