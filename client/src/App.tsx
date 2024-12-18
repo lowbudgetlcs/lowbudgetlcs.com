@@ -17,6 +17,7 @@ import ASFinancial from "./components/AllStarsPage/ASFinancial";
 import ASExecutive from "./components/AllStarsPage/ASExecutive";
 import StatsMain from "./components/StatsPage/StatsMain";
 import StatsPlayer from "./components/StatsPage/StatsPlayer";
+import StatsSeason from "./components/StatsPage/StatsSeason";
 import StatsTeam from "./components/StatsPage/StatsTeam";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             </Route>
             <Route path="stats" element={<StatsMain/>}/>
             <Route path="stats/player/:player" element={<StatsPlayer/>}/>
+            <Route path="stats/team/" element={<StatsSeason/>}/>
             <Route path="stats/team/:team" element={<StatsTeam/>}/>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
