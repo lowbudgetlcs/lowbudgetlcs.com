@@ -19,7 +19,7 @@ export const handlePlayerSearch = async (
       const summonerDisplay = summonerName.split("#").join(" #")
   
       const gameResponse = await fetch(
-        `http://localhost:8080/api/stats/${trimmedSummoner}`
+        `http://localhost:8080/api/stats/player/${trimmedSummoner}`
       );
 
       if (!gameResponse.ok) {
