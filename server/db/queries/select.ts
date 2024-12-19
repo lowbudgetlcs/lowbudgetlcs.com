@@ -38,7 +38,6 @@ export async function getIdFromPerformance(id: number) {
   return performanceStats;
 }
 
-
 export async function getPlayer(summonerName: string) {
   const player = await db
     .select({ summonerName: players.summonerName, id: players.id })
@@ -59,14 +58,26 @@ export async function getPlayerGameStats(id: number) {
   return gameStats;
 }
 
+export async function getAllGameIDs(id: number) {
+  const gameStats = await db
+    .select({ gameId: games.id, teamWinId: games.winnerId, teamLoseId: games.loserId })
+    .from(games)
+    .leftJoin(performances, eq(games.id, performances.gameId))
+    .where(eq(performances.teamId, id));
+  return gameStats;
+}
 export async function getTeamGameStats(id: number) {
   const gameStats = await db
-  .select({
-    games
-  })
-  .from(games)
-  .leftJoin(performances, eq(games.id, performances.gameId))
-  .leftJoin(teams, eq(performances.teamId, teams.id))
-  .where(eq(performances.teamId, id)); 
+    .select({
+      gameId: games.id,
+      playerId: players.id,
+      playerName: players.summonerName,
+      playerStats: playerData,
+    })
+    .from(games)
+    .leftJoin(performances, eq(games.id, performances.gameId)) // Join games and performances
+    .leftJoin(playerData, eq(playerData.performanceId, performances.id)) // Join performances and playerData
+    .leftJoin(players, eq(players.id, performances.playerId)) // Join performances and players
+    .where(eq(performances.teamId, id)); // Filter by team ID
   return gameStats;
 }
