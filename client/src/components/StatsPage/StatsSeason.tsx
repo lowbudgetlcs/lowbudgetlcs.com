@@ -90,6 +90,7 @@ function StatsSeason() {
                     to={`team/` + team.id.toString()}
                     key={team.id}
                     state={{
+                      teamID: team.id,
                       teamName: team.name,
                       groupId: team.groupId,
                       divisionId: team.divisionId,
