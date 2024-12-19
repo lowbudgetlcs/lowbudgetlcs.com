@@ -6,7 +6,7 @@ import {
   getTournamentCodes,
 } from "./db/queries/select";
 
-const getAllGames = async (summonerName: string) => {
+export const getAllPlayerGames = async (summonerName: string) => {
   const games: Array<object> = [];
   try {
     const playerName = await getPlayer(summonerName);
@@ -21,4 +21,4 @@ const getAllGames = async (summonerName: string) => {
   }
 };
 
-export default getAllGames;
+
