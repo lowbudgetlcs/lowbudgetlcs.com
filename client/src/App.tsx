@@ -18,7 +18,7 @@ import ASExecutive from "./components/AllStarsPage/ASExecutive";
 import StatsMain from "./components/StatsPage/StatsMain";
 import StatsPlayer from "./components/StatsPage/StatsPlayer";
 import StatsSeason from "./components/StatsPage/StatsSeason";
-import StatsTeam from "./components/StatsPage/StatsTeam";
+import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
 
 function App() {
   return (
@@ -43,7 +43,7 @@ function App() {
             <Route path="stats" element={<StatsMain/>}/>
             <Route path="stats/player/:player" element={<StatsPlayer/>}/>
             <Route path="stats/team/" element={<StatsSeason/>}/>
-            <Route path="stats/team/:team" element={<StatsTeam/>}/>
+            <Route path="stats/team/:team" element={<StatsTeamUI/>}/>
             <Route path="*" element={<ErrorPage />} />
           </Routes>
         </LeagueDataProvider>
