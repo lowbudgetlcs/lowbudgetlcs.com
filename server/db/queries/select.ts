@@ -58,3 +58,15 @@ export async function getPlayerGameStats(id: number) {
     .where(eq(playerData.performanceId, id));
   return gameStats;
 }
+
+export async function getTeamGameStats(id: number) {
+  const gameStats = await db
+  .select({
+    games
+  })
+  .from(games)
+  .leftJoin(performances, eq(games.id, performances.gameId))
+  .leftJoin(teams, eq(performances.teamId, teams.id))
+  .where(eq(performances.teamId, id)); 
+  return gameStats;
+}

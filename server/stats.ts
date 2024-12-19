@@ -3,6 +3,7 @@ import {
   getPlayer,
   getPlayerGameStats,
   getPlayers,
+  getTeamGameStats,
   getTournamentCodes,
 } from "./db/queries/select";
 
@@ -21,4 +22,12 @@ export const getAllPlayerGames = async (summonerName: string) => {
   }
 };
 
-
+export const getAllTeamGames = async (teamID: number) => {
+  // const games: Array<object> = [];
+  try {
+    const games = await getTeamGameStats(teamID);
+    return games;
+  } catch (err) {
+    throw err;
+  }
+};
