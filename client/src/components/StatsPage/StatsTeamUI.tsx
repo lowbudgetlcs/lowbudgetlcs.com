@@ -15,6 +15,9 @@ function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
     useLocation().state;
   const [activeLink, setActiveLink] = useState<string>("Details");
+  const [gameList, setGameList] = useState<Array<object>>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
@@ -59,96 +62,97 @@ function StatsTeamUI() {
           </li>
         </ul>
       </div>
-      {/* Render Details */}
-      {activeLink === "Details" ? (
-        <div className="detailsSection">
-          <div className="statContainer">
-            <p></p>
-          </div>
-        </div>
+      {!loading ? (
+        activeLink === "Details" ? (
+          <Details />
+        ) : activeLink === "History" ? (
+          <MatchHistory />
+        ) : null
       ) : (
-        ""
-      )}
-      {/* Render Match History */}
-      {activeLink === "History" ? (
-        <div className="matchHistorySection">
-                        <div
-                key={game.id}
-                className="gameContainer w-full md:h-44 py-8 bg-gray flex flex-col md:flex-row rounded-md lg:max-w-full flex-grow"
-              >
-                <div className="gameInfo flex flex-col items-center justify-center gap-2 py-2 w-full md:w-24 px-4 text-left">
-                  <h2>{game.win ? "Win" : "Loss"}</h2>
-                  <div className="line h-1 w-16 rounded-md bg-orange"></div>
-                  <h2>{handleTime(game.gameLength)}</h2>
-                </div>
-                <div className="champKDA flex flex-col gap-2 py-2 items-center justify-center w-full md:w-16 lg:w-32 text-left">
-                  <img
-                    src={champImageSrc}
-                    alt={game.championName}
-                    className="champion min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] bg-dark-blue"
-                  />
-                  <p className="text-xl font-semibold">
-                    {game.kills}/{game.deaths}/{game.assists}
-                  </p>
-                </div>
-                {/* Container to align stats consistently across all screen sizes */}
-                <div className="fullStats flex flex-col md:flex-row gap-4 items-center justify-center w-fit md:w-1/2 text-left m-auto md:m-4 pt-4 flex-grow">
-                  <div className="statsContainer flex flex-col gap-2 md:flex-row w-full items-center">
-                    <div className="goldStats flex flex-col gap-2 items-start justify-center w-full md:w-2/5">
-                      <p className="text-sm">
-                        CS: <span className="text-white/60">{game.cs}</span>
-                      </p>
-                      <p className="text-sm">
-                        CS/m:{" "}
-                        <span className="text-white/60">
-                          {(game.cs / 60).toFixed(1)}
-                        </span>
-                      </p>
-                      <p className="text-sm">
-                        Gold: <span className="text-white/60">{game.gold}</span>
-                      </p>
-                      <p className="text-sm">
-                        Vision Score:{" "}
-                        <span className="text-white/60">
-                          {game.visionScore}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="damageStats flex flex-col gap-2 items-start justify-center w-full md:w-1/3 flex-grow">
-                      <p className="text-sm">
-                        Damage:{" "}
-                        <span className="text-white/60">{game.damage}</span>
-                      </p>
-                      <p className="text-sm">
-                        Healing:{" "}
-                        <span className="text-white/60">{game.healing}</span>
-                      </p>
-                      <p className="text-sm">
-                        Shielding:{" "}
-                        <span className="text-white/60">{game.shielding}</span>
-                      </p>
-                      <p className="text-sm">
-                        Damage Taken:{" "}
-                        <span className="text-white/60">
-                          {game.damageTaken}
-                        </span>
-                      </p>
-                      <p className="text-sm">
-                        Self-Mitigated:{" "}
-                        <span className="text-white/60">
-                          {game.selfMitigatedDamage}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        </div>
-      ) : (
-        ""
+        <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-3"></div>
       )}
     </>
   );
 }
 
+function Details() {
+  return (
+    <div className="detailsSection">
+      <div className="statContainer">
+        <p></p>
+      </div>
+    </div>
+  );
+}
+
+function MatchHistory() {
+  return "eee";
+  // <div className="matchHistorySection">
+  //   <div
+  //     key={game.id}
+  //     className="gameContainer w-full md:h-44 py-8 bg-gray flex flex-col md:flex-row rounded-md lg:max-w-full flex-grow"
+  //   >
+  //     <div className="gameInfo flex flex-col items-center justify-center gap-2 py-2 w-full md:w-24 px-4 text-left">
+  //       <h2>{game.win ? "Win" : "Loss"}</h2>
+  //       <div className="line h-1 w-16 rounded-md bg-orange"></div>
+  //       <h2>{handleTime(game.gameLength)}</h2>
+  //     </div>
+  //     <div className="champKDA flex flex-col gap-2 py-2 items-center justify-center w-full md:w-16 lg:w-32 text-left">
+  //       <img
+  //         src={champImageSrc}
+  //         alt={game.championName}
+  //         className="champion min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] bg-dark-blue"
+  //       />
+  //       <p className="text-xl font-semibold">
+  //         {game.kills}/{game.deaths}/{game.assists}
+  //       </p>
+  //     </div>
+  //     {/* Container to align stats consistently across all screen sizes */}
+  //     <div className="fullStats flex flex-col md:flex-row gap-4 items-center justify-center w-fit md:w-1/2 text-left m-auto md:m-4 pt-4 flex-grow">
+  //       <div className="statsContainer flex flex-col gap-2 md:flex-row w-full items-center">
+  //         <div className="goldStats flex flex-col gap-2 items-start justify-center w-full md:w-2/5">
+  //           <p className="text-sm">
+  //             CS: <span className="text-white/60">{game.cs}</span>
+  //           </p>
+  //           <p className="text-sm">
+  //             CS/m:{" "}
+  //             <span className="text-white/60">
+  //               {(game.cs / 60).toFixed(1)}
+  //             </span>
+  //           </p>
+  //           <p className="text-sm">
+  //             Gold: <span className="text-white/60">{game.gold}</span>
+  //           </p>
+  //           <p className="text-sm">
+  //             Vision Score:{" "}
+  //             <span className="text-white/60">{game.visionScore}</span>
+  //           </p>
+  //         </div>
+  //         <div className="damageStats flex flex-col gap-2 items-start justify-center w-full md:w-1/3 flex-grow">
+  //           <p className="text-sm">
+  //             Damage: <span className="text-white/60">{game.damage}</span>
+  //           </p>
+  //           <p className="text-sm">
+  //             Healing: <span className="text-white/60">{game.healing}</span>
+  //           </p>
+  //           <p className="text-sm">
+  //             Shielding:{" "}
+  //             <span className="text-white/60">{game.shielding}</span>
+  //           </p>
+  //           <p className="text-sm">
+  //             Damage Taken:{" "}
+  //             <span className="text-white/60">{game.damageTaken}</span>
+  //           </p>
+  //           <p className="text-sm">
+  //             Self-Mitigated:{" "}
+  //             <span className="text-white/60">
+  //               {game.selfMitigatedDamage}
+  //             </span>
+  //           </p>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </div>
+  // </div>
+}
 export default StatsTeamUI;
