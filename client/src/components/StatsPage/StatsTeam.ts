@@ -26,7 +26,9 @@ export const handleTeamSearch = async (
     }
     // Get game data and update gameList
     const gameData: Array<object> = await gameResponse.json();
-    setGameList(gameData);
+    const flatArr = gameData.flat();
+    console.log(flatArr)
+    setGameList(flatArr);
   } catch (err: any) {
     setError(err.message || "An unexpected error occurred");
   }
