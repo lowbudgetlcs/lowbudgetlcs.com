@@ -2,10 +2,8 @@
 export const handleTeamSearch = async (
   teamID: number,
   // React Hooks
-  setGameList: React.Dispatch<React.SetStateAction<Array<object>>>,
   setError: React.Dispatch<React.SetStateAction<string | null>>,
 ) => {
-  setGameList([]);
   setError(null);
   try {
     // Fetch game data from db
@@ -27,9 +25,8 @@ export const handleTeamSearch = async (
     // Get game data and update gameList
     const gameData: Array<object> = await gameResponse.json();
     const flatArr = gameData.flat();
-    console.log(flatArr)
-    setGameList(flatArr);
+    return flatArr
   } catch (err: any) {
-    setError(err.message || "An unexpected error occurred");
+    setError(err.message || "An unexpected error occurred");   
   }
 };
