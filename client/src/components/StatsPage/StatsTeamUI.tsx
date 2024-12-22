@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { handleTeamSearch } from "./StatsTeam";
 interface StatsProps {
   teamName: string;
   groupId: string;
@@ -11,6 +12,12 @@ interface StatsProps {
   onToggle: () => void;
 }
 
+interface GameStatsProps[] {
+  gameId: number;
+  players: Array<object>
+  win: boolean
+}
+
 function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
     useLocation().state;
@@ -18,7 +25,25 @@ function StatsTeamUI() {
   const [gameList, setGameList] = useState<Array<object>>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-
+  const teamID: number = Number(useParams().team);
+  const navigate = useNavigate();
+  useEffect(() => {
+    const getTeamStats = async () => {
+      try {
+        const teamArray = await handleTeamSearch(teamID, setError);
+        console.log(teamArray);
+        if (teamArray) {
+          setGameList(teamArray);
+        } else {
+          console.error("No Team Array Fetched");
+          navigate(`/stats`);
+        }
+      } catch (err) {
+        console.error("Failed getting Team Stats: " + error);
+      }
+    };
+    getTeamStats();
+  }, [teamID]);
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
@@ -64,7 +89,7 @@ function StatsTeamUI() {
       </div>
       {!loading ? (
         activeLink === "Details" ? (
-          <Details />
+          <Details gameList={gameList} />
         ) : activeLink === "History" ? (
           <MatchHistory />
         ) : null
@@ -75,11 +100,16 @@ function StatsTeamUI() {
   );
 }
 
-function Details() {
+function Details({ gameList }: { gameList: Array<object> }) {
+  let winLossRatio: Array<number>; 
+
+  gameList.forEach((game) => {
+    game.win
+  })
   return (
     <div className="detailsSection">
       <div className="statContainer">
-        <p></p>
+        <p className="winLossRatio">Win/Loss {}</p>
       </div>
     </div>
   );
