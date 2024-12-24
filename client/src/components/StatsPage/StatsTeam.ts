@@ -28,5 +28,6 @@ export const handleTeamSearch = async (
     return flatArr
   } catch (err: any) {
     setError(err.message || "An unexpected error occurred");   
+    return err
   }
 };
