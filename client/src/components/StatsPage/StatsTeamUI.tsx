@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { handleTeamSearch } from "./StatsTeam";
+import { GameStatsProps, handleTeamSearch } from "./StatsTeam";
 interface StatsProps {
   teamName: string;
   groupId: string;
@@ -12,17 +12,11 @@ interface StatsProps {
   onToggle: () => void;
 }
 
-interface GameStatsProps[] {
-  gameId: number;
-  players: Array<object>
-  win: boolean
-}
-
 function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
     useLocation().state;
   const [activeLink, setActiveLink] = useState<string>("Details");
-  const [gameList, setGameList] = useState<Array<object>>([]);
+  const [gameList, setGameList] = useState<Array<GameStatsProps>>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const teamID: number = Number(useParams().team);
@@ -30,16 +24,17 @@ function StatsTeamUI() {
   useEffect(() => {
     const getTeamStats = async () => {
       try {
-        const teamArray = await handleTeamSearch(teamID, setError);
+        setLoading(true)
+        const teamArray: Array<GameStatsProps> = await handleTeamSearch(
+          teamID,
+          setError
+        );
         console.log(teamArray);
-        if (teamArray) {
-          setGameList(teamArray);
-        } else {
-          console.error("No Team Array Fetched");
-          navigate(`/stats`);
-        }
+        setGameList(teamArray);
       } catch (err) {
         console.error("Failed getting Team Stats: " + error);
+      } finally {
+        setLoading(false)
       }
     };
     getTeamStats();
@@ -49,7 +44,7 @@ function StatsTeamUI() {
   };
   return (
     <>
-      <div className="statsTeamTitle min-h-64 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="statsTeamTitle text-white min-h-64 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
         {logo ? (
           <img
             src={logo}
@@ -89,7 +84,11 @@ function StatsTeamUI() {
       </div>
       {!loading ? (
         activeLink === "Details" ? (
-          <Details gameList={gameList} />
+          gameList.length > 0 ? (
+            <Details gameList={gameList} />
+          ) : (
+            <p className="text-xl text-white font-bold">No games found for this team. Please try reloading</p>
+          )
         ) : activeLink === "History" ? (
           <MatchHistory />
         ) : null
@@ -100,16 +99,25 @@ function StatsTeamUI() {
   );
 }
 
-function Details({ gameList }: { gameList: Array<object> }) {
-  let winLossRatio: Array<number>; 
+function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
+  const teamCalculations = useMemo(() => {
+    let wins: number = 0;
+    const totalGames: number = gameList.length;
+    gameList.forEach((game) => {
+      if (game.win) {
+        wins++;
+      }
+    });
+    const winLossRatio: number = Number(((wins / totalGames) * 100).toFixed(0));
 
-  gameList.forEach((game) => {
-    game.win
-  })
+    return { winLossRatio };
+  }, [gameList]);
   return (
-    <div className="detailsSection">
+    <div className="detailsSection text-white">
       <div className="statContainer">
-        <p className="winLossRatio">Win/Loss {}</p>
+        <p className="winLossRatio">
+          Win/Loss {teamCalculations.winLossRatio}%
+        </p>
       </div>
     </div>
   );

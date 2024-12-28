@@ -1,4 +1,10 @@
 
+export interface GameStatsProps {
+  gameId: number;
+  players: Array<object>
+  win: boolean
+}
+
 export const handleTeamSearch = async (
   teamID: number,
   // React Hooks
@@ -23,11 +29,11 @@ export const handleTeamSearch = async (
       }
     }
     // Get game data and update gameList
-    const gameData: Array<object> = await gameResponse.json();
+    const gameData: Array<GameStatsProps> = await gameResponse.json();
     const flatArr = gameData.flat();
     return flatArr
   } catch (err: any) {
     setError(err.message || "An unexpected error occurred");   
-    return err
+    throw new Error("Some unexpected error in fetching player data occurred")
   }
 };
