@@ -1,8 +1,38 @@
 
 export interface GameStatsProps {
   gameId: number;
-  players: Array<object>
-  win: boolean
+  win: boolean;
+  players: Array<{
+    playerId: number;
+    playerName: string;
+    stats: {
+      id: number;
+      kills: number;
+      deaths: number;
+      assists: number;
+      level: number;
+      gold: number;
+      visionScore: number;
+      damage: number;
+      healing: number;
+      shielding: number;
+      damageTaken: number;
+      selfMitigatedDamage: number;
+      damageToTurrets: number;
+      longestLife: number;
+      doubleKills: number;
+      tripleKills: number;
+      quadraKills: number;
+      pentaKills: number;                                                                                                                                                                                 
+      gameLength: number;
+      win: boolean;
+      cs: number;
+      championName: string;
+      teamKills: number;
+      shortCode: string;
+      performanceId: number;
+    };
+  }>;
 }
 
 export const handleTeamSearch = async (
