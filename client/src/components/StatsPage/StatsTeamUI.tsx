@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { GameStatsProps, handleTeamSearch } from "./StatsTeam";
 interface StatsProps {
   teamName: string;
@@ -11,6 +11,18 @@ interface StatsProps {
   isOpen: boolean;
   onToggle: () => void;
 }
+
+interface RosterProps {
+  id: number;
+  playerName: string;
+}
+
+interface ChampionProps {
+  championName: string;
+  gamesPlayed: number;
+}
+
+interface ChampImagesProps {}
 
 function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
@@ -24,7 +36,7 @@ function StatsTeamUI() {
   useEffect(() => {
     const getTeamStats = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
         const teamArray: Array<GameStatsProps> = await handleTeamSearch(
           teamID,
           setError
@@ -34,9 +46,10 @@ function StatsTeamUI() {
       } catch (err) {
         console.error("Failed getting Team Stats: " + error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
+
     getTeamStats();
   }, [teamID]);
   const toggleActive = (navItem: string) => {
@@ -87,7 +100,9 @@ function StatsTeamUI() {
           gameList.length > 0 ? (
             <Details gameList={gameList} />
           ) : (
-            <p className="text-xl text-white font-bold">No games found for this team. Please try reloading</p>
+            <p className="text-xl text-white font-bold">
+              No games found for this team. Please try reloading
+            </p>
           )
         ) : activeLink === "History" ? (
           <MatchHistory />
@@ -100,24 +115,134 @@ function StatsTeamUI() {
 }
 
 function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
+  const [champImages, setChampImages] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const modules = import.meta.glob("../../assets/champion/*.png");
+    const images: Record<string, string> = {};
+
+    // Get champion images from folder
+    const loadImages = async () => {
+      for (const path in modules) {
+        const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
+        if (name) {
+          const module = (await modules[path]()) as { default: string };
+          images[name] = module.default;
+        }
+      }
+      setChampImages(images);
+      console.log(champImages);
+    };
+    loadImages();
+  }, []);
   const teamCalculations = useMemo(() => {
+    const league: string = "";
     let wins: number = 0;
     const totalGames: number = gameList.length;
+    let totalGameTime: number = 0;
+    let averageGTMinutes: number;
+    let averageGTSeconds: number;
+    const roster: Array<RosterProps> = [];
+    const champions: ChampionProps[] = [];
+
+    // Adds a win to total win count per won game
     gameList.forEach((game) => {
       if (game.win) {
         wins++;
       }
+      // Adds total game time from a singular player in the game since it is saved per player
+      totalGameTime += game.players[0].stats.gameLength;
+
+      game.players.forEach((player) => {
+        // Adds champion object to champions array if the champion does not exist
+        if (
+          !champions.some(
+            (champion) => champion.championName === player.stats.championName
+          )
+        ) {
+          champions.push({
+            championName: player.stats.championName,
+            gamesPlayed: 1,
+          });
+        } else {
+          // Find the champion object in the array and add 1 to gamesPlayed
+          const selectedChampion = champions.find(
+            (champion) => champion.championName === player.stats.championName
+          );
+          if (selectedChampion) {
+            selectedChampion.gamesPlayed++;
+          } else {
+            console.error(
+              "Error: Cannot find champion even though if it does not exist it should be created...?"
+            );
+          }
+        }
+      });
     });
+
+    averageGTMinutes = Math.floor(totalGameTime / gameList.length / 60);
+    averageGTSeconds = Math.floor((totalGameTime / gameList.length) % 60);
+    const averageGameTime: string = averageGTMinutes + ":" + averageGTSeconds;
     const winLossRatio: number = Number(((wins / totalGames) * 100).toFixed(0));
 
-    return { winLossRatio };
+    //Add players to roster with player Id hidden
+    gameList[0].players.forEach((player) => {
+      roster.push({
+        id: player.playerId,
+        playerName: player.playerName,
+      });
+    });
+    return { winLossRatio, averageGameTime, roster, champions };
   }, [gameList]);
   return (
-    <div className="detailsSection text-white">
-      <div className="statContainer">
-        <p className="winLossRatio">
-          Win/Loss {teamCalculations.winLossRatio}%
-        </p>
+    <div className="detailsSection text-white flex md:flex-row flex-col items-center p-4">
+      <div className="statContainer flex md:flex-row flex-col gap-8">
+        {/* Win Loss Ratio */}
+        <div className="winLossRatio p-4 bg-gray">
+          <p>Win/Loss {teamCalculations.winLossRatio}%</p>
+        </div>
+        {/* Average Game Time */}
+        <div className="AvgGameTime p-4 bg-gray flex flex-col justify-center items-center">
+          <p className="text-6xl">{teamCalculations.averageGameTime}</p>
+          <p className="text-lg">Average Game Time </p>
+        </div>
+
+        <div className="roster flex flex-col p-4 bg-gray rounded-md">
+          <div className="flex justify-center pb-4">
+            <h2 className="font-bold text-xl">Roster</h2>
+          </div>
+          {/* Team Roster */}
+          <ul className="rosterList flex flex-col gap-2">
+            {teamCalculations.roster.map((player) => {
+              const modifiedPlayerName = player.playerName.replace("#", " #");
+              return (
+                // TODO: Refactor code to allow link to work
+                <Link key={player.id} to={`/stats/player/${player.playerName}`}>
+                  <li className="hover:text-orange hover:transition duration-500">
+                    {modifiedPlayerName}
+                  </li>
+                </Link>
+              );
+            })}
+          </ul>
+        </div>
+        <div className="champsPlayed flex flex-col p-4 bg-gray rounded-md items-center md:max-w-[45%]">
+          <h2 className="font-bold text-xl">Champions Played</h2>
+          <div className="championContainer flex flex-wrap gap-2 p-4">
+            {teamCalculations.champions.map((champion) => {
+              return (
+                <div className="champion relative w-[50px] h-[50px]">
+                  <img
+                    className="w-[50px] h-[50px] bg-gray"
+                    src={champImages[champion.championName]}
+                  ></img>
+                  <div className="absolute bottom-0.5 right-0.5 bg-black px-1 leading-4">
+                    {champion.gamesPlayed}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
