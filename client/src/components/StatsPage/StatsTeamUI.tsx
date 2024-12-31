@@ -34,6 +34,7 @@ function StatsTeamUI() {
   const teamID: number = Number(useParams().team);
   const navigate = useNavigate();
   useEffect(() => {
+    // fetches team stats by id given and sets the error if there is one
     const getTeamStats = async () => {
       try {
         setLoading(true);
@@ -113,14 +114,15 @@ function StatsTeamUI() {
     </>
   );
 }
-
+// TODO: Move details & match history components to seperate file
 function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
   const [champImages, setChampImages] = useState<Record<string, string>>({});
   useEffect(() => {
+    // import all images
     const modules = import.meta.glob("../../assets/champion/*.png");
     const images: Record<string, string> = {};
 
-    // Get champion images from folder
+    // Match champion names to images
     const loadImages = async () => {
       for (const path in modules) {
         const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
@@ -130,10 +132,10 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         }
       }
       setChampImages(images);
-      console.log(champImages);
     };
     loadImages();
   }, []);
+  // Stores all values to prevent recalculation unless the gameList var has changed
   const teamCalculations = useMemo(() => {
     const league: string = "";
     let wins: number = 0;
@@ -171,6 +173,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
           if (selectedChampion) {
             selectedChampion.gamesPlayed++;
           } else {
+            // Should NEVER hit this error
             console.error(
               "Error: Cannot find champion even though if it does not exist it should be created...?"
             );
@@ -178,7 +181,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         }
       });
     });
-
+    // Calculate average game time
     averageGTMinutes = Math.floor(totalGameTime / gameList.length / 60);
     averageGTSeconds = Math.floor((totalGameTime / gameList.length) % 60);
     const averageGameTime: string = averageGTMinutes + ":" + averageGTSeconds;
@@ -225,10 +228,12 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
             })}
           </ul>
         </div>
+        {/* Champions Played */}
         <div className="champsPlayed flex flex-col p-4 bg-gray rounded-md items-center md:max-w-[45%]">
           <h2 className="font-bold text-xl">Champions Played</h2>
           <div className="championContainer flex flex-wrap gap-2 p-4">
             {teamCalculations.champions.map((champion) => {
+              // returns each champion image with how many times played
               return (
                 <div className="champion relative w-[50px] h-[50px]">
                   <img
