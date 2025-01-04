@@ -1,28 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import { GameStatsProps, handleTeamSearch } from "./StatsTeam";
-interface StatsProps {
-  teamName: string;
-  groupId: string;
-  // captainId: number | null;
-  logo: string | null;
-  playerList: string[];
-  divisionId: number;
-  isOpen: boolean;
-  onToggle: () => void;
-}
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import { GameStatsProps, handleTeamSearch, StatsProps } from "./StatsTeam";
+import Details from "./TeamDetails";
 
-interface RosterProps {
-  id: number;
-  playerName: string;
-}
 
-interface ChampionProps {
-  championName: string;
-  gamesPlayed: number;
-}
-
-interface ChampImagesProps {}
 
 function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
@@ -32,7 +13,6 @@ function StatsTeamUI() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const teamID: number = Number(useParams().team);
-  const navigate = useNavigate();
   useEffect(() => {
     // fetches team stats by id given and sets the error if there is one
     const getTeamStats = async () => {
@@ -114,144 +94,8 @@ function StatsTeamUI() {
     </>
   );
 }
-// TODO: Move details & match history components to seperate file
-function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
-  const [champImages, setChampImages] = useState<Record<string, string>>({});
-  useEffect(() => {
-    // import all images
-    const modules = import.meta.glob("../../assets/champion/*.png");
-    const images: Record<string, string> = {};
 
-    // Match champion names to images
-    const loadImages = async () => {
-      for (const path in modules) {
-        const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
-        if (name) {
-          const module = (await modules[path]()) as { default: string };
-          images[name] = module.default;
-        }
-      }
-      setChampImages(images);
-    };
-    loadImages();
-  }, []);
-  // Stores all values to prevent recalculation unless the gameList var has changed
-  const teamCalculations = useMemo(() => {
-    const league: string = "";
-    let wins: number = 0;
-    const totalGames: number = gameList.length;
-    let totalGameTime: number = 0;
-    let averageGTMinutes: number;
-    let averageGTSeconds: number;
-    const roster: Array<RosterProps> = [];
-    const champions: ChampionProps[] = [];
 
-    // Adds a win to total win count per won game
-    gameList.forEach((game) => {
-      if (game.win) {
-        wins++;
-      }
-      // Adds total game time from a singular player in the game since it is saved per player
-      totalGameTime += game.players[0].stats.gameLength;
-
-      game.players.forEach((player) => {
-        // Adds champion object to champions array if the champion does not exist
-        if (
-          !champions.some(
-            (champion) => champion.championName === player.stats.championName
-          )
-        ) {
-          champions.push({
-            championName: player.stats.championName,
-            gamesPlayed: 1,
-          });
-        } else {
-          // Find the champion object in the array and add 1 to gamesPlayed
-          const selectedChampion = champions.find(
-            (champion) => champion.championName === player.stats.championName
-          );
-          if (selectedChampion) {
-            selectedChampion.gamesPlayed++;
-          } else {
-            // Should NEVER hit this error
-            console.error(
-              "Error: Cannot find champion even though if it does not exist it should be created...?"
-            );
-          }
-        }
-      });
-    });
-    // Calculate average game time
-    averageGTMinutes = Math.floor(totalGameTime / gameList.length / 60);
-    averageGTSeconds = Math.floor((totalGameTime / gameList.length) % 60);
-    const averageGameTime: string = averageGTMinutes + ":" + averageGTSeconds;
-    const winLossRatio: number = Number(((wins / totalGames) * 100).toFixed(0));
-
-    //Add players to roster with player Id hidden
-    gameList[0].players.forEach((player) => {
-      roster.push({
-        id: player.playerId,
-        playerName: player.playerName,
-      });
-    });
-    return { winLossRatio, averageGameTime, roster, champions };
-  }, [gameList]);
-  return (
-    <div className="detailsSection text-white flex md:flex-row flex-col items-center p-4">
-      <div className="statContainer flex md:flex-row flex-col gap-8">
-        {/* Win Loss Ratio */}
-        <div className="winLossRatio p-4 bg-gray">
-          <p>Win/Loss {teamCalculations.winLossRatio}%</p>
-        </div>
-        {/* Average Game Time */}
-        <div className="AvgGameTime p-4 bg-gray flex flex-col justify-center items-center">
-          <p className="text-6xl">{teamCalculations.averageGameTime}</p>
-          <p className="text-lg">Average Game Time </p>
-        </div>
-
-        <div className="roster flex flex-col p-4 bg-gray rounded-md">
-          <div className="flex justify-center pb-4">
-            <h2 className="font-bold text-xl">Roster</h2>
-          </div>
-          {/* Team Roster */}
-          <ul className="rosterList flex flex-col gap-2">
-            {teamCalculations.roster.map((player) => {
-              const modifiedPlayerName = player.playerName.replace("#", " #");
-              return (
-                // TODO: Refactor code to allow link to work
-                <Link key={player.id} to={`/stats/player/${player.playerName}`}>
-                  <li className="hover:text-orange hover:transition duration-500">
-                    {modifiedPlayerName}
-                  </li>
-                </Link>
-              );
-            })}
-          </ul>
-        </div>
-        {/* Champions Played */}
-        <div className="champsPlayed flex flex-col p-4 bg-gray rounded-md items-center md:max-w-[45%]">
-          <h2 className="font-bold text-xl">Champions Played</h2>
-          <div className="championContainer flex flex-wrap gap-2 p-4">
-            {teamCalculations.champions.map((champion) => {
-              // returns each champion image with how many times played
-              return (
-                <div className="champion relative w-[50px] h-[50px]">
-                  <img
-                    className="w-[50px] h-[50px] bg-gray"
-                    src={champImages[champion.championName]}
-                  ></img>
-                  <div className="absolute bottom-0.5 right-0.5 bg-black px-1 leading-4">
-                    {champion.gamesPlayed}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function MatchHistory() {
   return "eee";

@@ -35,6 +35,30 @@ export interface GameStatsProps {
   }>;
 }
 
+export interface StatsProps {
+  teamName: string;
+  groupId: string;
+  // captainId: number | null;
+  logo: string | null;
+  playerList: string[];
+  divisionId: number;
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+export interface RosterProps {
+  id: number;
+  playerName: string;
+}
+
+export interface ChampionProps {
+  championName: string;
+  gamesPlayed: number;
+}
+
+export interface ChampImagesProps {}
+
+
 export const handleTeamSearch = async (
   teamID: number,
   // React Hooks
