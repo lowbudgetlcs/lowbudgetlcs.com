@@ -23,7 +23,6 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         }
       }
       setChampImages(images);
-      console.log(champImages);
     };
     loadImages();
   }, []);
@@ -104,7 +103,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
   }, [gameList]);
   return (
     <div className="detailsSection text-white flex md:flex-row flex-col items-center p-4">
-      <div className="statContainer flex flex-col md:grid grid-cols-2 md:grid-cols-3 grid-rows-6 md:grid-rows-4 gap-6 p-4 md:p-8 lg:p-16">
+      <div className="statContainer flex flex-col md:grid grid-cols-2 md:grid-cols-3 grid-rows-3 gap-6 p-4 md:p-8 lg:py-12 lg:px-24">
         {/* Win Loss Ratio */}
         <div className="winLossRatio col-start-1 md:col-start-2 p-4 bg-gray flex flex-col gap-4 justify-center items-center rounded-md">
           <div className="flex items-center justify-center gap-4">
@@ -144,7 +143,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         {/* Team Roster */}
         <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-4 md:row-start-1 row-end-6 md:row-end-3 flex flex-col p-4 bg-gray rounded-md">
           <div className="flex justify-center pb-4">
-            <h2 className="font-bold text-4xl">Roster</h2>
+            <h2 className="font-bold text-2xl">Roster</h2>
           </div>
           <ul className="rosterList flex flex-col gap-4 p-4">
             {teamCalculations.roster.map((player) => {
@@ -152,7 +151,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
               return (
                 // TODO: Refactor code to allow link to work
                 <div key={player.id}>
-                  <li className="text-lg  duration-500">
+                  <li className="text-lg lg:text-xl  duration-500">
                     {modifiedPlayerName}
                   </li>
                 </div>
@@ -161,19 +160,38 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
           </ul>
         </div>
         {/* Champion Bans */}
-        <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-6 md:row-start-3 flex flex-col p-4 bg-gray rounded-md">
+        <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-6 md:row-start-3 md:row-span-1 flex flex-col p-4 bg-gray rounded-md">
           <div className="flex justify-center pb-4">
-            <h2 className="font-bold text-xl text-center text-wrap">
+            <h2 className="font-bold text-2xl text-center text-wrap">
               Commonly Banned Champions
             </h2>
           </div>
           <ul className="rosterList flex flex-col gap-2 items-center justify-center">
-            <p className="text-5xl text-wrap text-center">Coming Soon™</p>
+            <p className="text-4xl text-wrap text-center">Coming Soon™</p>
           </ul>
+        </div>
+                {/* Champions Played */}
+                <div className="champsPlayed row-start-2 row-span-1 md:row-span-2 lg:row-span-1 col-start-1 md:col-start-2 col-end-3 md:col-end-4 flex flex-col p-4 bg-gray rounded-md items-center">
+          <h2 className="font-bold text-2xl">Champions Played</h2>
+          <div className="championContainer flex flex-wrap gap-2 p-4">
+            {teamCalculations.sortedChampions.map((champion) => {
+              return (
+                <div className="champion relative w-[50px] h-[50px]">
+                  <img
+                    className="w-[50px] h-[50px] bg-gray"
+                    src={champImages[champion.championName]}
+                  ></img>
+                  <div className="absolute bottom-0.5 right-0.5 bg-black px-1 leading-4">
+                    {champion.gamesPlayed}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
         {/* First Bloods */}
         <div className="firstBloods col-start-1 md:col-start-2 col-end-3 md:col-end-4 bg-gray flex flex-col p-4 items-center rounded-md">
-          <h2 className="font-bold text-xl text-center text-wrap p-2">
+          <h2 className="font-bold text-2xl text-center text-wrap p-2">
             First Bloods
           </h2>
           <div className="firstBloodsContainer grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-4 gap-4">
@@ -197,25 +215,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
             </p>
           </div>
         </div>
-        {/* Champions Played */}
-        <div className="champsPlayed row-start-2 row-span-1 md:row-span-2 col-start-1 md:col-start-2 col-end-3 md:col-end-4 flex flex-col p-4 bg-gray rounded-md items-center">
-          <h2 className="font-bold text-xl">Champions Played</h2>
-          <div className="championContainer flex flex-wrap gap-2 p-4">
-            {teamCalculations.sortedChampions.map((champion) => {
-              return (
-                <div className="champion relative w-[50px] h-[50px]">
-                  <img
-                    className="w-[50px] h-[50px] bg-gray"
-                    src={champImages[champion.championName]}
-                  ></img>
-                  <div className="absolute bottom-0.5 right-0.5 bg-black px-1 leading-4">
-                    {champion.gamesPlayed}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+
       </div>
     </div>
   );
