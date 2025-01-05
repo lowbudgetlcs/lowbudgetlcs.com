@@ -109,14 +109,18 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         <div className="winLossRatio col-start-1 md:col-start-2 p-4 bg-gray flex flex-col gap-4 justify-center items-center rounded-md">
           <div className="flex items-center justify-center gap-4">
             <div className="flex flex-col items-center">
-              <p className="text-4xl">{teamCalculations.gamesPlayed}</p>
-              <p className="text-lg text-wrap text-center">Games Played</p>
+              <p className="text-4xl text-orange">
+                {teamCalculations.gamesPlayed}
+              </p>
+              <p className="text-lg text-wrap text-center">Games</p>
             </div>
             <div className="flex flex-col items-center">
-              <p className="text-4xl">
-                {teamCalculations.wins}/{teamCalculations.losses}
-              </p>
-              <p className="text-lg text-center">Win/Loss</p>
+              <p className="text-4xl text-blue">{teamCalculations.wins}</p>
+              <p className="text-lg text-center">Wins</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <p className="text-4xl text-red">{teamCalculations.losses}</p>
+              <p className="text-lg text-center">losses</p>
             </div>
           </div>
           <div className="flex flex-col items-center">
