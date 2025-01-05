@@ -19,6 +19,7 @@ export default {
       'transparent': '#1a1a1a00',
       'blue': '#125AE8',
       'lblcs-light-blue': '#d9dbf1',
+      'red' : '#e84057',
       // For Gradients
       'gold-light': '#C89B5F',
       'gold-dark': '#44311A',
