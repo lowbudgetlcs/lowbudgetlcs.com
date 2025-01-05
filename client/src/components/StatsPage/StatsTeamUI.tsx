@@ -22,7 +22,6 @@ function StatsTeamUI() {
           teamID,
           setError
         );
-        console.log(teamArray);
         setGameList(teamArray);
       } catch (err) {
         console.error("Failed getting Team Stats: " + error);
@@ -79,7 +78,7 @@ function StatsTeamUI() {
       {!loading ? (
         activeLink === "Details" ? (
           gameList.length > 0 ? (
-            <Details gameList={gameList} />
+            <Details gameList={gameList}/>
           ) : (
             <p className="text-xl text-white font-bold">
               No games found for this team. Please try reloading
