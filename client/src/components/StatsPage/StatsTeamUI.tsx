@@ -38,7 +38,7 @@ function StatsTeamUI() {
   };
   return (
     <>
-      <div className="statsTeamTitle text-white min-h-64 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="statsTeamTitle text-white min-h-24 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
         {logo ? (
           <img
             src={logo}
