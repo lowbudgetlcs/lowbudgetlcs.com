@@ -76,10 +76,13 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         }
       });
     });
-    const sortedChampions = champions.sort((a, b) => b.gamesPlayed - a.gamesPlayed);
+    const sortedChampions = champions.sort(
+      (a, b) => b.gamesPlayed - a.gamesPlayed
+    );
     averageGTMinutes = Math.floor(totalGameTime / gameList.length / 60);
     averageGTSeconds = Math.floor((totalGameTime / gameList.length) % 60);
-    const averageGameTime: string = averageGTMinutes + ":" + (averageGTSeconds).toString().padStart(2,'0');
+    const averageGameTime: string =
+      averageGTMinutes + ":" + averageGTSeconds.toString().padStart(2, "0");
     const winLossRatio: number = Number(((wins / totalGames) * 100).toFixed(0));
 
     //Add players to roster with player Id hidden
@@ -101,28 +104,9 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
   }, [gameList]);
   return (
     <div className="detailsSection text-white flex md:flex-row flex-col items-center p-4">
-      <div className="statContainer grid grid-cols-2 md:grid-cols-3 grid-rows-8 gap-4 p-4 md:p-8 lg:p-16">
-        {/* Team Roster */}
-        <div className="roster col-start-1 row-start-4 md:row-start-1 row-end-6 md:row-end-3 flex flex-col p-4 bg-gray rounded-md">
-          <div className="flex justify-center pb-4">
-            <h2 className="font-bold text-xl">Roster</h2>
-          </div>
-          <ul className="rosterList flex flex-col gap-2">
-            {teamCalculations.roster.map((player) => {
-              const modifiedPlayerName = player.playerName.replace("#", " #");
-              return (
-                // TODO: Refactor code to allow link to work
-                <Link key={player.id} to={`/stats/player/${player.playerName}`}>
-                  <li className="hover:text-orange hover:transition duration-500">
-                    {modifiedPlayerName}
-                  </li>
-                </Link>
-              );
-            })}
-          </ul>
-        </div>
+      <div className="statContainer flex flex-col md:grid grid-cols-2 md:grid-cols-3 grid-rows-6 md:grid-rows-4 gap-6 p-4 md:p-8 lg:p-16">
         {/* Win Loss Ratio */}
-        <div className="winLossRatio col-start-1 md:col-start-2 p-4 bg-gray flex flex-col gap-4 justify-center items-center">
+        <div className="winLossRatio col-start-1 md:col-start-2 p-4 bg-gray flex flex-col gap-4 justify-center items-center rounded-md">
           <div className="flex items-center justify-center gap-4">
             <div className="flex flex-col items-center">
               <p className="text-4xl">{teamCalculations.gamesPlayed}</p>
@@ -136,28 +120,81 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
             </div>
           </div>
           <div className="flex flex-col items-center">
-            <p className="text-6xl">{teamCalculations.winLossRatio}%</p>
+            <p
+              className={`text-6xl ${
+                teamCalculations.winLossRatio >= 50 ? "text-blue" : "text-red"
+              }`}
+            >
+              {teamCalculations.winLossRatio}%
+            </p>
             <p className="text-xl text-wrap text-center">Win Rate</p>
           </div>
         </div>
         {/* Average Game Time */}
-        <div className="AvgGameTime col-start-2 md:col-start-3 p-4 bg-gray flex flex-col justify-center items-center">
-          <p className="text-6xl">{teamCalculations.averageGameTime}</p>
+        <div className="AvgGameTime col-start-2 md:col-start-3 p-4 bg-gray flex flex-col justify-center items-center rounded-md">
+          <p className="text-6xl text-orange">
+            {teamCalculations.averageGameTime}
+          </p>
           <p className="text-lg">Average Game Time </p>
         </div>
+        {/* Team Roster */}
+        <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-4 md:row-start-1 row-end-6 md:row-end-3 flex flex-col p-4 bg-gray rounded-md">
+          <div className="flex justify-center pb-4">
+            <h2 className="font-bold text-4xl">Roster</h2>
+          </div>
+          <ul className="rosterList flex flex-col gap-4 p-4">
+            {teamCalculations.roster.map((player) => {
+              const modifiedPlayerName = player.playerName.replace("#", " #");
+              return (
+                // TODO: Refactor code to allow link to work
+                <div key={player.id}>
+                  <li className="text-lg  duration-500">
+                    {modifiedPlayerName}
+                  </li>
+                </div>
+              );
+            })}
+          </ul>
+        </div>
         {/* Champion Bans */}
-        <div className="roster col-start-2 md:col-start-1 row-start-4 md:row-start-3 row-end-6 md:row-end-5 flex flex-col p-4 bg-gray rounded-md">
+        <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-6 md:row-start-3 flex flex-col p-4 bg-gray rounded-md">
           <div className="flex justify-center pb-4">
             <h2 className="font-bold text-xl text-center text-wrap">
               Commonly Banned Champions
             </h2>
           </div>
           <ul className="rosterList flex flex-col gap-2 items-center justify-center">
-            <p className="text-6xl text-wrap text-center">Coming Soon™</p>
+            <p className="text-5xl text-wrap text-center">Coming Soon™</p>
           </ul>
         </div>
+        {/* First Bloods */}
+        <div className="firstBloods col-start-1 md:col-start-2 col-end-3 md:col-end-4 bg-gray flex flex-col p-4 items-center rounded-md">
+          <h2 className="font-bold text-xl text-center text-wrap p-2">
+            First Bloods
+          </h2>
+          <div className="firstBloodsContainer grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-4 gap-4">
+            <p className="text-lg col-start-1">Champions: </p>
+            <p className="number col-start-2 text-orange">0</p>
+            <p className="text-lg col-start-1">Dragons: </p>
+            <p className="number col-start-2 text-orange">0</p>
+            <p className="text-lg col-start-1">Grubs: </p>
+            <p className="number col-start-2 text-orange">0</p>
+            <p className="text-lg sm:col-start-3 row-start-1">Heralds: </p>
+            <p className="number sm:col-start-4 row-start-1 text-orange">0</p>
+            <p className="text-lg sm:col-start-3 row-start-2">Towers: </p>
+            <p className="number sm:col-start-4 row-start-2 text-orange">0</p>
+            <p className="text-lg sm:col-start-3 row-start-3">Atakhan: </p>
+            <p className="number sm:col-start-4 row-start-3 text-orange">0</p>
+            <p className="text-lg col-start-1 lg:col-start-2 row-start-4">
+              Barons:{" "}
+            </p>
+            <p className="number col-start-2 lg:col-start-3 row-start-4 text-orange">
+              0
+            </p>
+          </div>
+        </div>
         {/* Champions Played */}
-        <div className="champsPlayed row-start-2 row-span-2 col-start-1 md:col-start-2 col-end-3 md:col-end-4 flex flex-col p-4 bg-gray rounded-md items-center">
+        <div className="champsPlayed row-start-2 row-span-1 md:row-span-2 col-start-1 md:col-start-2 col-end-3 md:col-end-4 flex flex-col p-4 bg-gray rounded-md items-center">
           <h2 className="font-bold text-xl">Champions Played</h2>
           <div className="championContainer flex flex-wrap gap-2 p-4">
             {teamCalculations.sortedChampions.map((champion) => {
