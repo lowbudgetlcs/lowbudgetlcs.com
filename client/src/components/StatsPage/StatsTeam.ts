@@ -58,6 +58,12 @@ export interface ChampionProps {
 
 export interface ChampImagesProps {}
 
+export interface BannedProps {
+  championName: string;
+  timesBanned: number;
+  banRate: number;
+}
+
 
 export const handleTeamSearch = async (
   teamID: number,
