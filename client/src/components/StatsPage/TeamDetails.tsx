@@ -102,10 +102,10 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
     };
   }, [gameList]);
   return (
-    <div className="detailsSection text-white flex md:flex-row flex-col items-center p-4">
+    <div className="detailsSection text-white flex md:flex-row flex-col items-center">
       <div className="statContainer flex flex-col md:grid grid-cols-2 md:grid-cols-3 grid-rows-3 gap-6 p-4 md:p-8 lg:py-12 lg:px-24">
         {/* Win Loss Ratio */}
-        <div className="winLossRatio col-start-1 md:col-start-2 p-4 bg-gray flex flex-col gap-4 justify-center items-center rounded-md">
+        <div className="winLossRatio col-start-1 md:col-start-2 bg-gray flex flex-col gap-4 justify-center items-center rounded-md">
           <div className="flex items-center justify-center gap-4">
             <div className="flex flex-col items-center">
               <p className="text-4xl text-orange">
@@ -122,7 +122,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
               <p className="text-lg text-center">losses</p>
             </div>
           </div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center pt-4 border-t-2 w-full">
             <p
               className={`text-6xl ${
                 teamCalculations.winLossRatio >= 50 ? "text-blue" : "text-red"
@@ -142,9 +142,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         </div>
         {/* Team Roster */}
         <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-4 md:row-start-1 row-end-6 md:row-end-3 flex flex-col p-4 bg-gray rounded-md">
-          <div className="flex justify-center pb-4">
-            <h2 className="font-bold text-2xl">Roster</h2>
-          </div>
+            <h2 className="font-bold text-2xl pb-2 mb-2 border-b-2">Roster</h2>
           <ul className="rosterList flex flex-col gap-4 p-4">
             {teamCalculations.roster.map((player) => {
               const modifiedPlayerName = player.playerName.replace("#", " #");
@@ -161,8 +159,8 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         </div>
         {/* Champion Bans */}
         <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-6 md:row-start-3 md:row-span-1 flex flex-col p-4 bg-gray rounded-md">
-          <div className="flex justify-center pb-4">
-            <h2 className="font-bold text-2xl text-center text-wrap">
+          <div className="flex flex-col justify-center pb-4">
+            <h2 className="font-bold text-2xl text-wrap pb-2 border-b-2">
               Commonly Banned Champions
             </h2>
           </div>
@@ -172,7 +170,7 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         </div>
                 {/* Champions Played */}
                 <div className="champsPlayed row-start-2 row-span-1 md:row-span-2 lg:row-span-1 col-start-1 md:col-start-2 col-end-3 md:col-end-4 flex flex-col p-4 bg-gray rounded-md items-center">
-          <h2 className="font-bold text-2xl">Champions Played</h2>
+          <h2 className="font-bold text-2xl border-b-2 w-full pb-2">Champions Played</h2>
           <div className="championContainer flex flex-wrap gap-2 p-4">
             {teamCalculations.sortedChampions.map((champion) => {
               return (
@@ -191,10 +189,10 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
         </div>
         {/* First Bloods */}
         <div className="firstBloods col-start-1 md:col-start-2 col-end-3 md:col-end-4 bg-gray flex flex-col p-4 items-center rounded-md">
-          <h2 className="font-bold text-2xl text-center text-wrap p-2">
+          <h2 className="font-bold text-2xl text-wrap pb-2 border-b-2 w-full">
             First Bloods
           </h2>
-          <div className="firstBloodsContainer grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-4 gap-4">
+          <div className="firstBloodsContainer grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-4 gap-4 p-4">
             <p className="text-lg col-start-1">Champions: </p>
             <p className="number col-start-2 text-orange">0</p>
             <p className="text-lg col-start-1">Dragons: </p>
