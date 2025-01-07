@@ -1,18 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, } from "react-router-dom";
 import { LuSwords } from "react-icons/lu";
-import { IoEye, IoBarbell } from "react-icons/io5";
+import { IoEye, } from "react-icons/io5";
 import { MdAttachMoney } from "react-icons/md";
 import {
-  GiMineExplosion,
-  GiSeaDragon,
-  GiArmadillo,
-  GiHydra,
   GiCoffin,
 } from "react-icons/gi";
 import {
-  FaRegClock,
-  FaFlag,
   FaCrown,
   FaChevronDown,
   FaSkull,
@@ -25,50 +19,50 @@ import ornn from "../../assets/champion/Ornn.png";
 import gwen from "../../assets/champion/Gwen.png";
 import maokai from "../../assets/champion/Maokai.png";
 import volibear from "../../assets/champion/Volibear.png";
-interface Game {
-  id: number;
-  kills: number;
-  deaths: number;
-  assists: number;
-  level: number;
-  gold: number;
-  visionScore: number;
-  damage: number;
-  healing: number;
-  shielding: number;
-  damageTaken: number;
-  selfMitigatedDamage: number;
-  damageToTurrets: number;
-  longestLife: number;
-  doubleKills: number;
-  tripleKills: number;
-  quadraKills: number;
-  pentaKills: number;
-  gameLength: number;
-  win: boolean;
-  cs: number;
-  championName: string;
-  teamKills: number;
-  shortCode: string;
-  performanceId: number;
-}
+// interface Game {
+//   id: number;
+//   kills: number;
+//   deaths: number;
+//   assists: number;
+//   level: number;
+//   gold: number;
+//   visionScore: number;
+//   damage: number;
+//   healing: number;
+//   shielding: number;
+//   damageTaken: number;
+//   selfMitigatedDamage: number;
+//   damageToTurrets: number;
+//   longestLife: number;
+//   doubleKills: number;
+//   tripleKills: number;
+//   quadraKills: number;
+//   pentaKills: number;
+//   gameLength: number;
+//   win: boolean;
+//   cs: number;
+//   championName: string;
+//   teamKills: number;
+//   shortCode: string;
+//   performanceId: number;
+// }
 
-interface LocationState {
-  gameData: Game[][];
-  summonerName: string;
-}
+// interface LocationState {
+//   gameData: Game[][];
+//   summonerName: string;
+// }
 
-interface SumTotalProps {
-  averageCSM: number;
-  totalCS: number;
-  totalGold: number;
-  totalVS: number;
-  totalDmg: number;
-  totalHeal: number;
-  totalShield: number;
-  totalDmgTkn: number;
-  totalSelfMtgDmg: number;
-}
+// interface SumTotalProps {
+//   averageCSM: number;
+//   totalCS: number;
+//   totalGold: number;
+//   totalVS: number;
+//   totalDmg: number;
+//   totalHeal: number;
+//   totalShield: number;
+//   totalDmgTkn: number;
+//   totalSelfMtgDmg: number;
+// }
 
 interface PlayerProps {
   name: string;
@@ -122,16 +116,16 @@ function StatsPlayer() {
   // const allGameData: Game[] = state.gameData.flat();
   // const summonerName = state.summonerName;
 
-  const handleTime = (gameLength: number) => {
-    const minutes = Math.floor(gameLength / 60);
-    let seconds = gameLength - minutes * 60;
-    let stringSeconds = seconds.toString();
-    if (seconds < 10) {
-      stringSeconds = `0${stringSeconds}`;
-    }
-    const time = minutes + ":" + stringSeconds;
-    return time;
-  };
+  // const handleTime = (gameLength: number) => {
+  //   const minutes = Math.floor(gameLength / 60);
+  //   let seconds = gameLength - minutes * 60;
+  //   let stringSeconds = seconds.toString();
+  //   if (seconds < 10) {
+  //     stringSeconds = `0${stringSeconds}`;
+  //   }
+  //   const time = minutes + ":" + stringSeconds;
+  //   return time;
+  // };
 
   // useEffect(() => {
   //   if (state?.gameData) {

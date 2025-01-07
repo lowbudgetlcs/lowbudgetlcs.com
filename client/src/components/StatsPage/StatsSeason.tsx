@@ -1,4 +1,4 @@
-import { act, useState } from "react";
+import { useState } from "react";
 import Button from "../Button";
 import { useLeagueData } from "../leagueDataContext";
 import StatsTeamCard from "./StatsTeamCard";

@@ -3,10 +3,9 @@ import { useLocation, useParams } from "react-router-dom";
 import { GameStatsProps, handleTeamSearch, StatsProps } from "./StatsTeam";
 import Details from "./TeamDetails";
 import StatsPlayer from "./StatsPlayer";
-import { FaCrown } from "react-icons/fa";
 
 function StatsTeamUI() {
-  const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
+  const { teamName, logo }: StatsProps =
     useLocation().state;
   const [activeLink, setActiveLink] = useState<string>("Team");
   const [gameList, setGameList] = useState<Array<GameStatsProps>>([]);
@@ -104,7 +103,7 @@ function StatsTeamUI() {
       {!loading ? (
         activeLink === "Details" ? (
           gameList.length > 0 ? (
-            <Details gameList={gameList} logo={logo} teamName={teamName} />
+            <Details/>
           ) : (
             <p className="text-xl text-white font-bold">
               No games found for this team. Please try reloading
@@ -115,7 +114,7 @@ function StatsTeamUI() {
         ) : activeLink === "Players" ? (
           <StatsPlayer />
         ) : (
-          <Details gameList={gameList} logo={logo} teamName={teamName} />
+          <Details/>
         )
       ) : (
         <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-3"></div>

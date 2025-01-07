@@ -1,23 +1,20 @@
-import { useEffect, useState, useMemo } from "react";
-import {
-  GameStatsProps,
-  RosterProps,
-  ChampionProps,
-  BannedProps,
-} from "./StatsTeam";
+// import { useEffect, useState, useMemo } from "react";
+// import {
+//   GameStatsProps,
+//   RosterProps,
+//   ChampionProps,
+//   BannedProps,
+// } from "./StatsTeam";
 import { LuSwords } from "react-icons/lu";
 import { IoEye, IoBarbell } from "react-icons/io5";
 import { MdAttachMoney } from "react-icons/md";
 import {
   GiMineExplosion,
-  GiSeaDragon,
-  GiArmadillo,
-  GiHydra,
 } from "react-icons/gi";
-import { FaRegClock, FaFlag, FaCrown } from "react-icons/fa";
+import { FaRegClock, FaFlag } from "react-icons/fa";
 
-function Details({ gameList }: { gameList: Array<GameStatsProps>, logo: string | null, teamName: string }) {
-  const [champImages, setChampImages] = useState<Record<string, string>>({});
+function Details() {
+  // const [champImages, setChampImages] = useState<Record<string, string>>({});
   // useEffect(() => {
   //   const modules = import.meta.glob("../../assets/champion/*.png");
   //   const images: Record<string, string> = {};
