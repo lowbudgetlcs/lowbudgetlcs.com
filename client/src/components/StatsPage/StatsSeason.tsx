@@ -9,7 +9,7 @@ function StatsSeason() {
   const { teams } = useLeagueData();
   const [activeLink, setActiveLink] = useState<string>("Economy");
   const [currentDivision, setCurrentDivision] = useState<string>(activeLink);
-
+console.debug(currentDivision)
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
     setCurrentDivision(navItem);

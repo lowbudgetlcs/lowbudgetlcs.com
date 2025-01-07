@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 function StatsSearchUI() {
     const [summonerName, setSummonerName] = useState("");
     const [gameList, setGameList] = useState<Array<object>>([]);
+    console.debug(gameList)
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
