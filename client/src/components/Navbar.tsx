@@ -86,7 +86,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/stats"
+            to=""
           >
             <div className="navBox pl-14 py-10 line-through decoration-orange decoration-4">
               Stats
