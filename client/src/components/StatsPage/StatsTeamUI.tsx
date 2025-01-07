@@ -49,7 +49,7 @@ function StatsTeamUI() {
             <div className="placeholderImg min-w-[160px] min-h-[160px] bg-gray text-center"></div>
           )}
           <div className="flex flex-col items-center md:items-start justify">
-            <h1 className="text-4xl text-white font-bold">{teamName}</h1>
+            <h1 className="text-4xl text-white font-bold text-center">{teamName}</h1>
             <div className="kdaContainer text-white flex flex-col sm:flex-row items-center bg-opacity-20 rounded-md">
               <div className="text flex justify-center items-center gap-2">
                 <h2 className="opacity-55 text-2xl">Series Score:</h2>
