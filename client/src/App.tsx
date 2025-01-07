@@ -19,6 +19,7 @@ import StatsMain from "./components/StatsPage/StatsMain";
 import StatsPlayer from "./components/StatsPage/StatsPlayer";
 import StatsSeason from "./components/StatsPage/StatsSeason";
 import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
+import DraftMain from "./components/DraftTool/DraftMain";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             <Route path="stats/team/" element={<StatsSeason/>}/>
             <Route path="stats/team/:team" element={<StatsTeamUI/>}/>
             <Route path="*" element={<ErrorPage />} />
+            <Route path="draft" element={<DraftMain/>}/>
           </Routes>
         </LeagueDataProvider>
         <Footer />
