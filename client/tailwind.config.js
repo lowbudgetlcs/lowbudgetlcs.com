@@ -20,6 +20,10 @@ export default {
       'blue': '#125AE8',
       'lblcs-light-blue': '#d9dbf1',
       'red' : '#e84057',
+      'yellow' : '#f3c623',
+      'vision-blue': '#e84057',
+      'purple' : '#8a2be2',
+      'green' : '#28a745',
       // For Gradients
       'gold-light': '#C89B5F',
       'gold-dark': '#44311A',
