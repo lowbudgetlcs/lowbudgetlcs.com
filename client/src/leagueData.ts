@@ -38,9 +38,9 @@ export const useFetchData = () => {
     const fetchData = async () => {
       try {
         const [playersResponse, teamsResponse, divisionsResponse] = await Promise.all([
-          fetch("http://localhost:8080/api/getPlayers"),
-          fetch("http://localhost:8080/api/getTeams"),
-          fetch("http://localhost:8080/api/getDivisions"),
+          fetch("https://lowbudgetlcs.com/api/getPlayers"),
+          fetch("https://lowbudgetlcs.com/api/getTeams"),
+          fetch("https://lowbudgetlcs.com/api/getDivisions"),
         ]);
 
         if (!playersResponse.ok || !teamsResponse.ok || !divisionsResponse.ok) {
