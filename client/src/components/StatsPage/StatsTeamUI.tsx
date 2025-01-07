@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { GameStatsProps, handleTeamSearch, StatsProps } from "./StatsTeam";
 import Details from "./TeamDetails";
+import StatsPlayer from "./StatsPlayer";
 import { FaCrown } from "react-icons/fa";
 
 function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
     useLocation().state;
-  const [activeLink, setActiveLink] = useState<string>("Details");
+  const [activeLink, setActiveLink] = useState<string>("Team");
   const [gameList, setGameList] = useState<Array<GameStatsProps>>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -26,6 +27,7 @@ function StatsTeamUI() {
         console.error("Failed getting Team Stats: " + error);
       } finally {
         setLoading(false);
+        setActiveLink("Team");
       }
     };
 
@@ -36,62 +38,73 @@ function StatsTeamUI() {
   };
   return (
     <>
-      <div className="flex flex-col items-center">
-        <div className="statsTeamTitle text-white min-h-24 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+      <div className="flex flex-col items-center mt-16">
+        <div className="statsTeamTitle text-white min-h-24 my-4 w-full flex flex-col md:flex-row items-center justify-center gap-4 md:gap-4">
           {logo ? (
             <img
               src={logo}
-              className="teamLogo w-[160px] h-[160px] text-center"
+              className="teamLogo w-[100px] h-[100px] text-center"
             ></img>
           ) : (
             <div className="placeholderImg min-w-[160px] min-h-[160px] bg-gray text-center"></div>
           )}
-          <div className="flex flex-col items-center justify">
-            <h1 className="text-6xl text-center text-white">{teamName}</h1>
-            <div className="kdaContainer text-white flex flex-col sm:flex-row items-center px-4 py-2 bg-opacity-20 rounded-md">
-              <div className=" bg-purple bg-opacity-50 p-1 rounded-md">
-                <FaCrown className="text-white w-[25px] h-[25px]"></FaCrown>
-              </div>
-              <div className="text flex justify-center p-4 items-center gap-2">
-                <h2 className="opacity-55 text-xl">Series Score:</h2>
+          <div className="flex flex-col items-center md:items-start justify">
+            <h1 className="text-4xl text-white font-bold">{teamName}</h1>
+            <div className="kdaContainer text-white flex flex-col sm:flex-row items-center bg-opacity-20 rounded-md">
+              <div className="text flex justify-center items-center gap-2">
+                <h2 className="opacity-55 text-2xl">Series Score:</h2>
                 <p className={`text-2xl font-bold`}>
-                  <span className="text-blue">2</span> <span className="opacity-55 text-white">-</span> <span className="text-red">1</span>
+                  <span className="text-blue">2</span>
+                  <span className="opacity-55 text-white">-</span>
+                  <span className="text-red">1</span>
                 </p>
               </div>
             </div>
           </div>
         </div>
+        <div className="navList text-white">
+          <ul className="relative flex gap-4 text-sm sm:text-base md:text-2xl font-semibold justify-center p-4">
+            <li
+              onClick={() => toggleActive("Players")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Players
+              <span
+                className={`line absolute ${
+                  activeLink === "Players" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
+              ></span>
+            </li>
+            <li
+              onClick={() => toggleActive("Team")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Team
+              <span
+                className={`line absolute ${
+                  activeLink === "Team" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 right-0`}
+              ></span>
+            </li>
+            <li
+              onClick={() => toggleActive("History")}
+              className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            >
+              Match History
+              <span
+                className={`line absolute ${
+                  activeLink === "History" ? "w-full" : "w-0"
+                } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
+              ></span>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div className="navList text-white">
-        <ul className="relative flex gap-4 text-sm sm:text-base md:text-2xl font-semibold justify-center p-4">
-          <li
-            onClick={() => toggleActive("Details")}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
-          >
-            Details
-            <span
-              className={`line absolute ${
-                activeLink === "Details" ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 right-0`}
-            ></span>
-          </li>
-          <li
-            onClick={() => toggleActive("History")}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
-          >
-            Match History
-            <span
-              className={`line absolute ${
-                activeLink === "History" ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
-            ></span>
-          </li>
-        </ul>
-      </div>
+
       {!loading ? (
         activeLink === "Details" ? (
           gameList.length > 0 ? (
-            <Details gameList={gameList} />
+            <Details gameList={gameList} logo={logo} teamName={teamName} />
           ) : (
             <p className="text-xl text-white font-bold">
               No games found for this team. Please try reloading
@@ -99,7 +112,11 @@ function StatsTeamUI() {
           )
         ) : activeLink === "History" ? (
           <MatchHistory />
-        ) : null
+        ) : activeLink === "Players" ? (
+          <StatsPlayer />
+        ) : (
+          <Details gameList={gameList} logo={logo} teamName={teamName} />
+        )
       ) : (
         <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-3"></div>
       )}
