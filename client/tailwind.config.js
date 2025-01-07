@@ -19,6 +19,7 @@ export default {
       'transparent': '#1a1a1a00',
       'blue': '#125AE8',
       'lblcs-light-blue': '#d9dbf1',
+      // For Stats
       'red' : '#e84057',
       'yellow' : '#f3c623',
       'vision-blue': '#e84057',
