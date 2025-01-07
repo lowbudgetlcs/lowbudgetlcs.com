@@ -1,6 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
+import { LuSwords } from "react-icons/lu";
+import { IoEye, IoBarbell } from "react-icons/io5";
+import { MdAttachMoney } from "react-icons/md";
+import {
+  GiMineExplosion,
+  GiSeaDragon,
+  GiArmadillo,
+  GiHydra,
+  GiCoffin,
+} from "react-icons/gi";
+import {
+  FaRegClock,
+  FaFlag,
+  FaCrown,
+  FaChevronDown,
+  FaSkull,
+} from "react-icons/fa";
+import top from "../../assets/icons/top.svg";
+import { BsGraphUp } from "react-icons/bs";
+import { FaWheatAwn } from "react-icons/fa6";
+import { PiCampfireFill } from "react-icons/pi";
+import ornn from "../../assets/champion/Ornn.png";
+import gwen from "../../assets/champion/Gwen.png";
+import maokai from "../../assets/champion/Maokai.png";
+import volibear from "../../assets/champion/Volibear.png";
 interface Game {
   id: number;
   kills: number;
@@ -46,49 +70,57 @@ interface SumTotalProps {
   totalSelfMtgDmg: number;
 }
 
+interface PlayerProps {
+  name: string;
+  tag: string;
+}
+
 function StatsPlayer() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const state = location.state as LocationState | undefined;
-  const [champImages, setChampImages] = useState<Record<string, string>>({});
-  const [sumTotal, setSumTotal] = useState<SumTotalProps>({
-    averageCSM: 0,
-    totalCS: 0,
-    totalGold: 0,
-    totalVS: 0,
-    totalDmg: 0,
-    totalHeal: 0,
-    totalShield: 0,
-    totalDmgTkn: 0,
-    totalSelfMtgDmg: 0,
-  });
+  const [selectedPlayer, setSelectedPlayer] = useState<string>("ThyDuckyLord");
+  const [players, setPlayers] = useState<Array<PlayerProps>>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  // const navigate = useNavigate();
+  // const location = useLocation();
+  // const state = location.state as LocationState | undefined;
+  // const [champImages, setChampImages] = useState<Record<string, string>>({});
+  // const [sumTotal, setSumTotal] = useState<SumTotalProps>({
+  //   averageCSM: 0,
+  //   totalCS: 0,
+  //   totalGold: 0,
+  //   totalVS: 0,
+  //   totalDmg: 0,
+  //   totalHeal: 0,
+  //   totalShield: 0,
+  //   totalDmgTkn: 0,
+  //   totalSelfMtgDmg: 0,
+  // });
 
-  useEffect(() => {
-    const modules = import.meta.glob("../../assets/champion/*.png");
-    const images: Record<string, string> = {};
+  // useEffect(() => {
+  //   const modules = import.meta.glob("../../assets/champion/*.png");
+  //   const images: Record<string, string> = {};
 
-    const loadImages = async () => {
-      for (const path in modules) {
-        const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
-        if (name) {
-          const module = (await modules[path]()) as { default: string };
-          images[name] = module.default;
-        }
-      }
-      setChampImages(images);
-    };
+  //   const loadImages = async () => {
+  //     for (const path in modules) {
+  //       const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
+  //       if (name) {
+  //         const module = (await modules[path]()) as { default: string };
+  //         images[name] = module.default;
+  //       }
+  //     }
+  //     setChampImages(images);
+  //   };
 
-    loadImages();
-  }, []);
+  //   loadImages();
+  // }, []);
 
-  if (!state?.gameData || state.gameData.length === 0) {
-    console.log("no player");
-    navigate("/stats");
-    return null;
-  }
+  // if (!state?.gameData || state.gameData.length === 0) {
+  //   console.log("no player");
+  //   navigate("/stats");
+  //   return null;
+  // }
 
-  const allGameData: Game[] = state.gameData.flat();
-  const summonerName = state.summonerName;
+  // const allGameData: Game[] = state.gameData.flat();
+  // const summonerName = state.summonerName;
 
   const handleTime = (gameLength: number) => {
     const minutes = Math.floor(gameLength / 60);
@@ -101,57 +133,88 @@ function StatsPlayer() {
     return time;
   };
 
+  // useEffect(() => {
+  //   if (state?.gameData) {
+  //     const allGameData = state.gameData.flat();
+  //     const calculateSumStats = () => {
+  //       let sumTotal: SumTotalProps = {
+  //         averageCSM: 0,
+  //         totalCS: 0,
+  //         totalGold: 0,
+  //         totalVS: 0,
+  //         totalDmg: 0,
+  //         totalHeal: 0,
+  //         totalShield: 0,
+  //         totalDmgTkn: 0,
+  //         totalSelfMtgDmg: 0,
+  //       };
+
+  //       allGameData.forEach((game) => {
+  //         sumTotal.totalCS += game.cs;
+  //         sumTotal.totalGold += game.gold;
+  //         sumTotal.totalVS += game.visionScore || 0;
+  //         sumTotal.totalDmg += game.damage || 0;
+  //         sumTotal.totalHeal += game.healing || 0;
+  //         sumTotal.totalShield += game.shielding || 0;
+  //         sumTotal.totalDmgTkn += game.damageTaken || 0;
+  //         sumTotal.totalSelfMtgDmg += game.selfMitigatedDamage || 0;
+  //       });
+
+  //       const totalGameTime = allGameData.reduce(
+  //         (sum, game) => sum + (game.gameLength / 60 || 0),
+  //         0
+  //       );
+  //       sumTotal.averageCSM =
+  //         totalGameTime > 0 ? sumTotal.totalCS / totalGameTime : 0;
+
+  //       return sumTotal;
+  //     };
+
+  //     setSumTotal(calculateSumStats());
+  //   } else {
+  //     console.log("No player data");
+  //     navigate("/stats");
+  //   }
+  // }, [state, navigate]);
   useEffect(() => {
-    if (state?.gameData) {
-      const allGameData = state.gameData.flat();
-      const calculateSumStats = () => {
-        let sumTotal: SumTotalProps = {
-          averageCSM: 0,
-          totalCS: 0,
-          totalGold: 0,
-          totalVS: 0,
-          totalDmg: 0,
-          totalHeal: 0,
-          totalShield: 0,
-          totalDmgTkn: 0,
-          totalSelfMtgDmg: 0,
-        };
+    const grabbedPlayers = [
+      {
+        name: "ThyDuckyLord",
+        tag: "#NA1",
+      },
+      {
+        name: "Seir",
+        tag: "#qiiqo",
+      },
+      {
+        name: "qiiqo",
+        tag: "#seir",
+      },
+      {
+        name: "leistevie",
+        tag: "#NA1",
+      },
+      {
+        name: "JackEBoy",
+        tag: "#NA1",
+      },
+    ];
+    setPlayers(grabbedPlayers);
+  }, []);
+  const handleSelectedPlayer = (player: string) => {
+    setSelectedPlayer(player);
+    handleDropdown();
+  };
 
-        allGameData.forEach((game) => {
-          sumTotal.totalCS += game.cs;
-          sumTotal.totalGold += game.gold;
-          sumTotal.totalVS += game.visionScore || 0;
-          sumTotal.totalDmg += game.damage || 0;
-          sumTotal.totalHeal += game.healing || 0;
-          sumTotal.totalShield += game.shielding || 0;
-          sumTotal.totalDmgTkn += game.damageTaken || 0;
-          sumTotal.totalSelfMtgDmg += game.selfMitigatedDamage || 0;
-        });
-
-        const totalGameTime = allGameData.reduce(
-          (sum, game) => sum + (game.gameLength / 60 || 0),
-          0
-        );
-        sumTotal.averageCSM =
-          totalGameTime > 0 ? sumTotal.totalCS / totalGameTime : 0;
-
-        return sumTotal;
-      };
-
-      setSumTotal(calculateSumStats());
-    } else {
-      console.log("No player data");
-      navigate("/stats");
-    }
-  }, [state, navigate]);
-
+  const handleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   return (
     <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif">
       <Link
         to={`/stats`}
         className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
       >
-        {" "}
         <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
           <div
             className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
@@ -164,132 +227,220 @@ function StatsPlayer() {
           Back
         </p>
       </Link>
-      <div className="title min-h-64 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-        <div className="placeHolderImage min-w-[160px] min-h-[160px] bg-gray text-center"></div>
-        <h1 className="text-6xl text-center">{summonerName}</h1>
-      </div>
-      <div className="flex justify-stretch md:px-3 lg:px-8 gap-8">
-        <div className="flex flex-col py-8 px-4 gap-2 w-64 h-96 bg-gray rounded-md">
-          <h2 className="font-bold text-2xl text-center">Total Stats</h2>
-          <div className="totalStats flex flex-col gap-2">
-            <p>
-              Average CS/m:{" "}
-              <span className="text-white/60">
-                {sumTotal.averageCSM.toFixed(2)}
-              </span>
-            </p>
-            <p>
-              Total CS:{" "}
-              <span className="text-white/60">{sumTotal.totalCS}</span>
-            </p>
-            <p>
-              Total Gold:{" "}
-              <span className="text-white/60">{sumTotal.totalGold}</span>
-            </p>
-            <p>
-              Total Vision Score:{" "}
-              <span className="text-white/60">{sumTotal.totalVS}</span>
-            </p>
-            <p>
-              Total Damage:{" "}
-              <span className="text-white/60">{sumTotal.totalDmg}</span>
-            </p>
-            <p>
-              Total Healing:{" "}
-              <span className="text-white/60">{sumTotal.totalHeal}</span>
-            </p>
-            <p>
-              Total Shielding:{" "}
-              <span className="text-white/60">{sumTotal.totalShield}</span>
-            </p>
-            <p>
-              Total Damage Taken:{" "}
-              <span className="text-white/60">{sumTotal.totalDmgTkn}</span>
-            </p>
-            <p>
-              Total Self-Mitigated:{" "}
-              <span className="text-white/60">{sumTotal.totalSelfMtgDmg}</span>
-            </p>
+      <div className="flex flex-col md:flex-row justify-stretch p-4 gap-8">
+        {/* Stat Sidebar */}
+        <div className="flex flex-col py-8 px-4 gap-2 bg-gray/20 border-2 border-gray rounded-md flex-grow md:min-w-64 max-h-fit">
+          {/* Dropdown Menu */}
+          <div className="relative">
+            <button
+              onClick={handleDropdown}
+              className="text-white bg-light-gray hover:bg-dark-blue hover:border-orange transition duration-300 w-full border-2 border-black shadow-sm shadow-black rounded-lg  px-5 py-2.5 text-center inline-flex items-center justify-between"
+              type="button"
+            >
+              <p>{selectedPlayer}</p>
+              <FaChevronDown
+                className={`${
+                  isOpen ? "rotate-180" : ""
+                } transition duration-300`}
+              ></FaChevronDown>
+            </button>
+
+            {/* <!-- Dropdown menu --> */}
+            <div
+              className={` absolute top-12 ${
+                isOpen ? "z-10 opacity-100" : "opacity-0 -z-50"
+              } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 transition duration-300`}
+            >
+              <ul className="text-md bg-black border-2 border-black rounded-md p-2 w-[120%]">
+                {players.map((player) => {
+                  return (
+                    <li
+                      onClick={() => handleSelectedPlayer(player.name)}
+                      className="flex gap-4 justify-between p-0.5 hover:cursor-pointer hover:text-orange hover:bg-gray rounded-md transition duration-300"
+                    >
+                      <p className="inline-block">
+                        {player.name}{" "}
+                        <span className="opacity-60">{player.tag}</span>
+                      </p>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
+          {/* Rank & Role */}
+          <div className="rankRole flex justify-between items-center border-b-2 p-2 border-white/45">
+            <p className="text-emerald-light">Emerald IV</p>
+            <img src={top} width={"30px"} height={"30px"}></img>
+          </div>
+          {/* Stats */}
+          <ul className="quickStats flex flex-col gap-2">
+            <li className="statitem inline-flex justify-between">
+              <p className="text-white/55">Games:</p>
+              <p className="">14</p>
+            </li>
+            <li className="statitem inline-flex justify-between">
+              <p className="text-white/55">KDA:</p>
+              <p className="">1.12</p>
+            </li>
+            <li className="statitem inline-flex justify-between">
+              <p className="text-white/55">KP/Game:</p>
+              <p className="">38%</p>
+            </li>
+            <li className="statitem inline-flex justify-between">
+              <p className="text-white/55">CS/Min:</p>
+              <p className="">8.62</p>
+            </li>
+            <li className="statitem inline-flex justify-between">
+              <p className="text-white/55">Damage/Min:</p>
+              <p className="">648</p>
+            </li>
+
+            <li className="statitem inline-flex justify-between">
+              <p className="text-white/55">Vision/Game:</p>
+              <p className="">23</p>
+            </li>
+          </ul>
         </div>
-        <div className="flex flex-col items-center py-8 gap-8 flex-grow">
-          {allGameData.map((game) => {
-            const champImageSrc =
-              champImages[game.championName] || "default.png";
-            return (
-              <div
-                key={game.id}
-                className="gameContainer w-full md:h-44 py-8 bg-gray flex flex-col md:flex-row rounded-md lg:max-w-full flex-grow"
-              >
-                <div className="gameInfo flex flex-col items-center justify-center gap-2 py-2 w-full md:w-24 px-4 text-left">
-                  <h2>{game.win ? "Win" : "Loss"}</h2>
-                  <div className="line h-1 w-16 rounded-md bg-orange"></div>
-                  <h2>{handleTime(game.gameLength)}</h2>
+        <div className="extendedStatsContainer flex flex-col gap-8 flex-grow p-4 border-2 border-gray rounded-md">
+          {/* Achievements */}
+          <div className="achievements">
+            <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">
+              Achievements
+            </h2>
+            <div className="achievementContainer flex flex-col sm:flex-row flex-wrap gap-4 text-white/95 items-center md:items-start">
+              <div className="achievement flex gap-2 border-2 border-green bg-green/40 items-center px-2 py-1 rounded-md">
+                <FaWheatAwn></FaWheatAwn>
+                <p>Great Farmer</p>
+              </div>
+              <div className="achievement flex gap-2 border-2 border-red bg-red/40 items-center px-2 py-1 rounded-md">
+                <FaSkull></FaSkull>
+                <p>Blood Thirsty</p>
+              </div>
+              <div className="achievement flex gap-2 border-2 border-green bg-green/40 items-center px-2 py-1 rounded-md">
+                <PiCampfireFill></PiCampfireFill>
+                <p>Survivor</p>
+              </div>
+              <div className="achievement flex gap-2 border-2 border-white/60 bg-gray/40 items-center px-2 py-1 rounded-md">
+                <GiCoffin></GiCoffin>
+                <p>Gray Screen Enthusiast</p>
+              </div>
+              <div className="achievement flex gap-2 border-2 border-purple bg-purple/40 items-center px-2 py-1 rounded-md">
+                <IoEye></IoEye>
+                <p>All-Seeing Eye</p>
+              </div>
+              <div className="achievement flex gap-2 border-2 border-yellow bg-yellow/40 items-center px-2 py-1 rounded-md">
+                <FaCrown></FaCrown>
+                <p>S13 Champion</p>
+              </div>
+            </div>
+          </div>
+          {/* Performance Overview */}
+          <div className="performanceOverview">
+            <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">
+              Performance Overview
+            </h2>
+            {/* Stat Boxes */}
+            <div className="smallStatBoxes flex sm:grid flex-col grid-rows-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* KDA */}
+              <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                <div className=" bg-red bg-opacity-50 p-1 rounded-md">
+                  <LuSwords className="text-white w-[25px] h-[25px]"></LuSwords>
                 </div>
-                <div className="champKDA flex flex-col gap-2 py-2 items-center justify-center w-full md:w-16 lg:w-32 text-left">
-                  <img
-                    src={champImageSrc}
-                    alt={game.championName}
-                    className="champion min-w-[50px] min-h-[50px] max-w-[50px] max-h-[50px] bg-dark-blue"
-                  />
-                  <p className="text-xl font-semibold">
-                    {game.kills}/{game.deaths}/{game.assists}
-                  </p>
-                </div>
-                {/* Container to align stats consistently across all screen sizes */}
-                <div className="fullStats flex flex-col md:flex-row gap-4 items-center justify-center w-fit md:w-1/2 text-left m-auto md:m-4 pt-4 flex-grow">
-                  <div className="statsContainer flex flex-col gap-2 md:flex-row w-full items-center">
-                    <div className="goldStats flex flex-col gap-2 items-start justify-center w-full md:w-2/5">
-                      <p className="text-sm">
-                        CS: <span className="text-white/60">{game.cs}</span>
-                      </p>
-                      <p className="text-sm">
-                        CS/m:{" "}
-                        <span className="text-white/60">
-                          {(game.cs / 60).toFixed(1)}
-                        </span>
-                      </p>
-                      <p className="text-sm">
-                        Gold: <span className="text-white/60">{game.gold}</span>
-                      </p>
-                      <p className="text-sm">
-                        Vision Score:{" "}
-                        <span className="text-white/60">
-                          {game.visionScore}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="damageStats flex flex-col gap-2 items-start justify-center w-full md:w-1/3 flex-grow">
-                      <p className="text-sm">
-                        Damage:{" "}
-                        <span className="text-white/60">{game.damage}</span>
-                      </p>
-                      <p className="text-sm">
-                        Healing:{" "}
-                        <span className="text-white/60">{game.healing}</span>
-                      </p>
-                      <p className="text-sm">
-                        Shielding:{" "}
-                        <span className="text-white/60">{game.shielding}</span>
-                      </p>
-                      <p className="text-sm">
-                        Damage Taken:{" "}
-                        <span className="text-white/60">
-                          {game.damageTaken}
-                        </span>
-                      </p>
-                      <p className="text-sm">
-                        Self-Mitigated:{" "}
-                        <span className="text-white/60">
-                          {game.selfMitigatedDamage}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
+                <div className="text flex flex-col p-4 items-center sm:items-start">
+                  <h2 className="opacity-55">KDA Ratio</h2>
+                  <p className="text-2xl text-blue">1.12</p>
                 </div>
               </div>
-            );
-          })}
+              {/* Vision Score */}
+              <div className="visionContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+                  <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+                </div>
+                <div className="text flex flex-col p-4 items-center sm:items-start">
+                  <h2 className="opacity-55">Vision/Game</h2>
+                  <p className="text-2xl text-red">10</p>
+                </div>
+              </div>
+              {/* Gold/Game */}
+              <div className="goldContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                <div className=" bg-yellow bg-opacity-50 p-1 rounded-md">
+                  <MdAttachMoney className="text-white w-[25px] h-[25px]"></MdAttachMoney>
+                </div>
+                <div className="text flex flex-col p-4 items-center sm:items-start">
+                  <h2 className="opacity-55">Gold/Game</h2>
+                  <p className="text-2xl">8400</p>
+                </div>
+              </div>
+              {/* CS/Game */}
+              <div className="csContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                <div className=" bg-green bg-opacity-50 p-1 rounded-md">
+                  <BsGraphUp className="text-white w-[25px] h-[25px]"></BsGraphUp>
+                </div>
+                <div className="text flex flex-col p-4 items-center sm:items-start">
+                  <h2 className="opacity-55">CS/Game</h2>
+                  <p className="text-2xl">192</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Favorite Champions */}
+          <div className="favoriteChampions">
+            <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">
+              Favorite Champions
+            </h2>
+            {/* Champion Container */}
+            <div className="favoreChampContainer flex flex-col gap-4 lg:grid grid-cols-2">
+              <div className="championContainer flex gap-2 bg-gray/20 p-2 rounded-md border-2 border-gray">
+                <img src={ornn} width={"50px"} height={"50px"}></img>
+                <div className="champText flex justify-between items-center w-full">
+                  <div>
+                    <p className="font-bold">Ornn</p>
+                    <p className="opacity-55">9 Games</p>
+                  </div>
+                  <p>
+                    Win Rate: <span className="text-blue">57%</span>
+                  </p>
+                </div>
+              </div>
+              <div className="championContainer flex gap-2 bg-gray/20 p-2 rounded-md border-2 border-gray">
+                <img src={gwen} width={"50px"} height={"50px"}></img>
+                <div className="champText flex justify-between items-center w-full">
+                  <div>
+                    <p className="font-bold">Gwen</p>
+                    <p className="opacity-55">4 Games</p>
+                  </div>
+                  <p>
+                    Win Rate: <span className="text-blue">75%</span>
+                  </p>
+                </div>
+              </div>
+              <div className="championContainer flex gap-2 bg-gray/20 p-2 rounded-md border-2 border-gray">
+                <img src={maokai} width={"50px"} height={"50px"}></img>
+                <div className="champText flex justify-between items-center w-full">
+                  <div>
+                    <p className="font-bold">Maokai</p>
+                    <p className="opacity-55">3 Games</p>
+                  </div>
+                  <p>
+                    Win Rate: <span className="text-red">33%</span>
+                  </p>
+                </div>
+              </div>
+              <div className="championContainer flex gap-2 bg-gray/20 p-2 rounded-md border-2 border-gray">
+                <img src={volibear} width={"50px"} height={"50px"}></img>
+                <div className="champText flex justify-between items-center w-full">
+                  <div>
+                    <p className="font-bold">Volibear</p>
+                    <p className="opacity-55">2 Games</p>
+                  </div>
+                  <p>
+                    Win Rate: <span className="text-red">0%</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
