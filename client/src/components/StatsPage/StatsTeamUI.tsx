@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { GameStatsProps, handleTeamSearch, StatsProps } from "./StatsTeam";
 import Details from "./TeamDetails";
-
-
+import { FaCrown } from "react-icons/fa";
 
 function StatsTeamUI() {
   const { teamName, groupId, divisionId, logo, playerList }: StatsProps =
@@ -37,17 +36,31 @@ function StatsTeamUI() {
   };
   return (
     <>
-      <div className="statsTeamTitle text-white min-h-24 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
-        {logo ? (
-          <img
-            src={logo}
-            className="teamLogo w-[160px] h-[160px] text-center"
-          ></img>
-        ) : (
-          <div className="placeholderImg min-w-[160px] min-h-[160px] bg-gray text-center"></div>
-        )}
-
-        <h1 className="text-6xl text-center text-white">{teamName}</h1>
+      <div className="flex flex-col items-center">
+        <div className="statsTeamTitle text-white min-h-24 mb-16 mt-40 sm:mt-24 w-full flex flex-col md:flex-row items-center justify-center gap-8 md:gap-16">
+          {logo ? (
+            <img
+              src={logo}
+              className="teamLogo w-[160px] h-[160px] text-center"
+            ></img>
+          ) : (
+            <div className="placeholderImg min-w-[160px] min-h-[160px] bg-gray text-center"></div>
+          )}
+          <div className="flex flex-col items-center justify">
+            <h1 className="text-6xl text-center text-white">{teamName}</h1>
+            <div className="kdaContainer text-white flex flex-col sm:flex-row items-center px-4 py-2 bg-opacity-20 rounded-md">
+              <div className=" bg-purple bg-opacity-50 p-1 rounded-md">
+                <FaCrown className="text-white w-[25px] h-[25px]"></FaCrown>
+              </div>
+              <div className="text flex justify-center p-4 items-center gap-2">
+                <h2 className="opacity-55 text-xl">Series Score:</h2>
+                <p className={`text-2xl font-bold`}>
+                  <span className="text-blue">2</span> <span className="opacity-55 text-white">-</span> <span className="text-red">1</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="navList text-white">
         <ul className="relative flex gap-4 text-sm sm:text-base md:text-2xl font-semibold justify-center p-4">
@@ -78,7 +91,7 @@ function StatsTeamUI() {
       {!loading ? (
         activeLink === "Details" ? (
           gameList.length > 0 ? (
-            <Details gameList={gameList}/>
+            <Details gameList={gameList} />
           ) : (
             <p className="text-xl text-white font-bold">
               No games found for this team. Please try reloading
@@ -93,8 +106,6 @@ function StatsTeamUI() {
     </>
   );
 }
-
-
 
 function MatchHistory() {
   return "eee";
