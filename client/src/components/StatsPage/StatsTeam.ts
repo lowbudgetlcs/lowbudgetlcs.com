@@ -74,7 +74,7 @@ export const handleTeamSearch = async (
   try {
     // Fetch game data from db
     const gameResponse = await fetch(
-      `http://localhost:8080/api/stats/team/${teamID}`
+      `https://lowbudgetlcs.com/api/stats/team/${teamID}`
     );
 
     if (!gameResponse.ok) {
