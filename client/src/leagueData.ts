@@ -10,7 +10,7 @@ export interface PlayerProps {
 
 export interface TeamProps {
   id: number;
-  teamName: string;
+  name: string;
   divisionId: number;
   groupId: string;
   captainId: number | null;
@@ -20,7 +20,7 @@ export interface TeamProps {
 
 export interface DivisionProps {
   id: number;
-  divisionName: string;
+  name: string;
   description: string | null;
   providerId: number;
   tournamentId: number;
@@ -38,9 +38,9 @@ export const useFetchData = () => {
     const fetchData = async () => {
       try {
         const [playersResponse, teamsResponse, divisionsResponse] = await Promise.all([
-          fetch("https://backend.lowbudgetlcs.com/api/getPlayers"),
-          fetch("https://backend.lowbudgetlcs.com/api/getTeams"),
-          fetch("https://backend.lowbudgetlcs.com/api/getDivisions"),
+          fetch("http://localhost:8080/api/getPlayers"),
+          fetch("http://localhost:8080/api/getTeams"),
+          fetch("http://localhost:8080/api/getDivisions"),
         ]);
 
         if (!playersResponse.ok || !teamsResponse.ok || !divisionsResponse.ok) {
