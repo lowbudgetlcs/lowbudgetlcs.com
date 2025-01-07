@@ -3,6 +3,7 @@ import axios from "axios";
 import cors from "cors";
 import { rateLimit } from "express-rate-limit";
 import { getDivisions, getPlayers, getTeams } from "./db/queries/select";
+import {getAllPlayerGames, getAllTeamGames} from "./stats";
 const app = express();
 const port = 8080;
 const clientSecret: string | undefined = process.env.CLIENT_SECRET;
@@ -142,6 +143,37 @@ async function checkIfLive(clientID: string, accessToken: string) {
     throw err;
   }
 }
+
+// Stats Api Routes
+app.get("/api/stats/player/:summonerName", async (req: Request, res: Response) => {
+  try {
+    const summonerName: string = req.params.summonerName;
+    const response = await getAllPlayerGames(summonerName);
+    res.json(response);
+  } catch (err: any) {
+    if (err.message === "No Player Found") {
+      res.status(404).json({ error: "Player not found" });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+});
+
+app.get("/api/stats/team/:teamID", async (req: Request, res: Response) => {
+  try {
+    console.log("pinged")
+    const teamID: number = Number(req.params.teamID);
+    console.log(teamID)
+    const response = await getAllTeamGames(teamID);
+    res.json(response);
+  } catch (err: any) {
+    if (err.message === "No Team Found") {
+      res.status(404).json({ error: "Team not found" });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+});
 
 app.listen(port, () => {
   console.log("Server started on port " + port);

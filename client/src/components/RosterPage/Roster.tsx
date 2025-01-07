@@ -10,7 +10,7 @@ export interface PlayerProps {
 
 export interface TeamProps {
   id: number;
-  teamName: string;
+  name: string;
   divisionId: number;
   groupId: string;
   captainId: number | null;
@@ -20,7 +20,7 @@ export interface TeamProps {
 
 export interface DivisionProps {
   id: number;
-  divisionName: string;
+  name: string;
   description: string | null;
   providerId: number;
   tournamentId: number;
