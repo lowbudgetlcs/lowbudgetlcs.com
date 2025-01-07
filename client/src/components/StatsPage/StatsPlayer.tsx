@@ -229,78 +229,80 @@ function StatsPlayer() {
       </Link>
       <div className="flex flex-col md:flex-row justify-stretch p-4 gap-8">
         {/* Stat Sidebar */}
-        <div className="flex flex-col py-8 px-4 gap-2 bg-gray/20 border-2 border-gray rounded-md flex-grow md:min-w-64 max-h-fit">
-          {/* Dropdown Menu */}
-          <div className="relative">
-            <button
-              onClick={handleDropdown}
-              className="text-white bg-light-gray hover:bg-dark-blue hover:border-orange transition duration-300 w-full border-2 border-black shadow-sm shadow-black rounded-lg  px-5 py-2.5 text-center inline-flex items-center justify-between"
-              type="button"
-            >
-              <p>{selectedPlayer}</p>
-              <FaChevronDown
-                className={`${
-                  isOpen ? "rotate-180" : ""
-                } transition duration-300`}
-              ></FaChevronDown>
-            </button>
+        <div className="statSideBar">
+          <div className="flex flex-col py-8 px-4 gap-2 bg-gray/20 border-2 border-gray rounded-md flex-grow md:min-w-64 max-h-fit">
+            {/* Dropdown Menu */}
+            <div className="relative">
+              <button
+                onClick={handleDropdown}
+                className="text-white bg-light-gray hover:bg-dark-blue hover:border-orange transition duration-300 w-full border-2 border-black shadow-sm shadow-black rounded-lg  px-5 py-2.5 text-center inline-flex items-center justify-between"
+                type="button"
+              >
+                <p>{selectedPlayer}</p>
+                <FaChevronDown
+                  className={`${
+                    isOpen ? "rotate-180" : ""
+                  } transition duration-300`}
+                ></FaChevronDown>
+              </button>
 
-            {/* <!-- Dropdown menu --> */}
-            <div
-              className={` absolute top-12 ${
-                isOpen ? "z-10 opacity-100" : "opacity-0 -z-50"
-              } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 transition duration-300`}
-            >
-              <ul className="text-md bg-black border-2 border-black rounded-md p-2 w-[120%]">
-                {players.map((player) => {
-                  return (
-                    <li
-                      onClick={() => handleSelectedPlayer(player.name)}
-                      className="flex gap-4 justify-between p-0.5 hover:cursor-pointer hover:text-orange hover:bg-gray rounded-md transition duration-300"
-                    >
-                      <p className="inline-block">
-                        {player.name}{" "}
-                        <span className="opacity-60">{player.tag}</span>
-                      </p>
-                    </li>
-                  );
-                })}
-              </ul>
+              {/* <!-- Dropdown menu --> */}
+              <div
+                className={` absolute top-12 ${
+                  isOpen ? "z-10 opacity-100" : "opacity-0 -z-50"
+                } bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 transition duration-300`}
+              >
+                <ul className="text-md bg-black border-2 border-black rounded-md p-2 w-[120%]">
+                  {players.map((player) => {
+                    return (
+                      <li
+                        onClick={() => handleSelectedPlayer(player.name)}
+                        className="flex gap-4 justify-between p-0.5 hover:cursor-pointer hover:text-orange hover:bg-gray rounded-md transition duration-300"
+                      >
+                        <p className="inline-block">
+                          {player.name}{" "}
+                          <span className="opacity-60">{player.tag}</span>
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
             </div>
-          </div>
-          {/* Rank & Role */}
-          <div className="rankRole flex justify-between items-center border-b-2 p-2 border-white/45">
-            <p className="text-emerald-light">Emerald IV</p>
-            <img src={top} width={"30px"} height={"30px"}></img>
-          </div>
-          {/* Stats */}
-          <ul className="quickStats flex flex-col gap-2">
-            <li className="statitem inline-flex justify-between">
-              <p className="text-white/55">Games:</p>
-              <p className="">14</p>
-            </li>
-            <li className="statitem inline-flex justify-between">
-              <p className="text-white/55">KDA:</p>
-              <p className="">1.12</p>
-            </li>
-            <li className="statitem inline-flex justify-between">
-              <p className="text-white/55">KP/Game:</p>
-              <p className="">38%</p>
-            </li>
-            <li className="statitem inline-flex justify-between">
-              <p className="text-white/55">CS/Min:</p>
-              <p className="">8.62</p>
-            </li>
-            <li className="statitem inline-flex justify-between">
-              <p className="text-white/55">Damage/Min:</p>
-              <p className="">648</p>
-            </li>
+            {/* Rank & Role */}
+            <div className="rankRole flex justify-between items-center border-b-2 p-2 border-white/45">
+              <p className="text-emerald-light">Emerald IV</p>
+              <img src={top} width={"30px"} height={"30px"}></img>
+            </div>
+            {/* Stats */}
+            <ul className="quickStats flex flex-col gap-2">
+              <li className="statitem inline-flex justify-between">
+                <p className="text-white/55">Games:</p>
+                <p className="">14</p>
+              </li>
+              <li className="statitem inline-flex justify-between">
+                <p className="text-white/55">KDA:</p>
+                <p className="">1.12</p>
+              </li>
+              <li className="statitem inline-flex justify-between">
+                <p className="text-white/55">KP/Game:</p>
+                <p className="">38%</p>
+              </li>
+              <li className="statitem inline-flex justify-between">
+                <p className="text-white/55">CS/Min:</p>
+                <p className="">8.62</p>
+              </li>
+              <li className="statitem inline-flex justify-between">
+                <p className="text-white/55">Damage/Min:</p>
+                <p className="">648</p>
+              </li>
 
-            <li className="statitem inline-flex justify-between">
-              <p className="text-white/55">Vision/Game:</p>
-              <p className="">23</p>
-            </li>
-          </ul>
+              <li className="statitem inline-flex justify-between">
+                <p className="text-white/55">Vision/Game:</p>
+                <p className="">23</p>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className="extendedStatsContainer flex flex-col gap-8 flex-grow p-4 border-2 border-gray rounded-md">
           {/* Achievements */}
@@ -437,6 +439,185 @@ function StatsPlayer() {
                   <p>
                     Win Rate: <span className="text-red">0%</span>
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Champion Stats */}
+          <div className="specificChampStats">
+            <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">
+              Champion Stats
+            </h2>
+            <div className="champStats flex flex-col gap-4 lg:grid grid-cols-2">
+              {/* Champion Box */}
+              <div className="championContainer border-2 border-gray bg-gray rounded-md bg-opacity-20 p-4">
+                <div className="flex gap-2 border-gray pb-2">
+                  <img src={ornn} width={"50px"} height={"50px"}></img>
+                  <div className="champText flex justify-between items-center w-full">
+                    <div>
+                      <p className="font-bold">Ornn</p>
+                      <p className="opacity-55">9 Games</p>
+                    </div>
+                    <p>
+                      Win Rate: <span className="text-blue">57%</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="smallStatBoxesChamp flex sm:grid flex-col grid-rows-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* KDA */}
+                  <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-red bg-opacity-50 p-1 rounded-md">
+                      <LuSwords className="text-white w-[25px] h-[25px]"></LuSwords>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">KDA Ratio</h2>
+                      <p className="text-2xl text-blue">1.12</p>
+                    </div>
+                  </div>
+                  {/* Vision Score */}
+                  <div className="visionContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+                      <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">Vision/Game</h2>
+                      <p className="text-2xl text-red">10</p>
+                    </div>
+                  </div>
+                  {/* Gold/Game */}
+                  <div className="goldContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-yellow bg-opacity-50 p-1 rounded-md">
+                      <MdAttachMoney className="text-white w-[25px] h-[25px]"></MdAttachMoney>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">Gold/Game</h2>
+                      <p className="text-2xl">8400</p>
+                    </div>
+                  </div>
+                  {/* CS/Game */}
+                  <div className="csContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-green bg-opacity-50 p-1 rounded-md">
+                      <BsGraphUp className="text-white w-[25px] h-[25px]"></BsGraphUp>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">CS/Game</h2>
+                      <p className="text-2xl">192</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Champion Box */}
+              <div className="championContainer border-2 border-gray bg-gray rounded-md bg-opacity-20 p-4">
+                <div className="flex gap-2 border-gray pb-2">
+                  <img src={gwen} width={"50px"} height={"50px"}></img>
+                  <div className="champText flex justify-between items-center w-full">
+                    <div>
+                      <p className="font-bold">Gwen</p>
+                      <p className="opacity-55">4 Games</p>
+                    </div>
+                    <p>
+                      Win Rate: <span className="text-blue">75%</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="smallStatBoxesChamp flex sm:grid flex-col grid-rows-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* KDA */}
+                  <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-red bg-opacity-50 p-1 rounded-md">
+                      <LuSwords className="text-white w-[25px] h-[25px]"></LuSwords>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">KDA Ratio</h2>
+                      <p className="text-2xl text-blue">1.12</p>
+                    </div>
+                  </div>
+                  {/* Vision Score */}
+                  <div className="visionContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+                      <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">Vision/Game</h2>
+                      <p className="text-2xl text-red">10</p>
+                    </div>
+                  </div>
+                  {/* Gold/Game */}
+                  <div className="goldContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-yellow bg-opacity-50 p-1 rounded-md">
+                      <MdAttachMoney className="text-white w-[25px] h-[25px]"></MdAttachMoney>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">Gold/Game</h2>
+                      <p className="text-2xl">8400</p>
+                    </div>
+                  </div>
+                  {/* CS/Game */}
+                  <div className="csContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-green bg-opacity-50 p-1 rounded-md">
+                      <BsGraphUp className="text-white w-[25px] h-[25px]"></BsGraphUp>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">CS/Game</h2>
+                      <p className="text-2xl">192</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Champion Box */}
+              <div className="championContainer border-2 border-gray bg-gray rounded-md bg-opacity-20 p-4">
+                <div className="flex gap-2 border-gray pb-2">
+                <img src={maokai} width={"50px"} height={"50px"}></img>
+                <div className="champText flex justify-between items-center w-full">
+                  <div>
+                    <p className="font-bold">Maokai</p>
+                    <p className="opacity-55">3 Games</p>
+                  </div>
+                  <p>
+                    Win Rate: <span className="text-red">33%</span>
+                  </p>
+                </div>
+                </div>
+                <div className="smallStatBoxesChamp flex sm:grid flex-col grid-rows-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* KDA */}
+                  <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-red bg-opacity-50 p-1 rounded-md">
+                      <LuSwords className="text-white w-[25px] h-[25px]"></LuSwords>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">KDA Ratio</h2>
+                      <p className="text-2xl text-blue">1.12</p>
+                    </div>
+                  </div>
+                  {/* Vision Score */}
+                  <div className="visionContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+                      <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">Vision/Game</h2>
+                      <p className="text-2xl text-red">10</p>
+                    </div>
+                  </div>
+                  {/* Gold/Game */}
+                  <div className="goldContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-yellow bg-opacity-50 p-1 rounded-md">
+                      <MdAttachMoney className="text-white w-[25px] h-[25px]"></MdAttachMoney>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">Gold/Game</h2>
+                      <p className="text-2xl">8400</p>
+                    </div>
+                  </div>
+                  {/* CS/Game */}
+                  <div className="csContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+                    <div className=" bg-green bg-opacity-50 p-1 rounded-md">
+                      <BsGraphUp className="text-white w-[25px] h-[25px]"></BsGraphUp>
+                    </div>
+                    <div className="text flex flex-col p-4 items-center sm:items-start">
+                      <h2 className="opacity-55">CS/Game</h2>
+                      <p className="text-2xl">192</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
