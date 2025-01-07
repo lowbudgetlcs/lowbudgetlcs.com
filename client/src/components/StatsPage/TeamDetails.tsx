@@ -1,11 +1,22 @@
 import { useEffect, useState, useMemo } from "react";
-import { Link } from "react-router-dom";
 import {
   GameStatsProps,
   RosterProps,
   ChampionProps,
   BannedProps,
 } from "./StatsTeam";
+import { LuSwords } from "react-icons/lu";
+import { IoEye } from "react-icons/io5";
+import { MdAttachMoney } from "react-icons/md";
+import {
+  GiMineExplosion,
+  GiSeaDragon,
+  GiArmadillo,
+  GiHydra,
+} from "react-icons/gi";
+import { FaRegClock, FaCrown } from "react-icons/fa";
+import { FaPerson } from "react-icons/fa6";
+import { IoIosBug } from "react-icons/io";
 
 function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
   const [champImages, setChampImages] = useState<Record<string, string>>({});
@@ -102,118 +113,432 @@ function Details({ gameList }: { gameList: Array<GameStatsProps> }) {
     };
   }, [gameList]);
   return (
-    <div className="detailsSection text-white flex md:flex-row flex-col items-center">
-      <div className="statContainer flex flex-col md:grid grid-cols-2 md:grid-cols-3 grid-rows-3 gap-6 p-4 md:p-8 lg:py-12 lg:px-24">
-        {/* Win Loss Ratio */}
-        <div className="winLossRatio col-start-1 md:col-start-2 bg-gray flex flex-col gap-4 justify-center items-center rounded-md">
-          <div className="flex items-center justify-center gap-4">
-            <div className="flex flex-col items-center">
-              <p className="text-4xl text-orange">
-                {teamCalculations.gamesPlayed}
-              </p>
-              <p className="text-lg text-wrap text-center">Games</p>
+    <div className="detailsSection text-white flex md:flex-row flex-col justify-center items-center">
+      <div className="statContainer flex flex-col w-full p-4">
+        <div className="smallStatBoxes flex sm:grid flex-col grid-rows-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Win Rate */}
+
+          {/* KDA */}
+          <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+            <div className=" bg-red bg-opacity-50 p-1 rounded-md">
+              <LuSwords className="text-white w-[25px] h-[25px]"></LuSwords>
             </div>
-            <div className="flex flex-col items-center">
-              <p className="text-4xl text-blue">{teamCalculations.wins}</p>
-              <p className="text-lg text-center">Wins</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <p className="text-4xl text-red">{teamCalculations.losses}</p>
-              <p className="text-lg text-center">losses</p>
+            <div className="text flex flex-col p-4 items-center sm:items-start">
+              <h2 className="opacity-55">Team KDA</h2>
+              <p className="text-2xl">3.4</p>
             </div>
           </div>
-          <div className="flex flex-col items-center pt-4 border-t-2 w-full">
-            <p
-              className={`text-6xl ${
-                teamCalculations.winLossRatio >= 50 ? "text-blue" : "text-red"
-              }`}
-            >
-              {teamCalculations.winLossRatio}%
-            </p>
-            <p className="text-xl text-wrap text-center">Win Rate</p>
+          {/* Vision Score */}
+          <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+            <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+              <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+            </div>
+            <div className="text flex flex-col p-4 items-center sm:items-start">
+              <h2 className="opacity-55">Vision Score/Game</h2>
+              <p className="text-2xl">180</p>
+            </div>
+          </div>
+          {/* Gold per Minute */}
+          <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+            <div className=" bg-yellow bg-opacity-50 p-1 rounded-md">
+              <MdAttachMoney className="text-white w-[25px] h-[25px]"></MdAttachMoney>
+            </div>
+            <div className="text flex flex-col p-4 items-center sm:items-start">
+              <h2 className="opacity-55">Gold/Min</h2>
+              <p className="text-2xl">2000</p>
+            </div>
+          </div>
+          {/* Damage/Min */}
+          <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+            <div className=" bg-gold-light bg-opacity-50 p-1 rounded-md">
+              <GiMineExplosion className="text-white w-[25px] h-[25px]"></GiMineExplosion>
+            </div>
+            <div className="text flex flex-col p-4 items-center sm:items-start">
+              <h2 className="opacity-55">Damage/Min</h2>
+              <p className="text-2xl">3215</p>
+            </div>
+          </div>
+          {/* Game Duration Average */}
+          <div className="kdaContainer flex flex-col sm:flex-row items-center px-4 py-2 border-gray border-2 bg-gray bg-opacity-20 rounded-md">
+            <div className=" bg-green bg-opacity-50 p-1 rounded-md">
+              <FaRegClock className="text-white w-[25px] h-[25px]"></FaRegClock>
+            </div>
+            <div className="text flex flex-col p-4 items-center sm:items-start">
+              <h2 className="opacity-55">Avg. Game Duration</h2>
+              <p className="text-2xl">22:15</p>
+            </div>
           </div>
         </div>
-        {/* Average Game Time */}
-        <div className="AvgGameTime col-start-2 md:col-start-3 p-4 bg-gray flex flex-col justify-center items-center rounded-md">
-          <p className="text-6xl text-orange">
-            {teamCalculations.averageGameTime}
-          </p>
-          <p className="text-lg">Average Game Time </p>
-        </div>
-        {/* Team Roster */}
-        <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-4 md:row-start-1 row-end-6 md:row-end-3 flex flex-col p-4 bg-gray rounded-md">
-            <h2 className="font-bold text-2xl pb-2 mb-2 border-b-2">Roster</h2>
-          <ul className="rosterList flex flex-col gap-4 p-4">
-            {teamCalculations.roster.map((player) => {
-              const modifiedPlayerName = player.playerName.replace("#", " #");
-              return (
-                // TODO: Refactor code to allow link to work
-                <div key={player.id}>
-                  <li className="text-lg lg:text-xl  duration-500">
-                    {modifiedPlayerName}
-                  </li>
-                </div>
-              );
-            })}
-          </ul>
-        </div>
-        {/* Champion Bans */}
-        <div className="roster col-start-1 col-end-3 md:col-end-2 row-start-6 md:row-start-3 md:row-span-1 flex flex-col p-4 bg-gray rounded-md">
-          <div className="flex flex-col justify-center pb-4">
-            <h2 className="font-bold text-2xl text-wrap pb-2 border-b-2">
-              Commonly Banned Champions
+        <div className="flex flex-col md:flex-row gap-4 basis-0">
+          <div className="roster my-8 flex flex-col p-4 border-2 border-gray bg-gray bg-opacity-20 rounded-md flex-1">
+            <h2 className="text-xl font-bold border-b-2 border-white border-opacity-45">
+              Roster
             </h2>
+            <ul>
+              <li className="flex gap-4 justify-between bg-black p-0.5">
+                <p className="inline-block">
+                  ThyDuckyLord <span className="opacity-60">#NA1</span>
+                </p>
+                <p className="inline-block text-emerald-light">E4</p>
+              </li>
+              <li className="flex gap-4 justify-between p-0.5">
+                <p className="inline-block">
+                  Tahmes <span className="opacity-60">#NA1</span>
+                </p>
+                <p className="inline-block text-purple brightness-125">M</p>
+              </li>
+              <li className="flex gap-4 justify-between bg-black p-0.5">
+                <p className="inline-block">
+                  qiiqo <span className="opacity-60">#seir</span>
+                </p>
+                <p className="inline-block text-red">GM</p>
+              </li>
+              <li className="flex gap-4 justify-between p-0.5">
+                <p className="inline-block">
+                  Seir <span className="opacity-60">#qiiqo</span>
+                </p>
+                <p className="inline-block text-white brightness-75">S2</p>
+              </li>
+              <li className="flex gap-4 justify-between bg-black p-0.5">
+                <p className="inline-block">
+                  JackEBoy <span className="opacity-60">#roar</span>
+                </p>
+                <p className="inline-block text-platinum-light">P4</p>
+              </li>
+              <li className="flex gap-4 justify-between p-0.5">
+                <p className="inline-block">
+                  ruuffian <span className="opacity-60">#weird</span>
+                </p>
+                <p className="inline-block text-gold-light">G2</p>
+              </li>
+              <li className="flex gap-4 justify-between bg-black p-0.5">
+                <p className="inline-block">
+                  Praetorian <span className="opacity-60">#lblcs</span>
+                </p>
+                <p className="inline-block text-challenger-blue">D2</p>
+              </li>
+              <li className="flex gap-4 justify-between p-0.5">
+                <p className="inline-block">
+                  cutwire <span className="opacity-60">#val</span>
+                </p>
+                <p className="inline-block text-gold-dark brightness-200">B1</p>
+              </li>
+            </ul>
           </div>
-          <ul className="rosterList flex flex-col gap-2 items-center justify-center">
-            <p className="text-4xl text-wrap text-center">Coming Soon™</p>
-          </ul>
-        </div>
-                {/* Champions Played */}
-                <div className="champsPlayed row-start-2 row-span-1 md:row-span-2 lg:row-span-1 col-start-1 md:col-start-2 col-end-3 md:col-end-4 flex flex-col p-4 bg-gray rounded-md items-center">
-          <h2 className="font-bold text-2xl border-b-2 w-full pb-2">Champions Played</h2>
-          <div className="championContainer flex flex-wrap gap-2 p-4">
-            {teamCalculations.sortedChampions.map((champion) => {
-              return (
-                <div className="champion relative w-[50px] h-[50px]">
-                  <img
-                    className="w-[50px] h-[50px] bg-gray"
-                    src={champImages[champion.championName]}
-                  ></img>
-                  <div className="absolute bottom-0.5 right-0.5 bg-black px-1 leading-4">
-                    {champion.gamesPlayed}
-                  </div>
+          <div className="firstBloods my-8 flex flex-col p-4 border-2 border-gray bg-gray bg-opacity-20 rounded-md flex-1">
+            <h2 className="text-xl font-bold border-b-2 border-white border-opacity-45">
+              First Bloods
+            </h2>
+            <div className="flex flex-col py-4  gap-4 flex-wrap">
+              {/* Dragons */}
+              <div className="flex gap-2 items-center">
+                <div className=" bg-red bg-opacity-50 p-1 rounded-md">
+                  <GiSeaDragon className="text-white w-[25px] h-[25px]"></GiSeaDragon>
                 </div>
-              );
-            })}
+                <p className="opacity-65">Dragons: </p>
+                <p> 8 </p>
+              </div>
+              {/* Champions */}
+              <div className="flex gap-2 items-center">
+                <div className=" bg-green bg-opacity-50 p-1 rounded-md">
+                  <FaPerson className="text-white w-[25px] h-[25px]"></FaPerson>
+                </div>
+                <p className="opacity-65">Champions: </p>
+                <p> 8 </p>
+              </div>
+              {/* Void Grubs */}
+              <div className="flex gap-2 items-center">
+                <div className=" bg-purple bg-opacity-50 p-1 rounded-md">
+                  <IoIosBug className="text-white w-[25px] h-[25px]"></IoIosBug>
+                </div>
+                <p className="opacity-65">Void Grubs: </p>
+                <p> 12 </p>
+              </div>
+              {/* Heralds */}
+              <div className="flex gap-2 items-center">
+                <div className=" bg-purple bg-opacity-50 p-1 rounded-md">
+                  <GiArmadillo className="text-white w-[25px] h-[25px]"></GiArmadillo>
+                </div>
+                <p className="opacity-65">Heralds: </p>
+                <p> 3 </p>
+              </div>
+              {/* Barons */}
+              <div className="flex gap-2 items-center">
+                <div className=" bg-purple bg-opacity-50 p-1 rounded-md">
+                  <GiHydra className="text-white w-[25px] h-[25px]"></GiHydra>
+                </div>
+                <p className="opacity-65">Barons: </p>
+                <p> 8 </p>
+              </div>
+            </div>
           </div>
-        </div>
-        {/* First Bloods */}
-        <div className="firstBloods col-start-1 md:col-start-2 col-end-3 md:col-end-4 bg-gray flex flex-col p-4 items-center rounded-md">
-          <h2 className="font-bold text-2xl text-wrap pb-2 border-b-2 w-full">
-            First Bloods
-          </h2>
-          <div className="firstBloodsContainer grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 grid-rows-4 gap-4 p-4">
-            <p className="text-lg col-start-1">Champions: </p>
-            <p className="number col-start-2 text-orange">0</p>
-            <p className="text-lg col-start-1">Dragons: </p>
-            <p className="number col-start-2 text-orange">0</p>
-            <p className="text-lg col-start-1">Grubs: </p>
-            <p className="number col-start-2 text-orange">0</p>
-            <p className="text-lg sm:col-start-3 row-start-1">Heralds: </p>
-            <p className="number sm:col-start-4 row-start-1 text-orange">0</p>
-            <p className="text-lg sm:col-start-3 row-start-2">Towers: </p>
-            <p className="number sm:col-start-4 row-start-2 text-orange">0</p>
-            <p className="text-lg sm:col-start-3 row-start-3">Atakhan: </p>
-            <p className="number sm:col-start-4 row-start-3 text-orange">0</p>
-            <p className="text-lg col-start-1 lg:col-start-2 row-start-4">
-              Barons:{" "}
-            </p>
-            <p className="number col-start-2 lg:col-start-3 row-start-4 text-orange">
-              0
-            </p>
+          <div className="bans my-8 flex flex-col p-4 border-2 border-gray bg-gray bg-opacity-20 rounded-md flex-1">
+            <h2 className="text-xl font-bold border-b-2 border-white border-opacity-45">
+              Common Bans
+            </h2>
+            <ul>
+              <li className="flex gap-4 justify-between bg-black py-0.5">
+                <p className="inline-block">
+                  <span>Jhin</span>:
+                </p>
+                <p className="inline-block">12</p>
+              </li>
+              <li className="flex gap-4 justify-between py-0.5">
+                <p className="inline-block">
+                  <span>Ornn</span>:
+                </p>
+                <p className="inline-block">8</p>
+              </li>
+              <li className="flex gap-4 justify-between bg-black py-0.5">
+                <p className="inline-block">
+                  <span>Gwen</span>:
+                </p>
+                <p className="inline-block">6</p>
+              </li>
+              <li className="flex gap-4 justify-between marker:py-0.5">
+                <p className="inline-block">
+                  <span>Maokai</span>:
+                </p>
+                <p className="inline-block">4</p>
+              </li>
+              <li className="flex gap-4 justify-between bg-black py-0.5">
+                <p className="inline-block">
+                  <span>Jarvin IV</span>:
+                </p>
+                <p className="inline-block">3</p>
+              </li>
+              <li className="flex gap-4 justify-between py-0.5">
+                <p className="inline-block">
+                  <span>Ashe</span>:
+                </p>
+                <p className="inline-block">2</p>
+              </li>
+              <li className="flex gap-4 justify-between bg-black py-0.5">
+                <p className="inline-block">
+                  <span>Viktor</span>:
+                </p>
+                <p className="inline-block">5421</p>
+              </li>
+              <li className="flex gap-4 justify-between py-0.5">
+                <p className="inline-block">
+                  <span>Annie</span>:
+                </p>
+                <p className="inline-block">12</p>
+              </li>
+            </ul>
           </div>
         </div>
 
+        {/* Stat Distribution Bars */}
+        <h2 className="text-2xl font-bold text-center pb-2">Distribution</h2>
+        <div className="statDistribution flex flex-col md:grid grid-cols-3 gap-4">
+          {/* Gold Distribution */}
+          <div className="gold bg-gray bg-opacity-20 border-2 border-gray rounded-md p-4 flex-1">
+            <div className="flex items-center gap-4 pb-4">
+              <div className=" bg-yellow bg-opacity-50 p-1 rounded-md">
+                <MdAttachMoney className="text-white w-[25px] h-[25px]"></MdAttachMoney>
+              </div>
+              <h3 className="text-xl">Gold</h3>
+            </div>
+            <div className="bars">
+              <div className="topBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Top</p>
+                  <p>30%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[30%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="jungleBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Jungle</p>
+                  <p>15%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[15%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="midBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Middle</p>
+                  <p>15%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[15%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="botBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Bottom</p>
+                  <p>35%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[35%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="supportBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Support</p>
+                  <p>5%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[5%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Damage Distribution */}
+          <div className="damage bg-gray bg-opacity-20 border-2 border-gray rounded-md p-4 flex-1">
+            <div className="flex items-center gap-4 pb-4">
+              <div className=" bg-gold-light bg-opacity-50 p-1 rounded-md">
+                <GiMineExplosion className="text-white w-[25px] h-[25px]"></GiMineExplosion>
+              </div>
+              <h3 className="text-xl">Damage</h3>
+            </div>
+            <div className="bars">
+              <div className="topBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Top</p>
+                  <p>30%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[30%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="jungleBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Jungle</p>
+                  <p>15%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[15%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="midBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Middle</p>
+                  <p>15%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[15%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="botBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Bottom</p>
+                  <p>35%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[35%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="supportBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Support</p>
+                  <p>5%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[5%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Vision Distribution */}
+          <div className="vision bg-gray bg-opacity-20 border-2 border-gray rounded-md p-4 flex-1">
+            <div className="flex items-center gap-4 pb-4">
+              <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+                <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+              </div>
+              <h3 className="text-xl">Vision</h3>
+            </div>
+            <div className="bars">
+              <div className="topBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Top</p>
+                  <p>5%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[5%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="jungleBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Jungle</p>
+                  <p>15%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[15%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="midBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Middle</p>
+                  <p>15%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[15%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="botBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Bottom</p>
+                  <p>35%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[35%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="supportBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Support</p>
+                  <p>35%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[35%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Objective Control */}
+          <div className="vision bg-gray bg-opacity-20 border-2 border-gray rounded-md p-4 flex-1">
+            <div className="flex items-center gap-4 pb-4">
+              <div className=" bg-blue bg-opacity-50 p-1 rounded-md">
+                <IoEye className="text-white w-[25px] h-[25px]"></IoEye>
+              </div>
+              <h3 className="text-xl">Objective Control</h3>
+            </div>
+            <div className="bars">
+              <div className="topBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Dragons</p>
+                  <p>55%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[55%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="jungleBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Towers</p>
+                  <p>38%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[38%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+              <div className="midBar my-0.5">
+                <div className="flex justify-between">
+                  <p>Barons</p>
+                  <p>80%</p>
+                </div>
+                <div className="relative w-full h-2 bg-gray rounded-lg">
+                  <div className="absolute top-0 w-[80%] bg-white h-2 rounded-lg"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
