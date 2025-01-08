@@ -1,3 +1,11 @@
+//? To use: Must have these lines commented below in every component
+//? Required variables for Nav List
+//   const [activeLink, setActiveLink] = useState<string>("[Default Link]");
+//   const toggleActive = (navItem: string) => {
+//     setActiveLink(navItem);
+//   };
+//   const navItems = [ [All Nav Items (ex: 'item1', 'item2', 'item3')] ]
+
 interface NavListProps {
   activeLink: string;
   toggleActive: (navItem: string) => void;
