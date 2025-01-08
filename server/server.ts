@@ -292,10 +292,10 @@ app.post("/api/draft/createLobby", async (req: Request, res: Response) => {
     console.log("Received Data:", { redName, blueName, tournamentID });
 
     // Generate unique URLs for the draft
-    let blueCode, redCode, specCode;
+    let blueCode, redCode, lobbyCode;
     blueCode = generateRandomString(); //!Temp code until below is uncommented
     redCode = generateRandomString();
-    specCode = generateRandomString();
+    lobbyCode = generateRandomString();
 
     // !Uncomment when using DB
     // if (tournamentID) {
@@ -314,9 +314,9 @@ app.post("/api/draft/createLobby", async (req: Request, res: Response) => {
 
     // Create the draft object
     const draft = {
+      lobbyCode: lobbyCode,
       blueCode: blueCode,
       redCode: redCode,
-      specCode: specCode,
       redName,
       blueName,
       tournamentID,
@@ -336,11 +336,10 @@ app.post("/api/draft/createLobby", async (req: Request, res: Response) => {
 
     // Success Response
     res.status(201).json({
-      message: "Draft lobby created successfully",
       draft: {
+        lobbyCode,
         blueCode,
         redCode,
-        specCode,
       },
     });
   } catch (err) {

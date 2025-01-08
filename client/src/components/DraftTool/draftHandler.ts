@@ -3,11 +3,10 @@ const socket = io("http://localhost:8070");
 
 export interface DraftCodeProps {
   draft: {
+    lobbyCode: string;
     blueCode: string;
     redCode: string;
-    specCode: string;
   };
-  message: string;
 }
 export interface TournamentIDCheckProps {
   valid: boolean;

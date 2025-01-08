@@ -8,8 +8,13 @@ import {
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
+interface DraftLinkProps {
+  lobbyCode: string;
+  blueCode: string;
+  redCode: string;
+}
 function DraftMain() {
-  const [draftLinks, setDraftLinks] = useState<Array<string>>([]);
+  const [draftLinks, setDraftLinks] = useState<DraftLinkProps>();
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
 
   // Required variables for Nav List
@@ -58,11 +63,12 @@ function DraftMain() {
         tournamentID || null
       );
 
-      setDraftLinks([
-        draftResult.draft.blueCode,
-        draftResult.draft.redCode,
-        draftResult.draft.specCode,
-      ]);
+      const draftLobbyCodes = {
+        lobbyCode: draftResult.draft.lobbyCode,
+        blueCode: draftResult.draft.blueCode,
+        redCode: draftResult.draft.redCode,
+      };
+      setDraftLinks(draftLobbyCodes);
     } catch (err) {
       console.error("Error during form submission:", err);
     }
@@ -73,7 +79,7 @@ function DraftMain() {
       <div className="title m-20 text-center">
         <h1 className="text-6xl text-white">Draft Tool</h1>
       </div>
-      {draftLinks.length > 0 ? (
+      {draftLinks ? (
         <DraftCodes draftLinks={draftLinks} setDraftLinks={setDraftLinks} />
       ) : (
         <div className="draftInput">
@@ -131,7 +137,11 @@ function DraftMain() {
                   name="tournamentID"
                   required
                 ></input>
-                <p className={`${hasBadCode ? "" : "opacity-0"} text-sm text-red p-1`}>
+                <p
+                  className={`${
+                    hasBadCode ? "" : "opacity-0"
+                  } text-sm text-red p-1`}
+                >
                   Invalid Tournament Code!
                 </p>
               </div>
@@ -202,19 +212,19 @@ function DraftCodes({
   draftLinks,
   setDraftLinks,
 }: {
-  draftLinks: string[];
-  setDraftLinks: React.Dispatch<React.SetStateAction<string[]>>;
+  draftLinks: DraftLinkProps;
+  setDraftLinks: React.Dispatch<React.SetStateAction<DraftLinkProps | undefined>>;
 }) {
   const removeDraftLinks = () => {
-    setDraftLinks([]);
+    setDraftLinks(undefined);
   };
   const copyLinks = () => {
     navigator.clipboard.writeText(`Blue Side Link:
-https://lowbudgetlcs.com/draft/${draftLinks[0]}
+https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}
 Red Side Link:
-https://lowbudgetlcs.com/draft/${draftLinks[1]}
+https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}
 Spectator Link:
-https://lowbudgetlcs.com/draft/${draftLinks[2]}`);
+https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
   };
 
   return (
@@ -228,10 +238,11 @@ https://lowbudgetlcs.com/draft/${draftLinks[2]}`);
             <span className="text-blue">Blue Side</span> Link:
           </h3>
           <Link
-            to={`https://lowbudgetlcs.com/draft/${draftLinks[0]}`}
+            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`}
             className="text-xl hover:text-blue transition duration-300 py-4"
           >
-            https://lowbudgetlcs.com/draft/{draftLinks[0]}
+            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}/
+            {draftLinks.blueCode}
           </Link>
         </div>
         <div className="RedLinkDiv flex flex-col">
@@ -239,10 +250,11 @@ https://lowbudgetlcs.com/draft/${draftLinks[2]}`);
             <span className="text-red">Red Side</span> Link:
           </h3>
           <Link
-            to={`https://lowbudgetlcs.com/draft/${draftLinks[1]}`}
+            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`}
             className="text-xl hover:text-red transition duration-300 py-4"
           >
-            https://lowbudgetlcs.com/draft/{draftLinks[1]}
+            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}/
+            {draftLinks.redCode}
           </Link>
         </div>
         <div className="specLinkDiv flex flex-col">
@@ -250,10 +262,10 @@ https://lowbudgetlcs.com/draft/${draftLinks[2]}`);
             <span className="text-yellow">Spectator</span> Link:
           </h3>
           <Link
-            to={`https://lowbudgetlcs.com/draft/${draftLinks[2]}`}
+            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`}
             className="text-xl hover:text-yellow transition duration-300 py-4"
           >
-            https://lowbudgetlcs.com/draft/{draftLinks[2]}
+            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}
           </Link>
         </div>
       </div>
