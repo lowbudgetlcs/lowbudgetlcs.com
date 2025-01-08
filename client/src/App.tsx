@@ -48,8 +48,7 @@ function App() {
             <Route path="stats/team/:team" element={<StatsTeamUI/>}/>
             <Route path="*" element={<ErrorPage />} />
             <Route path="draft" element={<DraftMain/>}/>
-            {/* <Route path="draft/:side/:lobbyCode" element={<DraftPage/>}/> */}
-            <Route path="draft/tool" element={<DraftPage/>}/>
+            <Route path="draft/:lobbyCode" element={<DraftPage/>}/>
           </Routes>
         </LeagueDataProvider>
         <Footer />

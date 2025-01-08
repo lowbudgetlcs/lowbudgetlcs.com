@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-
+import { connectionHandler } from "./draftHandler";
+import { useParams } from "react-router-dom";
 function DraftPage() {
   const [champImages, setChampImages] = useState<Record<string, string>>({});
   const picks = ["Ornn", "JarvinIV", "Vex", "Ashe", "Rell"];
 
+  // Grab the lobby code
+  const params = useParams();
+  const connectURL: string | undefined = params.lobbyCode;
+  console.log(connectURL)
+
   useEffect(() => {
+    // Import Champ Icon Images from folder
     const modules = import.meta.glob("../../assets/champion/*.png");
     const images: Record<string, string> = {};
-
     const loadImages = async () => {
       for (const path in modules) {
         const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
@@ -18,10 +24,13 @@ function DraftPage() {
       }
       setChampImages(images);
     };
-
     loadImages();
+
+    // Run connection Handler Function with lobby code    
+    connectionHandler(connectURL);
+
   }, []);
-  console.log(champImages);
+
   return (
     <div className="mt-24 text-white">
       <div className="teamTitles flex justify-between">
