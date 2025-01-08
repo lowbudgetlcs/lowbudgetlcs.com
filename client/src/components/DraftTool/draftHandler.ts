@@ -1,6 +1,14 @@
 import { io } from "socket.io-client";
 const socket = io('http://localhost:8070');
 
+export interface DraftCodeProps {
+    draft: {
+        blueCode: string;
+        redCode: string;
+        specCode: string;
+    }
+    message: string;
+}
 export function connectionHandler(connectURL: string | undefined) {
     socket.on('connect', () => {
         socket.on('welcome', (msg) => {
@@ -24,6 +32,8 @@ export const createDraftDBEntry = async (blueName: FormDataEntryValue, redName: 
         }
 
         console.log(data)
+
+        // Create the Draft lobby
         const response = await fetch('http://localhost:8080/api/draft/createLobby', {
             method: 'POST',
             headers: {
@@ -33,11 +43,10 @@ export const createDraftDBEntry = async (blueName: FormDataEntryValue, redName: 
         })
 
         if (!response.ok) {
-            // If the response status is not 200-299, throw an error
             throw new Error(`Server error: ${response.status} ${response.statusText}`);
         }
         const result = await response.json();
-        console.log(result)
+        return result
     } catch(err) {
         console.error("Error in Creating Draft DB Entry: ", err )
     }
