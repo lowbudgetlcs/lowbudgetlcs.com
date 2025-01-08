@@ -1,45 +1,70 @@
 import Button from "../Button";
 import NavList from "../NavList";
-import { createDraftDBEntry, DraftCodeProps } from "./draftHandler";
+import {
+  checkTournamentCode,
+  createDraftDBEntry,
+  DraftCodeProps,
+} from "./draftHandler";
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
 function DraftMain() {
   const [draftLinks, setDraftLinks] = useState<Array<string>>([]);
+  const [hasBadCode, setHasBadCode] = useState<boolean>(false);
 
   // Required variables for Nav List
   const [activeLink, setActiveLink] = useState<string>("Default Draft");
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
-  const navItems = ['Default Draft', 'LBLCS Tournament', 'Fearless Draft']
+  const navItems = ["Default Draft", "LBLCS Tournament", "Fearless Draft"];
 
   const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    let blueName = formData.get("blueName") as string | null;
-    let redName = formData.get("redName") as string | null;
-    if(!blueName) {
-      blueName = "Blue Team"
-    }
-    if (!redName) {
-      redName = "Red Team"
-    }
-    console.log("Blue Name: ", blueName);
-    console.log("Red Name: ", redName);
-    if (blueName && redName) {
+
+    const draftType = formData.get("draftType") as string | null;
+    const tournamentID = formData.get("tournamentID") as string | null;
+
+    let blueName = (formData.get("blueName") as string | null) || "Blue Team";
+    let redName = (formData.get("redName") as string | null) || "Red Team";
+
+    try {
+      if (draftType === "Tournament") {
+        if (!tournamentID) {
+          console.error("Tournament ID is missing despite being required.");
+          return;
+        }
+
+        const isTournamentValid = await checkTournamentCode(tournamentID);
+
+        if (typeof isTournamentValid === "undefined") {
+          console.error("Unexpected error during tournament validation.");
+          return;
+        }
+
+        if (!isTournamentValid) {
+          setHasBadCode(true);
+          return;
+        }
+      }
+
+      // Create draft
       const draftResult: DraftCodeProps = await createDraftDBEntry(
         blueName,
         redName,
-        null
+        tournamentID || null
       );
+
       setDraftLinks([
         draftResult.draft.blueCode,
         draftResult.draft.redCode,
         draftResult.draft.specCode,
       ]);
+    } catch (err) {
+      console.error("Error during form submission:", err);
     }
   };
 
@@ -54,36 +79,119 @@ function DraftMain() {
         <div className="draftInput">
           <h2 className="text-center text-2xl font-bold">Create Draft</h2>
           <div className="draftMenu">
-            <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems}/>
+            <NavList
+              activeLink={activeLink}
+              toggleActive={toggleActive}
+              navItems={navItems}
+            />
           </div>
-          <form
-            className="flex flex-col items-center gap-4 justify-center p-4"
-            onSubmit={handleFormSubmission}
-          >
-            <div className="flex flex-col sm:flex-row gap-4">
+          {activeLink === "Default Draft" ? (
+            <form
+              className="flex flex-col items-center gap-4 justify-center p-4"
+              onSubmit={handleFormSubmission}
+            >
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col">
+                  <p>Blue Side</p>
+                  <input
+                    type="text"
+                    placeholder="Blue Team"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
+                    name="blueName"
+                  ></input>
+                </div>
+                <div className="flex flex-col">
+                  <p>Red Side</p>
+                  <input
+                    type="text"
+                    placeholder="Red Team"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
+                    name="redName"
+                  ></input>
+                </div>
+              </div>
+              <button type="submit" className="">
+                <Button>Create Draft</Button>
+              </button>
+            </form>
+          ) : activeLink === "LBLCS Tournament" ? (
+            <form
+              className="flex flex-col items-center gap-4 justify-center p-4"
+              onSubmit={handleFormSubmission}
+            >
+              <input type="hidden" name="draftType" value="Tournament"></input>
               <div className="flex flex-col">
-                <p>Blue Side</p>
+                <p className="text-xl font-bold">
+                  <span className="text-red">*</span> Tournament Code
+                </p>
                 <input
                   type="text"
-                  placeholder="Blue Team"
-                  className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
-                  name="blueName"
+                  placeholder="Tournament Code"
+                  className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
+                  name="tournamentID"
+                  required
                 ></input>
+                <p className={`${hasBadCode ? "" : "opacity-0"} text-sm text-red p-1`}>
+                  Invalid Tournament Code!
+                </p>
               </div>
-              <div className="flex flex-col">
-                <p>Red Side</p>
-                <input
-                  type="text"
-                  placeholder="Red Team"
-                  className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
-                  name="redName"
-                ></input>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col">
+                  <p className="text-xl">Blue Side</p>
+                  <input
+                    type="text"
+                    placeholder="Blue Team"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
+                    name="blueName"
+                  ></input>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-xl">Red Side</p>
+                  <input
+                    type="text"
+                    placeholder="Red Team"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
+                    name="redName"
+                  ></input>
+                </div>
               </div>
-            </div>
-            <button type="submit" className="">
-              <Button>Create Draft</Button>
-            </button>
-          </form>
+              <button type="submit" className="">
+                <Button>Create Draft</Button>
+              </button>
+            </form>
+          ) : activeLink === "Fearless Draft" ? (
+            <form
+              className="flex flex-col items-center gap-4 justify-center p-4"
+              onSubmit={handleFormSubmission}
+            >
+              <input type="hidden" name="draftType" value="Fearless"></input>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex flex-col">
+                  <p>Blue Side</p>
+                  <input
+                    type="text"
+                    placeholder="Blue Team"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
+                    name="blueName"
+                  ></input>
+                </div>
+                <div className="flex flex-col">
+                  <p>Red Side</p>
+                  <input
+                    type="text"
+                    placeholder="Red Team"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
+                    name="redName"
+                  ></input>
+                </div>
+              </div>
+              <button type="submit" className="">
+                <Button>Create Draft</Button>
+              </button>
+            </form>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </div>
