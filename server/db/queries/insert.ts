@@ -1,5 +1,5 @@
+import { DraftProps } from "../../routes/draftRoutes";
 import { db } from "../index";
-import { DraftProps } from "../../server";
 import { draftLobbies } from "../schema";
 
 export async function insertDraft(draft: DraftProps) {
