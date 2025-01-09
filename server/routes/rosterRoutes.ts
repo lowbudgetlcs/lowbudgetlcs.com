@@ -8,7 +8,7 @@ import {
 
 // TODO: Refactor route to lessen load on server
 // Retrieve all players. Currently used by roster only
-rosterRoutes.get("/api/getPlayers", async (req: Request, res: Response) => {
+rosterRoutes.get("/roster/getPlayers", async (req: Request, res: Response) => {
     try {
       const response = await getPlayers();
       res.json(response);
@@ -20,7 +20,7 @@ rosterRoutes.get("/api/getPlayers", async (req: Request, res: Response) => {
   
   // TODO: Refactor route to lessen load on server
   // Retrieve all teams. Currently used by roster and showing all team cards for stats
-  rosterRoutes.get("/api/getTeams", async (req: Request, res: Response) => {
+  rosterRoutes.get("/roster/getTeams", async (req: Request, res: Response) => {
     try {
       const response = await getTeams();
       res.json(response);
@@ -32,7 +32,7 @@ rosterRoutes.get("/api/getPlayers", async (req: Request, res: Response) => {
   
   // TODO: Refactor route to lessen load on server
   // Retrieve all divisions. Currently used by roster only
-  rosterRoutes.get("/api/getDivisions", async (req: Request, res: Response) => {
+  rosterRoutes.get("/roster/getDivisions", async (req: Request, res: Response) => {
     try {
       const response = await getDivisions();
       res.json(response);

@@ -4,6 +4,7 @@ import { rateLimit } from "express-rate-limit";
 import draftRoutes from "./routes/draftRoutes";
 import twitchRoutes from "./routes/twitchRoutes";
 import { getTwitchConfig } from "./services/twitchService";
+import rosterRoutes from "./routes/rosterRoutes";
 
 const app = express();
 const port = 8080;
@@ -45,8 +46,10 @@ if (isProduction) {
   });
 }
 
-app.use("/draft", draftRoutes);
 app.use("/twitch", twitchRoutes);
+app.use("/roster", rosterRoutes);
+app.use("/draft", draftRoutes);
+
 app.listen(port, () => {
   console.log("Server started on port " + port);
 });

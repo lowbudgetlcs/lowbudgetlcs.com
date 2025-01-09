@@ -4,7 +4,7 @@ const twitchRoutes = express.Router();
 import { checkIfLive, getTwitchConfig, getTwitchToken } from "../services/twitchService";
 
 // Twitch Life check. Runs every time the website is opened
-twitchRoutes.get("/api/checklive", async (req: Request, res: Response) => {
+twitchRoutes.get("/twitch/checklive", async (req: Request, res: Response) => {
   try {
     const { clientID, clientSecret } = getTwitchConfig();
     if (!clientID || !clientSecret) {

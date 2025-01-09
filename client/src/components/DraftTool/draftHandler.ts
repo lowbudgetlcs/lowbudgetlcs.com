@@ -40,7 +40,7 @@ export function connectionHandler(
 export const checkTournamentCode = async (code: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/draft/checkTournamentCode/${code}`
+      `http://localhost:8080/draft/checkTournamentCode/${code}`
     );
 
     if (!response.ok) {
@@ -73,7 +73,7 @@ export const createDraftDBEntry = async (
 
     // Create the Draft lobby
     const response = await fetch(
-      "http://localhost:8080/api/draft/createLobby",
+      "http://localhost:8080/draft/createLobby",
       {
         method: "POST",
         headers: {
