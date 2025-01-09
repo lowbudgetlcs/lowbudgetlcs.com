@@ -11,17 +11,29 @@ export interface DraftCodeProps {
 export interface TournamentIDCheckProps {
   valid: boolean;
 }
-export function connectionHandler(connectURL: string | undefined) {
-  socket.on("connect", () => {
-    socket.on("welcome", (msg) => {
-      console.log("Server: ", msg);
-    });
-    if (connectURL) {
-      socket.emit("code", connectURL);
-    }
-    socket.on("goodMessage", (msg) => {
-      console.log(msg);
-    });
+export function connectionHandler(
+  lobbyCode: string | undefined,
+  sideCode: string | undefined
+) {
+  // Initial connection
+  console.log("Client sent lobbyCode:", lobbyCode);
+  socket.emit("joinDraft", { lobbyCode, sideCode });
+
+  socket.on("error", (err) => {
+    console.error("Socket Error: ", err.message);
+    alert(err.message);
+  });
+
+  socket.on("joinedDraft", ({ sideCode, id }) => {
+    console.log("joined Draft: ", sideCode, id);
+  });
+
+  socket.on("userJoined", ({ id }) => {
+    console.log("User joined with ID: ", id);
+  });
+
+  socket.on("userLeft", ({ id }) => {
+    console.log("User left with ID: ", id);
   });
 }
 

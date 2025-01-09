@@ -7,8 +7,6 @@ function DraftPage() {
 
   // Grab the lobby code
   const params = useParams();
-  const connectURL: string | undefined = params.lobbyCode;
-  console.log(connectURL)
 
   useEffect(() => {
     // Import Champ Icon Images from folder
@@ -26,9 +24,11 @@ function DraftPage() {
     };
     loadImages();
 
-    // Run connection Handler Function with lobby code    
-    connectionHandler(connectURL);
-
+    const lobbyCode: string | undefined = params.lobbyCode;
+    const sideCode: string | undefined = params.sideCode;
+    console.log("lobby code: ", lobbyCode);
+    // Run connection Handler Function with lobby code
+    connectionHandler(lobbyCode, sideCode);
   }, []);
 
   return (
