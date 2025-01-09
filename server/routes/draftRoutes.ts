@@ -25,7 +25,7 @@ export interface DraftProps {
 }
 
 draftRoutes.get(
-  "/draft/checkTournamentCode/:code",
+  "/api/checkTournamentCode/:code",
   async (req: Request, res: Response) => {
     try {
       console.log("checking for tourneyID");
@@ -47,7 +47,7 @@ draftRoutes.get(
 const generateRandomString = () => Math.random().toString(36).substring(7);
 
 draftRoutes.post(
-  "/draft/createLobby",
+  "/api/createLobby",
   async (req: Request, res: Response) => {
     try {
       console.log("Beginning call to server for Draft Creation");
@@ -107,11 +107,6 @@ draftRoutes.post(
     }
   }
 );
-interface LobbyCodeProps {
-  lobbyCode: string;
-  redCode: string;
-  blueCode: string;
-}
 
 
 

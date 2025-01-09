@@ -1,6 +1,8 @@
 import fs from "fs";
 import path from "path";
 import { Server } from "socket.io";
+import { getLobbyCodes } from "../db/queries/select";
+import { DraftProps } from "../routes/draftRoutes";
 const io = new Server(8070, {
   cors: {
     origin: "*",
@@ -10,6 +12,12 @@ export interface DraftUsers {
   blue: string | null;
   red: string | null;
 }
+interface LobbyCodeProps {
+  lobbyCode: string;
+  redCode: string;
+  blueCode: string;
+}
+
 
 let currentConnections: number = 0;
 export const draftSocket = () => {

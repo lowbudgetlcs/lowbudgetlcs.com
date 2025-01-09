@@ -11,6 +11,8 @@ export interface DraftCodeProps {
 export interface TournamentIDCheckProps {
   valid: boolean;
 }
+
+// Handles connecting to draft
 export function connectionHandler(
   lobbyCode: string | undefined,
   sideCode: string | undefined
@@ -37,10 +39,11 @@ export function connectionHandler(
   });
 }
 
+// Checks if input tournament code is valid
 export const checkTournamentCode = async (code: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/draft/checkTournamentCode/${code}`
+      `http://localhost:8080/draft/api/checkTournamentCode/${code}`
     );
 
     if (!response.ok) {
@@ -73,7 +76,7 @@ export const createDraftDBEntry = async (
 
     // Create the Draft lobby
     const response = await fetch(
-      "http://localhost:8080/draft/createLobby",
+      "http://localhost:8080/draft/api/createLobby",
       {
         method: "POST",
         headers: {
