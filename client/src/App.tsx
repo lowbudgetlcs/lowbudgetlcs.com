@@ -49,6 +49,7 @@ function App() {
             <Route path="*" element={<ErrorPage />} />
             <Route path="draft" element={<DraftMain/>}/>
             <Route path="draft/:lobbyCode" element={<DraftPage/>}/>
+            <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage/>}/>
           </Routes>
         </LeagueDataProvider>
         <Footer />
