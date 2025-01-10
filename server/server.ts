@@ -1,14 +1,25 @@
 import express from "express";
 import cors from "cors";
+import http from "http";
 import { rateLimit } from "express-rate-limit";
 import draftRoutes from "./routes/draftRoutes";
 import twitchRoutes from "./routes/twitchRoutes";
 import { getTwitchConfig } from "./services/twitchService";
 import rosterRoutes from "./routes/rosterRoutes";
+import { Server } from "socket.io";
+import { draftSocket } from "./sockets/draftSocket";
 
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: isProduction ? "https://lowbudgetlcs.com" : "*",
+  },
+});
+
 
 // Validate twitch env variables present
 try {
@@ -18,6 +29,7 @@ try {
   process.exit(1);
 }
 
+// Middleware
 // Cors options. will always be in production on live server
 const corsOptions = {
   origin: isProduction ? "https://lowbudgetlcs.com" : "*",
@@ -30,11 +42,10 @@ const apiLimiter = rateLimit({
   max: 2000, // Limit each IP to 2000 requests per windowMs
 });
 
-
-// Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/", apiLimiter);
+
 // Forces website to be https on production
 if (isProduction) {
   app.use((req, res, next) => {
@@ -45,11 +56,14 @@ if (isProduction) {
     }
   });
 }
-
+// Routes
 app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 
-app.listen(port, () => {
+// Initialize draftSocket with the io instance
+draftSocket(io);
+
+server.listen(port, () => {
   console.log("Server started on port " + port);
 });

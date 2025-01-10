@@ -1,5 +1,3 @@
-import { io } from "socket.io-client";
-const socket = io("http://localhost:8070");
 
 export interface DraftCodeProps {
   draft: {
@@ -15,7 +13,8 @@ export interface TournamentIDCheckProps {
 // Handles connecting to draft
 export function connectionHandler(
   lobbyCode: string | undefined,
-  sideCode: string | undefined
+  sideCode: string | undefined,
+  
 ) {
   // Initial connection
   console.log("Client sent lobbyCode:", lobbyCode);
@@ -26,8 +25,8 @@ export function connectionHandler(
     alert(err.message);
   });
 
-  socket.on("joinedDraft", ({ sideCode, id }) => {
-    console.log("joined Draft: ", sideCode, id);
+  socket.on("joinedDraft", ({ sideCode, lobbyCode }) => {
+    console.log("joined Draft: ", sideCode, lobbyCode);
   });
 
   socket.on("userJoined", ({ id }) => {
@@ -37,7 +36,27 @@ export function connectionHandler(
   socket.on("userLeft", ({ id }) => {
     console.log("User left with ID: ", id);
   });
+
+  socket.on('blueReady', (ready) => {
+    if(ready) {
+      console.log('Blue is Ready')
+    } else {
+      console.log('Blue is Not Ready')
+    }
+  })
+  socket.on('redReady', (ready) => {
+    if(ready) {
+      console.log('Red is Ready')
+    } else {
+      console.log('Red is Not Ready')
+    }
+  })
 }
+
+export const readyHandler = (sideCode: string | undefined, ready: boolean) => {
+  console.log("Emitting: ", sideCode)
+  socket.emit("ready", { sideCode: sideCode, ready: ready });
+};
 
 // Checks if input tournament code is valid
 export const checkTournamentCode = async (code: string) => {

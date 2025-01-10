@@ -1,35 +1,40 @@
 import { useEffect, useState } from "react";
-import { connectionHandler } from "./draftHandler";
+import { connectionHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
+import { loadChampImages } from "./loadChampImages";
+import { io } from "socket.io-client";
 function DraftPage() {
+ const socket = io("http://localhost:8080");
+
   const [champImages, setChampImages] = useState<Record<string, string>>({});
-  const picks = ["Ornn", "JarvinIV", "Vex", "Ashe", "Rell"];
+  const [ready, setReady] = useState<boolean>(false);
 
   // Grab the lobby code
   const params = useParams();
-
+  const lobbyCode: string | undefined = params.lobbyCode;
+  const sideCode: string | undefined = params.sideCode;
   useEffect(() => {
-    // Import Champ Icon Images from folder
-    const modules = import.meta.glob("../../assets/champion/*.png");
-    const images: Record<string, string> = {};
-    const loadImages = async () => {
-      for (const path in modules) {
-        const name = path.match(/([^/]+)(?=\.\w+$)/)?.[0];
-        if (name) {
-          const module = (await modules[path]()) as { default: string };
-          images[name] = module.default;
-        }
+    const fetchChampImages = async () => {
+      try {
+        const data = await loadChampImages();
+        setChampImages(data);
+      } catch (error) {
+        console.error("Error loading champion images:", error);
       }
-      setChampImages(images);
     };
-    loadImages();
+    fetchChampImages();
 
-    const lobbyCode: string | undefined = params.lobbyCode;
-    const sideCode: string | undefined = params.sideCode;
     console.log("lobby code: ", lobbyCode);
     // Run connection Handler Function with lobby code
-    connectionHandler(lobbyCode, sideCode);
+    connectionHandler(lobbyCode, sideCode, socket);
   }, []);
+  const toggleReady = () => {
+    setReady((prevReady) => {
+      const newReady = !prevReady;
+      readyHandler(sideCode, newReady, socket);
+      return newReady;
+    });
+  };
 
   return (
     <div className="mt-24 text-white">
@@ -105,9 +110,14 @@ function DraftPage() {
           <div className="ban5 w-20 h-40 bg-gray"></div>
         </div>
         {/* Ready Button */}
-        <div className="Timer p-4 bg-orange max-h-16 flex items-center justify-center hover:cursor-pointer">
-          Ready Up
-        </div>
+        <button
+          onClick={toggleReady}
+          className={`Timer p-4 ${
+            ready ? "bg-gray" : "bg-orange"
+          } max-h-16 flex items-center justify-center hover:cursor-pointer`}
+        >
+          {ready ? "Waiting" : "Ready"}
+        </button>
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
           <div className="ban5 w-20 h-40 bg-gray"></div>

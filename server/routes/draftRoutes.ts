@@ -1,15 +1,8 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
-import { Server } from "socket.io";
-import {
-  checkLiveDraftsForRole,
-  draftHandler,
-  DraftUsers,
-} from "../sockets/draftSocket";
 import { insertDraft } from "../db/queries/insert";
 import {
   checkDBForURL,
-  getLobbyCodes,
   getMatchingShortCode,
 } from "../db/queries/select";
 

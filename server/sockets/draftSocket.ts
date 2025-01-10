@@ -1,13 +1,8 @@
-import fs from "fs";
-import path from "path";
 import { Server } from "socket.io";
 import { getLobbyCodes } from "../db/queries/select";
 import { DraftProps } from "../routes/draftRoutes";
-const io = new Server(8070, {
-  cors: {
-    origin: "*",
-  },
-});
+import { draftHandler } from "./draftHandler";
+
 export interface DraftUsers {
   blue: string | null;
   red: string | null;
@@ -20,7 +15,7 @@ interface LobbyCodeProps {
 
 
 let currentConnections: number = 0;
-export const draftSocket = () => {
+export const draftSocket = (io: Server) => {
   io.on("connection", (socket) => {
     console.log("User connected:", socket.id);
     currentConnections++;
@@ -65,15 +60,11 @@ export const draftSocket = () => {
             red: "",
           };
           if (sideCode === lobbyCodes.blueCode) {
-            draft.blue = socket.id;
+            draft.blue = sideCode;
           } else if (sideCode === lobbyCodes.redCode) {
-            draft.red = socket.id;
-          } else if (sideCode === "spectator") {
-            socket.emit("Spectator", { message: "spectator" });
+            draft.red = sideCode;
           } else {
-            socket.emit("error", { message: "Invalid role" });
-            socket.disconnect();
-            return;
+            socket.emit("Spectator", { message: "spectator" });
           }
 
           // Join room
@@ -85,7 +76,7 @@ export const draftSocket = () => {
           io.to(lobbyCode).emit("userJoined", { sideCode, id: socket.id });
 
           // Handle draft-specific logic
-          draftHandler(draft, io, lobbyCode);
+          draftHandler(draft, socket, lobbyCode);
         } catch (error) {
           console.error("Error during role assignment:", error);
           socket.emit("error", { message: "Internal server error." });
@@ -101,51 +92,4 @@ export const draftSocket = () => {
   });
 };
 
-export async function checkLiveDraftsForRole(teamCode: string) {
-  try {
-    const data = await fs.promises.readFile("../draft/draft.json", "utf-8");
-    const draft: DraftProps = JSON.parse(data);
-    console.log("File content:", data);
 
-    // Check the role based on the team code
-    if (teamCode === draft.lobbyCode) {
-      return "spectator";
-    } else if (teamCode === draft.blueCode) {
-      return "blue";
-    } else if (teamCode === draft.redCode) {
-      return "red";
-    } else {
-      console.log("No match for codes");
-      return undefined;
-    }
-  } catch (err) {
-    console.error("Error reading file:", err);
-    return undefined;
-  }
-}
-
-export const draftHandler = (
-  draft: DraftUsers,
-  io: Server,
-  lobbyCode: string
-) => {
-  let blueReady = false;
-  let redReady = false;
-  let timer = 34;
-  let shownTimer = timer - 4;
-
-  const redUser = draft.red;
-  const blueUser = draft.blue;
-  let currentTurn: string;
-
-  // Ready Up Draft
-  io.on("ready", ({ user, ready }) => {
-    if (user === redUser) {
-      if (ready === true) {
-        io.to(lobbyCode).emit("redReady", true);
-      } else if (ready === false) {
-        io.to(lobbyCode).emit("redReady", false);
-      }
-    }
-  });
-};
