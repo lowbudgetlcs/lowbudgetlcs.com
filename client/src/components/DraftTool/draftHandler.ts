@@ -1,3 +1,4 @@
+import { Socket } from "socket.io-client";
 
 export interface DraftCodeProps {
   draft: {
@@ -14,8 +15,9 @@ export interface TournamentIDCheckProps {
 export function connectionHandler(
   lobbyCode: string | undefined,
   sideCode: string | undefined,
-  
+  socket: Socket
 ) {
+  // Error handling
   // Initial connection
   console.log("Client sent lobbyCode:", lobbyCode);
   socket.emit("joinDraft", { lobbyCode, sideCode });
@@ -37,24 +39,33 @@ export function connectionHandler(
     console.log("User left with ID: ", id);
   });
 
-  socket.on('blueReady', (ready) => {
-    if(ready) {
-      console.log('Blue is Ready')
+  socket.on("blueReady", (ready) => {
+    if (ready) {
+      console.log("Blue is Ready");
     } else {
-      console.log('Blue is Not Ready')
+      console.log("Blue is Not Ready");
     }
-  })
-  socket.on('redReady', (ready) => {
-    if(ready) {
-      console.log('Red is Ready')
+  });
+  socket.on("redReady", (ready) => {
+    if (ready) {
+      console.log("Red is Ready");
     } else {
-      console.log('Red is Not Ready')
+      console.log("Red is Not Ready");
     }
-  })
+  });
 }
 
-export const readyHandler = (sideCode: string | undefined, ready: boolean) => {
-  console.log("Emitting: ", sideCode)
+export const readyHandler = (
+  sideCode: string | undefined,
+  ready: boolean,
+  socket: Socket | null
+) => {
+  // Error handling
+  if (!socket) {
+    console.error("No socket Found!");
+    return;
+  }
+  console.log("Emitting: ", sideCode);
   socket.emit("ready", { sideCode: sideCode, ready: ready });
 };
 
