@@ -1,7 +1,8 @@
 import { Socket } from "socket.io";
 import { DraftUsers } from "./draftSocket";
+import { draftHandler } from "./serverDraftHandler";
 
-export const draftHandler = (
+export const readyHandler = (
   draft: DraftUsers,
   socket: Socket,
   lobbyCode: string
@@ -9,12 +10,8 @@ export const draftHandler = (
   let blueReady = false;
   let redReady = false;
   let draftStart = false;
-  let timer = 34;
-  let shownTimer = timer - 4;
-
-  const redUser = draft.red;
-  const blueUser = draft.blue;
-  let currentTurn: string;
+  const redUser: string = draft.red;
+  const blueUser: string = draft.blue;
 
   // Ready Up Draft
   socket.on("ready", ({ sideCode, ready }) => {
@@ -36,18 +33,16 @@ export const draftHandler = (
         redReady = true;
       } else if (ready === false) {
         socket.to(lobbyCode).emit("redReady", false);
+        console.log("red is not ready");
         redReady = false;
       }
     }
     // Starts the draft if both players are ready
     if (blueReady && redReady) {
       draftStart = true;
+      console.log("starting draft in room: ")
       socket.to(lobbyCode).emit("startDraft", true);
-
+        draftHandler(socket, lobbyCode, blueUser, redUser)
     }
   });
 };
-
-const banPhase = () => {
-    
-}

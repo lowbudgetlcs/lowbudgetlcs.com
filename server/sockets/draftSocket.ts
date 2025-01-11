@@ -1,11 +1,11 @@
 import { Server } from "socket.io";
 import { getLobbyCodes } from "../db/queries/select";
 import { DraftProps } from "../routes/draftRoutes";
-import { draftHandler } from "./draftHandler";
+import { readyHandler } from "./readyHandler";
 
 export interface DraftUsers {
-  blue: string | null;
-  red: string | null;
+  blue: string;
+  red: string;
 }
 interface LobbyCodeProps {
   lobbyCode: string;
@@ -56,7 +56,7 @@ export const draftSocket = (io: Server) => {
             draft.red = sideCode;
             console.log("Connected user is Red");
           } else {
-            socket.emit("Spectator", { message: "spectator" });
+            socket.emit("Spectator", { spectator: true });
           }
 
           // Join room
@@ -69,7 +69,7 @@ export const draftSocket = (io: Server) => {
           io.to(lobbyCode).emit("userJoined", { sideCode, id: socket.id });
 
           // Handle draft-specific logic
-          draftHandler(draft, socket, lobbyCode);
+          readyHandler(draft, socket, lobbyCode);
         } catch (error) {
           console.error("Error during role assignment:", error);
           socket.emit("error", { message: "Internal server error." });
