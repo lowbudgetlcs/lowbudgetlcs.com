@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
-import { DraftUsers } from "./draftSocket";
+import { DraftUsersProps } from "./draftSocket";
 import { draftHandler } from "./serverDraftHandler";
 
 export const readyHandler = (
-  draft: DraftUsers,
+  draft: DraftUsersProps,
   socket: Socket,
   lobbyCode: string
 ) => {
@@ -12,37 +12,39 @@ export const readyHandler = (
   let draftStart = false;
   const redUser: string = draft.red;
   const blueUser: string = draft.blue;
-
   // Ready Up Draft
   socket.on("ready", ({ sideCode, ready }) => {
-    if (sideCode === blueUser) {
-      if (ready === true) {
-        socket.to(lobbyCode).emit("blueReady", true);
-        console.log("blue is ready");
-        blueReady = true;
-      } else if (ready === false) {
-        socket.to(lobbyCode).emit("blueReady", false);
-        console.log("blue is not ready");
-        blueReady = false;
+    if (sideCode) {
+      if (sideCode === blueUser) {
+        if (ready === true) {
+          socket.to(lobbyCode).emit("blueReady", true);
+          console.log("blue is ready");
+          blueReady = true;
+        } else if (ready === false) {
+          socket.to(lobbyCode).emit("blueReady", false);
+          console.log("blue is not ready");
+          blueReady = false;
+        }
+      }
+      if (sideCode === redUser) {
+        if (ready === true) {
+          socket.to(lobbyCode).emit("redReady", true);
+          console.log("red is ready");
+          redReady = true;
+        } else if (ready === false) {
+          socket.to(lobbyCode).emit("redReady", false);
+          console.log("red is not ready");
+          redReady = false;
+        }
       }
     }
-    if (sideCode === redUser) {
-      if (ready === true) {
-        socket.to(lobbyCode).emit("redReady", true);
-        console.log("red is ready");
-        redReady = true;
-      } else if (ready === false) {
-        socket.to(lobbyCode).emit("redReady", false);
-        console.log("red is not ready");
-        redReady = false;
-      }
-    }
+
     // Starts the draft if both players are ready
     if (blueReady && redReady) {
       draftStart = true;
-      console.log("starting draft in room: ")
+      console.log("starting draft in room: ");
       socket.to(lobbyCode).emit("startDraft", true);
-        draftHandler(socket, lobbyCode, blueUser, redUser)
+      draftHandler(socket, lobbyCode, blueUser, redUser);
     }
   });
 };

@@ -3,7 +3,7 @@ import { getLobbyCodes } from "../db/queries/select";
 import { DraftProps } from "../routes/draftRoutes";
 import { readyHandler } from "./readyHandler";
 
-export interface DraftUsers {
+export interface DraftUsersProps {
   blue: string;
   red: string;
 }
@@ -42,23 +42,21 @@ export const draftSocket = (io: Server) => {
 
           console.log("Valid LOBBY CODES: ", lobbyCodes);
 
-          //! Rest of code will not run if  lobbyCode invalid
-
-          // Check and assign role
-          const draft = {
-            blue: "",
-            red: "",
-          };
-          if (sideCode === lobbyCodes.blueCode) {
-            draft.blue = sideCode;
-            console.log("connected user is blue");
-          } else if (sideCode === lobbyCodes.redCode) {
-            draft.red = sideCode;
-            console.log("Connected user is Red");
-          } else {
-            socket.emit("Spectator", { spectator: true });
+          //! Rest of code will not run if lobbyCode invalid
+          
+          const draftUsers: DraftUsersProps = {
+            blue: lobbyCodes.blueCode,
+            red: lobbyCodes.redCode
           }
-
+          // Assign the user spectator if not using correct code
+          if (
+            sideCode !== lobbyCodes.blueCode &&
+            sideCode !== lobbyCodes.redCode
+          ) {
+            socket.emit("Spectator", { spectator: true });
+            console.log("Connected user is a spectator.");
+            return;
+          }
           // Join room
           socket.join(lobbyCode);
           console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
@@ -69,7 +67,7 @@ export const draftSocket = (io: Server) => {
           io.to(lobbyCode).emit("userJoined", { sideCode, id: socket.id });
 
           // Handle draft-specific logic
-          readyHandler(draft, socket, lobbyCode);
+          readyHandler(draftUsers, socket, lobbyCode);
         } catch (error) {
           console.error("Error during role assignment:", error);
           socket.emit("error", { message: "Internal server error." });
