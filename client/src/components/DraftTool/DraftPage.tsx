@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { connectionHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
 import { loadChampImages } from "./loadChampImages";
-import { io } from "socket.io-client";
-function DraftPage() {
- const socket = io("http://localhost:8080");
+import { io, Socket } from "socket.io-client";
 
+function DraftPage() {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const [champImages, setChampImages] = useState<Record<string, string>>({});
   const [ready, setReady] = useState<boolean>(false);
 
@@ -14,6 +14,9 @@ function DraftPage() {
   const lobbyCode: string | undefined = params.lobbyCode;
   const sideCode: string | undefined = params.sideCode;
   useEffect(() => {
+    const newSocket = io("http://localhost:8080");
+    setSocket(newSocket);
+
     const fetchChampImages = async () => {
       try {
         const data = await loadChampImages();
@@ -26,7 +29,10 @@ function DraftPage() {
 
     console.log("lobby code: ", lobbyCode);
     // Run connection Handler Function with lobby code
-    connectionHandler(lobbyCode, sideCode, socket);
+      newSocket.on("connect", () => {
+        connectionHandler(lobbyCode, sideCode, newSocket);
+      });
+
   }, []);
   const toggleReady = () => {
     setReady((prevReady) => {
