@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { connectionHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
 import { loadChampImages } from "./loadChampImages";
-import { io, Socket } from "socket.io-client";
+import { connect, io, Socket } from "socket.io-client";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -29,11 +29,22 @@ function DraftPage() {
 
     console.log("lobby code: ", lobbyCode);
     // Run connection Handler Function with lobby code
-      newSocket.on("connect", () => {
-        connectionHandler(lobbyCode, sideCode, newSocket);
-      });
+    const handleConnection = async () => {
+      connectionHandler(lobbyCode, sideCode, newSocket);
+    }
+    newSocket.on("connect", handleConnection);
+    newSocket.on("startDraft", () => {
+      console.log("Draft is starting");
+    });
 
-  }, []);
+
+    // Cleanup on unmount
+    return () => {
+      newSocket.off("connect", handleConnection);
+      newSocket.off("startDraft");
+      newSocket.disconnect();
+    };
+  }, [lobbyCode, sideCode]);
   const toggleReady = () => {
     setReady((prevReady) => {
       const newReady = !prevReady;
