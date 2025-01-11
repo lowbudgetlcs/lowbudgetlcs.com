@@ -79,7 +79,6 @@ export async function getPlayer(summonerName: string) {
 //   return gameStats;
 // }
 
-// !Uncomment when connecting to DB
 export async function checkDBForURL(
   blueCode: string,
   redCode: string,
@@ -87,13 +86,13 @@ export async function checkDBForURL(
 ) {
   const matchingURL = await db
     .select({
-      blueCode: draftLobbies.bluecode,
-      redCode: draftLobbies.redcode,
-      specCode: draftLobbies.lobbycode,
+      blueCode: draftLobbies.blueCode,
+      redCode: draftLobbies.redCode,
+      specCode: draftLobbies.lobbyCode,
     })
     .from(draftLobbies)
     .where(
-      sql`${draftLobbies.bluecode} = ${blueCode} or ${draftLobbies.redcode} = ${redCode} or ${draftLobbies.lobbycode} = ${lobbyCode}`
+      sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode} or ${draftLobbies.lobbyCode} = ${lobbyCode}`
     );
   return matchingURL;
 }
@@ -110,11 +109,11 @@ export async function getMatchingShortCode(shortCode: string) {
 export async function getLobbyCodes(lobbyCode: string) {
   const matchingCodes = await db
     .select({
-      lobbyCode: draftLobbies.lobbycode,
-      redCode: draftLobbies.redcode,
-      blueCode: draftLobbies.bluecode,
+      lobbyCode: draftLobbies.lobbyCode,
+      redCode: draftLobbies.redCode,
+      blueCode: draftLobbies.blueCode,
     })
     .from(draftLobbies)
-    .where(eq(draftLobbies.lobbycode, lobbyCode));
+    .where(eq(draftLobbies.lobbyCode, lobbyCode));
     return matchingCodes.length > 0 ? matchingCodes[0] : null;
 }

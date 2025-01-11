@@ -7,12 +7,12 @@ export async function insertDraft(draft: DraftProps) {
     const insertDraft = await db
       .insert(draftLobbies)
       .values({
-        lobbycode: draft.lobbyCode,
-        bluecode: draft.blueCode,
-        redcode: draft.redCode,
+        lobbyCode: draft.lobbyCode,
+        blueCode: draft.blueCode,
+        redCode: draft.redCode,
         shortcode: draft.tournamentID,
-        bluename: draft.blueName,
-        redname: draft.redName,
+        blueName: draft.blueName,
+        redName: draft.redName,
       })
       .returning();
 
