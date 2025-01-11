@@ -13,12 +13,11 @@ interface LobbyCodeProps {
   blueCode: string;
 }
 
-
 let currentConnections: number = 0;
 export const draftSocket = (io: Server) => {
   io.on("connection", (socket) => {
-    console.log("User connected:", socket.id);
     currentConnections++;
+    console.log("User connected. current connections: ", currentConnections);
 
     socket.on(
       "joinDraft",
@@ -43,16 +42,7 @@ export const draftSocket = (io: Server) => {
 
           console.log("Valid LOBBY CODES: ", lobbyCodes);
 
-          // Validate role
-          if (
-            lobbyCodes.redCode != sideCode &&
-            lobbyCodes.blueCode != sideCode
-          ) {
-            socket.emit("error", { message: "Role not found or invalid." });
-            socket.disconnect();
-            return;
-          }
-          //! Rest of code will not run if side or lobbyCode invalid
+          //! Rest of code will not run if  lobbyCode invalid
 
           // Check and assign role
           const draft = {
@@ -61,8 +51,10 @@ export const draftSocket = (io: Server) => {
           };
           if (sideCode === lobbyCodes.blueCode) {
             draft.blue = sideCode;
+            console.log("connected user is blue");
           } else if (sideCode === lobbyCodes.redCode) {
             draft.red = sideCode;
+            console.log("Connected user is Red");
           } else {
             socket.emit("Spectator", { message: "spectator" });
           }
@@ -71,7 +63,8 @@ export const draftSocket = (io: Server) => {
           socket.join(lobbyCode);
           console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
-          // Notify the client and others
+          // Notify the client and others upon joining
+          // ! Will not need this on prod
           socket.emit("joinedDraft", { lobbyCode, sideCode });
           io.to(lobbyCode).emit("userJoined", { sideCode, id: socket.id });
 
@@ -86,10 +79,8 @@ export const draftSocket = (io: Server) => {
     );
 
     socket.on("disconnect", () => {
-      console.log("User disconnected:", socket.id);
       currentConnections--;
+      console.log("User disconnected. Current Users: ", currentConnections);
     });
   });
 };
-
-
