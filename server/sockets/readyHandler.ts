@@ -1,18 +1,18 @@
 import { Socket } from "socket.io";
 import { DraftUsersProps } from "./draftSocket";
 import { draftHandler } from "./serverDraftHandler";
+let blueReady = false;
+let redReady = false;
 
 export const readyHandler = (
   draft: DraftUsersProps,
   socket: Socket,
   lobbyCode: string
 ) => {
-  let blueReady = false;
-  let redReady = false;
   let draftStart = false;
   const redUser: string = draft.red;
   const blueUser: string = draft.blue;
-  
+
   // Starts the draft if both players are ready
   const checkReady = () => {
     console.log("BlueReady: ", blueReady, " RedReady: ", redReady);
@@ -30,21 +30,23 @@ export const readyHandler = (
 
   // Ready Up Draft
   socket.on("ready", ({ sideCode, ready }) => {
-    if (sideCode) {
-      if (sideCode) {
-        if (sideCode === blueUser && blueReady !== ready) {
-          blueReady = ready; // Update the readiness state
-          socket.to(lobbyCode).emit("blueReady", ready); // Inform other clients
-          console.log("Blue:", ready);
-          checkReady();
-        }
-        if (sideCode === redUser && redReady !== ready) {
-          redReady = ready; // Update the readiness state
-          socket.to(lobbyCode).emit("redReady", ready); // Inform other clients
-          console.log("Red:", ready);
-          checkReady();
-        }
-      }
+    console.log("SERVER: Received ready =>", sideCode, ready);
+    console.log("RedReady in BLUEREADY Section: ", redReady);
+    console.log("Blue ready in REDREADY Section: ", blueReady);
+
+    if (!sideCode) return;
+
+    if (sideCode === blueUser && blueReady !== ready) {
+      blueReady = ready;
+      socket.to(lobbyCode).emit("blueReady", ready); // Inform other clients
+      console.log("Blue:", ready);
     }
+    if (sideCode === redUser && redReady !== ready) {
+      redReady = ready;
+      socket.to(lobbyCode).emit("redReady", ready); // Inform other clients
+      console.log("Red:", ready);
+    }
+
+    checkReady();
   });
 };
