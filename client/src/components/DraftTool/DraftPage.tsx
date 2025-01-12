@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { connectionHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
 import { loadChampImages } from "./loadChampImages";
-import { connect, io, Socket } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
+import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [champImages, setChampImages] = useState<Record<string, string>>({});
+  const [currentTime, setCurrentTime ] = useState<number>(30)
   const [ready, setReady] = useState<boolean>(false);
 
   // Grab the lobby code
@@ -33,9 +35,13 @@ function DraftPage() {
       connectionHandler(lobbyCode, sideCode, newSocket);
     }
     newSocket.on("connect", handleConnection);
-    newSocket.on("startDraft", () => {
-      console.log("Draft is starting");
+    newSocket.on("banPhase", () => {
+      handleBanPhase(setCurrentTime, sideCode, newSocket);
     });
+
+    newSocket.on("pickPhase", () => {
+      handlePickPhase(setCurrentTime, sideCode, newSocket)
+    })
 
 
     // Cleanup on unmount
@@ -54,7 +60,10 @@ function DraftPage() {
   };
 
   return (
-    <div className="mt-24 text-white">
+    <div className="relative text-white mt-2">
+      <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
+        <p>{currentTime}</p>
+      </div>
       <div className="teamTitles flex justify-between">
         <div className="blueTitle p-4 bg-blue/60">
           <h2>Blue Team</h2>
@@ -64,7 +73,7 @@ function DraftPage() {
         </div>
       </div>
       {/* Main Container */}
-      <div className="mainDraftContainer flex  flex-1">
+      <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
           <div className="pick1 min-w-40 min-h-24 bg-gray"></div>
