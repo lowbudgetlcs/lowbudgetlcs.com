@@ -54,7 +54,7 @@ function App() {
             <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage/>}/>
           </Routes>
         </LeagueDataProvider>
-        <Footer />
+        {!isDraftRoute && <Footer />}
     </div>
   );
 }
