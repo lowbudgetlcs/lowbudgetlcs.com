@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter, useLocation, useMatch } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
