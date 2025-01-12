@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter, useLocation, useMatch } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -23,12 +23,14 @@ import DraftMain from "./components/DraftTool/DraftMain";
 import DraftPage from "./components/DraftTool/DraftPage";
 
 function App() {
+  const location = useLocation()
+  const isDraftRoute = location.pathname.startsWith("/draft/")
   return (
     <div className=" relative font-serif min-h-screen bg-black">
-      <BrowserRouter>
+
         <ScrollToTop />
         <Twitch />
-        <Navbar />
+        {!isDraftRoute && <Navbar />}
         <LeagueDataProvider>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -53,7 +55,6 @@ function App() {
           </Routes>
         </LeagueDataProvider>
         <Footer />
-      </BrowserRouter>
     </div>
   );
 }
