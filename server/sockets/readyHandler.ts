@@ -22,7 +22,7 @@ export const readyHandler = (
     }
     if (blueReady && redReady) {
       draftStart = true;
-      console.log("starting draft in room: ");
+      console.log("starting draft in room: ", lobbyCode);
       socket.to(lobbyCode).emit("startDraft", true);
       draftHandler(socket, lobbyCode, blueUser, redUser);
     }
