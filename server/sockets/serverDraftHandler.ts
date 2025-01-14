@@ -6,61 +6,50 @@ export const draftHandler = async (
   blueUser: string,
   redUser: string
 ) => {
-  let timer = 34;
-  let shownTimer = timer - 4;
-  let currentTurn: string;
-  let totalBans: number = 0;
-  let banPhase1: number = 0;
-  let banPhase2: number = 0;
-  const redBans: Array<string> = [];
-  const blueBans: Array<string> = [];
+  let banPhase1: number = 6;
+  let banPhase2: number = 4;
+  const bansArray: Array<string> = [];
   console.log("Ban Phase Starting");
   //   Tells client ban phase has begun then runs first ban phase
   socket.to(lobbyCode).emit("banPhase", true);
 
-  let interval = setInterval(() => {
-    if (timer <= 0) {
-      console.log("timer finished");
-      clearInterval(interval);
-    } else {
-      console.log(timer);
-      socket.emit("timer", timer);
-      timer--;
-    }
-  }, 1000);
   // Runs ban phase while total bans is less than 6
-  if (banPhase1 < 6) {
-    console.log("currentBan: ", banPhase1);
-    currentTurn = blueUser;
-    while (currentTurn === blueUser) {
-      socket.on("ban", ({ sideCode, ban }) => {
-        if (sideCode === blueUser || timer === 0) {
-          if (!ban) {
-            blueBans.push("nothing");
-            console.log("Blue Turn Finished");
-            return (currentTurn = blueUser);
-          }
-          blueBans.push(ban);
-          console.log("Blue Turn Finished");
-          return (currentTurn = redUser);
+  const handleTurn = async (currentSide: string) => {
+    let timer = 8;
+    return new Promise((resolve: any) => {
+      let interval = setInterval(() => {
+        timer--;
+        console.log(timer);
+        socket.to(lobbyCode).emit("timer", timer);
+        if (timer <= 0) {
+          clearInterval(interval);
+          console.log("timer finished. ", `${currentSide} chose nothing`);
+          bansArray.push("nothing");
+          resolve();
+        }
+      }, 1000);
+
+      socket.once("ban", (sideCode, ban) => {
+        if (sideCode === currentSide) {
+          clearInterval(interval);
+          bansArray.push(ban);
+          console.log("Ban has been given: ", ban);
+          resolve();
         }
       });
-    }
-    while (currentTurn === redUser) {
-      socket.on("ban", ({ sideCode, ban }) => {
-        if (sideCode === redUser || timer === 0) {
-          if (!ban) {
-            redBans.push("nothing");
-            console.log("Red Turn Finished");
-            return (currentTurn = blueUser);
-          }
-          redBans.push(ban);
-          console.log("Red Turn Finished");
-          return (currentTurn = blueUser);
-        }
-      });
-    }
-  }
+      socket.to(lobbyCode).emit("banTurn", currentSide);
+    });
+  };
 
   // Blue side's turn
+  const startBanPhase = async () => {
+    for (let i = 0; i < banPhase1; i++) {
+      const isBlueTurn = i % 2 === 0;
+      //   Use this to track current side making the turn
+      const currentSide = isBlueTurn ? blueUser : redUser;
+      await handleTurn(currentSide);
+    }
+  };
+  await startBanPhase();
+  console.log("Ban Phase 1 is complete :)")
 };
