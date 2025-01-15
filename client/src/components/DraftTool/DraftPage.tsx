@@ -157,7 +157,7 @@ function DraftPage() {
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
             {bannedChampions[0] && (
               <img
-                src={champImages[bannedChampions[0]]}
+                src={largeChampImages[bannedChampions[0]]}
                 alt={`${chosenChamp} large`}
                 style={{
                   width: "300px",
@@ -170,7 +170,7 @@ function DraftPage() {
           <div className="ban2 w-20 h-40 bg-gray">
             {bannedChampions[3] && (
               <img
-                src={champImages[bannedChampions[3]]}
+                src={largeChampImages[bannedChampions[3]]}
                 alt={`${chosenChamp} large`}
                 style={{
                   width: "300px",
@@ -183,7 +183,7 @@ function DraftPage() {
           <div className="ban3 w-20 h-40 bg-gray">
             {bannedChampions[4] && (
               <img
-                src={champImages[bannedChampions[4]]}
+                src={largeChampImages[bannedChampions[4]]}
                 alt={`${chosenChamp} large`}
                 style={{
                   width: "300px",
@@ -227,7 +227,7 @@ function DraftPage() {
           <div className="ban3 w-20 h-40 bg-gray">
             {bannedChampions[5] && (
               <img
-                src={champImages[bannedChampions[5]]}
+                src={largeChampImages[bannedChampions[5]]}
                 alt={`${chosenChamp} large`}
                 style={{
                   width: "300px",
@@ -240,7 +240,7 @@ function DraftPage() {
           <div className="ban2 w-20 h-40 bg-gray">
             {bannedChampions[2] && (
               <img
-                src={champImages[bannedChampions[2]]}
+                src={largeChampImages[bannedChampions[2]]}
                 alt={`${chosenChamp} large`}
                 style={{
                   width: "300px",
@@ -253,7 +253,7 @@ function DraftPage() {
           <div className="ban1 w-20 h-40 bg-gray">
             {bannedChampions[1] && (
               <img
-                src={champImages[bannedChampions[1]]}
+                src={largeChampImages[bannedChampions[1]]}
                 alt={`${chosenChamp} large`}
                 style={{
                   width: "300px",
