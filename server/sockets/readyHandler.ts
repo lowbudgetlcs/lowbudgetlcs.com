@@ -1,4 +1,4 @@
-import { Socket } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { DraftUsersProps } from "./draftSocket";
 import { draftHandler } from "./serverDraftHandler";
 let blueReady = false;
@@ -7,7 +7,8 @@ let redReady = false;
 export const readyHandler = (
   draft: DraftUsersProps,
   socket: Socket,
-  lobbyCode: string
+  lobbyCode: string,
+  io: Server
 ) => {
   let draftStart = false;
   const redUser: string = draft.red;
@@ -16,15 +17,12 @@ export const readyHandler = (
   // Starts the draft if both players are ready
   const checkReady = () => {
     console.log("BlueReady: ", blueReady, " RedReady: ", redReady);
-    if (draftStart) {
-      console.log("draft started");
-      return;
-    }
-    if (blueReady && redReady) {
+
+    if (blueReady && redReady && draftStart === false) {
       draftStart = true;
       console.log("starting draft in room: ", lobbyCode);
       socket.to(lobbyCode).emit("startDraft", true);
-      draftHandler(socket, lobbyCode, blueUser, redUser);
+      draftHandler(io, socket, lobbyCode, blueUser, redUser);
     }
   };
 
