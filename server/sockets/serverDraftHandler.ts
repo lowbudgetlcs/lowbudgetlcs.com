@@ -1,69 +1,40 @@
-import { Server, Socket } from "socket.io";
 
-export const draftHandler = async (
-  io: Server,
-  socket: Socket,
+export interface DraftStateProps {
+  draftStarted: boolean;
+  banPhase1Started: boolean;
+  banPhase2Started: boolean;
+  pickPhase1Started: boolean;
+  pickPhase2Started: boolean;
+  blueUser: string;
+  redUser: string;
+  timer: number;
+  bansArray: string[];
+  picksArray: string[];
+  banIndex: number;
+  pickIndex: number;
+}
+export const draftState: Record<string, DraftStateProps> = {};
+
+export const initializeDraftState = (
   lobbyCode: string,
   blueUser: string,
   redUser: string
 ) => {
-  let banPhaseStart = false;
-  const bansPhase1 = [blueUser, redUser, redUser, blueUser, blueUser, redUser];
-  const bansPhase2 = [redUser, blueUser, blueUser, redUser];
-  const picksPhase1 = [blueUser, redUser, redUser, blueUser, blueUser, redUser];
-  const picksPhase2 = [redUser, blueUser, blueUser, redUser];
-  const bansArray: Array<string> = [];
-  // Runs ban phase while total bans is less than 6
-  const handleTurn = async (currentSide: string) => {
-    let timer = 34;
-    return new Promise<void>((resolve) => {
-      let interval = setInterval(() => {
-        timer--;
-        console.log(timer);
-        io.to(lobbyCode).emit("timer", timer);
-        if (timer <= 0) {
-          clearInterval(interval);
-          console.log("timer finished. ", `${currentSide} chose nothing`);
-          bansArray.push("nothing");
-          resolve();
-        }
-      }, 1000);
-
-      const banListener = ({
-        sideCode,
-        chosenChamp,
-      }: {
-        sideCode: string;
-        chosenChamp: string;
-      }) => {
-        console.log("Ban Recieved: ", chosenChamp);
-        if (sideCode === currentSide) {
-          clearInterval(interval);
-          bansArray.push(chosenChamp);
-          console.log("Ban has been given: ", chosenChamp);
-          io.to(lobbyCode).emit("setBan", { chosenChamp });
-          resolve();
-        }
-      };
-      socket.on("ban", banListener);
-
-      io.to(lobbyCode).emit("banTurn", currentSide);
-    });
-  };
-
-  // Blue side's turn
-  const startBanPhase = async () => {
-    for (const currentSide of bansPhase1) {
-      console.log("currentTurn: ", currentSide);
-      io.to(lobbyCode).emit("currentTurn", currentSide);
-      await handleTurn(currentSide);
-      console.log("switching turns");
-    }
-  };
-  console.log("Ban Phase Starting");
-  // Tells client ban phase has begun then runs first ban phase
-  io.to(lobbyCode).emit("banPhase", true);
-  banPhaseStart = true;
-  await startBanPhase();
-  console.log("Ban Phase 1 is complete :)");
+  if (!draftState[lobbyCode]) {
+    draftState[lobbyCode] = {
+      draftStarted: false,
+      banPhase1Started: false,
+      banPhase2Started: false,
+      pickPhase1Started: false,
+      pickPhase2Started: false,
+      blueUser: blueUser,
+      redUser: redUser,
+      timer: 34,
+      bansArray: [],
+      picksArray: [],
+      banIndex: 0,
+      pickIndex: 0,
+    };
+    console.log(`Draft state initialized for lobby with code: ${lobbyCode}`);
+  }
 };

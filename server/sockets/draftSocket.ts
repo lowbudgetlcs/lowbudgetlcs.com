@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import { getLobbyCodes } from "../db/queries/select";
 import { DraftProps } from "../routes/draftRoutes";
 import { readyHandler } from "./readyHandler";
+import { draftState, initializeDraftState } from "./serverDraftHandler";
 
 export interface DraftUsersProps {
   blue: string;
@@ -15,6 +16,8 @@ interface LobbyCodeProps {
 
 let currentConnections: number = 0;
 export const draftSocket = (io: Server) => {
+  let blueJoined = false;
+  let redJoined = false;
   io.on("connection", (socket) => {
     currentConnections++;
     console.log("User connected. current connections: ", currentConnections);
@@ -38,36 +41,46 @@ export const draftSocket = (io: Server) => {
             socket.disconnect();
             return;
           }
-          const lobbyCodes: LobbyCodeProps = codeQuery;
 
+          const lobbyCodes: LobbyCodeProps = codeQuery;
           console.log("Valid LOBBY CODES: ", lobbyCodes);
 
-          //! Rest of code will not run if lobbyCode invalid
-          
           const draftUsers: DraftUsersProps = {
             blue: lobbyCodes.blueCode,
-            red: lobbyCodes.redCode
-          }
-          // Assign the user spectator if not using correct code
-          if (
-            sideCode !== lobbyCodes.blueCode &&
-            sideCode !== lobbyCodes.redCode
-          ) {
-            socket.emit("Spectator", { spectator: true });
-            console.log("Connected user is a spectator.");
-            return;
-          }
+            red: lobbyCodes.redCode,
+          };
+
+          // Initialize Draft
+          await initializeDraftState(
+            lobbyCode,
+            draftUsers.blue,
+            draftUsers.red
+          );
+          // update the draft state with blue and red url codes
+          const state = draftState[lobbyCode];
+          state.blueUser = lobbyCodes.blueCode;
+          state.redUser = lobbyCodes.redCode;
+
           // Join room
           socket.join(lobbyCode);
           console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
-          // Notify the client and others upon joining
-          // ! Will not need this on prod
-          socket.emit("joinedDraft", { lobbyCode, sideCode });
-          io.to(lobbyCode).emit("userJoined", { sideCode, id: socket.id });
+          if (sideCode === lobbyCodes.blueCode) {
+            blueJoined = true;
+          } else if (sideCode === lobbyCodes.redCode) {
+            blueJoined = true;
+          } else {
+            // Assign the user spectator if not using correct code
+            socket.emit("Spectator", { spectator: true });
+            console.log("Connected user is a spectator.");
+            return;
+          }
 
-          // Handle draft-specific logic
-          readyHandler(draftUsers, socket, lobbyCode, io);
+          if (blueJoined && redJoined) {
+            state.draftStarted = true;
+          }
+          
+          await readyHandler(draftUsers, socket, lobbyCode, io);
         } catch (error) {
           console.error("Error during role assignment:", error);
           socket.emit("error", { message: "Internal server error." });

@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { DraftUsersProps } from "./draftSocket";
-import { draftHandler } from "./serverDraftHandler";
+import { banPhase1Handler } from "./banPhase1Handler";
 let blueReady = false;
 let redReady = false;
 
@@ -22,13 +22,12 @@ export const readyHandler = (
       draftStart = true;
       console.log("starting draft in room: ", lobbyCode);
       socket.to(lobbyCode).emit("startDraft", true);
-      draftHandler(io, socket, lobbyCode, blueUser, redUser);
+      banPhase1Handler(io, socket, lobbyCode, blueUser, redUser);
     }
   };
 
   // Ready Up Draft
   socket.on("ready", ({ sideCode, ready }) => {
-    console.log("SERVER: Received ready =>", sideCode, ready);
     console.log("RedReady in BLUEREADY Section: ", redReady);
     console.log("Blue ready in REDREADY Section: ", blueReady);
 
@@ -36,12 +35,12 @@ export const readyHandler = (
 
     if (sideCode === blueUser && blueReady !== ready) {
       blueReady = ready;
-      socket.to(lobbyCode).emit("blueReady", ready); // Inform other clients
+      io.to(lobbyCode).emit("blueReady", ready); // Inform other clients
       console.log("Blue:", ready);
     }
     if (sideCode === redUser && redReady !== ready) {
       redReady = ready;
-      socket.to(lobbyCode).emit("redReady", ready); // Inform other clients
+      io.to(lobbyCode).emit("redReady", ready); // Inform other clients
       console.log("Red:", ready);
     }
 
