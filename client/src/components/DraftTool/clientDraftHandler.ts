@@ -1,14 +1,40 @@
-import { Socket } from "socket.io-client"
+import { Socket } from "socket.io-client";
 
-export const handleBanPhase = (setCurrentTime: React.Dispatch<React.SetStateAction<number>>, sideCode: string | undefined, socket: Socket) => {
-    let banTimer = 30
-    socket.on('timer', (timer: number) => {
-        banTimer = timer - 4
-        setCurrentTime(banTimer)
-    })
-}
+export const handleBanPhase = (
+  setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
+  sideCode: string | undefined,
+  socket: Socket,
+  setBannedChampions: React.Dispatch<React.SetStateAction<string[]>>
+) => {
+  socket.on("currentTurn", (currentTurn) => {
+    if (currentTurn === sideCode) {
+      console.log("Your Turn");
+    } else {
+      console.log("Enemy Turn");
+    }
+  });
+  let banTimer = 30;
+  socket.on("timer", (timer: number) => {
+    banTimer = timer - 4;
+    if (banTimer < 0) {
+      banTimer = 0;
+    }
+    setCurrentTime(banTimer);
+  });
 
-export const handlePickPhase = (setCurrentTime: React.Dispatch<React.SetStateAction<number>>, sideCode: string | undefined, socket: Socket) => {
-    let pickTimer = 34
-    
-}
+  const addBannedChampion = (bannedChampion: string) => {
+    setBannedChampions((prevChampions) => [...prevChampions, bannedChampion]);
+  };
+
+  socket.on('setBan', ({chosenChamp}) => {
+    addBannedChampion(chosenChamp)
+  })
+};
+
+export const handlePickPhase = (
+  setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
+  sideCode: string | undefined,
+  socket: Socket
+) => {
+  let pickTimer = 34;
+};

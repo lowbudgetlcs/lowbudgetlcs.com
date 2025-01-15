@@ -67,7 +67,7 @@ export const draftSocket = (io: Server) => {
           io.to(lobbyCode).emit("userJoined", { sideCode, id: socket.id });
 
           // Handle draft-specific logic
-          readyHandler(draftUsers, socket, lobbyCode);
+          readyHandler(draftUsers, socket, lobbyCode, io);
         } catch (error) {
           console.error("Error during role assignment:", error);
           socket.emit("error", { message: "Internal server error." });

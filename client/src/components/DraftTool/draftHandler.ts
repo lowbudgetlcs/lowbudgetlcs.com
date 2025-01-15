@@ -31,10 +31,6 @@ export function connectionHandler(
     console.log("joined Draft: ", sideCode, lobbyCode);
   });
 
-  socket.on("userJoined", ({ id }) => {
-    console.log("User joined with ID: ", id);
-  });
-
   socket.on("userLeft", ({ id }) => {
     console.log("User left with ID: ", id);
   });

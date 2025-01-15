@@ -1,15 +1,22 @@
 import { useEffect, useState } from "react";
 import { connectionHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
-import { loadChampImages } from "./loadChampImages";
+import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [champImages, setChampImages] = useState<Record<string, string>>({});
-  const [currentTime, setCurrentTime ] = useState<number>(30)
+  const [largeChampImages, setLargeChampImages] = useState<
+    Record<string, string>
+  >({});
+  const [currentTime, setCurrentTime] = useState<number>(30);
   const [ready, setReady] = useState<boolean>(false);
+  const [chosenChamp, setChosenChamp] = useState<string>();
+  const [banPhase, setBanPhase] = useState<boolean>(false);
+  const [side, setSide] = useState<string>();
+  const [bannedChampions, setBannedChampions] = useState<Array<string>>([]);
 
   // Grab the lobby code
   const params = useParams();
@@ -18,11 +25,13 @@ function DraftPage() {
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
-
+    // Fetch Champion Images
     const fetchChampImages = async () => {
       try {
         const data = await loadChampImages();
         setChampImages(data);
+        const largeData = await loadLargeChampImages();
+        setLargeChampImages(largeData);
       } catch (error) {
         console.error("Error loading champion images:", error);
       }
@@ -33,16 +42,16 @@ function DraftPage() {
     // Run connection Handler Function with lobby code
     const handleConnection = async () => {
       connectionHandler(lobbyCode, sideCode, newSocket);
-    }
+    };
     newSocket.on("connect", handleConnection);
     newSocket.on("banPhase", () => {
-      handleBanPhase(setCurrentTime, sideCode, newSocket);
+      setBanPhase(true);
+      handleBanPhase(setCurrentTime, sideCode, newSocket, setBannedChampions);
     });
 
     newSocket.on("pickPhase", () => {
-      handlePickPhase(setCurrentTime, sideCode, newSocket)
-    })
-
+      handlePickPhase(setCurrentTime, sideCode, newSocket);
+    });
 
     // Cleanup on unmount
     return () => {
@@ -59,6 +68,17 @@ function DraftPage() {
     });
   };
 
+  const sendPick = (chosenChamp: string) => {
+    if (socket) {
+      console.log(chosenChamp);
+      socket.emit("ban", { sideCode, chosenChamp });
+    }
+  };
+
+  const handlePick = (championName: string) => {
+    console.log(championName);
+    setChosenChamp(championName);
+  };
   return (
     <div className="relative text-white mt-2">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
@@ -99,7 +119,13 @@ function DraftPage() {
           <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] p-4 gap-2 justify-center">
             {Object.entries(champImages).map(([name, src]) => {
               return (
-                <li key={name}>
+                <li
+                  key={name}
+                  onClick={() => handlePick(name)}
+                  className={`${
+                    chosenChamp === name ? "border-orange border-2" : ""
+                  }`}
+                >
                   <img
                     src={src}
                     alt={name}
@@ -128,9 +154,45 @@ function DraftPage() {
       <div className="champBansTimer flex w-full justify-between gap-8 items-center px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
-          <div className="ban1 w-20 h-40 bg-gray"></div>
-          <div className="ban2 w-20 h-40 bg-gray"></div>
-          <div className="ban3 w-20 h-40 bg-gray"></div>
+          <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
+            {bannedChampions[0] && (
+              <img
+                src={champImages[bannedChampions[0]]}
+                alt={`${chosenChamp} large`}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "fill",
+                }}
+              />
+            )}
+          </div>
+          <div className="ban2 w-20 h-40 bg-gray">
+            {bannedChampions[3] && (
+              <img
+                src={champImages[bannedChampions[3]]}
+                alt={`${chosenChamp} large`}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "fill",
+                }}
+              />
+            )}
+          </div>
+          <div className="ban3 w-20 h-40 bg-gray">
+            {bannedChampions[4] && (
+              <img
+                src={champImages[bannedChampions[4]]}
+                alt={`${chosenChamp} large`}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "fill",
+                }}
+              />
+            )}
+          </div>
           <div className="space w-8"></div>
           <div className="ban4 w-20 h-40 bg-gray"></div>
           <div className="ban5 w-20 h-40 bg-gray"></div>
@@ -138,20 +200,69 @@ function DraftPage() {
         {/* Ready Button */}
         <button
           onClick={toggleReady}
-          className={`Timer p-4 ${
-            ready ? "bg-gray" : "bg-orange"
+          className={`Timer p-4 ${ready ? "bg-gray" : "bg-orange"} ${
+            banPhase ? "hidden" : ""
           } max-h-16 flex items-center justify-center hover:cursor-pointer`}
         >
           {ready ? "Waiting" : "Ready"}
+        </button>
+        {/* Pick/Ban Button */}
+        <button
+          onClick={() => {
+            if (chosenChamp) {
+              sendPick(chosenChamp);
+            }
+          }}
+          className={`Timer p-4 ${chosenChamp ? "bg-orange" : "bg-gray"} ${
+            banPhase ? "" : "hidden"
+          } max-h-16 flex items-center justify-center hover:cursor-pointer`}
+        >
+          Lock In
         </button>
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
           <div className="ban5 w-20 h-40 bg-gray"></div>
           <div className="ban4 w-20 h-40 bg-gray"></div>
           <div className="space w-8"></div>
-          <div className="ban3 w-20 h-40 bg-gray"></div>
-          <div className="ban2 w-20 h-40 bg-gray"></div>
-          <div className="ban1 w-20 h-40 bg-gray"></div>
+          <div className="ban3 w-20 h-40 bg-gray">
+            {bannedChampions[5] && (
+              <img
+                src={champImages[bannedChampions[5]]}
+                alt={`${chosenChamp} large`}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "fill",
+                }}
+              />
+            )}
+          </div>
+          <div className="ban2 w-20 h-40 bg-gray">
+            {bannedChampions[2] && (
+              <img
+                src={champImages[bannedChampions[2]]}
+                alt={`${chosenChamp} large`}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "fill",
+                }}
+              />
+            )}
+          </div>
+          <div className="ban1 w-20 h-40 bg-gray">
+            {bannedChampions[1] && (
+              <img
+                src={champImages[bannedChampions[1]]}
+                alt={`${chosenChamp} large`}
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  objectFit: "fill",
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
