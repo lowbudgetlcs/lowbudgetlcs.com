@@ -71,6 +71,7 @@ function DraftPage() {
   const sendPick = (chosenChamp: string) => {
     if (socket) {
       console.log(chosenChamp);
+      console.log(sideCode)
       socket.emit("ban", { sideCode, chosenChamp });
     }
   };
@@ -158,11 +159,11 @@ function DraftPage() {
             {bannedChampions[0] && (
               <img
                 src={largeChampImages[bannedChampions[0]]}
-                alt={`${chosenChamp} large`}
+                alt={`${bannedChampions[0]}`}
                 style={{
-                  width: "300px",
-                  height: "300px",
-                  objectFit: "fill",
+                  width: "160px",
+                  height: "200px",
+                  objectFit: "cover",
                 }}
               />
             )}
@@ -171,7 +172,7 @@ function DraftPage() {
             {bannedChampions[3] && (
               <img
                 src={largeChampImages[bannedChampions[3]]}
-                alt={`${chosenChamp} large`}
+                alt={bannedChampions[3]}
                 style={{
                   width: "300px",
                   height: "300px",
@@ -183,8 +184,8 @@ function DraftPage() {
           <div className="ban3 w-20 h-40 bg-gray">
             {bannedChampions[4] && (
               <img
-                src={largeChampImages[bannedChampions[4]]}
-                alt={`${chosenChamp} large`}
+                src={largeChampImages[bannedChampions[3]]}
+                alt={bannedChampions[3]}
                 style={{
                   width: "300px",
                   height: "300px",
@@ -228,7 +229,7 @@ function DraftPage() {
             {bannedChampions[5] && (
               <img
                 src={largeChampImages[bannedChampions[5]]}
-                alt={`${chosenChamp} large`}
+                alt={bannedChampions[5]}
                 style={{
                   width: "300px",
                   height: "300px",
@@ -241,7 +242,7 @@ function DraftPage() {
             {bannedChampions[2] && (
               <img
                 src={largeChampImages[bannedChampions[2]]}
-                alt={`${chosenChamp} large`}
+                alt={bannedChampions[2]}
                 style={{
                   width: "300px",
                   height: "300px",
@@ -254,7 +255,7 @@ function DraftPage() {
             {bannedChampions[1] && (
               <img
                 src={largeChampImages[bannedChampions[1]]}
-                alt={`${chosenChamp} large`}
+                alt={bannedChampions[1]}
                 style={{
                   width: "300px",
                   height: "300px",
