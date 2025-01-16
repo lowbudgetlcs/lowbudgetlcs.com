@@ -3,6 +3,7 @@ import { getLobbyCodes } from "../db/queries/select";
 import { DraftProps } from "../routes/draftRoutes";
 import { readyHandler } from "./readyHandler";
 import { draftState, initializeDraftState } from "./serverDraftHandler";
+import { banPhase1Handler } from "./banPhase1Handler";
 
 export interface DraftUsersProps {
   blue: string;
@@ -16,79 +17,73 @@ interface LobbyCodeProps {
 
 let currentConnections: number = 0;
 export const draftSocket = (io: Server) => {
-  let blueJoined = false;
-  let redJoined = false;
   io.on("connection", (socket) => {
+    const getDraftState = (lobbyCode: string) => {
+      if (!draftState[lobbyCode]) {
+        console.error(`State for lobby ${lobbyCode} is not initialized`);
+        return null;
+      }
+      return draftState[lobbyCode];
+    };
+
     currentConnections++;
     console.log("User connected. current connections: ", currentConnections);
 
-    socket.on(
-      "joinDraft",
-      async ({
-        lobbyCode,
-        sideCode,
-      }: {
-        lobbyCode: string;
-        sideCode: string;
-      }) => {
-        console.log("Server received lobbyCode:", lobbyCode);
-        console.log("Server received sideCode:", sideCode);
+    socket.on("joinDraft", async ({ lobbyCode, sideCode }) => {
+      try {
+        const codeQuery = await getLobbyCodes(lobbyCode);
 
-        try {
-          const codeQuery = await getLobbyCodes(lobbyCode);
-          if (!codeQuery) {
-            socket.emit("error", { message: "Invalid Draft ID" });
-            socket.disconnect();
-            return;
-          }
+        if (!codeQuery) throw new Error("Invalid Draft ID");
 
-          const lobbyCodes: LobbyCodeProps = codeQuery;
-          console.log("Valid LOBBY CODES: ", lobbyCodes);
+        const { blueCode, redCode } = codeQuery;
+        console.log(`The Valid lobby codes are ${blueCode} and ${redCode}`);
 
-          const draftUsers: DraftUsersProps = {
-            blue: lobbyCodes.blueCode,
-            red: lobbyCodes.redCode,
-          };
+        // Initialize Draft
+        console.log("initializing draft state");
+        initializeDraftState(lobbyCode, blueCode, redCode);
 
-          // Initialize Draft
-          await initializeDraftState(
-            lobbyCode,
-            draftUsers.blue,
-            draftUsers.red
-          );
-          // update the draft state with blue and red url codes
-          const state = draftState[lobbyCode];
-          state.blueUser = lobbyCodes.blueCode;
-          state.redUser = lobbyCodes.redCode;
+        // Join room
+        socket.join(lobbyCode);
+        console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
-          // Join room
-          socket.join(lobbyCode);
-          console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
-
-          if (sideCode === lobbyCodes.blueCode) {
-            blueJoined = true;
-          } else if (sideCode === lobbyCodes.redCode) {
-            blueJoined = true;
-          } else {
-            // Assign the user spectator if not using correct code
-            socket.emit("Spectator", { spectator: true });
-            console.log("Connected user is a spectator.");
-            return;
-          }
-
-          if (blueJoined && redJoined) {
-            state.draftStarted = true;
-          }
-          
-          await readyHandler(draftUsers, socket, lobbyCode, io);
-        } catch (error) {
-          console.error("Error during role assignment:", error);
-          socket.emit("error", { message: "Internal server error." });
-          socket.disconnect();
+        if (sideCode !== blueCode && sideCode !== redCode) {
+          // Assign the user spectator if not using correct code
+          socket.emit("Spectator", { spectator: true });
+          return;
         }
-      }
-    );
 
+        socket.emit("joinedDraft", { success: true, sideCode });
+      } catch (error) {
+        console.error("Error during role assignment:", error);
+        socket.emit("error", { message: "Internal server error." });
+        socket.disconnect();
+      }
+    });
+
+    socket.on("ready", ({ lobbyCode, sideCode, ready }) => {
+      console.log("ready received");
+      const state = getDraftState(lobbyCode);
+      if (!state) return;
+
+      const isDraftReady = readyHandler(state, sideCode, ready, lobbyCode, io);
+
+      if (isDraftReady) {
+        console.log("Draft is ready in ready socket");
+        state.draftStarted = true;
+
+        io.to(lobbyCode).emit("banPhase", true);
+      }
+    });
+
+    socket.on("ban", async ({lobbyCode, sideCode, chosenChamp}) => {
+      const state = getDraftState(lobbyCode);
+      console.log("SState: ", state);
+      if (!state) return;
+
+      if(state.draftStarted) {
+        await banPhase1Handler(io, socket, lobbyCode, state);
+      }
+    });
     socket.on("disconnect", () => {
       currentConnections--;
       console.log("User disconnected. Current Users: ", currentConnections);

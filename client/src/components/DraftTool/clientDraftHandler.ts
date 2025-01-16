@@ -24,17 +24,19 @@ export const handleBanPhase = (
 
   const addBannedChampion = (bannedChampion: string) => {
     setBannedChampions((prevChampions) => [...prevChampions, bannedChampion]);
+    console.log('banned Champion: ', bannedChampion)
   };
 
   socket.on('setBan', ({chosenChamp}) => {
+    console.log(`Ban received: ${chosenChamp}`);
     addBannedChampion(chosenChamp)
   })
 };
 
-export const handlePickPhase = (
-  setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
-  sideCode: string | undefined,
-  socket: Socket
-) => {
-  let pickTimer = 34;
-};
+// export const handlePickPhase = (
+//   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
+//   sideCode: string | undefined,
+//   socket: Socket
+// ) => {
+//   let pickTimer = 34;
+// };

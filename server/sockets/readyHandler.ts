@@ -1,49 +1,41 @@
 import { Server, Socket } from "socket.io";
-import { DraftUsersProps } from "./draftSocket";
-import { banPhase1Handler } from "./banPhase1Handler";
-let blueReady = false;
-let redReady = false;
+import { DraftStateProps } from "./serverDraftHandler";
 
 export const readyHandler = (
-  draft: DraftUsersProps,
-  socket: Socket,
+  state: DraftStateProps,
+  sideCode: string,
+  ready: boolean,
   lobbyCode: string,
   io: Server
 ) => {
-  let draftStart = false;
-  const redUser: string = draft.red;
-  const blueUser: string = draft.blue;
+  const { blueUser, redUser } = state;
 
   // Starts the draft if both players are ready
-  const checkReady = () => {
-    console.log("BlueReady: ", blueReady, " RedReady: ", redReady);
+  console.log("BlueReady: ", state.blueReady, " RedReady: ", state.redReady);
 
-    if (blueReady && redReady && draftStart === false) {
-      draftStart = true;
-      console.log("starting draft in room: ", lobbyCode);
-      socket.to(lobbyCode).emit("startDraft", true);
-      banPhase1Handler(io, socket, lobbyCode, blueUser, redUser);
-    }
-  };
+  const isBlue = sideCode === blueUser;
+  const isRed = sideCode === redUser;
 
-  // Ready Up Draft
-  socket.on("ready", ({ sideCode, ready }) => {
-    console.log("RedReady in BLUEREADY Section: ", redReady);
-    console.log("Blue ready in REDREADY Section: ", blueReady);
+  // Logic to ensure only blue and red are processed
+  if (!isBlue && !isRed) {
+    console.warn(`Invalid sideCode received: ${sideCode}`);
+    return false;
+  }
+  const readyKey = isBlue ? "blueReady" : "redReady";
 
-    if (!sideCode) return;
+  if (state[readyKey] !== ready) {
+    state[readyKey] = ready;
+    io.to(lobbyCode).emit(isBlue ? "blueReady" : "redReady", ready);
+    console.log(`${isBlue ? "Blue" : "Red"} ready status updated:`, ready);
+  }
 
-    if (sideCode === blueUser && blueReady !== ready) {
-      blueReady = ready;
-      io.to(lobbyCode).emit("blueReady", ready); // Inform other clients
-      console.log("Blue:", ready);
-    }
-    if (sideCode === redUser && redReady !== ready) {
-      redReady = ready;
-      io.to(lobbyCode).emit("redReady", ready); // Inform other clients
-      console.log("Red:", ready);
-    }
+  // Check if both players are redied up
+  if (state.blueReady && state.redReady && !state.banPhase1Started) {
+    console.log("starting draft in room: ", lobbyCode);
+    state.draftStarted = true;
+    io.to(lobbyCode).emit("startDraft", true);
+    return true;
+  }
 
-    checkReady();
-  });
+  return false
 };

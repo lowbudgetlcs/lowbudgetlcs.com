@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { connectionHandler, readyHandler } from "./draftHandler";
+import { connectionHandler, pickHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
 import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
 import { io, Socket } from "socket.io-client";
-import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
+import { handleBanPhase } from "./clientDraftHandler";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -56,28 +56,23 @@ function DraftPage() {
     // Cleanup on unmount
     return () => {
       newSocket.off("connect", handleConnection);
-      newSocket.off("startDraft");
       newSocket.disconnect();
     };
   }, [lobbyCode, sideCode]);
+
   const toggleReady = () => {
     setReady((prevReady) => {
       const newReady = !prevReady;
-      readyHandler(sideCode, newReady, socket);
+      readyHandler(lobbyCode, sideCode, newReady, socket);
       return newReady;
     });
   };
 
   const sendPick = (chosenChamp: string) => {
-    if (socket) {
-      console.log(chosenChamp);
-      console.log(sideCode)
-      socket.emit("ban", { sideCode, chosenChamp });
-    }
+    pickHandler(lobbyCode, sideCode, chosenChamp, socket);
   };
 
   const handlePick = (championName: string) => {
-    console.log(championName);
     setChosenChamp(championName);
   };
   return (
