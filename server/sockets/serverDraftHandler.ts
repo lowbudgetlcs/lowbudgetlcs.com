@@ -1,10 +1,7 @@
 
 export interface DraftStateProps {
   draftStarted: boolean;
-  banPhase1Started: boolean;
-  banPhase2Started: boolean;
-  pickPhase1Started: boolean;
-  pickPhase2Started: boolean;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | null;
   blueUser: string;
   redUser: string;
   blueReady: boolean;
@@ -15,6 +12,8 @@ export interface DraftStateProps {
   banIndex: number;
   pickIndex: number;
   currentTurn: string;
+  bluePick: string | null;
+  redPick: string | null;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -26,10 +25,7 @@ export const initializeDraftState = (
   if (!draftState[lobbyCode]) {
     draftState[lobbyCode] = {
       draftStarted: false,
-      banPhase1Started: false,
-      banPhase2Started: false,
-      pickPhase1Started: false,
-      pickPhase2Started: false,
+      activePhase: null,
       blueUser: blueUser,
       redUser: redUser,
       blueReady: false,
@@ -40,6 +36,8 @@ export const initializeDraftState = (
       banIndex: 0,
       pickIndex: 0,
       currentTurn: '',
+      bluePick: null,
+      redPick: null,
     };
     console.log(`Draft state initialized for lobby with code: ${lobbyCode}`);
   }
