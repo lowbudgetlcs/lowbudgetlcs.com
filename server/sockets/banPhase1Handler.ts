@@ -1,99 +1,96 @@
 import { Server, Socket } from "socket.io";
+import { DraftStateProps } from "./serverDraftHandler";
 
 export const banPhase1Handler = async (
-    io: Server,
-    socket: Socket,
-    lobbyCode: string,
-    blueUser: string,
-    redUser: string
-  ) => {
-    try {
-      let banPhaseStart = false;
-      const bansPhase1 = [
-        blueUser,
-        redUser,
-        redUser,
-        blueUser,
-        blueUser,
-        redUser,
-      ];
-      const bansPhase2 = [redUser, blueUser, blueUser, redUser];
-      const picksPhase1 = [
-        blueUser,
-        redUser,
-        redUser,
-        blueUser,
-        blueUser,
-        redUser,
-      ];
-      const picksPhase2 = [redUser, blueUser, blueUser, redUser];
-      const bansArray: Array<string> = [];
-      // Runs ban phase while total bans is less than 6
-      const handleTurn = (currentSide: string) => {
-        let timer = 34;
-        return new Promise<void>((resolve) => {
-          let interval = setInterval(() => {
-            timer--;
-            console.log(timer);
-            io.to(lobbyCode).emit("timer", timer);
-            if (timer <= 0) {
-              clearInterval(interval);
-              console.log("timer finished. ", `${currentSide} chose nothing`);
-              bansArray.push("nothing");
-              const chosenChamp = "nothing";
-              io.to(lobbyCode).emit("setBan", { chosenChamp });
-              resolve();
-            }
-          }, 1000);
-  
-          const banListener = ({
-            sideCode,
-            chosenChamp,
-          }: {
-            sideCode: string;
-            chosenChamp: string;
-          }) => {
-            console.log("Ban Recieved: ", chosenChamp);
-            if (sideCode === currentSide) {
-              clearInterval(interval);
-              bansArray.push(chosenChamp);
-              console.log("Ban has been given: ", chosenChamp);
-              io.to(lobbyCode).emit("setBan", { chosenChamp });
-              resolve();
-            }
-          };
-          socket.once("ban", ({ sideCode, chosenChamp }) => {
-            console.log(`received ban from ${sideCode} with ${chosenChamp}`);
-            banListener({ sideCode, chosenChamp });
-          });
-  
-          io.to(lobbyCode).emit("banTurn", currentSide);
-        });
-      };
-  
-      const startBanPhase = async () => {
-        console.log("Ban Phase Starting");
-        // Tells client ban phase has begun then runs first ban phase
-        io.to(lobbyCode).emit("banPhase", true);
-        banPhaseStart = true;
-        for (const currentSide of bansPhase1) {
-          try {
-            console.log("currentTurn: ", currentSide);
-            io.to(lobbyCode).emit("currentTurn", currentSide);
-            await handleTurn(currentSide);
-            console.log("switching turns");
-          } catch (err) {
-            console.error(err);
-          } finally {
-            socket.removeAllListeners("ban");
-            console.log("removed all details listeners");
-          }
+  io: Server,
+  socket: Socket,
+  lobbyCode: string,
+  state: DraftStateProps
+): Promise<boolean> => {
+  if (state.activePhase !== "banPhase1") {
+    return false;
+  }
+
+  return new Promise((resolve, reject) => {
+    const bansPhase1 = [
+      state.blueUser,
+      state.redUser,
+      state.redUser,
+      state.blueUser,
+      state.blueUser,
+      state.redUser,
+    ];
+
+    const startBanPhase = async () => {
+      console.log("Ban Phase Starting");
+      io.to(lobbyCode).emit("banPhase", true);
+
+      for (
+        state.banIndex;
+        state.banIndex < bansPhase1.length;
+        state.banIndex++
+      ) {
+        const currentSide = bansPhase1[state.banIndex];
+        try {
+          console.log("Current turn:", currentSide);
+          io.to(lobbyCode).emit("currentTurn", currentSide);
+
+          await handleTurn(currentSide);
+          console.log("Switching turns");
+        } catch (err) {
+          console.error("Error during turn:", err);
+          reject(err);
+          return;
         }
-        console.log("Ban Phase 1 is complete :)");
-      };
-      await startBanPhase();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  
+      }
+      //   resets banIndex to be used in ban phase 2
+      state.banIndex = 0;
+      console.log("Ban Phase 1 is complete :)");
+      resolve(true);
+    };
+
+    const handleTurn = (currentSide: string): Promise<void> => {
+      let timer = 34;
+
+      return new Promise((resolve) => {
+        const interval = setInterval(() => {
+          timer--;
+          state.timer = timer;
+          console.log(`Timer: ${timer}`);
+          io.to(lobbyCode).emit("timer", timer);
+
+          if (timer <= 0) {
+            clearInterval(interval);
+            console.log(`Timer expired for ${currentSide}.`);
+            state.bansArray.push("nothing");
+            io.to(lobbyCode).emit("setBan", { chosenChamp: "nothing" });
+            resolve();
+          }
+        }, 1000);
+
+        const banListener = (data: {
+          sideCode: string;
+          chosenChamp: string;
+        }) => {
+          console.log("Ban received");
+          const { sideCode, chosenChamp } = data;
+          if (sideCode === currentSide) {
+            clearInterval(interval);
+            console.log(`${currentSide} banned: ${chosenChamp}`);
+            state.bansArray.push(chosenChamp);
+            io.to(lobbyCode).emit("setBan", { chosenChamp });
+            socket.off("ban", banListener);
+            resolve();
+          }
+        };
+        socket.on("ban", banListener);
+        io.to(lobbyCode).emit("banTurn", currentSide);
+      });
+    };
+
+    startBanPhase().catch((err) => {
+      console.error("Error during ban phase:", err);
+      reject(err);
+    });
+  });
+};

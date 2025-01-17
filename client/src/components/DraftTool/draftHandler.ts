@@ -21,7 +21,7 @@ export function connectionHandler(
   // Initial connection
   console.log("Client sent lobbyCode:", lobbyCode);
   socket.emit("joinDraft", { lobbyCode, sideCode });
-
+  console.log("socket.id: ", socket.id);
   socket.on("error", (err) => {
     console.error("Socket Error: ", err.message);
     alert(err.message);
@@ -29,10 +29,6 @@ export function connectionHandler(
 
   socket.on("joinedDraft", ({ sideCode, lobbyCode }) => {
     console.log("joined Draft: ", sideCode, lobbyCode);
-  });
-
-  socket.on("userLeft", ({ id }) => {
-    console.log("User left with ID: ", id);
   });
 
   socket.on("blueReady", (ready) => {
@@ -52,6 +48,7 @@ export function connectionHandler(
 }
 
 export const readyHandler = (
+  lobbyCode: string | undefined,
   sideCode: string | undefined,
   ready: boolean,
   socket: Socket | null
@@ -62,7 +59,25 @@ export const readyHandler = (
     return;
   }
   console.log("Emitting: ", sideCode);
-  socket.emit("ready", { sideCode: sideCode, ready: ready });
+  socket.emit("ready", { lobbyCode, sideCode, ready });
+};
+
+export const pickHandler = (
+  lobbyCode: string | undefined,
+  sideCode: string | undefined,
+  chosenChamp: string,
+  socket: Socket | null
+) => {
+  // Error handling
+  if (!socket) {
+    console.error("No socket Found!");
+    return;
+  }
+  console.log("Side Code: ", sideCode);
+  console.log("Chosen Champion: ", chosenChamp);
+  // console.log("Emitting ban:", { sideCode, chosenChamp });
+  socket.emit("ban", { sideCode, chosenChamp });
+  // socket.emit("ban", { sideCode: "mmnmxc", chosenChamp: "championName" });
 };
 
 // Checks if input tournament code is valid

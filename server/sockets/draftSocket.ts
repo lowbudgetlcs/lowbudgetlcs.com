@@ -4,7 +4,6 @@ import { DraftProps } from "../routes/draftRoutes";
 import { readyHandler } from "./readyHandler";
 import { draftState, initializeDraftState } from "./serverDraftHandler";
 import { banPhase1Handler } from "./banPhase1Handler";
-
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -60,7 +59,7 @@ export const draftSocket = (io: Server) => {
       }
     });
 
-    socket.on("ready", ({ lobbyCode, sideCode, ready }) => {
+    socket.on("ready", async ({ lobbyCode, sideCode, ready }) => {
       console.log("ready received");
       const state = getDraftState(lobbyCode);
       if (!state) return;
@@ -70,18 +69,23 @@ export const draftSocket = (io: Server) => {
       if (isDraftReady) {
         console.log("Draft is ready in ready socket");
         state.draftStarted = true;
+        state.activePhase = "banPhase1";
+        io.to(lobbyCode).emit("startBanPhase1", { lobbyCode });
 
-        io.to(lobbyCode).emit("banPhase", true);
-      }
-    });
+        try {
+          const isBanPhase1Done = await banPhase1Handler(
+            io,
+            socket,
+            lobbyCode,
+            state
+          );
 
-    socket.on("ban", async ({lobbyCode, sideCode, chosenChamp}) => {
-      const state = getDraftState(lobbyCode);
-      console.log("SState: ", state);
-      if (!state) return;
-
-      if(state.draftStarted) {
-        await banPhase1Handler(io, socket, lobbyCode, state);
+          if (isBanPhase1Done) {
+            console.log("OK WE GO OFF YEEEAEAA");
+          }
+        } catch (err) {
+          console.error("Error in banPhase1Handler:", err);
+        }
       }
     });
     socket.on("disconnect", () => {
