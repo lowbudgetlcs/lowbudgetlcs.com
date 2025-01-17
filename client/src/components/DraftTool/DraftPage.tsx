@@ -15,7 +15,6 @@ function DraftPage() {
   const [ready, setReady] = useState<boolean>(false);
   const [chosenChamp, setChosenChamp] = useState<string>();
   const [banPhase, setBanPhase] = useState<boolean>(false);
-  const [side, setSide] = useState<string>();
   const [bannedChampions, setBannedChampions] = useState<Array<string>>([]);
 
   // Grab the lobby code
