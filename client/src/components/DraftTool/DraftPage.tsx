@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase } from "./clientDraftHandler";
+import tempImage from '../../assets/Transparent_LBLCS_Logo.png'
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -38,11 +39,14 @@ function DraftPage() {
     fetchChampImages();
 
     console.log("lobby code: ", lobbyCode);
+
     // Run connection Handler Function with lobby code
     const handleConnection = async () => {
       connectionHandler(lobbyCode, sideCode, newSocket);
     };
     newSocket.on("connect", handleConnection);
+
+    // Listening for beginning of banPhase
     newSocket.on("banPhase", () => {
       setBanPhase(true);
       handleBanPhase(setCurrentTime, sideCode, newSocket, setBannedChampions);
@@ -55,6 +59,7 @@ function DraftPage() {
     // Cleanup on unmount
     return () => {
       newSocket.off("connect", handleConnection);
+      newSocket.off('banPhase', handleBanPhase)
       newSocket.disconnect();
     };
   }, [lobbyCode, sideCode]);
@@ -74,6 +79,38 @@ function DraftPage() {
   const handlePick = (championName: string) => {
     setChosenChamp(championName);
   };
+
+  const displayBanImage = (banIndex: number) => {
+    if (bannedChampions[banIndex] === "nothing") {
+      return (
+        <img
+        src={tempImage}
+        alt={`nothing`}
+        style={{
+          width: "160px",
+          height: "200px",
+          objectFit: "cover",
+        }}
+      />
+      )
+    } else {
+    return (
+      <>
+      {bannedChampions[banIndex] && (
+        <img
+          src={largeChampImages[bannedChampions[banIndex]]}
+          alt={`${bannedChampions[banIndex]}`}
+          style={{
+            width: "160px",
+            height: "200px",
+            objectFit: "cover",
+          }}
+        />
+      )}
+      </>
+    )
+  }
+  }
   return (
     <div className="relative text-white mt-2">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
@@ -150,47 +187,17 @@ function DraftPage() {
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
-            {bannedChampions[0] && (
-              <img
-                src={largeChampImages[bannedChampions[0]]}
-                alt={`${bannedChampions[0]}`}
-                style={{
-                  width: "160px",
-                  height: "200px",
-                  objectFit: "cover",
-                }}
-              />
-            )}
+            {displayBanImage(0)}
           </div>
-          <div className="ban2 w-20 h-40 bg-gray">
-            {bannedChampions[3] && (
-              <img
-                src={largeChampImages[bannedChampions[3]]}
-                alt={bannedChampions[3]}
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  objectFit: "fill",
-                }}
-              />
-            )}
+          <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
+            {displayBanImage(2)}
           </div>
-          <div className="ban3 w-20 h-40 bg-gray">
-            {bannedChampions[4] && (
-              <img
-                src={largeChampImages[bannedChampions[3]]}
-                alt={bannedChampions[3]}
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  objectFit: "fill",
-                }}
-              />
-            )}
+          <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
+            {displayBanImage(4)}
           </div>
           <div className="space w-8"></div>
-          <div className="ban4 w-20 h-40 bg-gray"></div>
-          <div className="ban5 w-20 h-40 bg-gray"></div>
+          <div className="ban4 w-20 h-40 bg-gray overflow-hidden"></div>
+          <div className="ban5 w-20 h-40 bg-gray overflow-hidden"></div>
         </div>
         {/* Ready Button */}
         <button
@@ -216,47 +223,17 @@ function DraftPage() {
         </button>
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
-          <div className="ban5 w-20 h-40 bg-gray"></div>
-          <div className="ban4 w-20 h-40 bg-gray"></div>
+          <div className="ban5 w-20 h-40 bg-gray overflow-hidden"></div>
+          <div className="ban4 w-20 h-40 bg-gray overflow-hidden"></div>
           <div className="space w-8"></div>
-          <div className="ban3 w-20 h-40 bg-gray">
-            {bannedChampions[5] && (
-              <img
-                src={largeChampImages[bannedChampions[5]]}
-                alt={bannedChampions[5]}
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  objectFit: "fill",
-                }}
-              />
-            )}
+          <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
+            {displayBanImage(5)}
           </div>
-          <div className="ban2 w-20 h-40 bg-gray">
-            {bannedChampions[2] && (
-              <img
-                src={largeChampImages[bannedChampions[2]]}
-                alt={bannedChampions[2]}
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  objectFit: "fill",
-                }}
-              />
-            )}
+          <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
+            {displayBanImage(3)}
           </div>
-          <div className="ban1 w-20 h-40 bg-gray">
-            {bannedChampions[1] && (
-              <img
-                src={largeChampImages[bannedChampions[1]]}
-                alt={bannedChampions[1]}
-                style={{
-                  width: "300px",
-                  height: "300px",
-                  objectFit: "fill",
-                }}
-              />
-            )}
+          <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
+            {displayBanImage(1)}
           </div>
         </div>
       </div>
