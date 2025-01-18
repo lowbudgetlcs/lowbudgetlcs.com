@@ -4,16 +4,13 @@ import { DraftProps } from "../routes/draftRoutes";
 import { readyHandler } from "./readyHandler";
 import { draftState, initializeDraftState } from "./serverDraftHandler";
 import { banPhase1Handler } from "./banPhase1Handler";
+import EventEmitter from "events";
 export interface DraftUsersProps {
   blue: string;
   red: string;
 }
-interface LobbyCodeProps {
-  lobbyCode: string;
-  redCode: string;
-  blueCode: string;
-}
 
+const lobbyEmitters: Map<string, EventEmitter> = new Map();
 let currentConnections: number = 0;
 export const draftSocket = (io: Server) => {
   io.on("connection", (socket) => {
@@ -41,6 +38,11 @@ export const draftSocket = (io: Server) => {
         console.log("initializing draft state");
         initializeDraftState(lobbyCode, blueCode, redCode);
 
+        // Initialize EventEmitter for this lobby if not already
+        if (!lobbyEmitters.has(lobbyCode)) {
+          lobbyEmitters.set(lobbyCode, new EventEmitter());
+        }
+
         // Join room
         socket.join(lobbyCode);
         console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
@@ -51,7 +53,7 @@ export const draftSocket = (io: Server) => {
           return;
         }
 
-        socket.emit("joinedDraft", { success: true, sideCode });
+        socket.emit("joinedDraft", { success: true, sideCode, lobbyCode });
       } catch (error) {
         console.error("Error during role assignment:", error);
         socket.emit("error", { message: "Internal server error." });
@@ -72,22 +74,48 @@ export const draftSocket = (io: Server) => {
         state.activePhase = "banPhase1";
         io.to(lobbyCode).emit("startBanPhase1", { lobbyCode });
 
-        try {
-          const isBanPhase1Done = await banPhase1Handler(
-            io,
-            socket,
-            lobbyCode,
-            state
-          );
+        const emitter = lobbyEmitters.get(lobbyCode);
+        if (!emitter) {
+          console.error(`No EventEmitter found for lobby ${lobbyCode}`);
+          return;
+        }
 
-          if (isBanPhase1Done) {
-            console.log("OK WE GO OFF YEEEAEAA");
-          }
-        } catch (err) {
-          console.error("Error in banPhase1Handler:", err);
+        const isBanDone = await banPhase1Handler(
+          io,
+          socket,
+          lobbyCode,
+          state,
+          emitter
+        );
+        if (isBanDone) {
+          console.log("isBanDone is true!");
         }
       }
     });
+
+    socket.on("ban", async ({ lobbyCode, sideCode, chosenChamp }) => {
+      const state = getDraftState(lobbyCode);
+      if (!state) return;
+
+      if (
+        state.activePhase !== "banPhase1" &&
+        state.activePhase !== "banPhase2"
+      ) {
+        console.error("We are not in ban phase");
+        return;
+      }
+
+      if (sideCode === state.blueUser && sideCode === state.currentTurn) {
+        state.bluePick = chosenChamp;
+        lobbyEmitters.get(lobbyCode)?.emit("bluePick", chosenChamp);
+        state.bluePick = null;
+      } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
+        state.redPick = chosenChamp;
+        lobbyEmitters.get(lobbyCode)?.emit("redPick", chosenChamp);
+        state.redPick = null;
+      }
+    });
+
     socket.on("disconnect", () => {
       currentConnections--;
       console.log("User disconnected. Current Users: ", currentConnections);

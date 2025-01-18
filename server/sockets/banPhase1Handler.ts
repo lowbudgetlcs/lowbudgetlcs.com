@@ -1,11 +1,13 @@
 import { Server, Socket } from "socket.io";
 import { DraftStateProps } from "./serverDraftHandler";
+import EventEmitter from "events";
 
 export const banPhase1Handler = async (
   io: Server,
   socket: Socket,
   lobbyCode: string,
-  state: DraftStateProps
+  state: DraftStateProps,
+  emitter: EventEmitter
 ): Promise<boolean> => {
   if (state.activePhase !== "banPhase1") {
     return false;
@@ -15,8 +17,8 @@ export const banPhase1Handler = async (
     const bansPhase1 = [
       state.blueUser,
       state.redUser,
-      state.redUser,
       state.blueUser,
+      state.redUser,
       state.blueUser,
       state.redUser,
     ];
@@ -31,6 +33,8 @@ export const banPhase1Handler = async (
         state.banIndex++
       ) {
         const currentSide = bansPhase1[state.banIndex];
+        state.currentTurn = currentSide;
+        console.log("It is currently: ", currentSide,"'s Turn.....")
         try {
           console.log("Current turn:", currentSide);
           io.to(lobbyCode).emit("currentTurn", currentSide);
@@ -63,27 +67,34 @@ export const banPhase1Handler = async (
             clearInterval(interval);
             console.log(`Timer expired for ${currentSide}.`);
             state.bansArray.push("nothing");
-            io.to(lobbyCode).emit("setBan", { chosenChamp: "nothing" });
+            io.to(lobbyCode).emit("setBan", { bannedChampion: "nothing" });
             resolve();
           }
         }, 1000);
 
-        const banListener = (data: {
-          sideCode: string;
-          chosenChamp: string;
-        }) => {
-          console.log("Ban received");
-          const { sideCode, chosenChamp } = data;
-          if (sideCode === currentSide) {
-            clearInterval(interval);
-            console.log(`${currentSide} banned: ${chosenChamp}`);
-            state.bansArray.push(chosenChamp);
-            io.to(lobbyCode).emit("setBan", { chosenChamp });
-            socket.off("ban", banListener);
-            resolve();
+        const banListener = () => {
+          if (state.bluePick) {
+            if (currentSide === state.blueUser) {
+              console.log("Ban received");
+              clearInterval(interval);
+              console.log(`${currentSide} banned: ${state.bluePick}`);
+              state.bansArray.push(state.bluePick);
+              io.to(lobbyCode).emit("setBan", { bannedChampion: state.bluePick });
+              resolve();
+            }
+          } else if (state.redPick) {
+            if (currentSide === state.redUser) {
+              console.log("Ban received");
+              clearInterval(interval);
+              console.log(`${currentSide} banned: ${state.redPick}`);
+              state.bansArray.push(state.redPick);
+              io.to(lobbyCode).emit("setBan", { bannedChampion: state.redPick });
+              resolve();
+            }
           }
         };
-        socket.on("ban", banListener);
+        emitter.on('bluePick', banListener);
+        emitter.on('redPick', banListener);
         io.to(lobbyCode).emit("banTurn", currentSide);
       });
     };

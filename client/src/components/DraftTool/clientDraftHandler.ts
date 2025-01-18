@@ -27,9 +27,9 @@ export const handleBanPhase = (
     console.log('banned Champion: ', bannedChampion)
   };
 
-  socket.on('setBan', ({chosenChamp}) => {
-    console.log(`Ban received: ${chosenChamp}`);
-    addBannedChampion(chosenChamp)
+  socket.on('setBan', ({bannedChampion}) => {
+    console.log(`Ban received: ${bannedChampion}`);
+    addBannedChampion(bannedChampion)
   })
 };
 
