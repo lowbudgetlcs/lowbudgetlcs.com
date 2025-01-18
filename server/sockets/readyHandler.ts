@@ -30,7 +30,7 @@ export const readyHandler = (
   }
 
   // Check if both players are redied up
-  if (state.blueReady && state.redReady && !state.banPhase1Started) {
+  if (state.blueReady && state.redReady && !state.draftStarted) {
     console.log("starting draft in room: ", lobbyCode);
     state.draftStarted = true;
     io.to(lobbyCode).emit("startDraft", true);
