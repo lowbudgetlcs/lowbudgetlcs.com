@@ -68,16 +68,15 @@ export const pickHandler = (
   chosenChamp: string,
   socket: Socket | null
 ) => {
+
   // Error handling
   if (!socket) {
     console.error("No socket Found!");
     return;
   }
-  console.log("Side Code: ", sideCode);
-  console.log("Chosen Champion: ", chosenChamp);
-  // console.log("Emitting ban:", { sideCode, chosenChamp });
-  socket.emit("ban", { sideCode, chosenChamp });
-  // socket.emit("ban", { sideCode: "mmnmxc", chosenChamp: "championName" });
+  // Send ban to server
+  console.log("Emitting ban:", { sideCode, chosenChamp });
+  socket.emit("ban", { lobbyCode, sideCode, chosenChamp });
 };
 
 // Checks if input tournament code is valid
