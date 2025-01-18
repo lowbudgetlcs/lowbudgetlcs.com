@@ -66,17 +66,27 @@ export const pickHandler = (
   lobbyCode: string | undefined,
   sideCode: string | undefined,
   chosenChamp: string,
-  socket: Socket | null
+  socket: Socket | null,
+  banPhase: boolean,
+  pickPhase: boolean
 ) => {
-
   // Error handling
   if (!socket) {
     console.error("No socket Found!");
     return;
   }
-  // Send ban to server
-  console.log("Emitting ban:", { sideCode, chosenChamp });
-  socket.emit("ban", { lobbyCode, sideCode, chosenChamp });
+
+  if (banPhase) {
+    // Send ban to server
+    console.log("Emitting ban:", { sideCode, chosenChamp });
+    socket.emit("ban", { lobbyCode, sideCode, chosenChamp });
+  }
+
+  if (pickPhase) {
+    // Send pick to server
+    console.log("Emitting pick:", { sideCode, chosenChamp });
+    socket.emit("pick", { lobbyCode, sideCode, chosenChamp });
+  }
 };
 
 // Checks if input tournament code is valid

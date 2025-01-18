@@ -5,6 +5,7 @@ import { readyHandler } from "./readyHandler";
 import { draftState, initializeDraftState } from "./serverDraftHandler";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
+import { pickPhase1Handler } from "./pickPhase1Handler";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -80,20 +81,34 @@ export const draftSocket = (io: Server) => {
           return;
         }
 
-        const isBanDone = await banPhase1Handler(
+        const isBanPhase1Done = await banPhase1Handler(
           io,
           socket,
           lobbyCode,
           state,
           emitter
         );
-        if (isBanDone) {
-          console.log("isBanDone is true!");
+        if (isBanPhase1Done) {
+          state.activePhase = "pickPhase1";
+          io.to(lobbyCode).emit("startPickPhase1", { lobbyCode });
+          console.log("isBanPhase1Done is true!");
+
+          const isPickPhase1Done = await pickPhase1Handler(
+            io,
+            socket,
+            lobbyCode,
+            state,
+            emitter
+          );
+
+          if (isPickPhase1Done) {
+            console.log('Pick Phase 1 Done :)')
+          }
         }
       }
     });
 
-    socket.on("ban", async ({ lobbyCode, sideCode, chosenChamp }) => {
+    socket.on("ban", ({ lobbyCode, sideCode, chosenChamp }) => {
       const state = getDraftState(lobbyCode);
       if (!state) return;
 
@@ -102,6 +117,29 @@ export const draftSocket = (io: Server) => {
         state.activePhase !== "banPhase2"
       ) {
         console.error("We are not in ban phase");
+        return;
+      }
+
+      if (sideCode === state.blueUser && sideCode === state.currentTurn) {
+        state.bluePick = chosenChamp;
+        lobbyEmitters.get(lobbyCode)?.emit("bluePick", chosenChamp);
+        state.bluePick = null;
+      } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
+        state.redPick = chosenChamp;
+        lobbyEmitters.get(lobbyCode)?.emit("redPick", chosenChamp);
+        state.redPick = null;
+      }
+    });
+
+    socket.on("pick", ({ lobbyCode, sideCode, chosenChamp }) => {
+      const state = getDraftState(lobbyCode);
+      if (!state) return;
+
+      if (
+        state.activePhase !== "pickPhase1" &&
+        state.activePhase !== "pickPhase2"
+      ) {
+        console.error("We are not in pick phase");
         return;
       }
 

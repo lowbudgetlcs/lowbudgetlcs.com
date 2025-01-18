@@ -3,8 +3,8 @@ import { connectionHandler, pickHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
 import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
 import { io, Socket } from "socket.io-client";
-import { handleBanPhase } from "./clientDraftHandler";
-import tempImage from '../../assets/Transparent_LBLCS_Logo.png'
+import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
+import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -17,7 +17,8 @@ function DraftPage() {
   const [chosenChamp, setChosenChamp] = useState<string>();
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [bannedChampions, setBannedChampions] = useState<Array<string>>([]);
-
+  const [pickPhase, setPickPhase] = useState<boolean>(false);
+  const [pickedChampions, setPickedChampions] = useState<Array<string>>([]);
   // Grab the lobby code
   const params = useParams();
   const lobbyCode: string | undefined = params.lobbyCode;
@@ -48,18 +49,21 @@ function DraftPage() {
 
     // Listening for beginning of banPhase
     newSocket.on("banPhase", () => {
+      setPickPhase(false);
       setBanPhase(true);
       handleBanPhase(setCurrentTime, sideCode, newSocket, setBannedChampions);
     });
 
     newSocket.on("pickPhase", () => {
-      handlePickPhase(setCurrentTime, sideCode, newSocket);
+      setBanPhase(false);
+      setPickPhase(true);
+      handlePickPhase(setCurrentTime, sideCode, newSocket, setPickedChampions);
     });
 
     // Cleanup on unmount
     return () => {
       newSocket.off("connect", handleConnection);
-      newSocket.off('banPhase', handleBanPhase)
+      newSocket.off("banPhase", handleBanPhase);
       newSocket.disconnect();
     };
   }, [lobbyCode, sideCode]);
@@ -73,7 +77,7 @@ function DraftPage() {
   };
 
   const sendPick = (chosenChamp: string) => {
-    pickHandler(lobbyCode, sideCode, chosenChamp, socket);
+    pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
   };
 
   const handlePick = (championName: string) => {
@@ -84,33 +88,64 @@ function DraftPage() {
     if (bannedChampions[banIndex] === "nothing") {
       return (
         <img
-        src={tempImage}
-        alt={`nothing`}
-        style={{
-          width: "160px",
-          height: "200px",
-          objectFit: "cover",
-        }}
-      />
-      )
-    } else {
-    return (
-      <>
-      {bannedChampions[banIndex] && (
-        <img
-          src={largeChampImages[bannedChampions[banIndex]]}
-          alt={`${bannedChampions[banIndex]}`}
+          src={tempImage}
+          alt={`nothing`}
           style={{
             width: "160px",
             height: "200px",
             objectFit: "cover",
           }}
         />
-      )}
-      </>
-    )
-  }
-  }
+      );
+    } else {
+      return (
+        <>
+          {bannedChampions[banIndex] && (
+            <img
+              src={largeChampImages[bannedChampions[banIndex]]}
+              alt={`${bannedChampions[banIndex]}`}
+              style={{
+                width: "160px",
+                height: "200px",
+                objectFit: "cover",
+              }}
+            />
+          )}
+        </>
+      );
+    }
+  };
+  const displayPickImage = (pickIndex: number) => {
+    if (pickedChampions[pickIndex] === "nothing") {
+      return (
+        <img
+          src={tempImage}
+          alt={`nothing`}
+          style={{
+            width: "300px",
+            height: "100px",
+            objectFit: "cover",
+          }}
+        />
+      );
+    } else {
+      return (
+        <>
+          {pickedChampions[pickIndex] && (
+            <img
+              src={largeChampImages[pickedChampions[pickIndex]]}
+              alt={`${pickedChampions[pickIndex]}`}
+              style={{
+                width: "300px",
+                height: "100px",
+                objectFit: "cover",
+              }}
+            />
+          )}
+        </>
+      );
+    }
+  };
   return (
     <div className="relative text-white mt-2">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
@@ -128,9 +163,15 @@ function DraftPage() {
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
-          <div className="pick1 min-w-40 min-h-24 bg-gray"></div>
-          <div className="pick2 min-w-40 min-h-24 bg-gray"></div>
-          <div className="pick3 min-w-40 min-h-24 bg-gray"></div>
+          <div className="pick1 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(0)}
+          </div>
+          <div className="pick2 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(3)}
+          </div>
+          <div className="pick3 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(4)}
+          </div>
           <div className="space h-4"></div>
           <div className="pick4 min-w-40 min-h-24 bg-gray"></div>
           <div className="pick5 min-w-40 min-h-24 bg-gray"></div>
@@ -174,9 +215,15 @@ function DraftPage() {
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
-          <div className="pick1 min-w-40 min-h-24 bg-gray"></div>
-          <div className="pick2 min-w-40 min-h-24 bg-gray"></div>
-          <div className="pick3 min-w-40 min-h-24 bg-gray"></div>
+          <div className="pick1 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(1)}
+          </div>
+          <div className="pick2 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(2)}
+          </div>
+          <div className="pick3 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(5)}
+          </div>
           <div className="space h-4"></div>
           <div className="pick4 min-w-40 min-h-24 bg-gray"></div>
           <div className="pick5 min-w-40 min-h-24 bg-gray"></div>
@@ -203,7 +250,7 @@ function DraftPage() {
         <button
           onClick={toggleReady}
           className={`Timer p-4 ${ready ? "bg-gray" : "bg-orange"} ${
-            banPhase ? "hidden" : ""
+            banPhase || pickPhase ? "hidden" : ""
           } max-h-16 flex items-center justify-center hover:cursor-pointer`}
         >
           {ready ? "Waiting" : "Ready"}
@@ -216,7 +263,7 @@ function DraftPage() {
             }
           }}
           className={`Timer p-4 ${chosenChamp ? "bg-orange" : "bg-gray"} ${
-            banPhase ? "" : "hidden"
+            banPhase || pickPhase ? "" : "hidden"
           } max-h-16 flex items-center justify-center hover:cursor-pointer`}
         >
           Lock In
