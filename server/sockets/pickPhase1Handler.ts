@@ -37,7 +37,7 @@ export const pickPhase1Handler = async (
         console.log("It is currently: ", currentSide,"'s Turn.....")
         try {
           console.log("Current turn:", currentSide);
-          io.to(lobbyCode).emit("currentTurn", currentSide);
+          io.to(lobbyCode).emit("currentPickTurn", currentSide);
 
           await handleTurn(currentSide);
           console.log("Switching turns");
@@ -95,7 +95,6 @@ export const pickPhase1Handler = async (
         };
         emitter.once('bluePick', pickListener);
         emitter.once('redPick', pickListener);
-        io.to(lobbyCode).emit("pickTurn", currentSide);
       });
     };
 

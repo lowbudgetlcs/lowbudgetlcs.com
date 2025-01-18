@@ -6,7 +6,7 @@ export const handleBanPhase = (
   socket: Socket,
   setBannedChampions: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  socket.on("currentTurn", (currentTurn) => {
+  socket.on("currentBanTurn", (currentTurn) => {
     if (currentTurn === sideCode) {
       console.log("Your Turn");
     } else {
@@ -40,7 +40,7 @@ export const handlePickPhase = (
   socket: Socket,
   setPickedChampions: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  socket.on("currentTurn", (currentTurn) => {
+  socket.on("currentPickTurn", (currentTurn) => {
     if (currentTurn === sideCode) {
       console.log("Your Turn");
     } else {

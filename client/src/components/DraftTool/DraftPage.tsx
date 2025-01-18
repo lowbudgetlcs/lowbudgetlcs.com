@@ -48,16 +48,16 @@ function DraftPage() {
     newSocket.on("connect", handleConnection);
 
     // Listening for beginning of banPhase
-    newSocket.on("banPhase", () => {
+    newSocket.on("banPhase", ({isBanPhase}) => {
       setPickPhase(false);
       setBanPhase(true);
-      handleBanPhase(setCurrentTime, sideCode, newSocket, setBannedChampions);
+      handleBanPhase(setCurrentTime, sideCode, newSocket, setBannedChampions, isBanPhase);
     });
 
-    newSocket.on("pickPhase", () => {
+    newSocket.on("pickPhase", ({isPickPhase}) => {
       setBanPhase(false);
       setPickPhase(true);
-      handlePickPhase(setCurrentTime, sideCode, newSocket, setPickedChampions);
+      handlePickPhase(setCurrentTime, sideCode, newSocket, setPickedChampions, isPickPhase);
     });
 
     // Cleanup on unmount
@@ -243,8 +243,12 @@ function DraftPage() {
             {displayBanImage(4)}
           </div>
           <div className="space w-8"></div>
-          <div className="ban4 w-20 h-40 bg-gray overflow-hidden"></div>
-          <div className="ban5 w-20 h-40 bg-gray overflow-hidden"></div>
+          <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
+          {displayBanImage(7)}
+          </div>
+          <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
+          {displayBanImage(9)}
+          </div>
         </div>
         {/* Ready Button */}
         <button
@@ -270,8 +274,12 @@ function DraftPage() {
         </button>
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
-          <div className="ban5 w-20 h-40 bg-gray overflow-hidden"></div>
-          <div className="ban4 w-20 h-40 bg-gray overflow-hidden"></div>
+          <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
+          {displayBanImage(8)}
+          </div>
+          <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
+          {displayBanImage(6)}
+          </div>
           <div className="space w-8"></div>
           <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
             {displayBanImage(5)}

@@ -6,6 +6,7 @@ import { draftState, initializeDraftState } from "./serverDraftHandler";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
+import { banPhase2Handler } from "./banPhase2Handler";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -90,7 +91,6 @@ export const draftSocket = (io: Server) => {
         );
         if (isBanPhase1Done) {
           state.activePhase = "pickPhase1";
-          io.to(lobbyCode).emit("startPickPhase1", { lobbyCode });
           console.log("isBanPhase1Done is true!");
 
           const isPickPhase1Done = await pickPhase1Handler(
@@ -102,7 +102,26 @@ export const draftSocket = (io: Server) => {
           );
 
           if (isPickPhase1Done) {
-            console.log('Pick Phase 1 Done :)')
+            state.activePhase = "banPhase2";
+            io.to(lobbyCode).emit("startBanPhase2", { lobbyCode });
+
+            const phase2Emitter = lobbyEmitters.get(lobbyCode);
+            if (!phase2Emitter) {
+              console.error(`No EventEmitter found for lobby ${lobbyCode}`);
+              return;
+            }
+
+            const isBanPhase2Done = await banPhase2Handler(
+              io,
+              socket,
+              lobbyCode,
+              state,
+              phase2Emitter
+            );
+
+            if (isBanPhase2Done) {
+              console.log("Ban Phase 2 Complete :)");
+            }
           }
         }
       }
