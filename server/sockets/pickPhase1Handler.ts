@@ -19,6 +19,7 @@ export const pickPhase1Handler = async (
       state.redUser,
       state.redUser,
       state.blueUser,
+      state.blueUser,
       state.redUser,
     ];
 
