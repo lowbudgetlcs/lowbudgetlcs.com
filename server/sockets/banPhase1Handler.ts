@@ -93,8 +93,8 @@ export const banPhase1Handler = async (
             }
           }
         };
-        emitter.on('bluePick', banListener);
-        emitter.on('redPick', banListener);
+        emitter.once('bluePick', banListener);
+        emitter.once('redPick', banListener);
         io.to(lobbyCode).emit("banTurn", currentSide);
       });
     };
