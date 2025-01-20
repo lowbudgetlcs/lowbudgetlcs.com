@@ -5,6 +5,12 @@ import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
+import championsData from "./championRoles.json";
+
+export interface Champion {
+  name: string;
+  roles: string[];
+}
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -16,10 +22,12 @@ function DraftPage() {
   const [ready, setReady] = useState<boolean>(false);
   const [chosenChamp, setChosenChamp] = useState<string>();
   const [banPhase, setBanPhase] = useState<boolean>(false);
-  const [bannedChampions, setBannedChampions] = useState<Array<string>>([]);
+  const [bannedChampions, setBannedChampions] = useState<string[]>([]);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
-  const [pickedChampions, setPickedChampions] = useState<Array<string>>([]);
+  const [pickedChampions, setPickedChampions] = useState<string[]>([]);
+  const [championRoles, setChampionRoles] = useState<Champion[]>([]);
 
+  const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
 
   // Grab the lobby code
@@ -42,6 +50,8 @@ function DraftPage() {
       }
     };
     fetchChampImages();
+
+    setChampionRoles(championsData);
 
     console.log("lobby code: ", lobbyCode);
 
@@ -206,7 +216,20 @@ function DraftPage() {
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col w-full ">
           <div className="searchFilter flex justify-between">
-            <div className="champFilter flex gap-2"></div>
+            <div className="champFilter flex gap-2">
+              {["All", "Top", "Jungle", "Mid", "Bottom", "Support"].map((role) => (
+                <label key={role} className="flex items-center space-x-1">
+                  <input
+                    type="radio"
+                    name="role"
+                    value={role}
+                    checked={selectedRole === role}
+                    onChange={(e) => setSelectedRole(e.target.value)}
+                  />
+                  <span>{role}</span>
+                </label>
+              ))}
+            </div>
             <form>
               <input
                 type="text"
@@ -220,9 +243,24 @@ function DraftPage() {
           {/* List of Champion Images */}
           <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] p-4 gap-2 justify-center">
             {Object.entries(champImages)
-              .filter(([name]) =>
-                name.toLowerCase().includes(searchValue.toLowerCase())
-              )
+              .filter(([name]) => {
+                const matchesSearch = name
+                  .toLowerCase()
+                  .includes(searchValue.toLowerCase());
+
+                if (selectedRole === "All") {
+                  return matchesSearch;
+                }
+
+                const champion = championRoles.find(
+                  (champ) => champ.name === name
+                );
+                if (!champion) return false;
+
+                const hasSelectedRole = champion.roles.includes(selectedRole);
+
+                return matchesSearch && hasSelectedRole;
+              })
               .map(([name, src]) => {
                 return (
                   <li

@@ -1,624 +1,622 @@
-{
-  "champions": [
-    {
-      "name": "Aatrox",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Ahri",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Akali",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Alistar",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Ambessa",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Amumu",
-      "roles": ["Jungle", "Support"]
-    },
-    {
-      "name": "Anivia",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Annie",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Aphelios",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Ashe",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "AurelionSol",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Azir",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Bard",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Blitzcrank",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Brand",
-      "roles": ["Mid", "Support", "Jungle"]
-    },
-    {
-      "name": "Braum",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Caitlyn",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Camille",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Cassiopeia",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Chogath",
-      "roles": ["Top", "Jungle"]
-    },
-    {
-      "name": "Corki",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Darius",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Diana",
-      "roles": ["Mid", "Jungle"]
-    },
-    {
-      "name": "DrMundo",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Draven",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Ekko",
-      "roles": ["Mid", "Jungle"]
-    },
-    {
-      "name": "Elise",
-      "roles": ["Jungle", "Support"]
-    },
-    {
-      "name": "Evelynn",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Ezreal",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Fiddlesticks",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Fiora",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Fizz",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Galio",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Gangplank",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Garen",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Gnar",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Gragas",
-      "roles": ["Jungle", "Top"]
-    },
-    {
-      "name": "Graves",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Gwen",
-      "roles": ["Top", "Jungle", "Mid"]
-    },
-    {
-      "name": "Hecarim",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Heimerdinger",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Illaoi",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Irelia",
-      "roles": ["Top", "Mid"]
-    },
-    {
-      "name": "Ivern",
-      "roles": ["Jungle", "Support"]
-    },
-    {
-      "name": "Janna",
-      "roles": ["Support"]
-    },
-    {
-      "name": "JarvanIV",
-      "roles": ["Jungle", "Top"]
-    },
-    {
-      "name": "Jax",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Jayce",
-      "roles": ["Top", "Mid"]
-    },
-    {
-      "name": "Jhin",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Jinx",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "KaiSa",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Kalista",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Karma",
-      "roles": ["Support", "Mid"]
-    },
-    {
-      "name": "Karthus",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Kassadin",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Katarina",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Kayle",
-      "roles": ["Top", "Mid"]
-    },
-    {
-      "name": "Khazix",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Kennen",
-      "roles": ["Top", "Mid"]
-    },
-    {
-      "name": "Kindred",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Kled",
-      "roles": ["Top"]
-    },
-    {
-      "name": "KogMaw",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "LeBlanc",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "LeeSin",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Leona",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Lillia",
-      "roles": ["Jungle", "Top"]
-    },
-    {
-      "name": "Lissandra",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Lucian",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Lulu",
-      "roles": ["Support", "Mid"]
-    },
-    {
-      "name": "Lux",
-      "roles": ["Mid", "Support"]
-    },
-    {
-      "name": "Malphite",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Malzahar",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Maokai",
-      "roles": ["Top", "Support"]
-    },
-    {
-      "name": "MasterYi",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "MissFortune",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Mordekaiser",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Morgana",
-      "roles": ["Support", "Mid", "Jungle"]
-    },
-    {
-      "name": "Nami",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Nasus",
-      "roles": ["Top", "Jungle"]
-    },
-    {
-      "name": "Nautilus",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Neeko",
-      "roles": ["Mid", "Support"]
-    },
-    {
-      "name": "Nidalee",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Nocturne",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Nunu",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Olaf",
-      "roles": ["Jungle", "Top"]
-    },
-    {
-      "name": "Orianna",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Ornn",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Pantheon",
-      "roles": ["Top", "Mid", "Support"]
-    },
-    {
-      "name": "Poppy",
-      "roles": ["Top", "Jungle", "Support"]
-    },
-    {
-      "name": "Pyke",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Qiyana",
-      "roles": ["Mid", "Jungle"]
-    },
-    {
-      "name": "Quinn",
-      "roles": ["Top", "Jungle"]
-    },
-    {
-      "name": "Rakan",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Rammus",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "RekSai",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Rell",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Renekton",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Rengar",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Riven",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Rumble",
-      "roles": ["Top", "Mid"]
-    },
-    {
-      "name": "Ryze",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Sejuani",
-      "roles": ["Jungle", "Top"]
-    },
-    {
-      "name": "Senna",
-      "roles": ["Bottom", "Support"]
-    },
-    {
-      "name": "Seraphine",
-      "roles": ["Support", "Mid"]
-    },
-    {
-      "name": "Sett",
-      "roles": ["Top", "Support"]
-    },
-    {
-      "name": "Shaco",
-      "roles": ["Jungle", "Support"]
-    },
-    {
-      "name": "Shen",
-      "roles": ["Top", "Support"]
-    },
-    {
-      "name": "Shyvana",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Singed",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Sion",
-      "roles": ["Top", "Jungle"]
-    },
-    {
-      "name": "Sivir",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Skarner",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Sona",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Soraka",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Swain",
-      "roles": ["Mid", "Top", "Bottom"]
-    },
-    {
-      "name": "Sylas",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Syndra",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "TahmKench",
-      "roles": ["Top", "Support"]
-    },
-    {
-      "name": "Taliyah",
-      "roles": ["Mid", "Top", "Jungle"]
-    },
-    {
-      "name": "Talon",
-      "roles": ["Mid", "Jungle"]
-    },
-    {
-      "name": "Taric",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Teemo",
-      "roles": ["Top", "Mid", "Jungle", "Support"]
-    },
-    {
-      "name": "Thresh",
-      "roles": ["Support"]
-    },
-    {
-      "name": "Tristana",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Trundle",
-      "roles": ["Top", "Jungle"]
-    },
-    {
-      "name": "Tryndamere",
-      "roles": ["Top", "Mid"]
-    },
-    {
-      "name": "TwistedFate",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Twitch",
-      "roles": ["Bottom", "Support"]
-    },
-    {
-      "name": "Udyr",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Urgot",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Varus",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Vayne",
-      "roles": ["Bottom", "Top"]
-    },
-    {
-      "name": "Veigar",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Velkoz",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Vex",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Vi",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Viego",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Viktor",
-      "roles": ["Mid"]
-    },
-    {
-      "name": "Vladimir",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Volibear",
-      "roles": ["Jungle", "Top"]
-    },
-    {
-      "name": "Warwick",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Wukong",
-      "roles": ["Top", "Jungle"]
-    },
-    {
-      "name": "Xayah",
-      "roles": ["Bottom"]
-    },
-    {
-      "name": "Xerath",
-      "roles": ["Mid", "Support"]
-    },
-    {
-      "name": "XinZhao",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Yasuo",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Yone",
-      "roles": ["Mid", "Top"]
-    },
-    {
-      "name": "Yorick",
-      "roles": ["Top"]
-    },
-    {
-      "name": "Yuumi",
-      "roles": ["Support", "Mid"]
-    },
-    {
-      "name": "Zac",
-      "roles": ["Jungle"]
-    },
-    {
-      "name": "Zed",
-      "roles": ["Mid", "Jungle"]
-    },
-    {
-      "name": "Ziggs",
-      "roles": ["Mid", "Bottom"]
-    },
-    {
-      "name": "Zilean",
-      "roles": ["Support", "Mid"]
-    },
-    {
-      "name": "Zoe",
-      "roles": ["Mid", "Support"]
-    },
-    {
-      "name": "Zyra",
-      "roles": ["Support", "Mid", "Jungle"]
-    }
-  ]
-}
+[
+  {
+    "name": "Aatrox",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Ahri",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Akali",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Alistar",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Ambessa",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Amumu",
+    "roles": ["Jungle", "Support"]
+  },
+  {
+    "name": "Anivia",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Annie",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Aphelios",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Ashe",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "AurelionSol",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Azir",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Bard",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Blitzcrank",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Brand",
+    "roles": ["Mid", "Support", "Jungle"]
+  },
+  {
+    "name": "Braum",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Caitlyn",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Camille",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Cassiopeia",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Chogath",
+    "roles": ["Top", "Jungle"]
+  },
+  {
+    "name": "Corki",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Darius",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Diana",
+    "roles": ["Mid", "Jungle"]
+  },
+  {
+    "name": "DrMundo",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Draven",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Ekko",
+    "roles": ["Mid", "Jungle"]
+  },
+  {
+    "name": "Elise",
+    "roles": ["Jungle", "Support"]
+  },
+  {
+    "name": "Evelynn",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Ezreal",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Fiddlesticks",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Fiora",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Fizz",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Galio",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Gangplank",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Garen",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Gnar",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Gragas",
+    "roles": ["Jungle", "Top"]
+  },
+  {
+    "name": "Graves",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Gwen",
+    "roles": ["Top", "Jungle", "Mid"]
+  },
+  {
+    "name": "Hecarim",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Heimerdinger",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Illaoi",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Irelia",
+    "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "Ivern",
+    "roles": ["Jungle", "Support"]
+  },
+  {
+    "name": "Janna",
+    "roles": ["Support"]
+  },
+  {
+    "name": "JarvanIV",
+    "roles": ["Jungle", "Top"]
+  },
+  {
+    "name": "Jax",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Jayce",
+    "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "Jhin",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Jinx",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "KaiSa",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Kalista",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Karma",
+    "roles": ["Support", "Mid"]
+  },
+  {
+    "name": "Karthus",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Kassadin",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Katarina",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Kayle",
+    "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "Khazix",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Kennen",
+    "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "Kindred",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Kled",
+    "roles": ["Top"]
+  },
+  {
+    "name": "KogMaw",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "LeBlanc",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "LeeSin",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Leona",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Lillia",
+    "roles": ["Jungle", "Top"]
+  },
+  {
+    "name": "Lissandra",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Lucian",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Lulu",
+    "roles": ["Support", "Mid"]
+  },
+  {
+    "name": "Lux",
+    "roles": ["Mid", "Support"]
+  },
+  {
+    "name": "Malphite",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Malzahar",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Maokai",
+    "roles": ["Top", "Support"]
+  },
+  {
+    "name": "MasterYi",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "MissFortune",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Mordekaiser",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Morgana",
+    "roles": ["Support", "Mid", "Jungle"]
+  },
+  {
+    "name": "Nami",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Nasus",
+    "roles": ["Top", "Jungle"]
+  },
+  {
+    "name": "Nautilus",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Neeko",
+    "roles": ["Mid", "Support"]
+  },
+  {
+    "name": "Nidalee",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Nocturne",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Nunu",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Olaf",
+    "roles": ["Jungle", "Top"]
+  },
+  {
+    "name": "Orianna",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Ornn",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Pantheon",
+    "roles": ["Top", "Mid", "Support"]
+  },
+  {
+    "name": "Poppy",
+    "roles": ["Top", "Jungle", "Support"]
+  },
+  {
+    "name": "Pyke",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Qiyana",
+    "roles": ["Mid", "Jungle"]
+  },
+  {
+    "name": "Quinn",
+    "roles": ["Top", "Jungle"]
+  },
+  {
+    "name": "Rakan",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Rammus",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "RekSai",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Rell",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Renekton",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Rengar",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Riven",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Rumble",
+    "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "Ryze",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Sejuani",
+    "roles": ["Jungle", "Top"]
+  },
+  {
+    "name": "Senna",
+    "roles": ["Bottom", "Support"]
+  },
+  {
+    "name": "Seraphine",
+    "roles": ["Support", "Mid"]
+  },
+  {
+    "name": "Sett",
+    "roles": ["Top", "Support"]
+  },
+  {
+    "name": "Shaco",
+    "roles": ["Jungle", "Support"]
+  },
+  {
+    "name": "Shen",
+    "roles": ["Top", "Support"]
+  },
+  {
+    "name": "Shyvana",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Singed",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Sion",
+    "roles": ["Top", "Jungle"]
+  },
+  {
+    "name": "Sivir",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Skarner",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Sona",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Soraka",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Swain",
+    "roles": ["Mid", "Top", "Bottom"]
+  },
+  {
+    "name": "Sylas",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Syndra",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "TahmKench",
+    "roles": ["Top", "Support"]
+  },
+  {
+    "name": "Taliyah",
+    "roles": ["Mid", "Top", "Jungle"]
+  },
+  {
+    "name": "Talon",
+    "roles": ["Mid", "Jungle"]
+  },
+  {
+    "name": "Taric",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Teemo",
+    "roles": ["Top", "Mid", "Jungle", "Support"]
+  },
+  {
+    "name": "Thresh",
+    "roles": ["Support"]
+  },
+  {
+    "name": "Tristana",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Trundle",
+    "roles": ["Top", "Jungle"]
+  },
+  {
+    "name": "Tryndamere",
+    "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "TwistedFate",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Twitch",
+    "roles": ["Bottom", "Support"]
+  },
+  {
+    "name": "Udyr",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Urgot",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Varus",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Vayne",
+    "roles": ["Bottom", "Top"]
+  },
+  {
+    "name": "Veigar",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Velkoz",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Vex",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Vi",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Viego",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Viktor",
+    "roles": ["Mid"]
+  },
+  {
+    "name": "Vladimir",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Volibear",
+    "roles": ["Jungle", "Top"]
+  },
+  {
+    "name": "Warwick",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Wukong",
+    "roles": ["Top", "Jungle"]
+  },
+  {
+    "name": "Xayah",
+    "roles": ["Bottom"]
+  },
+  {
+    "name": "Xerath",
+    "roles": ["Mid", "Support"]
+  },
+  {
+    "name": "XinZhao",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Yasuo",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Yone",
+    "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Yorick",
+    "roles": ["Top"]
+  },
+  {
+    "name": "Yuumi",
+    "roles": ["Support", "Mid"]
+  },
+  {
+    "name": "Zac",
+    "roles": ["Jungle"]
+  },
+  {
+    "name": "Zed",
+    "roles": ["Mid", "Jungle"]
+  },
+  {
+    "name": "Ziggs",
+    "roles": ["Mid", "Bottom"]
+  },
+  {
+    "name": "Zilean",
+    "roles": ["Support", "Mid"]
+  },
+  {
+    "name": "Zoe",
+    "roles": ["Mid", "Support"]
+  },
+  {
+    "name": "Zyra",
+    "roles": ["Support", "Mid", "Jungle"]
+  }
+]
