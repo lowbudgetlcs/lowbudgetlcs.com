@@ -19,10 +19,12 @@ function DraftPage() {
   const [bannedChampions, setBannedChampions] = useState<Array<string>>([]);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
   const [pickedChampions, setPickedChampions] = useState<Array<string>>([]);
+
   // Grab the lobby code
   const params = useParams();
   const lobbyCode: string | undefined = params.lobbyCode;
   const sideCode: string | undefined = params.sideCode;
+
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
@@ -47,26 +49,46 @@ function DraftPage() {
     };
     newSocket.on("connect", handleConnection);
 
-    // Listening for beginning of banPhase
-    newSocket.on("banPhase", ({isBanPhase}) => {
-      setPickPhase(false);
-      setBanPhase(true);
-      handleBanPhase(setCurrentTime, sideCode, newSocket, setBannedChampions, isBanPhase);
-    });
-
-    newSocket.on("pickPhase", ({isPickPhase}) => {
-      setBanPhase(false);
-      setPickPhase(true);
-      handlePickPhase(setCurrentTime, sideCode, newSocket, setPickedChampions, isPickPhase);
-    });
-
     // Cleanup on unmount
     return () => {
       newSocket.off("connect", handleConnection);
-      newSocket.off("banPhase", handleBanPhase);
       newSocket.disconnect();
     };
   }, [lobbyCode, sideCode]);
+
+  useEffect(() => {
+
+    if (!socket) {
+      return;
+    }
+    // Listening for beginning of banPhase
+    socket.on("banPhase", () => {
+      setPickPhase(false);
+      setBanPhase(true);
+      handleBanPhase(
+        setCurrentTime,
+        sideCode,
+        socket!,
+        setBannedChampions,
+      );
+    });
+
+    socket.on("pickPhase", () => {
+      setBanPhase(false);
+      setPickPhase(true);
+      handlePickPhase(
+        setCurrentTime,
+        sideCode,
+        socket!,
+        setPickedChampions,
+      );
+    });
+
+    return () => {
+      socket.off("banPhase", handleBanPhase);
+      socket.off("pickPhase", handlePickPhase);
+    }
+  }, [socket, sideCode]);
 
   const toggleReady = () => {
     setReady((prevReady) => {
@@ -244,10 +266,10 @@ function DraftPage() {
           </div>
           <div className="space w-8"></div>
           <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
-          {displayBanImage(7)}
+            {displayBanImage(7)}
           </div>
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
-          {displayBanImage(9)}
+            {displayBanImage(9)}
           </div>
         </div>
         {/* Ready Button */}
@@ -275,10 +297,10 @@ function DraftPage() {
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
-          {displayBanImage(8)}
+            {displayBanImage(8)}
           </div>
           <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
-          {displayBanImage(6)}
+            {displayBanImage(6)}
           </div>
           <div className="space w-8"></div>
           <div className="ban3 w-20 h-40 bg-gray overflow-hidden">

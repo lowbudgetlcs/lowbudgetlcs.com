@@ -47,6 +47,7 @@ export const banPhase2Handler = async (
       //   resets banIndex to be used in ban phase 2
       state.banIndex = 0;
       console.log("Ban Phase 2 is complete :)");
+      io.to(lobbyCode).emit('endBanPhase', true)
       resolve(true);
     };
 

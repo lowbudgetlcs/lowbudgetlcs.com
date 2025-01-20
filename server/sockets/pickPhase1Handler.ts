@@ -50,6 +50,7 @@ export const pickPhase1Handler = async (
       //   resets pickIndex to be used in pick phase 2
       state.pickIndex = 0;
       console.log("Pick Phase 1 is complete :)");
+      io.to(lobbyCode).emit('endPickPhase', true)
       resolve(true);
     };
 

@@ -1,3 +1,4 @@
+import React from "react";
 import { Socket } from "socket.io-client";
 
 export const handleBanPhase = (
@@ -13,7 +14,7 @@ export const handleBanPhase = (
       console.log("Enemy Turn");
     }
   });
-  
+
   let banTimer = 30;
   socket.on("timer", (timer: number) => {
     banTimer = timer - 4;
@@ -28,9 +29,15 @@ export const handleBanPhase = (
     console.log("banned Champion: ", bannedChampion);
   };
 
-  socket.on("setBan", ({ bannedChampion }) => {
+  const setBanSocket = ({ bannedChampion }: { bannedChampion: string }) => {
     console.log(`Ban received: ${bannedChampion}`);
     addBannedChampion(bannedChampion);
+  };
+  socket.on("setBan", setBanSocket);
+
+  socket.once("endBanPhase", () => {
+    console.log("BAN phase is over");
+    socket.off("setBan", setBanSocket);
   });
 };
 
@@ -62,8 +69,14 @@ export const handlePickPhase = (
     console.log("picked Champion: ", pickedChampion);
   };
 
-  socket.on("setPick", ({ pickedChampion }) => {
+  const setPickSocket = ({ pickedChampion }: { pickedChampion: string }) => {
     console.log(`Ban received: ${pickedChampion}`);
     addBannedChampion(pickedChampion);
+  };
+  socket.on("setPick", setPickSocket);
+
+  socket.once("endPickPhase", () => {
+    console.log("PICK phase is over");
+    socket.off("setPick", setPickSocket);
   });
 };
