@@ -57,7 +57,6 @@ function DraftPage() {
   }, [lobbyCode, sideCode]);
 
   useEffect(() => {
-
     if (!socket) {
       return;
     }
@@ -65,29 +64,19 @@ function DraftPage() {
     socket.on("banPhase", () => {
       setPickPhase(false);
       setBanPhase(true);
-      handleBanPhase(
-        setCurrentTime,
-        sideCode,
-        socket!,
-        setBannedChampions,
-      );
+      handleBanPhase(setCurrentTime, sideCode, socket!, setBannedChampions);
     });
 
     socket.on("pickPhase", () => {
       setBanPhase(false);
       setPickPhase(true);
-      handlePickPhase(
-        setCurrentTime,
-        sideCode,
-        socket!,
-        setPickedChampions,
-      );
+      handlePickPhase(setCurrentTime, sideCode, socket!, setPickedChampions);
     });
 
     return () => {
       socket.off("banPhase", handleBanPhase);
       socket.off("pickPhase", handlePickPhase);
-    }
+    };
   }, [socket, sideCode]);
 
   const toggleReady = () => {
@@ -195,8 +184,12 @@ function DraftPage() {
             {displayPickImage(4)}
           </div>
           <div className="space h-4"></div>
-          <div className="pick4 min-w-40 min-h-24 bg-gray"></div>
-          <div className="pick5 min-w-40 min-h-24 bg-gray"></div>
+          <div className="pick4 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(7)}
+          </div>
+          <div className="pick5 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(8)}
+          </div>
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col ">
@@ -247,8 +240,12 @@ function DraftPage() {
             {displayPickImage(5)}
           </div>
           <div className="space h-4"></div>
-          <div className="pick4 min-w-40 min-h-24 bg-gray"></div>
-          <div className="pick5 min-w-40 min-h-24 bg-gray"></div>
+          <div className="pick4 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(6)}
+          </div>
+          <div className="pick5 min-w-40 min-h-24 bg-gray">
+            {displayPickImage(9)}
+          </div>
         </div>
       </div>
       {/* Champion Band and Timer */}

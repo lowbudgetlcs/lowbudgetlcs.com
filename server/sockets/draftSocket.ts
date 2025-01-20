@@ -7,6 +7,7 @@ import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
+import { pickPhase2Handler } from "./pickPhase2Handler";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -120,7 +121,22 @@ export const draftSocket = (io: Server) => {
             );
 
             if (isBanPhase2Done) {
-              console.log("Ban Phase 2 Complete :)");
+              state.activePhase = "pickPhase2";
+              console.log("isBanPhase2Done is true!");
+    
+              const isPickPhase2Done = await pickPhase2Handler(
+                io,
+                socket,
+                lobbyCode,
+                state,
+                emitter
+              );
+
+              if (isPickPhase2Done) {
+                state.activePhase = null
+                console.log("Draft Complete!")
+                io.in(lobbyCode).disconnectSockets()
+              }
             }
           }
         }
