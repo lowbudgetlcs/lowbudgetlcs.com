@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { connectionHandler, pickHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
 import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
@@ -19,6 +19,8 @@ function DraftPage() {
   const [bannedChampions, setBannedChampions] = useState<Array<string>>([]);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
   const [pickedChampions, setPickedChampions] = useState<Array<string>>([]);
+
+  const [searchValue, setSearchValue] = useState<string>("");
 
   // Grab the lobby code
   const params = useParams();
@@ -92,7 +94,12 @@ function DraftPage() {
   };
 
   const handlePick = (championName: string) => {
-    setChosenChamp(championName);
+    if (
+      !pickedChampions.includes(championName) &&
+      !pickedChampions.includes(championName)
+    ) {
+      setChosenChamp(championName);
+    }
   };
 
   const displayBanImage = (banIndex: number) => {
@@ -157,6 +164,11 @@ function DraftPage() {
       );
     }
   };
+
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   return (
     <div className="relative text-white mt-2">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
@@ -192,7 +204,7 @@ function DraftPage() {
           </div>
         </div>
         {/* Champion Pick Container */}
-        <div className="championPickContainer flex flex-col ">
+        <div className="championPickContainer flex flex-col w-full ">
           <div className="searchFilter flex justify-between">
             <div className="champFilter flex gap-2"></div>
             <form>
@@ -200,32 +212,54 @@ function DraftPage() {
                 type="text"
                 className="champSearch bg-gray"
                 placeholder="Search Champion"
+                value={searchValue}
+                onChange={handleSearchChange}
               ></input>
             </form>
           </div>
           {/* List of Champion Images */}
           <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] p-4 gap-2 justify-center">
-            {Object.entries(champImages).map(([name, src]) => {
-              return (
-                <li
-                  key={name}
-                  onClick={() => handlePick(name)}
-                  className={`${
-                    chosenChamp === name ? "border-orange border-2" : ""
-                  }`}
-                >
-                  <img
-                    src={src}
-                    alt={name}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "contain",
+            {Object.entries(champImages)
+              .filter(([name]) =>
+                name.toLowerCase().includes(searchValue.toLowerCase())
+              )
+              .map(([name, src]) => {
+                return (
+                  <li
+                    key={name}
+                    onClick={() => {
+                      if (
+                        !pickedChampions.includes(name) &&
+                        !bannedChampions.includes(name)
+                      ) {
+                        handlePick(name);
+                      }
                     }}
-                  />
-                </li>
-              );
-            })}
+                  >
+                    <img
+                      className={`
+                      ${
+                        pickedChampions.includes(name) ||
+                        bannedChampions.includes(name)
+                          ? "grayscale"
+                          : "hover:cursor-pointer"
+                      } 
+                      ${
+                        chosenChamp === name
+                          ? "box-border border-orange border-2"
+                          : ""
+                      }`}
+                      src={src}
+                      alt={name}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "contain",
+                      }}
+                    />
+                  </li>
+                );
+              })}
           </ul>
         </div>
         {/* Red Side Picks */}
