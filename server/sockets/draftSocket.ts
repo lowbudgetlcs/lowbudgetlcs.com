@@ -106,18 +106,12 @@ export const draftSocket = (io: Server) => {
             state.activePhase = "banPhase2";
             io.to(lobbyCode).emit("startBanPhase2", { lobbyCode });
 
-            const phase2Emitter = lobbyEmitters.get(lobbyCode);
-            if (!phase2Emitter) {
-              console.error(`No EventEmitter found for lobby ${lobbyCode}`);
-              return;
-            }
-
             const isBanPhase2Done = await banPhase2Handler(
               io,
               socket,
               lobbyCode,
               state,
-              phase2Emitter
+              emitter
             );
 
             if (isBanPhase2Done) {
@@ -135,6 +129,7 @@ export const draftSocket = (io: Server) => {
               if (isPickPhase2Done) {
                 state.activePhase = null
                 console.log("Draft Complete!")
+                io.to(lobbyCode).emit('draftComplete')
                 io.in(lobbyCode).disconnectSockets()
               }
             }
@@ -153,6 +148,10 @@ export const draftSocket = (io: Server) => {
       ) {
         console.error("We are not in ban phase");
         return;
+      }
+
+      if (state.bansArray.includes(chosenChamp) || state.picksArray.includes(chosenChamp)) {
+        return
       }
 
       if (sideCode === state.blueUser && sideCode === state.currentTurn) {
@@ -176,6 +175,10 @@ export const draftSocket = (io: Server) => {
       ) {
         console.error("We are not in pick phase");
         return;
+      }
+
+      if (state.picksArray.includes(chosenChamp) || state.bansArray.includes(chosenChamp)) {
+        return
       }
 
       if (sideCode === state.blueUser && sideCode === state.currentTurn) {
