@@ -2,6 +2,7 @@
 export interface DraftStateProps {
   draftStarted: boolean;
   activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | null;
+  phaseType: "pick" | "ban" | null;
   blueUser: string;
   redUser: string;
   blueReady: boolean;
@@ -26,6 +27,7 @@ export const initializeDraftState = (
     draftState[lobbyCode] = {
       draftStarted: false,
       activePhase: null,
+      phaseType: null,
       blueUser: blueUser,
       redUser: redUser,
       blueReady: false,

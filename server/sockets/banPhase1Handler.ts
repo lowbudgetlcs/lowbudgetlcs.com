@@ -26,6 +26,7 @@ export const banPhase1Handler = async (
     const startBanPhase = async () => {
       console.log("Ban Phase Starting");
       io.to(lobbyCode).emit("banPhase", ({isBanPhase: true}));
+            state.phaseType = "ban"
 
       for (
         state.banIndex;

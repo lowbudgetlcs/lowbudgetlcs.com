@@ -24,7 +24,8 @@ export const pickPhase2Handler = async (
     const startPickPhase = async () => {
       console.log("Pick Phase Starting");
       io.to(lobbyCode).emit("pickPhase", true);
-
+      state.phaseType = "pick"
+      
       for (
         state.pickIndex;
         state.pickIndex < picksPhase2.length;

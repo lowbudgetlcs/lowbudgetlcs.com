@@ -12,6 +12,24 @@ export interface Champion {
   roles: string[];
 }
 
+export interface DraftStateProps {
+  draftStarted: boolean;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | null;
+  phaseType: "pick" | "ban" | null;
+  blueUser: string;
+  redUser: string;
+  blueReady: boolean;
+  redReady: boolean;
+  timer: number;
+  bansArray: string[];
+  picksArray: string[];
+  banIndex: number;
+  pickIndex: number;
+  currentTurn: string;
+  bluePick: string | null;
+  redPick: string | null;
+}
+
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [champImages, setChampImages] = useState<Record<string, string>>({});
@@ -26,6 +44,8 @@ function DraftPage() {
   const [pickPhase, setPickPhase] = useState<boolean>(false);
   const [pickedChampions, setPickedChampions] = useState<string[]>([]);
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
+  const [blueReady, setBlueReady] = useState<boolean>(false);
+  const [redReady, setRedReady] = useState<boolean>(false);
 
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
@@ -67,6 +87,31 @@ function DraftPage() {
       newSocket.disconnect();
     };
   }, [lobbyCode, sideCode]);
+
+  useEffect(() => {
+    if (!socket) {
+      return;
+    }
+
+    socket.on("state", (state: DraftStateProps) => {
+      console.log("here is state: ", state)
+      if (state.timer <= currentTime) {
+        setCurrentTime(state.timer);
+      }
+
+      if (state.picksArray.length > 0) {
+        setPickedChampions(state.picksArray);
+      }
+      if (state.bansArray.length > 0) {
+        setBannedChampions(state.bansArray);
+      }
+      if (state.phaseType === "pick") {
+        setPickPhase(true);
+      } else if (state.phaseType === "ban") {
+        setBanPhase(true);
+      }
+    });
+  }, [socket]);
 
   useEffect(() => {
     if (!socket) {
@@ -180,7 +225,7 @@ function DraftPage() {
   };
 
   return (
-    <div className="relative text-white mt-2">
+    <div className="relative text-white py-2  h-full flex flex-col">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
         <p>{currentTime}</p>
       </div>
@@ -217,18 +262,20 @@ function DraftPage() {
         <div className="championPickContainer flex flex-col w-full ">
           <div className="searchFilter flex justify-between">
             <div className="champFilter flex gap-2">
-              {["All", "Top", "Jungle", "Mid", "Bottom", "Support"].map((role) => (
-                <label key={role} className="flex items-center space-x-1">
-                  <input
-                    type="radio"
-                    name="role"
-                    value={role}
-                    checked={selectedRole === role}
-                    onChange={(e) => setSelectedRole(e.target.value)}
-                  />
-                  <span>{role}</span>
-                </label>
-              ))}
+              {["All", "Top", "Jungle", "Mid", "Bottom", "Support"].map(
+                (role) => (
+                  <label key={role} className="flex items-center space-x-1">
+                    <input
+                      type="radio"
+                      name="role"
+                      value={role}
+                      checked={selectedRole === role}
+                      onChange={(e) => setSelectedRole(e.target.value)}
+                    />
+                    <span>{role}</span>
+                  </label>
+                )
+              )}
             </div>
             <form>
               <input

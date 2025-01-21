@@ -57,6 +57,9 @@ export const draftSocket = (io: Server) => {
         }
 
         socket.emit("joinedDraft", { success: true, sideCode, lobbyCode });
+        const state = getDraftState(lobbyCode)
+        console.log(state)
+        socket.emit("state", state);
       } catch (error) {
         console.error("Error during role assignment:", error);
         socket.emit("error", { message: "Internal server error." });
@@ -117,7 +120,7 @@ export const draftSocket = (io: Server) => {
             if (isBanPhase2Done) {
               state.activePhase = "pickPhase2";
               console.log("isBanPhase2Done is true!");
-    
+
               const isPickPhase2Done = await pickPhase2Handler(
                 io,
                 socket,
@@ -127,10 +130,11 @@ export const draftSocket = (io: Server) => {
               );
 
               if (isPickPhase2Done) {
-                state.activePhase = null
-                console.log("Draft Complete!")
-                io.to(lobbyCode).emit('draftComplete')
-                io.in(lobbyCode).disconnectSockets()
+                state.activePhase = null;
+                console.log("Draft Complete!");
+                state.phaseType = null;
+                io.to(lobbyCode).emit("draftComplete");
+                io.in(lobbyCode).disconnectSockets();
               }
             }
           }
@@ -150,8 +154,11 @@ export const draftSocket = (io: Server) => {
         return;
       }
 
-      if (state.bansArray.includes(chosenChamp) || state.picksArray.includes(chosenChamp)) {
-        return
+      if (
+        state.bansArray.includes(chosenChamp) ||
+        state.picksArray.includes(chosenChamp)
+      ) {
+        return;
       }
 
       if (sideCode === state.blueUser && sideCode === state.currentTurn) {
@@ -177,8 +184,11 @@ export const draftSocket = (io: Server) => {
         return;
       }
 
-      if (state.picksArray.includes(chosenChamp) || state.bansArray.includes(chosenChamp)) {
-        return
+      if (
+        state.picksArray.includes(chosenChamp) ||
+        state.bansArray.includes(chosenChamp)
+      ) {
+        return;
       }
 
       if (sideCode === state.blueUser && sideCode === state.currentTurn) {
