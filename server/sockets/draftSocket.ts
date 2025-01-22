@@ -58,7 +58,6 @@ export const draftSocket = (io: Server) => {
 
         socket.emit("joinedDraft", { success: true, sideCode, lobbyCode });
         const state = getDraftState(lobbyCode)
-        console.log(state)
         socket.emit("state", state);
       } catch (error) {
         console.error("Error during role assignment:", error);

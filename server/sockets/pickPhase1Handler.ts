@@ -55,7 +55,7 @@ export const pickPhase1Handler = async (
     };
 
     const handleTurn = (currentSide: string): Promise<void> => {
-      let timer = 34;
+      let timer: number = 34;
 
       return new Promise((resolve) => {
         const interval = setInterval(() => {

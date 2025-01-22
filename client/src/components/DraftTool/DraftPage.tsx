@@ -44,6 +44,7 @@ function DraftPage() {
   const [pickPhase, setPickPhase] = useState<boolean>(false);
   const [pickedChampions, setPickedChampions] = useState<string[]>([]);
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
+  const [draftState, setDraftState] = useState<DraftStateProps>();
   const [blueReady, setBlueReady] = useState<boolean>(false);
   const [redReady, setRedReady] = useState<boolean>(false);
 
@@ -92,13 +93,9 @@ function DraftPage() {
     if (!socket) {
       return;
     }
-
-    socket.on("state", (state: DraftStateProps) => {
-      console.log("here is state: ", state)
-      if (state.timer <= currentTime) {
-        setCurrentTime(state.timer);
-      }
-
+    const reconnectionHandler = (state: DraftStateProps) => {
+      console.log("here is state: ", state);
+      setDraftState(state);
       if (state.picksArray.length > 0) {
         setPickedChampions(state.picksArray);
       }
@@ -107,34 +104,53 @@ function DraftPage() {
       }
       if (state.phaseType === "pick") {
         setPickPhase(true);
+        handlePickPhase(setCurrentTime, sideCode, socket, setBannedChampions, state)
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
+        handleBanPhase(setCurrentTime, sideCode, socket, setBannedChampions, state)
       }
-    });
+    };
+    socket.on("state", reconnectionHandler);
+
+    return () => {
+      socket.off("state", reconnectionHandler);
+    };
   }, [socket]);
 
   useEffect(() => {
-    if (!socket) {
+    if (!socket || !draftState) {
       return;
     }
     // Listening for beginning of banPhase
     socket.on("banPhase", () => {
       setPickPhase(false);
       setBanPhase(true);
-      handleBanPhase(setCurrentTime, sideCode, socket!, setBannedChampions);
+      handleBanPhase(
+        setCurrentTime,
+        sideCode,
+        socket,
+        setBannedChampions,
+        draftState
+      );
     });
 
     socket.on("pickPhase", () => {
       setBanPhase(false);
       setPickPhase(true);
-      handlePickPhase(setCurrentTime, sideCode, socket!, setPickedChampions);
+      handlePickPhase(
+        setCurrentTime,
+        sideCode,
+        socket,
+        setPickedChampions,
+        draftState
+      );
     });
 
     return () => {
       socket.off("banPhase", handleBanPhase);
       socket.off("pickPhase", handlePickPhase);
     };
-  }, [socket, sideCode]);
+  }, [socket, sideCode, draftState]);
 
   const toggleReady = () => {
     setReady((prevReady) => {
