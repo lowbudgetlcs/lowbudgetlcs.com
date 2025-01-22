@@ -104,9 +104,11 @@ function DraftPage() {
       }
       if (state.phaseType === "pick") {
         setPickPhase(true);
-        handlePickPhase(setCurrentTime, sideCode, socket, setBannedChampions, state)
+        setBanPhase(false)
+        handlePickPhase(setCurrentTime, sideCode, socket, setPickedChampions, state)
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
+        setPickPhase(false)
         handleBanPhase(setCurrentTime, sideCode, socket, setBannedChampions, state)
       }
     };

@@ -9,23 +9,15 @@ export const handleBanPhase = (
   setBannedChampions: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
 ) => {
-  // Reconnection/Late connection logic
-
-  socket.on("currentBanTurn", (currentTurn) => {
-    if (currentTurn === sideCode) {
-      console.log("Your Turn");
-    } else {
-      console.log("Enemy Turn");
-    }
-  });
-
   let banTimer = 30;
+
+  // Reconnection/Late connection timer logic
+  banTimer = Math.max(draftState.timer - 4, 0)
+  setCurrentTime(banTimer);
+  
   const timeHandler = (timer: number) => {
     console.log(timer);
-    banTimer = timer - 4;
-    if (banTimer < 0) {
-      banTimer = 0;
-    }
+    banTimer = Math.max(timer - 4, 0);
     setCurrentTime(banTimer);
   };
 
@@ -54,31 +46,26 @@ export const handlePickPhase = (
   setPickedChampions: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
 ) => {
-  socket.on("currentPickTurn", (currentTurn) => {
-    if (currentTurn === sideCode) {
-      console.log("Your Turn");
-    } else {
-      console.log("Enemy Turn");
-    }
-  });
-
   let pickTimer = 30;
+
+  // Reconnection/Late connection timer logic
+  pickTimer = Math.max(draftState.timer - 4, 0)
+  setCurrentTime(pickTimer);
+
   const timeHandler = (timer: number) => {
-    pickTimer = timer - 4;
-    if (pickTimer < 0) {
-      pickTimer = 0;
-    }
+    console.log(timer);
+    pickTimer = Math.max(timer - 4, 0);
     setCurrentTime(pickTimer);
   };
 
-  const addBannedChampion = (pickedChampion: string) => {
+  const addPickedChampions = (pickedChampion: string) => {
     setPickedChampions((prevChampions) => [...prevChampions, pickedChampion]);
     console.log("picked Champion: ", pickedChampion);
   };
 
   const setPickSocket = ({ pickedChampion }: { pickedChampion: string }) => {
-    console.log(`Ban received: ${pickedChampion}`);
-    addBannedChampion(pickedChampion);
+    console.log(`Pick received: ${pickedChampion}`);
+    addPickedChampions(pickedChampion);
   };
   socket.on("setPick", setPickSocket);
   socket.on("timer", timeHandler);
