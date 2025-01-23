@@ -15,7 +15,10 @@ export interface TournamentIDCheckProps {
 export function connectionHandler(
   lobbyCode: string | undefined,
   sideCode: string | undefined,
-  socket: Socket
+  socket: Socket,
+  setBlueReady: React.Dispatch<React.SetStateAction<boolean>>,
+  setRedReady: React.Dispatch<React.SetStateAction<boolean>>,
+  setPlayerSide: React.Dispatch<React.SetStateAction<string>>
 ) {
   // Error handling
   // Initial connection
@@ -27,24 +30,24 @@ export function connectionHandler(
     alert(err.message);
   });
 
-  socket.on("joinedDraft", ({ sideCode, lobbyCode }) => {
+  socket.on("joinedDraft", ({ sideCode, lobbyCode, sideDisplay }) => {
     console.log("joined Draft: ", sideCode, lobbyCode);
+    if (!sideDisplay) {
+      setPlayerSide("spectator");
+    } else {
+      setPlayerSide(sideDisplay);
+    }
   });
 
-  socket.on("blueReady", (ready) => {
-    if (ready) {
-      console.log("Blue is Ready");
-    } else {
-      console.log("Blue is Not Ready");
+  const showReady = ({ side, ready }: { side: string; ready: boolean }) => {
+    if (side === "blue") {
+      setBlueReady(ready);
+    } else if (side === "red") {
+      setRedReady(ready);
     }
-  });
-  socket.on("redReady", (ready) => {
-    if (ready) {
-      console.log("Red is Ready");
-    } else {
-      console.log("Red is Not Ready");
-    }
-  });
+  };
+  socket.on("blueReady", showReady);
+  socket.on("redReady", showReady);
 }
 
 export const readyHandler = (

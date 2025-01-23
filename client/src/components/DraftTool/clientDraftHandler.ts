@@ -16,7 +16,6 @@ export const handleBanPhase = (
   setCurrentTime(banTimer);
   
   const timeHandler = (timer: number) => {
-    console.log(timer);
     banTimer = Math.max(timer - 4, 0);
     setCurrentTime(banTimer);
   };
@@ -53,7 +52,6 @@ export const handlePickPhase = (
   setCurrentTime(pickTimer);
 
   const timeHandler = (timer: number) => {
-    console.log(timer);
     pickTimer = Math.max(timer - 4, 0);
     setCurrentTime(pickTimer);
   };

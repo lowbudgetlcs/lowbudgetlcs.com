@@ -25,7 +25,8 @@ export const readyHandler = (
 
   if (state[readyKey] !== ready) {
     state[readyKey] = ready;
-    io.to(lobbyCode).emit(isBlue ? "blueReady" : "redReady", ready);
+    const side = isBlue ? "blue" : "red";
+    io.to(lobbyCode).emit(isBlue ? "blueReady" : "redReady", { side, ready });
     console.log(`${isBlue ? "Blue" : "Red"} ready status updated:`, ready);
   }
 
@@ -37,5 +38,5 @@ export const readyHandler = (
     return true;
   }
 
-  return false
+  return false;
 };

@@ -50,14 +50,22 @@ export const draftSocket = (io: Server) => {
         socket.join(lobbyCode);
         console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
+        const sideDisplay: string | null =
+          sideCode === blueCode ? "blue" : sideCode === redCode ? "red" : null;
+
         if (sideCode !== blueCode && sideCode !== redCode) {
           // Assign the user spectator if not using correct code
           socket.emit("Spectator", { spectator: true });
           return;
         }
 
-        socket.emit("joinedDraft", { success: true, sideCode, lobbyCode });
-        const state = getDraftState(lobbyCode)
+        socket.emit("joinedDraft", {
+          success: true,
+          sideCode,
+          lobbyCode,
+          sideDisplay,
+        });
+        const state = getDraftState(lobbyCode);
         socket.emit("state", state);
       } catch (error) {
         console.error("Error during role assignment:", error);
@@ -129,9 +137,10 @@ export const draftSocket = (io: Server) => {
               );
 
               if (isPickPhase2Done) {
-                state.activePhase = null;
+                state.activePhase = "finished";
                 console.log("Draft Complete!");
                 state.phaseType = null;
+                state.displayTurn = null;
                 io.to(lobbyCode).emit("draftComplete");
                 io.in(lobbyCode).disconnectSockets();
               }
@@ -157,16 +166,17 @@ export const draftSocket = (io: Server) => {
         state.bansArray.includes(chosenChamp) ||
         state.picksArray.includes(chosenChamp)
       ) {
+        console.error("Same champion already picked!");
         return;
       }
 
       if (sideCode === state.blueUser && sideCode === state.currentTurn) {
         state.bluePick = chosenChamp;
-        lobbyEmitters.get(lobbyCode)?.emit("bluePick", chosenChamp);
+        lobbyEmitters.get(lobbyCode)!.emit("bluePick", chosenChamp);
         state.bluePick = null;
       } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
         state.redPick = chosenChamp;
-        lobbyEmitters.get(lobbyCode)?.emit("redPick", chosenChamp);
+        lobbyEmitters.get(lobbyCode)!.emit("redPick", chosenChamp);
         state.redPick = null;
       }
     });
@@ -187,6 +197,7 @@ export const draftSocket = (io: Server) => {
         state.picksArray.includes(chosenChamp) ||
         state.bansArray.includes(chosenChamp)
       ) {
+        console.error("Same champion already picked!");
         return;
       }
 

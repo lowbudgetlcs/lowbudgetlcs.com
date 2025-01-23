@@ -14,7 +14,13 @@ export interface Champion {
 
 export interface DraftStateProps {
   draftStarted: boolean;
-  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | null;
+  activePhase:
+    | "banPhase1"
+    | "pickPhase1"
+    | "banPhase2"
+    | "pickPhase2"
+    | "finished"
+    | null;
   phaseType: "pick" | "ban" | null;
   blueUser: string;
   redUser: string;
@@ -26,6 +32,7 @@ export interface DraftStateProps {
   banIndex: number;
   pickIndex: number;
   currentTurn: string;
+  displayTurn: "red" | "blue" | null;
   bluePick: string | null;
   redPick: string | null;
 }
@@ -47,6 +54,8 @@ function DraftPage() {
   const [draftState, setDraftState] = useState<DraftStateProps>();
   const [blueReady, setBlueReady] = useState<boolean>(false);
   const [redReady, setRedReady] = useState<boolean>(false);
+  const [playerTurn, setPlayerTurn] = useState<string | null>("");
+  const [playerSide, setPlayerSide] = useState<string>("");
 
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
@@ -78,7 +87,14 @@ function DraftPage() {
 
     // Run connection Handler Function with lobby code
     const handleConnection = async () => {
-      connectionHandler(lobbyCode, sideCode, newSocket);
+      connectionHandler(
+        lobbyCode,
+        sideCode,
+        newSocket,
+        setBlueReady,
+        setRedReady,
+        setPlayerSide
+      );
     };
     newSocket.on("connect", handleConnection);
 
@@ -104,13 +120,27 @@ function DraftPage() {
       }
       if (state.phaseType === "pick") {
         setPickPhase(true);
-        setBanPhase(false)
-        handlePickPhase(setCurrentTime, sideCode, socket, setPickedChampions, state)
+        setBanPhase(false);
+        handlePickPhase(
+          setCurrentTime,
+          sideCode,
+          socket,
+          setPickedChampions,
+          state
+        );
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
-        setPickPhase(false)
-        handleBanPhase(setCurrentTime, sideCode, socket, setBannedChampions, state)
+        setPickPhase(false);
+        handleBanPhase(
+          setCurrentTime,
+          sideCode,
+          socket,
+          setBannedChampions,
+          state
+        );
       }
+
+      setPlayerTurn(state.displayTurn);
     };
     socket.on("state", reconnectionHandler);
 
@@ -148,9 +178,15 @@ function DraftPage() {
       );
     });
 
+    const handleCurrentTurn = ({ currentTurn }: { currentTurn: string }) => {
+      setPlayerTurn(currentTurn);
+      console.log(currentTurn);
+    };
+    socket.on("currentTurn", handleCurrentTurn);
     return () => {
       socket.off("banPhase", handleBanPhase);
       socket.off("pickPhase", handlePickPhase);
+      socket.off("currentTurn", handleCurrentTurn);
     };
   }, [socket, sideCode, draftState]);
 
@@ -164,6 +200,7 @@ function DraftPage() {
 
   const sendPick = (chosenChamp: string) => {
     pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
+    setChosenChamp("");
   };
 
   const handlePick = (championName: string) => {
@@ -245,13 +282,25 @@ function DraftPage() {
   return (
     <div className="relative text-white py-2  h-full flex flex-col">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
-        <p>{currentTime}</p>
+        <p className={`${playerTurn === 'blue' ? 'text-blue' : playerTurn === 'red' ? 'text-red' : ''}`}>{currentTime}</p>
       </div>
-      <div className="teamTitles flex justify-between">
-        <div className="blueTitle p-4 bg-blue/60">
+      <div className="teamTitles flex justify-between px-4">
+        <div
+          className={`blueTitle py-2 px-4 ${
+            blueReady || playerTurn === "blue" ? "w-96" : "w-52"
+          } bg-blue/60 ${
+            playerTurn === "blue" ? "animate-pulse" : ""
+          } transition-width duration-500`}
+        >
           <h2>Blue Team</h2>
         </div>
-        <div className="redTitle p-4 bg-red/60">
+        <div
+          className={`redTitle py-2 px-4 ${
+            redReady || playerTurn === "red" ? "w-96" : "w-52"
+          } bg-red/60 ${
+            playerTurn === "red" ? "animate-pulse" : ""
+          } transition-width duration-500`}
+        >
           <h2>Red Team</h2>
         </div>
       </div>
@@ -349,7 +398,15 @@ function DraftPage() {
                       } 
                       ${
                         chosenChamp === name
-                          ? "box-border border-orange border-2"
+                          ? `box-border border-orange border-2 ${
+                              name === "Katarina" ||
+                              name === "Garen" ||
+                              name === "Samira"
+                                ? "animate-spin"
+                                : name === "Zac"
+                                ? "animate-bounce"
+                                : "animate-pulse"
+                            }`
                           : ""
                       }`}
                       src={src}
@@ -385,8 +442,8 @@ function DraftPage() {
           </div>
         </div>
       </div>
-      {/* Champion Band and Timer */}
-      <div className="champBansTimer flex w-full justify-between gap-8 items-center px-4">
+      {/* Champion Bans*/}
+      <div className="champBans flex w-full justify-between gap-8 items-center px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
@@ -407,27 +464,47 @@ function DraftPage() {
           </div>
         </div>
         {/* Ready Button */}
-        <button
-          onClick={toggleReady}
-          className={`Timer p-4 ${ready ? "bg-gray" : "bg-orange"} ${
-            banPhase || pickPhase ? "hidden" : ""
-          } max-h-16 flex items-center justify-center hover:cursor-pointer`}
-        >
-          {ready ? "Waiting" : "Ready"}
-        </button>
+        {draftState?.activePhase !== "finished" ? (
+          <button
+            onClick={toggleReady}
+            className={`p-4 ${ready ? "bg-gray" : "bg-orange"} ${
+              banPhase || pickPhase ? "hidden" : ""
+            } max-h-16 flex items-center justify-center hover:cursor-pointer`}
+          >
+            {ready ? "Waiting" : "Ready"}
+          </button>
+        ) : (
+          <button
+            className={`Timer p-4 bg-gray ${
+              banPhase || pickPhase ? "hidden" : ""
+            } max-h-16 flex items-center justify-center hover:cursor-default`}
+          >
+            Draft Finished
+          </button>
+        )}
         {/* Pick/Ban Button */}
-        <button
-          onClick={() => {
-            if (chosenChamp) {
-              sendPick(chosenChamp);
-            }
-          }}
-          className={`Timer p-4 ${chosenChamp ? "bg-orange" : "bg-gray"} ${
-            banPhase || pickPhase ? "" : "hidden"
-          } max-h-16 flex items-center justify-center hover:cursor-pointer`}
-        >
-          Lock In
-        </button>
+        {playerTurn === playerSide ? (
+          <button
+            onClick={() => {
+              if (chosenChamp) {
+                sendPick(chosenChamp);
+              }
+            }}
+            className={`Timer p-4 ${chosenChamp ? "bg-orange" : "bg-gray"} ${
+              banPhase || pickPhase ? "" : "hidden"
+            } max-h-16 flex items-center justify-center hover:cursor-pointer`}
+          >
+            Lock In
+          </button>
+        ) : (
+          <button
+            className={`Timer p-4 bg-gray ${
+              banPhase || pickPhase ? "" : "hidden"
+            } max-h-16 flex items-center justify-center hover:cursor-wait`}
+          >
+            Waiting Turn
+          </button>
+        )}
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
