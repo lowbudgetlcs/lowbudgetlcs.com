@@ -26,7 +26,7 @@ export const pickPhase1Handler = async (
     const startPickPhase = async () => {
       console.log("Pick Phase Starting");
       io.to(lobbyCode).emit("pickPhase", true);
-      state.phaseType = "pick"
+      state.phaseType = "pick";
       for (
         state.pickIndex;
         state.pickIndex < picksPhase1.length;
@@ -34,11 +34,15 @@ export const pickPhase1Handler = async (
       ) {
         const currentSide = picksPhase1[state.pickIndex];
         state.currentTurn = currentSide;
-        console.log("It is currently: ", currentSide,"'s Turn.....")
         try {
-          console.log("Current turn:", currentSide);
-          io.to(lobbyCode).emit("currentPickTurn", currentSide);
-
+          // Display Current Turn in Client
+          if (currentSide === state.blueUser) {
+            state.displayTurn = "blue";
+            io.to(lobbyCode).emit("currentTurn", { currentTurn: "blue" });
+          } else if (currentSide === state.redUser) {
+            state.displayTurn = "red";
+            io.to(lobbyCode).emit("currentTurn", { currentTurn: "red" });
+          }
           await handleTurn(currentSide);
           console.log("Switching turns");
         } catch (err) {
@@ -50,7 +54,7 @@ export const pickPhase1Handler = async (
       //   resets pickIndex to be used in pick phase 2
       state.pickIndex = 0;
       console.log("Pick Phase 1 is complete :)");
-      io.to(lobbyCode).emit('endPickPhase', true)
+      io.to(lobbyCode).emit("endPickPhase", true);
       resolve(true);
     };
 
@@ -69,6 +73,9 @@ export const pickPhase1Handler = async (
             console.log(`Timer expired for ${currentSide}.`);
             state.picksArray.push("nothing");
             io.to(lobbyCode).emit("setPick", { pickedChampion: "nothing" });
+            // Shut of listener incase it still is attached
+            emitter.off("bluePick", pickListener);
+            emitter.off("redPick", pickListener);
             resolve();
           }
         }, 1000);
@@ -80,7 +87,12 @@ export const pickPhase1Handler = async (
               clearInterval(interval);
               console.log(`${currentSide} picked: ${state.bluePick}`);
               state.picksArray.push(state.bluePick);
-              io.to(lobbyCode).emit("setPick", { pickedChampion: state.bluePick });
+              io.to(lobbyCode).emit("setPick", {
+                pickedChampion: state.bluePick,
+              });
+              // Shut of listener incase it still is attached
+              emitter.off("bluePick", pickListener);
+              emitter.off("redPick", pickListener);
               resolve();
             }
           } else if (state.redPick) {
@@ -89,13 +101,18 @@ export const pickPhase1Handler = async (
               clearInterval(interval);
               console.log(`${currentSide} picked: ${state.redPick}`);
               state.picksArray.push(state.redPick);
-              io.to(lobbyCode).emit("setPick", { pickedChampion: state.redPick });
+              io.to(lobbyCode).emit("setPick", {
+                pickedChampion: state.redPick,
+              });
+              // Shut of listener incase it still is attached
+              emitter.off("bluePick", pickListener);
+              emitter.off("redPick", pickListener);
               resolve();
             }
           }
         };
-        emitter.once('bluePick', pickListener);
-        emitter.once('redPick', pickListener);
+        emitter.once("bluePick", pickListener);
+        emitter.once("redPick", pickListener);
       });
     };
 

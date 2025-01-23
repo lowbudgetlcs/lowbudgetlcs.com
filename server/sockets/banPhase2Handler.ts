@@ -34,8 +34,14 @@ export const banPhase2Handler = async (
         const currentSide = bansPhase2[state.banIndex];
         state.currentTurn = currentSide;
         try {
-          console.log("Current turn:", currentSide);
-          io.to(lobbyCode).emit("currentBanTurn", currentSide);
+          // Display Current Turn in Client
+          if (currentSide === state.blueUser) {
+            state.displayTurn = "blue";
+            io.to(lobbyCode).emit("currentTurn", { currentTurn: "blue" });
+          } else if (currentSide === state.redUser) {
+            state.displayTurn = "red";
+            io.to(lobbyCode).emit("currentTurn", { currentTurn: "red" });
+          }
           console.log(state.banIndex);
           await handleTurn(currentSide);
           console.log("Switching turns");
@@ -67,6 +73,9 @@ export const banPhase2Handler = async (
             console.log(`Timer expired for ${currentSide}.`);
             state.bansArray.push("nothing");
             io.to(lobbyCode).emit("setBan", { bannedChampion: "nothing" });
+            // Shut of listener incase it still is attached
+            emitter.off("bluePick", banListener);
+            emitter.off("redPick", banListener);
             resolve();
           }
         }, 1000);
@@ -81,6 +90,9 @@ export const banPhase2Handler = async (
               io.to(lobbyCode).emit("setBan", {
                 bannedChampion: state.bluePick,
               });
+              // Shut of listener incase it still is attached
+              emitter.off("bluePick", banListener);
+              emitter.off("redPick", banListener);
               resolve();
             }
           } else if (state.redPick) {
@@ -92,6 +104,9 @@ export const banPhase2Handler = async (
               io.to(lobbyCode).emit("setBan", {
                 bannedChampion: state.redPick,
               });
+              // Shut of listener incase it still is attached
+              emitter.off("bluePick", banListener);
+              emitter.off("redPick", banListener);
               resolve();
             }
           }
