@@ -4,7 +4,6 @@ import { DraftStateProps } from "./DraftPage";
 
 export const handleBanPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
-  sideCode: string | undefined,
   socket: Socket,
   setBannedChampions: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
@@ -40,7 +39,6 @@ export const handleBanPhase = (
 
 export const handlePickPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
-  sideCode: string | undefined,
   socket: Socket,
   setPickedChampions: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps

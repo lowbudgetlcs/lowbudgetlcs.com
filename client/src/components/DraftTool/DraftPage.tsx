@@ -123,7 +123,6 @@ function DraftPage() {
         setBanPhase(false);
         handlePickPhase(
           setCurrentTime,
-          sideCode,
           socket,
           setPickedChampions,
           state
@@ -133,7 +132,6 @@ function DraftPage() {
         setPickPhase(false);
         handleBanPhase(
           setCurrentTime,
-          sideCode,
           socket,
           setBannedChampions,
           state
@@ -159,7 +157,6 @@ function DraftPage() {
       setBanPhase(true);
       handleBanPhase(
         setCurrentTime,
-        sideCode,
         socket,
         setBannedChampions,
         draftState
@@ -171,7 +168,6 @@ function DraftPage() {
       setPickPhase(true);
       handlePickPhase(
         setCurrentTime,
-        sideCode,
         socket,
         setPickedChampions,
         draftState
