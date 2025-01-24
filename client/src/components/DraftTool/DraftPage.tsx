@@ -245,11 +245,9 @@ function DraftPage() {
         <img
           src={tempImage}
           alt={`nothing`}
-          style={{
-            width: "300px",
-            height: "100px",
-            objectFit: "cover",
-          }}
+          className="object-cover max-w-full max-h-full"
+          width={'300px'}
+          height={'90px'}
         />
       );
     } else {
@@ -259,11 +257,9 @@ function DraftPage() {
             <img
               src={largeChampImages[pickedChampions[pickIndex]]}
               alt={`${pickedChampions[pickIndex]}`}
-              style={{
-                width: "300px",
-                height: "100px",
-                objectFit: "cover",
-              }}
+              className="max-w-full max-h-full object-cover"
+              width={'300px'}
+              height={'90px'}
             />
           )}
         </>
@@ -304,20 +300,20 @@ function DraftPage() {
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
-          <div className="pick1 min-w-40 min-h-24 bg-gray">
+          <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(0)}
           </div>
-          <div className="pick2 min-w-40 min-h-24 bg-gray">
+          <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(3)}
           </div>
-          <div className="pick3 min-w-40 min-h-24 bg-gray">
+          <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(4)}
           </div>
           <div className="space h-4"></div>
-          <div className="pick4 min-w-40 min-h-24 bg-gray">
+          <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(7)}
           </div>
-          <div className="pick5 min-w-40 min-h-24 bg-gray">
+          <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(8)}
           </div>
         </div>
@@ -420,20 +416,20 @@ function DraftPage() {
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
-          <div className="pick1 min-w-40 min-h-24 bg-gray">
+          <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(1)}
           </div>
-          <div className="pick2 min-w-40 min-h-24 bg-gray">
+          <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(2)}
           </div>
-          <div className="pick3 min-w-40 min-h-24 bg-gray">
+          <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(5)}
           </div>
           <div className="space h-4"></div>
-          <div className="pick4 min-w-40 min-h-24 bg-gray">
+          <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(6)}
           </div>
-          <div className="pick5 min-w-40 min-h-24 bg-gray">
+          <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
             {displayPickImage(9)}
           </div>
         </div>
