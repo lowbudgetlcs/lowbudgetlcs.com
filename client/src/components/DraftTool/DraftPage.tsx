@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { connectionHandler, pickHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
-import { loadChampImages, loadLargeChampImages } from "./loadChampImages";
+import LoadChampIcons from "./LoadChampImages";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
@@ -38,11 +38,11 @@ export interface DraftStateProps {
 }
 
 function DraftPage() {
+  const dDragonIconLink =
+    "https://ddragon.leagueoflegends.com/cdn/15.2.1/img/champion/";
+  const dDragonLargImgLink =
+    "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [champImages, setChampImages] = useState<Record<string, string>>({});
-  const [largeChampImages, setLargeChampImages] = useState<
-    Record<string, string>
-  >({});
   const [currentTime, setCurrentTime] = useState<number>(30);
   const [ready, setReady] = useState<boolean>(false);
   const [chosenChamp, setChosenChamp] = useState<string>();
@@ -68,18 +68,6 @@ function DraftPage() {
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
-    // Fetch Champion Images
-    const fetchChampImages = async () => {
-      try {
-        const data = await loadChampImages();
-        setChampImages(data);
-        const largeData = await loadLargeChampImages();
-        setLargeChampImages(largeData);
-      } catch (error) {
-        console.error("Error loading champion images:", error);
-      }
-    };
-    fetchChampImages();
 
     setChampionRoles(championsData);
 
@@ -121,21 +109,11 @@ function DraftPage() {
       if (state.phaseType === "pick") {
         setPickPhase(true);
         setBanPhase(false);
-        handlePickPhase(
-          setCurrentTime,
-          socket,
-          setPickedChampions,
-          state
-        );
+        handlePickPhase(setCurrentTime, socket, setPickedChampions, state);
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
         setPickPhase(false);
-        handleBanPhase(
-          setCurrentTime,
-          socket,
-          setBannedChampions,
-          state
-        );
+        handleBanPhase(setCurrentTime, socket, setBannedChampions, state);
       }
 
       setPlayerTurn(state.displayTurn);
@@ -155,23 +133,13 @@ function DraftPage() {
     socket.on("banPhase", () => {
       setPickPhase(false);
       setBanPhase(true);
-      handleBanPhase(
-        setCurrentTime,
-        socket,
-        setBannedChampions,
-        draftState
-      );
+      handleBanPhase(setCurrentTime, socket, setBannedChampions, draftState);
     });
 
     socket.on("pickPhase", () => {
       setBanPhase(false);
       setPickPhase(true);
-      handlePickPhase(
-        setCurrentTime,
-        socket,
-        setPickedChampions,
-        draftState
-      );
+      handlePickPhase(setCurrentTime, socket, setPickedChampions, draftState);
     });
 
     const handleCurrentTurn = ({ currentTurn }: { currentTurn: string }) => {
@@ -199,15 +167,6 @@ function DraftPage() {
     setChosenChamp("");
   };
 
-  const handlePick = (championName: string) => {
-    if (
-      !pickedChampions.includes(championName) &&
-      !pickedChampions.includes(championName)
-    ) {
-      setChosenChamp(championName);
-    }
-  };
-
   const displayBanImage = (banIndex: number) => {
     if (bannedChampions[banIndex] === "nothing") {
       return (
@@ -226,7 +185,7 @@ function DraftPage() {
         <>
           {bannedChampions[banIndex] && (
             <img
-              src={largeChampImages[bannedChampions[banIndex]]}
+              src={""} //largeChampImages[bannedChampions[banIndex]]
               alt={`${bannedChampions[banIndex]}`}
               style={{
                 width: "160px",
@@ -246,8 +205,8 @@ function DraftPage() {
           src={tempImage}
           alt={`nothing`}
           className="object-cover max-w-full max-h-full"
-          width={'300px'}
-          height={'90px'}
+          width={"300px"}
+          height={"90px"}
         />
       );
     } else {
@@ -255,11 +214,11 @@ function DraftPage() {
         <>
           {pickedChampions[pickIndex] && (
             <img
-              src={largeChampImages[pickedChampions[pickIndex]]}
+              src={""} //largeChampImages[pickedChampions[pickIndex]]
               alt={`${pickedChampions[pickIndex]}`}
               className="max-w-full max-h-full object-cover"
-              width={'300px'}
-              height={'90px'}
+              width={"300px"}
+              height={"90px"}
             />
           )}
         </>
@@ -274,7 +233,17 @@ function DraftPage() {
   return (
     <div className="relative text-white py-2  h-full flex flex-col">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
-        <p className={`${playerTurn === 'blue' ? 'text-blue' : playerTurn === 'red' ? 'text-red' : ''}`}>{currentTime}</p>
+        <p
+          className={`${
+            playerTurn === "blue"
+              ? "text-blue"
+              : playerTurn === "red"
+              ? "text-red"
+              : ""
+          }`}
+        >
+          {currentTime}
+        </p>
       </div>
       <div className="teamTitles flex justify-between px-4">
         <div
@@ -348,70 +317,16 @@ function DraftPage() {
           </div>
           {/* List of Champion Images */}
           <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] p-4 gap-2 justify-center">
-            {Object.entries(champImages)
-              .filter(([name]) => {
-                const matchesSearch = name
-                  .toLowerCase()
-                  .includes(searchValue.toLowerCase());
-
-                if (selectedRole === "All") {
-                  return matchesSearch;
-                }
-
-                const champion = championRoles.find(
-                  (champ) => champ.name === name
-                );
-                if (!champion) return false;
-
-                const hasSelectedRole = champion.roles.includes(selectedRole);
-
-                return matchesSearch && hasSelectedRole;
-              })
-              .map(([name, src]) => {
-                return (
-                  <li
-                    key={name}
-                    onClick={() => {
-                      if (
-                        !pickedChampions.includes(name) &&
-                        !bannedChampions.includes(name)
-                      ) {
-                        handlePick(name);
-                      }
-                    }}
-                  >
-                    <img
-                      className={`
-                      ${
-                        pickedChampions.includes(name) ||
-                        bannedChampions.includes(name)
-                          ? "grayscale"
-                          : "hover:cursor-pointer"
-                      } 
-                      ${
-                        chosenChamp === name
-                          ? `box-border border-orange border-2 ${
-                              name === "Katarina" ||
-                              name === "Garen" ||
-                              name === "Samira"
-                                ? "animate-spin"
-                                : name === "Zac"
-                                ? "animate-bounce"
-                                : "animate-pulse"
-                            }`
-                          : ""
-                      }`}
-                      src={src}
-                      alt={name}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </li>
-                );
-              })}
+            <LoadChampIcons
+              championRoles={championRoles}
+              searchValue={searchValue}
+              selectedRole={selectedRole}
+              pickedChampions={pickedChampions}
+              bannedChampions={bannedChampions}
+              dDragonIconLink={dDragonIconLink}
+              chosenChamp={chosenChamp}
+              setChosenChamp={setChosenChamp}
+            />
           </ul>
         </div>
         {/* Red Side Picks */}
