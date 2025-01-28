@@ -1,11 +1,12 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { connectionHandler, pickHandler, readyHandler } from "./draftHandler";
 import { useParams } from "react-router-dom";
-import LoadChampIcons from "./LoadChampImages";
+import LoadChampIcons from "./LoadChampIcons";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
-import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
+
 import championsData from "./championRoles.json";
+import { DisplayBanImage, DisplayPickImage } from "./LoadChampLargeImages";
 
 export interface Champion {
   name: string;
@@ -38,10 +39,6 @@ export interface DraftStateProps {
 }
 
 function DraftPage() {
-  const dDragonIconLink =
-    "https://ddragon.leagueoflegends.com/cdn/15.2.1/img/champion/";
-  const dDragonLargImgLink =
-    "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(30);
   const [ready, setReady] = useState<boolean>(false);
@@ -167,64 +164,7 @@ function DraftPage() {
     setChosenChamp("");
   };
 
-  const displayBanImage = (banIndex: number) => {
-    if (bannedChampions[banIndex] === "nothing") {
-      return (
-        <img
-          src={tempImage}
-          alt={`nothing`}
-          style={{
-            width: "160px",
-            height: "200px",
-            objectFit: "cover",
-          }}
-        />
-      );
-    } else {
-      return (
-        <>
-          {bannedChampions[banIndex] && (
-            <img
-              src={""} //largeChampImages[bannedChampions[banIndex]]
-              alt={`${bannedChampions[banIndex]}`}
-              style={{
-                width: "160px",
-                height: "200px",
-                objectFit: "cover",
-              }}
-            />
-          )}
-        </>
-      );
-    }
-  };
-  const displayPickImage = (pickIndex: number) => {
-    if (pickedChampions[pickIndex] === "nothing") {
-      return (
-        <img
-          src={tempImage}
-          alt={`nothing`}
-          className="object-cover max-w-full max-h-full"
-          width={"300px"}
-          height={"90px"}
-        />
-      );
-    } else {
-      return (
-        <>
-          {pickedChampions[pickIndex] && (
-            <img
-              src={""} //largeChampImages[pickedChampions[pickIndex]]
-              alt={`${pickedChampions[pickIndex]}`}
-              className="max-w-full max-h-full object-cover"
-              width={"300px"}
-              height={"90px"}
-            />
-          )}
-        </>
-      );
-    }
-  };
+
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -270,20 +210,20 @@ function DraftPage() {
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
           <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(0)}
+            {DisplayPickImage(0, pickedChampions)}
           </div>
           <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(3)}
+            {DisplayPickImage(3, pickedChampions)}
           </div>
           <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(4)}
+            {DisplayPickImage(4, pickedChampions)}
           </div>
           <div className="space h-4"></div>
           <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(7)}
+            {DisplayPickImage(7, pickedChampions)}
           </div>
           <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(8)}
+            {DisplayPickImage(8, pickedChampions)}
           </div>
         </div>
         {/* Champion Pick Container */}
@@ -323,7 +263,6 @@ function DraftPage() {
               selectedRole={selectedRole}
               pickedChampions={pickedChampions}
               bannedChampions={bannedChampions}
-              dDragonIconLink={dDragonIconLink}
               chosenChamp={chosenChamp}
               setChosenChamp={setChosenChamp}
             />
@@ -332,20 +271,20 @@ function DraftPage() {
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
           <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(1)}
+            {DisplayPickImage(1, pickedChampions)}
           </div>
           <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(2)}
+            {DisplayPickImage(2, pickedChampions)}
           </div>
           <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(5)}
+            {DisplayPickImage(5, pickedChampions)}
           </div>
           <div className="space h-4"></div>
           <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(6)}
+            {DisplayPickImage(6, pickedChampions)}
           </div>
           <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {displayPickImage(9)}
+            {DisplayPickImage(9, pickedChampions)}
           </div>
         </div>
       </div>
@@ -354,20 +293,20 @@ function DraftPage() {
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(0)}
+            {DisplayBanImage(0, bannedChampions)}
           </div>
           <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(2)}
+            {DisplayBanImage(2, bannedChampions)}
           </div>
           <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(4)}
+            {DisplayBanImage(4, bannedChampions)}
           </div>
           <div className="space w-8"></div>
           <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(7)}
+            {DisplayBanImage(7, bannedChampions)}
           </div>
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(9)}
+            {DisplayBanImage(9, bannedChampions)}
           </div>
         </div>
         {/* Ready Button */}
@@ -415,20 +354,20 @@ function DraftPage() {
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(8)}
+            {DisplayBanImage(8, bannedChampions)}
           </div>
           <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(6)}
+            {DisplayBanImage(6, bannedChampions)}
           </div>
           <div className="space w-8"></div>
           <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(5)}
+            {DisplayBanImage(5, bannedChampions)}
           </div>
           <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(3)}
+            {DisplayBanImage(3, bannedChampions)}
           </div>
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
-            {displayBanImage(1)}
+            {DisplayBanImage(1, bannedChampions)}
           </div>
         </div>
       </div>

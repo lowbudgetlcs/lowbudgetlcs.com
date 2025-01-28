@@ -7,7 +7,6 @@ interface LoadChampIconsProps {
   selectedRole: string;
   pickedChampions: string[];
   bannedChampions: string[];
-  dDragonIconLink: string;
   chosenChamp?: string;
   setChosenChamp: (championName: string) => void;
 }
@@ -18,10 +17,11 @@ export function LoadChampIcons({
   selectedRole,
   pickedChampions,
   bannedChampions,
-  dDragonIconLink,
   chosenChamp,
   setChosenChamp,
 }: LoadChampIconsProps) {
+  const dDragonIconLink =
+    "https://ddragon.leagueoflegends.com/cdn/15.2.1/img/champion/";
   const handlePick = (championName: string) => {
     if (
       !pickedChampions.includes(championName) &&
