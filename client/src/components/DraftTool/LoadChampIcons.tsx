@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Champion } from "./DraftPage";
+import { Champion } from "./draftInterfaces";
 
 interface LoadChampIconsProps {
   championRoles: Champion[];
