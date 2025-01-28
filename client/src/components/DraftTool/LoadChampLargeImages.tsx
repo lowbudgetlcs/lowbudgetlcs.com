@@ -3,6 +3,8 @@ import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
 const dDragonLargeImageLink =
   "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/";
 
+const cDragonCDNSplashLink = `https://cdn.communitydragon.org/15.2.1/champion/`;
+
 export const DisplayBanImage = (
   banIndex: number,
   bannedChampions: string[]
@@ -26,7 +28,7 @@ export const DisplayBanImage = (
       case "aurora":
       case "mel":
         link = `${dDragonLargeImageLink}${championName}/skins/base/${championName}loadscreen_0.${championName}.jpg`;
-        break
+        break;
     }
 
     return link;
@@ -65,6 +67,31 @@ export const DisplayPickImage = (
   pickIndex: number,
   pickedChampions: string[]
 ) => {
+  const championName = pickedChampions[pickIndex]
+    ? pickedChampions[pickIndex].toLowerCase()
+    : "nothing";
+
+  const correctChampionImageLinks = () => {
+    let link = `${cDragonCDNSplashLink}${championName}/splash-art/centered`;
+    switch (championName) {
+      case "naafiri":
+      case "milio":
+        link = `${cDragonCDNSplashLink}${championName}/splash-art/centered`;
+        break;
+      case "ambessa":
+        link = `${cDragonCDNSplashLink}${championName}/splash-art/centered`;
+        break;
+      case "hwei":
+        link = `${cDragonCDNSplashLink}${championName}/splash-art/centered`;
+        break;
+      case "aurora":
+      case "mel":
+        link = `${cDragonCDNSplashLink}${championName}/splash-art/centered`;
+        break;
+    }
+    return link;
+  };
+
   if (pickedChampions[pickIndex] === "nothing") {
     return (
       <img
@@ -80,7 +107,7 @@ export const DisplayPickImage = (
       <>
         {pickedChampions[pickIndex] && (
           <img
-            src={""} //largeChampImages[pickedChampions[pickIndex]]
+            src={correctChampionImageLinks()} //largeChampImages[pickedChampions[pickIndex]]
             alt={`${pickedChampions[pickIndex]}`}
             className="max-w-full max-h-full object-cover"
             width={"300px"}
