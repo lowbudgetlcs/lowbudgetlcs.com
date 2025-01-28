@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { DraftStateProps } from "./serverDraftHandler";
 import EventEmitter from "events";
+import { draftLobbies } from "../db/schema";
 
 export const pickPhase1Handler = async (
   io: Server,
@@ -71,8 +72,20 @@ export const pickPhase1Handler = async (
           if (timer <= 0) {
             clearInterval(interval);
             console.log(`Timer expired for ${currentSide}.`);
-            state.picksArray.push("nothing");
-            io.to(lobbyCode).emit("setPick", { pickedChampion: "nothing" });
+
+            // Add nothing pick to side array
+            if (currentSide === state.blueUser) {
+              state.bluePicks.push("nothing");
+            }
+            if (currentSide === state.redUser) {
+              state.redPicks.push("nothing");
+            }
+
+            io.to(lobbyCode).emit("setPick", {
+              side: state.displayTurn,
+              pickedChampion: "nothing",
+            });
+
             // Shut of listener incase it still is attached
             emitter.off("bluePick", pickListener);
             emitter.off("redPick", pickListener);
@@ -86,8 +99,9 @@ export const pickPhase1Handler = async (
               console.log("Pick received");
               clearInterval(interval);
               console.log(`${currentSide} picked: ${state.bluePick}`);
-              state.picksArray.push(state.bluePick);
+              state.bluePicks.push(state.bluePick);
               io.to(lobbyCode).emit("setPick", {
+                side: state.displayTurn,
                 pickedChampion: state.bluePick,
               });
               // Shut of listener incase it still is attached
@@ -100,8 +114,9 @@ export const pickPhase1Handler = async (
               console.log("Pick received");
               clearInterval(interval);
               console.log(`${currentSide} picked: ${state.redPick}`);
-              state.picksArray.push(state.redPick);
+              state.redPicks.push(state.redPick);
               io.to(lobbyCode).emit("setPick", {
+                side: state.displayTurn,
                 pickedChampion: state.redPick,
               });
               // Shut of listener incase it still is attached

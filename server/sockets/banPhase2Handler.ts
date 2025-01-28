@@ -71,8 +71,15 @@ export const banPhase2Handler = async (
           if (timer <= 0) {
             clearInterval(interval);
             console.log(`Timer expired for ${currentSide}.`);
-            state.bansArray.push("nothing");
-            io.to(lobbyCode).emit("setBan", { bannedChampion: "nothing" });
+            if (currentSide === state.blueUser) {
+              state.blueBans.push("nothing");
+            } else if (currentSide === state.redUser) {
+              state.redBans.push("nothing");
+            }
+            io.to(lobbyCode).emit("setBan", {
+              side: state.displayTurn,
+              bannedChampion: "nothing",
+            });
             // Shut of listener incase it still is attached
             emitter.off("bluePick", banListener);
             emitter.off("redPick", banListener);
@@ -86,8 +93,9 @@ export const banPhase2Handler = async (
               console.log("Ban received");
               clearInterval(interval);
               console.log(`${currentSide} banned: ${state.bluePick}`);
-              state.bansArray.push(state.bluePick);
+              state.blueBans.push(state.bluePick);
               io.to(lobbyCode).emit("setBan", {
+                side: state.displayTurn,
                 bannedChampion: state.bluePick,
               });
               // Shut of listener incase it still is attached
@@ -100,8 +108,9 @@ export const banPhase2Handler = async (
               console.log("Ban received");
               clearInterval(interval);
               console.log(`${currentSide} banned: ${state.redPick}`);
-              state.bansArray.push(state.redPick);
+              state.redBans.push(state.redPick);
               io.to(lobbyCode).emit("setBan", {
+                side: state.displayTurn,
                 bannedChampion: state.redPick,
               });
               // Shut of listener incase it still is attached

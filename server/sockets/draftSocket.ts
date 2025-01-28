@@ -163,8 +163,10 @@ export const draftSocket = (io: Server) => {
       }
 
       if (
-        state.bansArray.includes(chosenChamp) ||
-        state.picksArray.includes(chosenChamp)
+        state.blueBans.includes(chosenChamp) ||
+        state.redBans.includes(chosenChamp) ||
+        state.bluePicks.includes(chosenChamp) ||
+        state.redPicks.includes(chosenChamp)
       ) {
         console.error("Same champion already picked!");
         return;
@@ -194,8 +196,10 @@ export const draftSocket = (io: Server) => {
       }
 
       if (
-        state.picksArray.includes(chosenChamp) ||
-        state.bansArray.includes(chosenChamp)
+        state.blueBans.includes(chosenChamp) ||
+        state.redBans.includes(chosenChamp) ||
+        state.bluePicks.includes(chosenChamp) ||
+        state.redPicks.includes(chosenChamp)
       ) {
         console.error("Same champion already picked!");
         return;

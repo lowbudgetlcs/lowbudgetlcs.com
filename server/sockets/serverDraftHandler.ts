@@ -1,7 +1,12 @@
-
 export interface DraftStateProps {
   draftStarted: boolean;
-  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | null;
+  activePhase:
+    | "banPhase1"
+    | "pickPhase1"
+    | "banPhase2"
+    | "pickPhase2"
+    | "finished"
+    | null;
   phaseType: "pick" | "ban" | null;
   blueUser: string;
   redUser: string;
@@ -10,6 +15,10 @@ export interface DraftStateProps {
   timer: number;
   bansArray: string[];
   picksArray: string[];
+  bluePicks: string[];
+  redPicks: string[];
+  blueBans: string[];
+  redBans: string[];
   banIndex: number;
   pickIndex: number;
   currentTurn: string;
@@ -36,9 +45,13 @@ export const initializeDraftState = (
       timer: 34,
       bansArray: [],
       picksArray: [],
+      bluePicks: [],
+      redPicks: [],
+      blueBans: [],
+      redBans: [],
       banIndex: 0,
       pickIndex: 0,
-      currentTurn: '',
+      currentTurn: "",
       displayTurn: null,
       bluePick: null,
       redPick: null,
