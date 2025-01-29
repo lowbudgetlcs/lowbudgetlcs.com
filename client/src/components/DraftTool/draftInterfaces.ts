@@ -32,3 +32,12 @@ export interface Champion {
     redPick: string | null;
   }
   
+  export interface BanProps {
+    side: "blue" | "red";
+    bannedChampion: string
+  }
+  
+  export interface PickProps {
+    side: "blue" | "red";
+    pickedChampion: string
+  }

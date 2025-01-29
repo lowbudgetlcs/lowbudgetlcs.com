@@ -9,16 +9,17 @@ import championsData from "./championRoles.json";
 import { DisplayBanImage, DisplayPickImage } from "./LoadChampLargeImages";
 import { Champion, DraftStateProps } from "./draftInterfaces";
 
-
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(30);
   const [ready, setReady] = useState<boolean>(false);
   const [chosenChamp, setChosenChamp] = useState<string>();
   const [banPhase, setBanPhase] = useState<boolean>(false);
-  const [bannedChampions, setBannedChampions] = useState<string[]>([]);
+  const [blueBans, setBlueBans] = useState<string[]>([]);
+  const [redBans, setRedBans] = useState<string[]>([]);
+  const [bluePicks, setBluePicks] = useState<string[]>([]);
+  const [redPicks, setRedPicks] = useState<string[]>([]);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
-  const [pickedChampions, setPickedChampions] = useState<string[]>([]);
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
   const [draftState, setDraftState] = useState<DraftStateProps>();
   const [blueReady, setBlueReady] = useState<boolean>(false);
@@ -69,20 +70,32 @@ function DraftPage() {
     const reconnectionHandler = (state: DraftStateProps) => {
       console.log("here is state: ", state);
       setDraftState(state);
-      if (state.picksArray.length > 0) {
-        setPickedChampions(state.picksArray);
+      if (state.blueBans.length > 0) {
+        setBlueBans(state.blueBans);
       }
-      if (state.bansArray.length > 0) {
-        setBannedChampions(state.bansArray);
+      if (state.redBans.length > 0) {
+        setRedBans(state.redBans);
+      }
+      if (state.bluePicks.length > 0) {
+        setBluePicks(state.bluePicks);
+      }
+      if (state.redPicks.length > 0) {
+        setRedPicks(state.redPicks);
       }
       if (state.phaseType === "pick") {
         setPickPhase(true);
         setBanPhase(false);
-        handlePickPhase(setCurrentTime, socket, setPickedChampions, state);
+        handlePickPhase(
+          setCurrentTime,
+          socket,
+          setBluePicks,
+          setRedPicks,
+          state
+        );
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
         setPickPhase(false);
-        handleBanPhase(setCurrentTime, socket, setBannedChampions, state);
+        handleBanPhase(setCurrentTime, socket, setBlueBans, setRedBans, state);
       }
 
       setPlayerTurn(state.displayTurn);
@@ -102,13 +115,25 @@ function DraftPage() {
     socket.on("banPhase", () => {
       setPickPhase(false);
       setBanPhase(true);
-      handleBanPhase(setCurrentTime, socket, setBannedChampions, draftState);
+      handleBanPhase(
+        setCurrentTime,
+        socket,
+        setBlueBans,
+        setRedPicks,
+        draftState
+      );
     });
 
     socket.on("pickPhase", () => {
       setBanPhase(false);
       setPickPhase(true);
-      handlePickPhase(setCurrentTime, socket, setPickedChampions, draftState);
+      handlePickPhase(
+        setCurrentTime,
+        socket,
+        setBluePicks,
+        setRedPicks,
+        draftState
+      );
     });
 
     const handleCurrentTurn = ({ currentTurn }: { currentTurn: string }) => {
@@ -133,10 +158,13 @@ function DraftPage() {
 
   const sendPick = (chosenChamp: string) => {
     pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
+    console.log(draftState)
+    console.log("blue", bluePicks)
+    console.log("red", redPicks)
+    console.log("blue", blueBans)
+    console.log("red", redBans)
     setChosenChamp("");
   };
-
-
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -182,20 +210,20 @@ function DraftPage() {
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
           <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(0, pickedChampions)}
+            {DisplayPickImage(0, bluePicks)}
           </div>
           <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(3, pickedChampions)}
+            {DisplayPickImage(3, bluePicks)}
           </div>
           <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(4, pickedChampions)}
+            {DisplayPickImage(4, bluePicks)}
           </div>
           <div className="space h-4"></div>
           <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(7, pickedChampions)}
+            {DisplayPickImage(7, bluePicks)}
           </div>
           <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(8, pickedChampions)}
+            {DisplayPickImage(8, bluePicks)}
           </div>
         </div>
         {/* Champion Pick Container */}
@@ -233,8 +261,8 @@ function DraftPage() {
               championRoles={championRoles}
               searchValue={searchValue}
               selectedRole={selectedRole}
-              pickedChampions={pickedChampions}
-              bannedChampions={bannedChampions}
+              pickedChampions={bluePicks.concat(redPicks)}
+              bannedChampions={blueBans.concat(redBans)}
               chosenChamp={chosenChamp}
               setChosenChamp={setChosenChamp}
             />
@@ -243,20 +271,20 @@ function DraftPage() {
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
           <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(1, pickedChampions)}
+            {DisplayPickImage(0, redPicks)}
           </div>
           <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(2, pickedChampions)}
+            {DisplayPickImage(1, redPicks)}
           </div>
           <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(5, pickedChampions)}
+            {DisplayPickImage(2, redPicks)}
           </div>
           <div className="space h-4"></div>
           <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(6, pickedChampions)}
+            {DisplayPickImage(3, redPicks)}
           </div>
           <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(9, pickedChampions)}
+            {DisplayPickImage(4, redPicks)}
           </div>
         </div>
       </div>
@@ -265,20 +293,20 @@ function DraftPage() {
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(0, bannedChampions)}
+            {DisplayBanImage(0, blueBans)}
           </div>
           <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(2, bannedChampions)}
+            {DisplayBanImage(1, blueBans)}
           </div>
           <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(4, bannedChampions)}
+            {DisplayBanImage(2, blueBans)}
           </div>
           <div className="space w-8"></div>
           <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(7, bannedChampions)}
+            {DisplayBanImage(3, blueBans)}
           </div>
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(9, bannedChampions)}
+            {DisplayBanImage(4, blueBans)}
           </div>
         </div>
         {/* Ready Button */}
@@ -326,20 +354,20 @@ function DraftPage() {
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
           <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(8, bannedChampions)}
+            {DisplayBanImage(4, redBans)}
           </div>
           <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(6, bannedChampions)}
+            {DisplayBanImage(3, redBans)}
           </div>
           <div className="space w-8"></div>
           <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(5, bannedChampions)}
+            {DisplayBanImage(2, redBans)}
           </div>
           <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(3, bannedChampions)}
+            {DisplayBanImage(1, redBans)}
           </div>
           <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
-            {DisplayBanImage(1, bannedChampions)}
+            {DisplayBanImage(0, redBans)}
           </div>
         </div>
       </div>

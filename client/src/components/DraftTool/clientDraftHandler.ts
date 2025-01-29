@@ -1,35 +1,45 @@
 import React from "react";
 import { Socket } from "socket.io-client";
-import { DraftStateProps } from "./DraftPage";
+import { BanProps, DraftStateProps, PickProps } from "./draftInterfaces";
 
 export const handleBanPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
   socket: Socket,
-  setBannedChampions: React.Dispatch<React.SetStateAction<string[]>>,
+  setBlueBans: React.Dispatch<React.SetStateAction<string[]>>,
+  setRedBans: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
 ) => {
   let banTimer = 30;
 
   // Reconnection/Late connection timer logic
-  banTimer = Math.max(draftState.timer - 4, 0)
+  banTimer = Math.max(draftState.timer - 4, 0);
   setCurrentTime(banTimer);
-  
+
+  // Timer hides 4 seconds from user to match other drafting tools
   const timeHandler = (timer: number) => {
     banTimer = Math.max(timer - 4, 0);
     setCurrentTime(banTimer);
   };
 
-  const addBannedChampion = (bannedChampion: string) => {
-    setBannedChampions((prevChampions) => [...prevChampions, bannedChampion]);
+  // Ban champion based on side
+  const addBannedChampion = (side: string, bannedChampion: string) => {
+    if (side === "blue") {
+      setBlueBans((prevChampions) => [...prevChampions, bannedChampion]);
+    } else if (side === "red") {
+      setRedBans((prevChampions) => [...prevChampions, bannedChampion]);
+    }
     console.log("banned Champion: ", bannedChampion);
   };
 
-  const setBanSocket = ({ bannedChampion }: { bannedChampion: string }) => {
+  // Run function to display bans
+  const setBanSocket = ({ side, bannedChampion }: BanProps) => {
     console.log(`Ban received: ${bannedChampion}`);
-    addBannedChampion(bannedChampion);
+    addBannedChampion(side, bannedChampion);
   };
+  // set listeners
   socket.on("setBan", setBanSocket);
   socket.on("timer", timeHandler);
+  // Remove listeners
   socket.once("endBanPhase", () => {
     console.log("BAN phase is over");
     socket.off("setBan", setBanSocket);
@@ -40,28 +50,36 @@ export const handleBanPhase = (
 export const handlePickPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
   socket: Socket,
-  setPickedChampions: React.Dispatch<React.SetStateAction<string[]>>,
+  setBluePicks: React.Dispatch<React.SetStateAction<string[]>>,
+  setRedPicks: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
 ) => {
   let pickTimer = 30;
 
   // Reconnection/Late connection timer logic
-  pickTimer = Math.max(draftState.timer - 4, 0)
+  pickTimer = Math.max(draftState.timer - 4, 0);
   setCurrentTime(pickTimer);
 
+  // Timer hides 4 seconds from user to match other drafting tools
   const timeHandler = (timer: number) => {
     pickTimer = Math.max(timer - 4, 0);
     setCurrentTime(pickTimer);
   };
 
-  const addPickedChampions = (pickedChampion: string) => {
-    setPickedChampions((prevChampions) => [...prevChampions, pickedChampion]);
+  // Ban champion based on side
+  const addPickedChampions = (side: string, pickedChampion: string) => {
+    if (side === "blue") {
+      setBluePicks((prevChampions) => [...prevChampions, pickedChampion]);
+    } else if (side === "red") {
+      setRedPicks((prevChampions) => [...prevChampions, pickedChampion]);
+    }
     console.log("picked Champion: ", pickedChampion);
   };
 
-  const setPickSocket = ({ pickedChampion }: { pickedChampion: string }) => {
+  // Run function to display picks
+  const setPickSocket = ({side, pickedChampion }: PickProps) => {
     console.log(`Pick received: ${pickedChampion}`);
-    addPickedChampions(pickedChampion);
+    addPickedChampions(side, pickedChampion);
   };
   socket.on("setPick", setPickSocket);
   socket.on("timer", timeHandler);
