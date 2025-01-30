@@ -23,6 +23,7 @@ export const handleBanPhase = (
 
   // Ban champion based on side
   const addBannedChampion = (side: string, bannedChampion: string) => {
+    console.log("You are banning: ", side, " ", bannedChampion);
     if (side === "blue") {
       setBlueBans((prevChampions) => [...prevChampions, bannedChampion]);
     } else if (side === "red") {
@@ -68,6 +69,7 @@ export const handlePickPhase = (
 
   // Ban champion based on side
   const addPickedChampions = (side: string, pickedChampion: string) => {
+    console.log("You are picking: ", side, " ", pickedChampion);
     if (side === "blue") {
       setBluePicks((prevChampions) => [...prevChampions, pickedChampion]);
     } else if (side === "red") {
@@ -77,7 +79,7 @@ export const handlePickPhase = (
   };
 
   // Run function to display picks
-  const setPickSocket = ({side, pickedChampion }: PickProps) => {
+  const setPickSocket = ({ side, pickedChampion }: PickProps) => {
     console.log(`Pick received: ${pickedChampion}`);
     addPickedChampions(side, pickedChampion);
   };

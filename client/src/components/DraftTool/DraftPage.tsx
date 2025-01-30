@@ -119,7 +119,7 @@ function DraftPage() {
         setCurrentTime,
         socket,
         setBlueBans,
-        setRedPicks,
+        setRedBans,
         draftState
       );
     });
@@ -158,11 +158,11 @@ function DraftPage() {
 
   const sendPick = (chosenChamp: string) => {
     pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
-    console.log(draftState)
-    console.log("blue", bluePicks)
-    console.log("red", redPicks)
-    console.log("blue", blueBans)
-    console.log("red", redBans)
+    console.log(draftState);
+    console.log("blue Picks", bluePicks);
+    console.log("red Picks", redPicks);
+    console.log("blue Bans", blueBans);
+    console.log("red Bans", redBans);
     setChosenChamp("");
   };
 
@@ -213,17 +213,17 @@ function DraftPage() {
             {DisplayPickImage(0, bluePicks)}
           </div>
           <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(3, bluePicks)}
+            {DisplayPickImage(1, bluePicks)}
           </div>
           <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(4, bluePicks)}
+            {DisplayPickImage(2, bluePicks)}
           </div>
           <div className="space h-4"></div>
           <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(7, bluePicks)}
+            {DisplayPickImage(3, bluePicks)}
           </div>
           <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(8, bluePicks)}
+            {DisplayPickImage(4, bluePicks)}
           </div>
         </div>
         {/* Champion Pick Container */}
