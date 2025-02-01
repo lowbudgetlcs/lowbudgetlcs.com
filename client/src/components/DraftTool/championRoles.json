@@ -164,6 +164,10 @@
     "roles": ["Mid", "Top"]
   },
   {
+    "name": "Hwei",
+    "roles": ["Mid", "Bottom", "Support"]
+  },
+  {
     "name": "Illaoi",
     "roles": ["Top"]
   },
@@ -296,6 +300,14 @@
     "roles": ["Jungle"]
   },
   {
+    "name": "Mel",
+    "roles": ["Mid", "Bottom"]
+  },
+  {
+    "name": "Milio",
+    "roles": ["Support"]
+  },
+  {
     "name": "MissFortune",
     "roles": ["Bottom"]
   },
@@ -306,6 +318,10 @@
   {
     "name": "Morgana",
     "roles": ["Support", "Mid", "Jungle"]
+  },
+  {
+    "name": "Naafiri",
+    "roles": ["Mid"]
   },
   {
     "name": "Nami",
@@ -402,6 +418,10 @@
   {
     "name": "Ryze",
     "roles": ["Mid", "Top"]
+  },
+  {
+    "name": "Samira",
+    "roles": ["Bottom"]
   },
   {
     "name": "Sejuani",
