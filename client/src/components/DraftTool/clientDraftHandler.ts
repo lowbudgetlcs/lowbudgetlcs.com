@@ -5,6 +5,8 @@ import { BanProps, DraftStateProps, PickProps } from "./draftInterfaces";
 export const handleBanPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
   socket: Socket,
+  blueBans: string[],
+  redBans: string[],
   setBlueBans: React.Dispatch<React.SetStateAction<string[]>>,
   setRedBans: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
@@ -35,6 +37,9 @@ export const handleBanPhase = (
   // Run function to display bans
   const setBanSocket = ({ side, bannedChampion }: BanProps) => {
     console.log(`Ban received: ${bannedChampion}`);
+    if (blueBans.includes(bannedChampion) || redBans.includes(bannedChampion)) {
+      return;
+    }
     addBannedChampion(side, bannedChampion);
   };
   // set listeners
@@ -51,6 +56,8 @@ export const handleBanPhase = (
 export const handlePickPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
   socket: Socket,
+  bluePicks: string[],
+  redPicks: string[],
   setBluePicks: React.Dispatch<React.SetStateAction<string[]>>,
   setRedPicks: React.Dispatch<React.SetStateAction<string[]>>,
   draftState: DraftStateProps
@@ -81,6 +88,9 @@ export const handlePickPhase = (
   // Run function to display picks
   const setPickSocket = ({ side, pickedChampion }: PickProps) => {
     console.log(`Pick received: ${pickedChampion}`);
+    if (bluePicks.includes(pickedChampion) || redPicks.includes(pickedChampion)) {
+      return;
+    }
     addPickedChampions(side, pickedChampion);
   };
   socket.on("setPick", setPickSocket);

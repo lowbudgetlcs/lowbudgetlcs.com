@@ -88,6 +88,8 @@ function DraftPage() {
         handlePickPhase(
           setCurrentTime,
           socket,
+          bluePicks,
+          redPicks,
           setBluePicks,
           setRedPicks,
           state
@@ -95,7 +97,15 @@ function DraftPage() {
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
         setPickPhase(false);
-        handleBanPhase(setCurrentTime, socket, setBlueBans, setRedBans, state);
+        handleBanPhase(
+          setCurrentTime,
+          socket,
+          blueBans,
+          redBans,
+          setBlueBans,
+          setRedBans,
+          state
+        );
       }
 
       setPlayerTurn(state.displayTurn);
@@ -118,6 +128,8 @@ function DraftPage() {
       handleBanPhase(
         setCurrentTime,
         socket,
+        blueBans,
+        redBans,
         setBlueBans,
         setRedBans,
         draftState
@@ -130,6 +142,8 @@ function DraftPage() {
       handlePickPhase(
         setCurrentTime,
         socket,
+        bluePicks,
+        redPicks,
         setBluePicks,
         setRedPicks,
         draftState
