@@ -306,20 +306,20 @@ function DraftPage() {
       <div className="champBans flex w-full justify-between gap-8 items-center px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
-          <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban1 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(0, blueBans)}
           </div>
-          <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban2 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(1, blueBans)}
           </div>
-          <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban3 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(2, blueBans)}
           </div>
           <div className="space w-8"></div>
-          <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban4 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(3, blueBans)}
           </div>
-          <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban5 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(4, blueBans)}
           </div>
         </div>
@@ -367,20 +367,20 @@ function DraftPage() {
         )}
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
-          <div className="ban5 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban5 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(4, redBans)}
           </div>
-          <div className="ban4 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban4 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(3, redBans)}
           </div>
           <div className="space w-8"></div>
-          <div className="ban3 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban3 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(2, redBans)}
           </div>
-          <div className="ban2 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban2 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(1, redBans)}
           </div>
-          <div className="ban1 w-20 h-40 bg-gray overflow-hidden">
+          <div className="ban1 w-24 h-24 bg-gray overflow-hidden">
             {DisplayBanImage(0, redBans)}
           </div>
         </div>
