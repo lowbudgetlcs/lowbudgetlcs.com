@@ -1,41 +1,32 @@
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
 
-const dDragonLargeImageLink =
-  `https://cdn.communitydragon.org/15.2.1/champion/`;
-
 const cDragonCDNSplashLink = `https://cdn.communitydragon.org/15.2.1/champion/`;
 
-export const DisplayBanImage = (
-  banIndex: number,
-  bannedChampions: string[]
-) => {
+export const DisplayBanImage = (banIndex: number, bannedChampions: string[]) => {
+
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
     : "nothing";
-    const championLink = `${dDragonLargeImageLink}${championName}/splash-art/centered`;
-  console.log("championLink: ", championLink)
-  if (bannedChampions[banIndex] === "nothing") {
+
+
+  if (!bannedChampions[banIndex] || bannedChampions[banIndex] === "nothing") {
     return (
       <img
         src={tempImage}
-        alt={`nothing`}
-        width={"160px"}
-        height={"200px"}
+        alt="nothing"
+        width="160px"
+        height="200px"
         className="object-cover"
       />
     );
   } else {
     return (
-      <>
-        {bannedChampions[banIndex] && (
-          <div
-          style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/15.2.1/champion/${championName}/splash-art/centered')`
-          }}
-            className={`bg-cover h-20 w-20 z-10  bg-[url('https://cdn.communitydragon.org/15.2.1/champion/${championName}/splash-art/centered')]`}
-          ></div>
-        )}
-      </>
+      <div
+      style={{
+        backgroundImage: `url('https://cdn.communitydragon.org/15.2.1/champion/${championName}/splash-art/centered')`
+      }}
+        className={`w-full h-full bg-[51%_20%] bg-[size:420%]`}
+      ></div>
     );
   }
 };
