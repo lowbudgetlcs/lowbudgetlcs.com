@@ -9,6 +9,12 @@ import championsData from "./championRoles.json";
 import { DisplayBanImage, DisplayPickImage } from "./LoadChampLargeImages";
 import { Champion, DraftStateProps } from "./draftInterfaces";
 
+import top from "../../assets/laneIcons/topIcon.svg"
+import jungle from "../../assets/laneIcons/jungleIcon.svg"
+import middle from "../../assets/laneIcons/middleIcon.svg"
+import bottom from "../../assets/laneIcons/bottomIcon.svg"
+import support from "../../assets/laneIcons/supportIcon.svg"
+
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [currentTime, setCurrentTime] = useState<number>(30);
@@ -247,12 +253,14 @@ function DraftPage() {
               {["All", "Top", "Jungle", "Mid", "Bottom", "Support"].map(
                 (role) => (
                   <label key={role} className="flex items-center space-x-1">
+                    <img src={top}/>
                     <input
                       type="radio"
                       name="role"
                       value={role}
                       checked={selectedRole === role}
                       onChange={(e) => setSelectedRole(e.target.value)}
+                      className="opacity-0"
                     />
                     <span>{role}</span>
                   </label>
