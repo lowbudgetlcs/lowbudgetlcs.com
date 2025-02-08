@@ -9,11 +9,12 @@ import championsData from "./championRoles.json";
 import { DisplayBanImage, DisplayPickImage } from "./LoadChampLargeImages";
 import { Champion, DraftStateProps } from "./draftInterfaces";
 
-import top from "../../assets/laneIcons/topIcon.svg"
-import jungle from "../../assets/laneIcons/jungleIcon.svg"
-import middle from "../../assets/laneIcons/middleIcon.svg"
-import bottom from "../../assets/laneIcons/bottomIcon.svg"
-import support from "../../assets/laneIcons/supportIcon.svg"
+import top from "../../assets/laneIcons/topIcon.svg";
+import jungle from "../../assets/laneIcons/jungleIcon.svg";
+import middle from "../../assets/laneIcons/middleIcon.svg";
+import bottom from "../../assets/laneIcons/bottomIcon.svg";
+import support from "../../assets/laneIcons/supportIcon.svg";
+import { DisplayPicks, DisplayBans } from "./pickBanDisplay";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -229,22 +230,7 @@ function DraftPage() {
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
-          <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(0, bluePicks)}
-          </div>
-          <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(1, bluePicks)}
-          </div>
-          <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(2, bluePicks)}
-          </div>
-          <div className="space h-4"></div>
-          <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(3, bluePicks)}
-          </div>
-          <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(4, bluePicks)}
-          </div>
+          <DisplayPicks picks={bluePicks} />
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col w-full ">
@@ -253,7 +239,7 @@ function DraftPage() {
               {["All", "Top", "Jungle", "Mid", "Bottom", "Support"].map(
                 (role) => (
                   <label key={role} className="flex items-center space-x-1">
-                    <img src={top}/>
+                    <img src={top} />
                     <input
                       type="radio"
                       name="role"
@@ -292,44 +278,14 @@ function DraftPage() {
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
-          <div className="pick1 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(0, redPicks)}
-          </div>
-          <div className="pick2 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(1, redPicks)}
-          </div>
-          <div className="pick3 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(2, redPicks)}
-          </div>
-          <div className="space h-4"></div>
-          <div className="pick4 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(3, redPicks)}
-          </div>
-          <div className="pick5 w-64 h-28 overflow-hidden bg-gray">
-            {DisplayPickImage(4, redPicks)}
-          </div>
+          <DisplayPicks picks={redPicks} />
         </div>
       </div>
       {/* Champion Bans*/}
       <div className="champBans flex w-full justify-between gap-8 items-center px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
-          <div className="ban1 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(0, blueBans)}
-          </div>
-          <div className="ban2 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(1, blueBans)}
-          </div>
-          <div className="ban3 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(2, blueBans)}
-          </div>
-          <div className="space w-8"></div>
-          <div className="ban4 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(3, blueBans)}
-          </div>
-          <div className="ban5 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(4, blueBans)}
-          </div>
+          <DisplayBans bans={blueBans} side={'blue'} />
         </div>
         {/* Ready Button */}
         {draftState?.activePhase !== "finished" ? (
@@ -375,22 +331,7 @@ function DraftPage() {
         )}
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
-          <div className="ban5 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(4, redBans)}
-          </div>
-          <div className="ban4 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(3, redBans)}
-          </div>
-          <div className="space w-8"></div>
-          <div className="ban3 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(2, redBans)}
-          </div>
-          <div className="ban2 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(1, redBans)}
-          </div>
-          <div className="ban1 w-24 h-24 bg-gray overflow-hidden">
-            {DisplayBanImage(0, redBans)}
-          </div>
+          <DisplayBans bans={redBans} side={'red'} />
         </div>
       </div>
     </div>
