@@ -6,15 +6,9 @@ import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
 import championsData from "./championRoles.json";
-import { DisplayBanImage, DisplayPickImage } from "./LoadChampLargeImages";
 import { Champion, DraftStateProps } from "./draftInterfaces";
-
-import top from "../../assets/laneIcons/topIcon.svg";
-import jungle from "../../assets/laneIcons/jungleIcon.svg";
-import middle from "../../assets/laneIcons/middleIcon.svg";
-import bottom from "../../assets/laneIcons/bottomIcon.svg";
-import support from "../../assets/laneIcons/supportIcon.svg";
 import { DisplayPicks, DisplayBans } from "./pickBanDisplay";
+import RoleSelect from "./RoleSelect";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -235,23 +229,11 @@ function DraftPage() {
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col w-full ">
           <div className="searchFilter flex justify-between">
-            <div className="champFilter flex gap-2">
-              {["All", "Top", "Jungle", "Mid", "Bottom", "Support"].map(
-                (role) => (
-                  <label key={role} className="flex items-center space-x-1">
-                    <img src={top} />
-                    <input
-                      type="radio"
-                      name="role"
-                      value={role}
-                      checked={selectedRole === role}
-                      onChange={(e) => setSelectedRole(e.target.value)}
-                      className="opacity-0"
-                    />
-                    <span>{role}</span>
-                  </label>
-                )
-              )}
+            <div className="champFilter flex p-4 gap-4">
+              <RoleSelect
+                selectedRole={selectedRole}
+                setSelectedRole={setSelectedRole}
+              />
             </div>
             <form>
               <input
@@ -282,10 +264,10 @@ function DraftPage() {
         </div>
       </div>
       {/* Champion Bans*/}
-      <div className="champBans flex w-full justify-between gap-8 items-center px-4">
+      <div className="champBans flex w-full justify-between gap-8 items-center py-8 px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4">
-          <DisplayBans bans={blueBans} side={'blue'} />
+          <DisplayBans bans={blueBans} side={"blue"} />
         </div>
         {/* Ready Button */}
         {draftState?.activePhase !== "finished" ? (
@@ -331,7 +313,7 @@ function DraftPage() {
         )}
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4">
-          <DisplayBans bans={redBans} side={'red'} />
+          <DisplayBans bans={redBans} side={"red"} />
         </div>
       </div>
     </div>
