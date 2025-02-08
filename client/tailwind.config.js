@@ -18,7 +18,6 @@ export default {
         'black': '#1a1a1a',
         'light-blue': '#d9dbf1',
         'dark-blue': '#1B1E48',
-        'transparent': '#1a1a1a00',
         'blue': '#125AE8',
         'lblcs-light-blue': '#d9dbf1',
         // For Stats
