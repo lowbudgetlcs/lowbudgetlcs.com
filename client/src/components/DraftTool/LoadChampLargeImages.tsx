@@ -1,7 +1,5 @@
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
 
-const cDragonCDNSplashLink = `https://cdn.communitydragon.org/15.2.1/champion/`;
-
 export const DisplayBanImage = (banIndex: number, bannedChampions: string[]) => {
 
   const championName = bannedChampions[banIndex]
@@ -9,7 +7,7 @@ export const DisplayBanImage = (banIndex: number, bannedChampions: string[]) => 
     : "nothing";
 
 
-  if (!bannedChampions[banIndex] || bannedChampions[banIndex] === "nothing") {
+  if (bannedChampions[banIndex] === "nothing") {
     return (
       <img
         src={tempImage}
@@ -23,7 +21,7 @@ export const DisplayBanImage = (banIndex: number, bannedChampions: string[]) => 
     return (
       <div
       style={{
-        backgroundImage: `url('https://cdn.communitydragon.org/15.2.1/champion/${championName}/splash-art/centered')`
+        backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`
       }}
         className={`w-full h-full bg-[51%_20%] bg-[size:420%]`}
       ></div>
@@ -37,11 +35,6 @@ export const DisplayPickImage = (
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
     : "nothing";
-
-  const correctChampionImageLinks = () => {
-    let link = `${cDragonCDNSplashLink}${championName}/splash-art/centered`;
-    return link;
-  };
 
   if (pickedChampions[pickIndex] === "nothing") {
     return (
@@ -57,13 +50,12 @@ export const DisplayPickImage = (
     return (
       <>
         {pickedChampions[pickIndex] && (
-          <img
-            src={correctChampionImageLinks()} //largeChampImages[pickedChampions[pickIndex]]
-            alt={`${pickedChampions[pickIndex]}`}
-            className="max-w-full max-h-full object-cover scale-150"
-            width={"300px"}
-            height={"90px"}
-          />
+          <div
+          style={{
+            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`
+          }}
+            className="w-full h-full bg-[51%_20%] bg-[size:180%]"
+          ></div>
         )}
       </>
     );
