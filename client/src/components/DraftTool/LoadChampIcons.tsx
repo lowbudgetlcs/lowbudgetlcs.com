@@ -21,7 +21,7 @@ export function LoadChampIcons({
   setChosenChamp,
 }: LoadChampIconsProps) {
   const dDragonIconLink =
-    "https://ddragon.leagueoflegends.com/cdn/15.2.1/img/champion/";
+    `https://cdn.communitydragon.org/latest/champion/`;
   const handlePick = (championName: string) => {
     if (
       !pickedChampions.includes(championName) &&
@@ -81,8 +81,8 @@ export function LoadChampIcons({
                 : ""
             }`}
               src={`${dDragonIconLink}${
-                champion.name === "Wukong" ? "MonkeyKing" : champion.name
-              }.png`}
+                champion.name === "Wukong" ? "monkeyking" : champion.name
+              }/square`}
               alt={champion.name}
               style={{
                 width: "100px",
