@@ -34,10 +34,18 @@ function RoleSelect({
   roles.forEach((role) => {
     roleSelectors.push(
       <div
+        key={role}
         onClick={() => changeSelectedRole(role)}
         className={`cursor-pointer bg-none scale-125`}
       >
-        <img src={icons[role]} className={`${selectedRole === role ? 'drop-shadow-[0_0px_6px_orange] shadow-orange bg-transparent' : 'opacity-60'}`}/>
+        <img
+          src={icons[role]}
+          className={`${
+            selectedRole === role
+              ? "drop-shadow-[0_0px_6px_orange] shadow-orange bg-transparent"
+              : "opacity-60"
+          }`}
+        />
       </div>
     );
   });

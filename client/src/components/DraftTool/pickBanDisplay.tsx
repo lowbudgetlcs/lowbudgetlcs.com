@@ -5,7 +5,10 @@ export const DisplayPicks = ({ picks }: { picks: string[] }) => {
     const pickDivs = [];
     for (let i = 0; i < 3; i++) {
       pickDivs.push(
-        <div className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}>
+        <div
+          key={i}
+          className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}
+        >
           {DisplayPickImage(i, picks)}
         </div>
       );
@@ -16,7 +19,10 @@ export const DisplayPicks = ({ picks }: { picks: string[] }) => {
     const pickDivs = [];
     for (let i = 3; i < 5; i++) {
       pickDivs.push(
-        <div className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}>
+        <div
+          key={i}
+          className={`pick${i + 1} w-64 h-28 overflow-hidden bg-gray`}
+        >
           {DisplayPickImage(i, picks)}
         </div>
       );
@@ -43,7 +49,10 @@ export const DisplayBans = ({
     const banDivs = [];
     for (let i = 0; i < 3; i++) {
       banDivs.push(
-        <div className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}>
+        <div
+          key={i}
+          className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}
+        >
           {DisplayBanImage(i, bans)}
         </div>
       );
@@ -55,7 +64,10 @@ export const DisplayBans = ({
     const banDivs = [];
     for (let i = 3; i < 5; i++) {
       banDivs.push(
-        <div className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}>
+        <div
+          key={i}
+          className={`ban${i + 1} w-24 h-24 bg-gray overflow-hidden`}
+        >
           {DisplayBanImage(i, bans)}
         </div>
       );
