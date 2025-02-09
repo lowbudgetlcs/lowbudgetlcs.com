@@ -1,11 +1,12 @@
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
 
-export const DisplayBanImage = (banIndex: number, bannedChampions: string[]) => {
-
+export const DisplayBanImage = (
+  banIndex: number,
+  bannedChampions: string[]
+) => {
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
     : "nothing";
-
 
   if (bannedChampions[banIndex] === "nothing") {
     return (
@@ -17,12 +18,12 @@ export const DisplayBanImage = (banIndex: number, bannedChampions: string[]) => 
         className="object-cover"
       />
     );
-  } else {
+  } else if (championName !== "nothing") {
     return (
       <div
-      style={{
-        backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`
-      }}
+        style={{
+          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`,
+        }}
         className={`w-full h-full bg-[51%_20%] bg-[size:420%]`}
       ></div>
     );
@@ -46,14 +47,14 @@ export const DisplayPickImage = (
         height={"90px"}
       />
     );
-  } else {
+  } else if (championName !== "nothing") {
     return (
       <>
         {pickedChampions[pickIndex] && (
           <div
-          style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`
-          }}
+            style={{
+              backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`,
+            }}
             className="w-full h-full bg-[51%_20%] bg-[size:180%]"
           ></div>
         )}
