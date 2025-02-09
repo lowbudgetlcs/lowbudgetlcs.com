@@ -9,6 +9,7 @@ import championsData from "./championRoles.json";
 import { Champion, DraftStateProps } from "./draftInterfaces";
 import { DisplayPicks, DisplayBans } from "./pickBanDisplay";
 import RoleSelect from "./RoleSelect";
+import { IoSearch, IoSearchCircleOutline } from "react-icons/io5";
 
 function DraftPage() {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -228,17 +229,21 @@ function DraftPage() {
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col w-full ">
-          <div className="searchFilter flex justify-between">
-            <div className="champFilter flex p-4 gap-4">
+          <div className="searchFilter flex justify-between items-center px-6 py-4">
+            <div className="champFilter flex gap-4">
               <RoleSelect
                 selectedRole={selectedRole}
                 setSelectedRole={setSelectedRole}
               />
             </div>
-            <form>
+            <form className="bg-gray flex items-center">
+              <label htmlFor="championSearch">
+              <IoSearch className="text-3xl"/>
+              </label>
               <input
                 type="text"
-                className="champSearch bg-gray"
+                id="championSearch"
+                className="champSearch p-2 bg-gray focus:ring-0 focus:border-none"
                 placeholder="Search Champion"
                 value={searchValue}
                 onChange={handleSearchChange}
@@ -246,17 +251,19 @@ function DraftPage() {
             </form>
           </div>
           {/* List of Champion Images */}
-          <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] p-4 gap-2 justify-center">
-            <LoadChampIcons
-              championRoles={championRoles}
-              searchValue={searchValue}
-              selectedRole={selectedRole}
-              pickedChampions={bluePicks.concat(redPicks)}
-              bannedChampions={blueBans.concat(redBans)}
-              chosenChamp={chosenChamp}
-              setChosenChamp={setChosenChamp}
-            />
-          </ul>
+          <div>
+            <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] gap-2 justify-center">
+              <LoadChampIcons
+                championRoles={championRoles}
+                searchValue={searchValue}
+                selectedRole={selectedRole}
+                pickedChampions={bluePicks.concat(redPicks)}
+                bannedChampions={blueBans.concat(redBans)}
+                chosenChamp={chosenChamp}
+                setChosenChamp={setChosenChamp}
+              />
+            </ul>
+          </div>
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
