@@ -175,10 +175,7 @@ function DraftPage() {
   const sendPick = (chosenChamp: string) => {
     pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
     console.log(draftState);
-    console.log("blue Picks", bluePicks);
-    console.log("red Picks", redPicks);
-    console.log("blue Bans", blueBans);
-    console.log("red Bans", redBans);
+    console.log(draftState?.activePhase)
     setChosenChamp("");
   };
 
@@ -225,7 +222,13 @@ function DraftPage() {
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 p-4">
-          <DisplayPicks picks={bluePicks} championRoles={championRoles} />
+          <DisplayPicks
+            picks={bluePicks}
+            championRoles={championRoles}
+            playerTurn={playerTurn}
+            playerSide={'blue'}
+            currentPhase={draftState?.activePhase}
+          />
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer flex flex-col w-full ">
@@ -267,7 +270,13 @@ function DraftPage() {
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 p-4">
-          <DisplayPicks picks={redPicks} championRoles={championRoles} />
+          <DisplayPicks
+            picks={redPicks}
+            championRoles={championRoles}
+            playerTurn={playerTurn}
+            playerSide={"red"}
+            currentPhase={draftState?.activePhase}
+          />
         </div>
       </div>
       {/* Champion Bans*/}
@@ -277,7 +286,8 @@ function DraftPage() {
           <DisplayBans
             bans={blueBans}
             side={"blue"}
-            championRoles={championRoles}
+            playerTurn={playerTurn}
+            currentPhase={draftState?.activePhase}
           />
         </div>
         {/* Ready Button */}
@@ -327,7 +337,8 @@ function DraftPage() {
           <DisplayBans
             bans={redBans}
             side={"red"}
-            championRoles={championRoles}
+            playerTurn={playerTurn}
+            currentPhase={draftState?.activePhase}
           />
         </div>
       </div>
