@@ -11,7 +11,11 @@ import { draftSocket } from "./sockets/draftSocket";
 const port = 8080;
 const origin = process.env.ORIGIN ?? "*";
 // Validate twitch env variables present
-getTwitchConfig();
+try {
+  getTwitchConfig();
+} catch (e: any) {
+  process.exit(1);
+}
 
 const app = express();
 app.use(express.json());
