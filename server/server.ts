@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import http from "http";
 import { rateLimit } from "express-rate-limit";
 import draftRoutes from "./routes/draftRoutes";
 import twitchRoutes from "./routes/twitchRoutes";
@@ -9,45 +8,34 @@ import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./sockets/draftSocket";
 
-const app = express();
 const port = 8080;
-const isProduction = process.env.PRODUCTION === "production";
-
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: isProduction ? "https://lowbudgetlcs.com" : "*",
-  },
-});
-
-
+const origin = process.env.ORIGIN ?? "*";
 // Validate twitch env variables present
-try {
-  getTwitchConfig();
-} catch (error: any) {
-  console.error(error.message);
-  process.exit(1);
-}
+getTwitchConfig();
+
+const app = express();
+app.use(express.json());
 
 // Middleware
 // Cors options. will always be in production on live server
-const corsOptions = {
-  origin: isProduction ? "https://lowbudgetlcs.com" : "*",
-  methods: "GET",
-};
+app.use(
+  cors({
+    origin: origin,
+    methods: "GET",
+  })
+);
 
 //Rate limiting
-const apiLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000, // 10 minutes
-  max: 2000, // Limit each IP to 2000 requests per windowMs
-});
-
-app.use(cors(corsOptions));
-app.use(express.json());
-app.use("/api/", apiLimiter);
+app.use(
+  "/api/",
+  rateLimit({
+    windowMs: 10 * 60 * 1000, // 10 minutes
+    max: 2000, // Limit each IP to 2000 requests per windowMs
+  })
+);
 
 // Forces website to be https on production
-if (isProduction) {
+if (process.env.NODE_ENV! === "production") {
   app.use((req, res, next) => {
     if (req.header("x-forwarded-proto") !== "https") {
       res.redirect(`https://${req.header("host")}${req.url}`);
@@ -61,9 +49,14 @@ app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 
-// Initialize draftSocket with the io instance
-draftSocket(io);
-
-server.listen(port, () => {
+const server = app.listen(port, () => {
   console.log("Server started on port " + port);
 });
+
+const io = new Server(server, {
+  cors: {
+    origin: origin,
+  },
+});
+// Initialize draftSocket with the io instance
+draftSocket(io);
