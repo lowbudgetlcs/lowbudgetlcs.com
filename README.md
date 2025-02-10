@@ -11,3 +11,6 @@ to build and run docker images for both.
 
 Don't forget to create a .env file in client and server filled in from the
 example file!
+
+`make all` will build and run both the client and server containers. If you only
+want to run one, try `make COMMAND SERVICE=client|server`.
