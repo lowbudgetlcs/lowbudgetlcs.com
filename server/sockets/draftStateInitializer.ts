@@ -25,6 +25,7 @@ export interface DraftStateProps {
   displayTurn: "red" | "blue" | null;
   bluePick: string | null;
   redPick: string | null;
+  draftComplete: boolean;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -55,6 +56,7 @@ export const initializeDraftState = (
       displayTurn: null,
       bluePick: null,
       redPick: null,
+      draftComplete: false,
     };
     console.log(`Draft state initialized for lobby with code: ${lobbyCode}`);
   }
