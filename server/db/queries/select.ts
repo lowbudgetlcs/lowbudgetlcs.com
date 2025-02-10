@@ -1,7 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
 import { divisions, draftLobbies, games, players, teams } from "../schema";
-import { error } from "console";
 
 export async function getPlayers() {
   const allPlayers = await db.select().from(players);
@@ -115,5 +114,5 @@ export async function getLobbyCodes(lobbyCode: string) {
     })
     .from(draftLobbies)
     .where(eq(draftLobbies.lobbyCode, lobbyCode));
-    return matchingCodes.length > 0 ? matchingCodes[0] : null;
+  return matchingCodes.length > 0 ? matchingCodes[0] : null;
 }
