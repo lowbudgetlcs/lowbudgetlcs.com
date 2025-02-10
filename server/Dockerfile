@@ -1,12 +1,11 @@
-FROM node:18-alpine as builder
+FROM node:18-alpine 
 
 WORKDIR /app
 COPY package*.json .
-RUN npm ci --omit=dev 
-
+RUN npm i
 COPY . .
-RUN npx tsc
+RUN npx tsc && npm prune --production
 
 EXPOSE 8080
-ENV NODE_ENV production
+ENV NODE_ENV=production
 CMD [ "npm", "run", "start" ]
