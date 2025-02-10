@@ -16,7 +16,7 @@ export async function insertDraft(draft: DraftProps) {
       })
       .returning();
 
-      console.log("Draft inserted successfully:", insertDraft);
+    console.log("Draft inserted successfully: ", insertDraft);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");
