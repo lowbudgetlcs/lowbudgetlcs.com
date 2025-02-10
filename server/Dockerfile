@@ -1,17 +1,11 @@
-FROM node:18-alpine
+FROM node:18-alpine 
 
 WORKDIR /app
-
-COPY package.json .
-
-RUN npm install
-
+COPY package*.json .
+RUN npm i
 COPY . .
+RUN npx tsc && npm prune --production
 
-RUN npx tsc
-
-#IDK WHAT PORT THIS USES (PROBABLY 8080?)
 EXPOSE 8080
-
-#IDK HOW TO RUN THIS APP
+ENV NODE_ENV=production
 CMD [ "npm", "run", "start" ]

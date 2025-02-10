@@ -1,17 +1,19 @@
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
-WORKDIR /app
+# Install deps and build dist
+WORKDIR /build
+COPY package*.json .
+RUN npm i 
+COPY . .
+RUN npm run build && npm prun --production
 
-COPY package.json .
-
-RUN npm install
+# Run dist in much smaller image
+FROM node:18-alpine AS runner
 
 RUN npm i -g serve
+COPY --from=builder /build/package.json ./
+COPY --from=builder /build/node_modules ./node_modules
+COPY --from=builder /build/dist ./dist
+ENV NODE_ENV=production
 
-COPY . .
-
-RUN npm run build
-
-EXPOSE 3000
-
-CMD [ "serve", "-s", "dist" ]
+CMD [ "npm", "run", "start" ]
