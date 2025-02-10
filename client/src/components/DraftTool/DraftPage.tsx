@@ -70,7 +70,6 @@ function DraftPage() {
       return;
     }
     const reconnectionHandler = (state: DraftStateProps) => {
-      console.log("here is state: ", state);
       setDraftState(state);
       if (state.blueBans.length > 0) {
         setBlueBans(state.blueBans);
@@ -86,7 +85,6 @@ function DraftPage() {
       }
       if (state.phaseType === "pick") {
         setPickPhase(true);
-        setBanPhase(false);
         handlePickPhase(
           setCurrentTime,
           socket,
@@ -94,11 +92,11 @@ function DraftPage() {
           redPicks,
           setBluePicks,
           setRedPicks,
-          state
+          state,
+          setDraftState
         );
       } else if (state.phaseType === "ban") {
         setBanPhase(true);
-        setPickPhase(false);
         handleBanPhase(
           setCurrentTime,
           socket,
@@ -106,7 +104,8 @@ function DraftPage() {
           redBans,
           setBlueBans,
           setRedBans,
-          state
+          state,
+          setDraftState
         );
       }
 
@@ -123,8 +122,8 @@ function DraftPage() {
     if (!socket || !draftState) {
       return;
     }
-    // Listening for beginning of banPhase
-    socket.on("banPhase", () => {
+    const startBanPhase = (state: DraftStateProps) => {
+      setDraftState(state);
       setPickPhase(false);
       setBanPhase(true);
       handleBanPhase(
@@ -134,13 +133,15 @@ function DraftPage() {
         redBans,
         setBlueBans,
         setRedBans,
-        draftState
+        draftState,
+        setDraftState
       );
-    });
+    };
 
-    socket.on("pickPhase", () => {
-      setBanPhase(false);
+    const startPickPhase = (state: DraftStateProps) => {
+      setDraftState(state);
       setPickPhase(true);
+      setBanPhase(false);
       handlePickPhase(
         setCurrentTime,
         socket,
@@ -148,21 +149,34 @@ function DraftPage() {
         redPicks,
         setBluePicks,
         setRedPicks,
-        draftState
+        draftState,
+        setDraftState
       );
-    });
+    };
 
-    const handleCurrentTurn = ({ currentTurn }: { currentTurn: string }) => {
-      setPlayerTurn(currentTurn);
-      console.log(currentTurn);
+    // Listening for beginning of phases
+    socket.on("banPhase", startBanPhase);
+    socket.on("pickPhase", startPickPhase);
+
+    return () => {
+      socket.off("banPhase", startBanPhase);
+      socket.off("pickPhase", startPickPhase);
+    };
+  }, [socket, draftState]);
+
+  useEffect(() => {
+    if (!socket) {
+      return;
+    }
+    const handleCurrentTurn = (state: DraftStateProps) => {
+      setPlayerTurn(state.displayTurn);
     };
     socket.on("currentTurn", handleCurrentTurn);
+
     return () => {
-      socket.off("banPhase", handleBanPhase);
-      socket.off("pickPhase", handlePickPhase);
       socket.off("currentTurn", handleCurrentTurn);
     };
-  }, [socket, sideCode, draftState]);
+  }, [socket]);
 
   const toggleReady = () => {
     setReady((prevReady) => {
@@ -175,7 +189,7 @@ function DraftPage() {
   const sendPick = (chosenChamp: string) => {
     pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
     console.log(draftState);
-    console.log(draftState?.activePhase)
+    console.log(draftState?.activePhase);
     setChosenChamp("");
   };
 
@@ -226,7 +240,7 @@ function DraftPage() {
             picks={bluePicks}
             championRoles={championRoles}
             playerTurn={playerTurn}
-            playerSide={'blue'}
+            playerSide={"blue"}
             currentPhase={draftState?.activePhase}
           />
         </div>

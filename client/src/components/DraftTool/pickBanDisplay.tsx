@@ -17,18 +17,6 @@ const FirstPicks = memo(
   }) => {
     const pickDivs = [];
     for (let i = 0; i < 3; i++) {
-      console.log(
-        "I: ",
-        i,
-        "picksLength: ",
-        picks.length,
-        " Player Side: ",
-        playerSide,
-        " Player Turn: ",
-        playerTurn,
-        " currentPhase: ",
-        currentPhase
-      );
       pickDivs.push(
         <div
           key={i}
@@ -37,12 +25,12 @@ const FirstPicks = memo(
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
             picks.length === i
-              ? "border-blue"
+              ? "border-blue transition-all delay-[20ms]"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase1" &&
                 picks.length === i
-              ? "border-red"
+              ? "border-red transition-all delay-[20ms]"
               : "border-gray"
           } bg-gray rounded-md`}
         >
@@ -77,12 +65,12 @@ const LastPicks = memo(
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             picks.length === i
-              ? "border-blue"
+              ? "border-blue transition-all delay-[20ms]"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 picks.length === i
-              ? "border-red"
+              ? "border-red transition-all delay-[20ms]"
               : "border-gray"
           } bg-gray rounded-md`}
         >
@@ -93,6 +81,7 @@ const LastPicks = memo(
     return pickDivs;
   }
 );
+
 export const DisplayPicks = ({
   picks,
   championRoles,
@@ -149,12 +138,12 @@ const FirstBans = memo(
             side === "blue" &&
             currentPhase === "banPhase1" &&
             bans.length === i
-              ? "border-blue"
+              ? "border-blue transition-all delay-[20ms]"
               : playerTurn === side &&
                 side === "red" &&
                 currentPhase === "banPhase1" &&
                 bans.length === i
-              ? "border-red"
+              ? "border-red transition-all delay-[20ms]"
               : "border-gray"
           } bg-gray rounded-md overflow-hidden`}
         >
@@ -188,12 +177,12 @@ const LastBans = memo(
             side === "blue" &&
             currentPhase === "banPhase2" &&
             bans.length === i
-              ? "border-blue"
+              ? "border-blue transition-all delay-[20ms]"
               : playerTurn === side &&
                 side === "red" &&
                 currentPhase === "banPhase2" &&
                 bans.length === i
-              ? "border-red"
+              ? "border-red transition-all delay-[20ms]"
               : "border-gray"
           } bg-gray rounded-md overflow-hidden`}
         >

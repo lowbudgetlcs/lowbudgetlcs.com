@@ -1,6 +1,6 @@
 import React from "react";
 import { Socket } from "socket.io-client";
-import { BanProps, DraftStateProps, PickProps } from "./draftInterfaces";
+import { DraftStateProps } from "./draftInterfaces";
 
 export const handleBanPhase = (
   setCurrentTime: React.Dispatch<React.SetStateAction<number>>,
@@ -9,8 +9,12 @@ export const handleBanPhase = (
   redBans: string[],
   setBlueBans: React.Dispatch<React.SetStateAction<string[]>>,
   setRedBans: React.Dispatch<React.SetStateAction<string[]>>,
-  draftState: DraftStateProps
+  draftState: DraftStateProps,
+  setDraftState: React.Dispatch<
+    React.SetStateAction<DraftStateProps | undefined>
+  >
 ) => {
+
   let banTimer = 30;
 
   // Reconnection/Late connection timer logic
@@ -35,17 +39,30 @@ export const handleBanPhase = (
   };
 
   // Run function to display bans
-  const setBanSocket = ({ side, bannedChampion }: BanProps) => {
+  const setBanSocket = (state: DraftStateProps) => {
+    setDraftState(state);
+    let bannedChampion: string = "";
+    if (state.displayTurn === "blue") {
+      bannedChampion = state.bluePick;
+    } else if (state.displayTurn === "red") {
+      bannedChampion = state.redPick;
+    } else {
+      return;
+    }
     console.log(`Ban received: ${bannedChampion}`);
+
+    // Check if champion was already picked or banned (Should never have to since to but just in case)
     if (blueBans.includes(bannedChampion) || redBans.includes(bannedChampion)) {
       return;
     }
-    addBannedChampion(side, bannedChampion);
+    addBannedChampion(state.displayTurn, bannedChampion);
   };
+
   // set listeners
   socket.on("setBan", setBanSocket);
   socket.on("timer", timeHandler);
-  // Remove listeners
+
+  // Remove listeners at the end of ban phase
   socket.once("endBanPhase", () => {
     console.log("BAN phase is over");
     socket.off("setBan", setBanSocket);
@@ -60,8 +77,13 @@ export const handlePickPhase = (
   redPicks: string[],
   setBluePicks: React.Dispatch<React.SetStateAction<string[]>>,
   setRedPicks: React.Dispatch<React.SetStateAction<string[]>>,
-  draftState: DraftStateProps
+  draftState: DraftStateProps,
+  setDraftState: React.Dispatch<
+    React.SetStateAction<DraftStateProps | undefined>
+  >
 ) => {
+
+
   let pickTimer = 30;
 
   // Reconnection/Late connection timer logic
@@ -74,28 +96,46 @@ export const handlePickPhase = (
     setCurrentTime(pickTimer);
   };
 
-  // Ban champion based on side
-  const addPickedChampions = (side: string, pickedChampion: string) => {
+  // Pick champion based on side
+  const addPickedChampions = (side: string, state: DraftStateProps) => {
+    const pickedChampion = side === 'blue' ? state.bluePick : state.redPick
     console.log("You are picking: ", side, " ", pickedChampion);
     if (side === "blue") {
-      setBluePicks((prevChampions) => [...prevChampions, pickedChampion]);
+      setBluePicks(state.bluePicks);
     } else if (side === "red") {
-      setRedPicks((prevChampions) => [...prevChampions, pickedChampion]);
+      setRedPicks(state.redPicks);
     }
     console.log("picked Champion: ", pickedChampion);
   };
 
   // Run function to display picks
-  const setPickSocket = ({ side, pickedChampion }: PickProps) => {
-    console.log(`Pick received: ${pickedChampion}`);
-    if (bluePicks.includes(pickedChampion) || redPicks.includes(pickedChampion)) {
+  const setPickSocket = (state: DraftStateProps) => {
+    setDraftState(state);
+    let pickedChampion: string = "";
+    if (state.displayTurn === "blue") {
+      pickedChampion = state.bluePick;
+    } else if (state.displayTurn === "red") {
+      pickedChampion = state.redPick;
+    } else {
       return;
     }
-    addPickedChampions(side, pickedChampion);
+    console.log(`Pick received: ${pickedChampion}`);
+
+    // Check if champion was already picked or banned (Should never have to since to but just in case)
+    if (
+      bluePicks.includes(pickedChampion) ||
+      redPicks.includes(pickedChampion)
+    ) {
+      return;
+    }
+    addPickedChampions(state.displayTurn, state);
   };
+
+  // Set listeners
   socket.on("setPick", setPickSocket);
   socket.on("timer", timeHandler);
 
+  // remove listeners at the end of pick phase
   socket.once("endPickPhase", () => {
     console.log("PICK phase is over");
     socket.off("setPick", setPickSocket);

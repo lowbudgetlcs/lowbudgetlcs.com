@@ -1,8 +1,7 @@
 import { Server } from "socket.io";
 import { getLobbyCodes } from "../db/queries/select";
-import { DraftProps } from "../routes/draftRoutes";
 import { readyHandler } from "./readyHandler";
-import { draftState, initializeDraftState } from "./serverDraftHandler";
+import { draftState, initializeDraftState } from "./draftStateInitializer";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
@@ -85,7 +84,7 @@ export const draftSocket = (io: Server) => {
         console.log("Draft is ready in ready socket");
         state.draftStarted = true;
         state.activePhase = "banPhase1";
-        io.to(lobbyCode).emit("startBanPhase1", { lobbyCode });
+        io.to(lobbyCode).emit("startBanPhase1", state);
 
         const emitter = lobbyEmitters.get(lobbyCode);
         if (!emitter) {
@@ -114,7 +113,7 @@ export const draftSocket = (io: Server) => {
 
           if (isPickPhase1Done) {
             state.activePhase = "banPhase2";
-            io.to(lobbyCode).emit("startBanPhase2", { lobbyCode });
+            io.to(lobbyCode).emit("startBanPhase2", state);
 
             const isBanPhase2Done = await banPhase2Handler(
               io,
@@ -141,7 +140,7 @@ export const draftSocket = (io: Server) => {
                 console.log("Draft Complete!");
                 state.phaseType = null;
                 state.displayTurn = null;
-                io.to(lobbyCode).emit("draftComplete");
+                io.to(lobbyCode).emit("draftComplete", state);
                 io.in(lobbyCode).disconnectSockets();
               }
             }

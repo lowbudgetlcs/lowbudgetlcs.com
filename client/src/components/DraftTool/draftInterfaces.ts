@@ -30,16 +30,6 @@ export interface DraftStateProps {
   pickIndex: number;
   currentTurn: string;
   displayTurn: "red" | "blue" | null;
-  bluePick: string | null;
-  redPick: string | null;
-}
-
-export interface BanProps {
-  side: "blue" | "red";
-  bannedChampion: string;
-}
-
-export interface PickProps {
-  side: "blue" | "red";
-  pickedChampion: string;
+  bluePick: string;
+  redPick: string;
 }

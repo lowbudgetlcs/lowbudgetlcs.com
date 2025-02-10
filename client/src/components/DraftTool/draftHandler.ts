@@ -1,4 +1,5 @@
 import { Socket } from "socket.io-client";
+import { DraftStateProps } from "./draftInterfaces";
 
 export interface DraftCodeProps {
   draft: {
@@ -39,12 +40,9 @@ export function connectionHandler(
     }
   });
 
-  const showReady = ({ side, ready }: { side: string; ready: boolean }) => {
-    if (side === "blue") {
-      setBlueReady(ready);
-    } else if (side === "red") {
-      setRedReady(ready);
-    }
+  const showReady = (state: DraftStateProps) => {
+    setBlueReady(state.blueReady);
+    setRedReady(state.redReady);
   };
   socket.on("blueReady", showReady);
   socket.on("redReady", showReady);
