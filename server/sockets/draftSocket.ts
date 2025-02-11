@@ -140,6 +140,7 @@ export const draftSocket = (io: Server) => {
                 console.log("Draft Complete!");
                 state.phaseType = null;
                 state.displayTurn = null;
+                state.timer = 0
                 io.to(lobbyCode).emit("draftComplete", state);
                 io.in(lobbyCode).disconnectSockets();
               }

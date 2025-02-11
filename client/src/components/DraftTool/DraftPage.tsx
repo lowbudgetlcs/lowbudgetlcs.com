@@ -28,6 +28,7 @@ function DraftPage() {
   const [redReady, setRedReady] = useState<boolean>(false);
   const [playerTurn, setPlayerTurn] = useState<string | null>("");
   const [playerSide, setPlayerSide] = useState<string>("");
+  const [draftFinished, setDraftFinished] = useState<boolean>(false);
 
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
@@ -40,13 +41,11 @@ function DraftPage() {
   useEffect(() => {
     const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
-
     setChampionRoles(championsData);
-
     console.log("lobby code: ", lobbyCode);
 
     // Run connection Handler Function with lobby code
-    const handleConnection = async () => {
+    const startConnection = async () => {
       connectionHandler(
         lobbyCode,
         sideCode,
@@ -56,11 +55,11 @@ function DraftPage() {
         setPlayerSide
       );
     };
-    newSocket.on("connect", handleConnection);
+    newSocket.on("connect", startConnection);
 
     // Cleanup on unmount
     return () => {
-      newSocket.off("connect", handleConnection);
+      newSocket.off("connect", startConnection);
       newSocket.disconnect();
     };
   }, [lobbyCode, sideCode]);
@@ -69,8 +68,9 @@ function DraftPage() {
     if (!socket) {
       return;
     }
-    const reconnectionHandler = (state: DraftStateProps) => {
+    const startReconnection = (state: DraftStateProps) => {
       setDraftState(state);
+      setCurrentTime(state.timer)
       if (state.blueBans.length > 0) {
         setBlueBans(state.blueBans);
       }
@@ -107,14 +107,16 @@ function DraftPage() {
           state,
           setDraftState
         );
+      } else if (state.activePhase === "finished") {
+        setDraftFinished(true)
       }
 
       setPlayerTurn(state.displayTurn);
     };
-    socket.on("state", reconnectionHandler);
+    socket.on("state", startReconnection);
 
     return () => {
-      socket.off("state", reconnectionHandler);
+      socket.off("state", startReconnection);
     };
   }, [socket]);
 
@@ -154,13 +156,24 @@ function DraftPage() {
       );
     };
 
+    const endDraft = (state: DraftStateProps) => {
+      setDraftState(state);
+      setDraftFinished(true);
+      setBanPhase(false);
+      setPickPhase(false)
+      setPlayerTurn(null)
+      setCurrentTime(0)
+    };
+
     // Listening for beginning of phases
     socket.on("banPhase", startBanPhase);
     socket.on("pickPhase", startPickPhase);
+    socket.once("draftComplete", endDraft);
 
     return () => {
       socket.off("banPhase", startBanPhase);
       socket.off("pickPhase", startPickPhase);
+      socket.off("draftComplete", endDraft);
     };
   }, [socket, draftState]);
 
@@ -305,7 +318,15 @@ function DraftPage() {
           />
         </div>
         {/* Ready Button */}
-        {draftState?.activePhase !== "finished" ? (
+        {draftFinished === true ? (
+          <button
+            className={`Timer p-4 bg-gray ${
+              banPhase || pickPhase ? "hidden" : ""
+            } max-h-16 flex items-center justify-center hover:cursor-default`}
+          >
+            Draft Finished
+          </button>
+        ) : (
           <button
             onClick={toggleReady}
             className={`p-4 ${ready ? "bg-gray" : "bg-orange"} ${
@@ -313,14 +334,6 @@ function DraftPage() {
             } max-h-16 flex items-center justify-center hover:cursor-pointer`}
           >
             {ready ? "Waiting" : "Ready"}
-          </button>
-        ) : (
-          <button
-            className={`Timer p-4 bg-gray ${
-              banPhase || pickPhase ? "hidden" : ""
-            } max-h-16 flex items-center justify-center hover:cursor-default`}
-          >
-            Draft Finished
           </button>
         )}
         {/* Pick/Ban Button */}
