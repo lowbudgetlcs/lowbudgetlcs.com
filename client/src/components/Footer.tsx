@@ -29,6 +29,11 @@ function Footer() {
               <div className="">Rosters</div>
             </NavLink>
           </li>
+          <li className="">
+            <NavLink className="hover:text-orange transition" to="/draft">
+              <div className="">Draft Tool</div>
+            </NavLink>
+          </li>
           {/* <li className="">
             <NavLink className="hover:text-orange transition" to="/stats">
               <div className="">Stats</div>
