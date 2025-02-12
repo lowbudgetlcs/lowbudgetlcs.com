@@ -26,7 +26,7 @@ function App() {
   const location = useLocation()
   const isDraftRoute = location.pathname.startsWith("/draft/")
   return (
-    <div className=" relative font-serif min-h-screen bg-black">
+    <div className=" relative font-serif max-h-screen bg-black">
 
         <ScrollToTop />
         <Twitch />

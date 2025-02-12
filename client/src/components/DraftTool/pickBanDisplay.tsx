@@ -133,7 +133,7 @@ const FirstBans = memo(
       banDivs.push(
         <div
           key={i}
-          className={`ban${i + 1} w-24 h-24 border-2 ${
+          className={`ban${i + 1} w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 border-2 ${
             playerTurn === side &&
             side === "blue" &&
             currentPhase === "banPhase1" &&
@@ -172,7 +172,7 @@ const LastBans = memo(
       banDivs.push(
         <div
           key={i}
-          className={`ban${i + 1} w-24 h-24 border-2 ${
+          className={`ban${i + 1} w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 border-2 ${
             playerTurn === side &&
             side === "blue" &&
             currentPhase === "banPhase2" &&
@@ -207,35 +207,43 @@ export const DisplayBans = ({
 }) => {
   return side === "blue" ? (
     <>
-      <FirstBans
-        bans={bans}
-        side={side}
-        playerTurn={playerTurn}
-        currentPhase={currentPhase}
-      />
-      <div className="space h-4"></div>
-      <LastBans
-        bans={bans}
-        side={side}
-        playerTurn={playerTurn}
-        currentPhase={currentPhase}
-      />
+      <div className="flex gap-4">
+        <FirstBans
+          bans={bans}
+          side={side}
+          playerTurn={playerTurn}
+          currentPhase={currentPhase}
+        />
+      </div>
+      <div className="space h-4 max-[1275px]:hidden"></div>
+      <div className="flex gap-4">
+        <LastBans
+          bans={bans}
+          side={side}
+          playerTurn={playerTurn}
+          currentPhase={currentPhase}
+        />
+      </div>
     </>
   ) : (
     <>
-      <LastBans
-        bans={bans}
-        side={side}
-        playerTurn={playerTurn}
-        currentPhase={currentPhase}
-      />
-      <div className="space h-4"></div>
-      <FirstBans
-        bans={bans}
-        side={side}
-        playerTurn={playerTurn}
-        currentPhase={currentPhase}
-      />
+      <div className="flex gap-4">
+        <LastBans
+          bans={bans}
+          side={side}
+          playerTurn={playerTurn}
+          currentPhase={currentPhase}
+        />
+      </div>
+      <div className="space h-4 max-[1275px]:hidden"></div>
+      <div className="flex gap-4">
+        <FirstBans
+          bans={bans}
+          side={side}
+          playerTurn={playerTurn}
+          currentPhase={currentPhase}
+        />
+      </div>
     </>
   );
 };

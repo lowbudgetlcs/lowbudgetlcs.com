@@ -79,16 +79,13 @@ export function LoadChampIcons({
                       : "animate-pulse"
                   }`
                 : ""
-            }`}
+            }
+            w-28 object-contain max-[1100px]:w-24`
+          }
               src={`${dDragonIconLink}${
                 champion.name === "Wukong" ? "monkeyking" : champion.name
               }/square`}
               alt={champion.name}
-              style={{
-                width: "100px",
-                height: "100px",
-                objectFit: "contain",
-              }}
             />
           </li>
         );

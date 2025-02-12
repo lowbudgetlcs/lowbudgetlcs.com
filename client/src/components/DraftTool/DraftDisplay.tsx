@@ -47,7 +47,7 @@ function DraftDisplay({
   }, [draftState.timer]);
 
   return (
-    <div className="relative text-white py-2  h-full flex flex-col">
+    <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
         <p
           className={`${
@@ -88,7 +88,7 @@ function DraftDisplay({
       {/* Main Container */}
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
-        <div className="blueSidePicks flex flex-col gap-4 p-4">
+        <div className="blueSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
           <DisplayPicks
             picks={draftState.bluePicks}
             championRoles={championRoles}
@@ -98,8 +98,8 @@ function DraftDisplay({
           />
         </div>
         {/* Champion Pick Container */}
-        <div className="championPickContainer flex flex-col w-full ">
-          <div className="searchFilter flex justify-between items-center px-6 py-4">
+        <div className="championPickContainer w-full">
+          <div className="searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4">
             <div className="champFilter flex gap-4">
               <RoleSelect
                 selectedRole={selectedRole}
@@ -121,8 +121,8 @@ function DraftDisplay({
             </form>
           </div>
           {/* List of Champion Images */}
-          <div>
-            <ul className="champions flex flex-wrap overflow-y-scroll max-h-[640px] gap-2 justify-center">
+          <div className="">
+            <ul className="champions flex flex-wrap overflow-y-scroll max-h-[616px] gap-2 justify-center max-[1100px]:max-h-[580px]">
               <LoadChampIcons
                 championRoles={championRoles}
                 searchValue={searchValue}
@@ -138,7 +138,7 @@ function DraftDisplay({
           </div>
         </div>
         {/* Red Side Picks */}
-        <div className="redSidePicks flex flex-col gap-4 p-4">
+        <div className="redSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
           <DisplayPicks
             picks={draftState.redPicks}
             championRoles={championRoles}
@@ -149,9 +149,9 @@ function DraftDisplay({
         </div>
       </div>
       {/* Champion Bans*/}
-      <div className="champBans flex w-full justify-between gap-8 items-center py-8 px-4">
+      <div className="champBans flex w-full justify-between gap-8 items-center pt-8 max-[1100px]:pt-4 px-4">
         {/* Blue Side Bans */}
-        <div className="blueSideBans flex justify-between items-center gap-4">
+        <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
           <DisplayBans
             bans={draftState.blueBans}
             side={"blue"}
@@ -202,7 +202,7 @@ function DraftDisplay({
           </button>
         )}
         {/* Red Side Bans */}
-        <div className="redSideBans flex justify-between items-center gap-4">
+        <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
           <DisplayBans
             bans={draftState.redBans}
             side={"red"}

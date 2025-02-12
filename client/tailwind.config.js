@@ -4,6 +4,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/components/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
 
@@ -68,6 +69,7 @@ export default {
     screens: {
       xl: '1440px',
       lg: '1024px',
+      draftMd: '900px',
       md: '768px',
       sm: '375px',
 
