@@ -16,9 +16,9 @@ import ASCommercial from "./components/AllStarsPage/ASCommercial";
 import ASFinancial from "./components/AllStarsPage/ASFinancial";
 import ASExecutive from "./components/AllStarsPage/ASExecutive";
 import StatsMain from "./components/StatsPage/StatsMain";
-import StatsPlayer from "./components/StatsPage/StatsPlayer";
+// import StatsPlayer from "./components/StatsPage/StatsPlayer";
 import StatsSeason from "./components/StatsPage/StatsSeason";
-import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
+// import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
 import CreateDraft from "./components/DraftTool/CreateDraft";
 import DraftPage from "./components/DraftTool/DraftPage";
 
@@ -45,9 +45,9 @@ function App() {
               <Route path="executive" element={<ASExecutive/>}/>
             </Route>
             <Route path="stats" element={<StatsMain/>}/>
-            <Route path="stats/player/:player" element={<StatsPlayer/>}/>
+            {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
             <Route path="stats/team/" element={<StatsSeason/>}/>
-            <Route path="stats/team/:team" element={<StatsTeamUI/>}/>
+            {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
             <Route path="*" element={<ErrorPage />} />
             <Route path="draft" element={<CreateDraft/>}/>
             <Route path="draft/:lobbyCode" element={<DraftPage/>}/>
