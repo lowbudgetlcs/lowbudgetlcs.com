@@ -51,6 +51,18 @@ export interface DraftDisplayProps {
   playerSide: string;
 }
 
+export interface DraftButtonProps {
+  draftState: DraftProps;
+  lobbyCode: string;
+  sideCode: string | undefined;
+  socket: Socket;
+  championRoles: Champion[];
+  banPhase: boolean;
+  pickPhase: boolean;
+  playerSide: string;
+  chosenChamp: string | undefined;
+  setChosenChamp: React.Dispatch<React.SetStateAction<string | undefined>>;
+}
 export interface DraftProps {
   draftStarted: boolean;
   activePhase:

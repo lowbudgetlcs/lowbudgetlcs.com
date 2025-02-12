@@ -4,7 +4,7 @@ import RoleSelect from "./RoleSelect";
 import LoadChampIcons from "./LoadChampIcons";
 import { DraftDisplayProps } from "./draftInterfaces";
 import { ChangeEvent, useEffect, useState } from "react";
-import { pickHandler, readyHandler } from "./draftHandler";
+import DraftButton from "./DraftButton";
 
 function DraftDisplay({
   draftState,
@@ -18,21 +18,8 @@ function DraftDisplay({
 }: DraftDisplayProps) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
-  const [ready, setReady] = useState<boolean>(false);
   const [chosenChamp, setChosenChamp] = useState<string>();
   const [currentTime, setCurrentTime] = useState<number>(30);
-  const toggleReady = () => {
-    setReady((prevReady) => {
-      const newReady = !prevReady;
-      readyHandler(lobbyCode, sideCode, newReady, socket);
-      return newReady;
-    });
-  };
-
-  const sendPick = (chosenChamp: string) => {
-    pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
-    setChosenChamp("");
-  };
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -159,48 +146,19 @@ function DraftDisplay({
             currentPhase={draftState.activePhase}
           />
         </div>
-        {/* Ready Button */}
-        {draftState.draftComplete === true ? (
-          <button
-            className={`Timer p-4 bg-gray ${
-              banPhase || pickPhase ? "hidden" : ""
-            } max-h-16 flex items-center justify-center hover:cursor-default`}
-          >
-            Draft Finished
-          </button>
-        ) : (
-          <button
-            onClick={toggleReady}
-            className={`p-4 ${ready ? "bg-gray" : "bg-orange"} ${
-              banPhase || pickPhase ? "hidden" : ""
-            } max-h-16 flex items-center justify-center hover:cursor-pointer`}
-          >
-            {ready ? "Waiting" : "Ready"}
-          </button>
-        )}
-        {/* Pick/Ban Button */}
-        {draftState.displayTurn === playerSide ? (
-          <button
-            onClick={() => {
-              if (chosenChamp) {
-                sendPick(chosenChamp);
-              }
-            }}
-            className={`Timer p-4 ${chosenChamp ? "bg-orange" : "bg-gray"} ${
-              banPhase || pickPhase ? "" : "hidden"
-            } max-h-16 flex items-center justify-center hover:cursor-pointer`}
-          >
-            Lock In
-          </button>
-        ) : (
-          <button
-            className={`Timer p-4 bg-gray ${
-              banPhase || pickPhase ? "" : "hidden"
-            } max-h-16 flex items-center justify-center hover:cursor-wait`}
-          >
-            Waiting Turn
-          </button>
-        )}
+        <DraftButton
+          draftState={draftState}
+          lobbyCode={lobbyCode}
+          sideCode={sideCode}
+          socket={socket}
+          banPhase={banPhase}
+          pickPhase={pickPhase}
+          championRoles={championRoles}
+          playerSide={playerSide}
+          chosenChamp={chosenChamp}
+          setChosenChamp={setChosenChamp}
+        />
+
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
           <DisplayBans
