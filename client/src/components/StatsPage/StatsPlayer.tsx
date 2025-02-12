@@ -15,10 +15,10 @@ import top from "../../assets/icons/top.svg";
 import { BsGraphUp } from "react-icons/bs";
 import { FaWheatAwn } from "react-icons/fa6";
 import { PiCampfireFill } from "react-icons/pi";
-import ornn from "../../assets/champion/Ornn.png";
-import gwen from "../../assets/champion/Gwen.png";
-import maokai from "../../assets/champion/Maokai.png";
-import volibear from "../../assets/champion/Volibear.png";
+// import ornn from "../../assets/champion/Ornn.png";
+// import gwen from "../../assets/champion/Gwen.png";
+// import maokai from "../../assets/champion/Maokai.png";
+// import volibear from "../../assets/champion/Volibear.png";
 // interface Game {
 //   id: number;
 //   kills: number;

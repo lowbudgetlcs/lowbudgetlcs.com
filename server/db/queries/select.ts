@@ -1,13 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import {
-  divisions,
-  games,
-  performances,
-  playerData,
-  players,
-  teams,
-} from "../schema";
+import { divisions, draftLobbies, games, players, teams } from "../schema";
 import { error } from "console";
 
 export async function getPlayers() {
@@ -30,13 +23,13 @@ export async function getTournamentCodes() {
   return tournamentCodes;
 }
 
-export async function getIdFromPerformance(id: number) {
-  const performanceStats = await db
-    .select({ performanceId: performances.id })
-    .from(performances)
-    .where(eq(performances.playerId, id));
-  return performanceStats;
-}
+// export async function getIdFromPerformance(id: number) {
+//   const performanceStats = await db
+//     .select({ performanceId: performances.id })
+//     .from(performances)
+//     .where(eq(performances.playerId, id));
+//   return performanceStats;
+// }
 
 export async function getPlayer(summonerName: string) {
   const player = await db
@@ -50,34 +43,95 @@ export async function getPlayer(summonerName: string) {
 
   return player;
 }
-export async function getPlayerGameStats(id: number) {
-  const gameStats = await db
-    .select()
-    .from(playerData)
-    .where(eq(playerData.performanceId, id));
-  return gameStats;
+// export async function getPlayerGameStats(id: number) {
+//   const gameStats = await db
+//     .select()
+//     .from(playerData)
+//     .where(eq(playerData.performanceId, id));
+//   return gameStats;
+// }
+
+// export async function getAllGameIDs(id: number) {
+//   const gameStats = await db
+//     .select({
+//       gameId: games.id,
+//       teamWinId: games.winnerId,
+//       teamLoseId: games.loserId,
+//     })
+//     .from(games)
+//     .leftJoin(performances, eq(games.id, performances.gameId))
+//     .where(eq(performances.teamId, id));
+//   return gameStats;
+// }
+// export async function getTeamGameStats(id: number) {
+//   const gameStats = await db
+//     .select({
+//       gameId: games.id,
+//       playerId: players.id,
+//       playerName: players.summonerName,
+//       playerStats: playerData,
+//     })
+//     .from(games)
+//     .leftJoin(performances, eq(games.id, performances.gameId)) // Join games and performances
+//     .leftJoin(playerData, eq(playerData.performanceId, performances.id)) // Join performances and playerData
+//     .leftJoin(players, eq(players.id, performances.playerId)) // Join performances and players
+//     .where(eq(performances.teamId, id)); // Filter by team ID
+//   return gameStats;
+// }
+
+export async function checkDBForURL(blueCode: string, redCode: string) {
+  const matchingURL = await db
+    .select({
+      blueCode: draftLobbies.blueCode,
+      redCode: draftLobbies.redCode,
+    })
+    .from(draftLobbies)
+    .where(
+      sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode}`
+    );
+  return matchingURL;
 }
 
-export async function getAllGameIDs(id: number) {
-  const gameStats = await db
-    .select({ gameId: games.id, teamWinId: games.winnerId, teamLoseId: games.loserId })
-    .from(games)
-    .leftJoin(performances, eq(games.id, performances.gameId))
-    .where(eq(performances.teamId, id));
-  return gameStats;
+// Check to see if shortCode exists in game table
+export async function getMatchingShortCode(shortCode: string) {
+  try {
+    const matchingCode = await db
+      .select({ shortCode: games.shortcode })
+      .from(games)
+      .where(eq(games.shortcode, shortCode));
+    const checkDupes = await checkDuplicateShortCode(shortCode);
+    if (checkDupes) {
+      return false;
+    } else {
+      return matchingCode.length > 0;
+    }
+  } catch (err) {
+    console.error("Error checking tournamentID with server: ", err);
+    throw new Error("Failed to check tournamentID");
+  }
 }
-export async function getTeamGameStats(id: number) {
-  const gameStats = await db
+
+export async function checkDuplicateShortCode(shortCode: string) {
+  try {
+    const matchingCode = await db
+      .select({ shortCode: draftLobbies.shortcode })
+      .from(draftLobbies)
+      .where(eq(draftLobbies.shortcode, shortCode));
+    return matchingCode.length > 0;
+  } catch (err) {
+    console.error("Error checking tournamentID with server: ", err);
+    throw new Error("Failed to check tournamentID");
+  }
+}
+
+export async function getLobbyCodes(lobbyCode: string) {
+  const matchingCodes = await db
     .select({
-      gameId: games.id,
-      playerId: players.id,
-      playerName: players.summonerName,
-      playerStats: playerData,
+      lobbyCode: draftLobbies.lobbyCode,
+      redCode: draftLobbies.redCode,
+      blueCode: draftLobbies.blueCode,
     })
-    .from(games)
-    .leftJoin(performances, eq(games.id, performances.gameId)) // Join games and performances
-    .leftJoin(playerData, eq(playerData.performanceId, performances.id)) // Join performances and playerData
-    .leftJoin(players, eq(players.id, performances.playerId)) // Join performances and players
-    .where(eq(performances.teamId, id)); // Filter by team ID
-  return gameStats;
+    .from(draftLobbies)
+    .where(eq(draftLobbies.lobbyCode, lobbyCode));
+  return matchingCodes.length > 0 ? matchingCodes[0] : null;
 }
