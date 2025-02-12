@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { connectionHandler } from "./draftHandler";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
 import championsData from "./championRoles.json";
 import { Champion, DraftProps, DraftStateProps } from "./draftInterfaces";
 import DraftDisplay from "./DraftDisplay";
+import Button from "../Button";
 
 function DraftPage() {
   const [draftState, setDraftState] = useState<DraftProps>({
@@ -39,6 +40,7 @@ function DraftPage() {
   const [pickPhase, setPickPhase] = useState<boolean>(false);
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
   const [playerSide, setPlayerSide] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
 
   // Grab the lobby code
   const params = useParams();
@@ -59,11 +61,13 @@ function DraftPage() {
         lobbyCode,
         sideCode,
         setDraftState,
-        setPlayerSide
+        setPlayerSide,
+        setError
       );
     };
     newSocket.on("connect", startConnection);
     setLoading(false);
+    
     // Cleanup on unmount
     return () => {
       newSocket.off("connect", startConnection);
@@ -77,6 +81,7 @@ function DraftPage() {
       return;
     }
     const startReconnection = (state: DraftStateProps) => {
+      setLoading(true);
       setDraftState((prevState) => ({
         ...prevState,
         ...state,
@@ -89,7 +94,7 @@ function DraftPage() {
       }
     };
     socket.on("state", startReconnection);
-
+    setLoading(false);
     return () => {
       socket.off("state", startReconnection);
     };
@@ -157,7 +162,7 @@ function DraftPage() {
     };
   }, [socket]);
 
-  if (draftState && lobbyCode && socket) {
+  if (draftState && lobbyCode && socket && !error) {
     return (
       <>
         <DraftDisplay
@@ -173,11 +178,24 @@ function DraftPage() {
       </>
     );
   } else if (loading) {
-    return <div className="text-white">Loading Draft</div>;
-  } else {
     return (
-      <div className="text-white">
-        This will be the error page if draft cannot be found
+      <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
+        <p>Loading Draft</p>
+        <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
+      </div>
+    );
+  } else if (error) {
+    return (
+      <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-4">
+        <p className="text-6xl font-bold">Draft Not Found</p>
+        <p className="text-red">
+          Some error has occured. Check your URL or click the button below!
+        </p>
+        <div className="cursor-pointer">
+          <Link to={"/draft"}>
+            <Button>Back to Draft Creation</Button>
+          </Link>
+        </div>
       </div>
     );
   }

@@ -18,7 +18,8 @@ export function connectionHandler(
   lobbyCode: string | undefined,
   sideCode: string | undefined,
   setDraftState: React.Dispatch<React.SetStateAction<DraftProps>>,
-  setPlayerSide: React.Dispatch<React.SetStateAction<string>>
+  setPlayerSide: React.Dispatch<React.SetStateAction<string>>,
+  setError: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   // Error handling
   // Initial connection
@@ -26,7 +27,7 @@ export function connectionHandler(
   socket.emit("joinDraft", { lobbyCode, sideCode });
   socket.on("error", (err) => {
     console.error("Socket Error: ", err.message);
-    alert(err.message);
+    setError(true)
   });
 
   socket.on("joinedDraft", ({ sideCode, lobbyCode, sideDisplay }) => {
