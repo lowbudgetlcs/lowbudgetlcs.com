@@ -21,23 +21,31 @@ export function connectionHandler(
   setPlayerSide: React.Dispatch<React.SetStateAction<string>>,
   setError: React.Dispatch<React.SetStateAction<boolean>>
 ) {
-  // Error handling
   // Initial connection
   console.log("Client sent lobbyCode:", lobbyCode);
   socket.emit("joinDraft", { lobbyCode, sideCode });
+
+  // Error handling
   socket.on("error", (err) => {
     console.error("Socket Error: ", err.message);
-    setError(true)
+    setError(true);
   });
 
-  socket.on("joinedDraft", ({ sideCode, lobbyCode, sideDisplay }) => {
+  // Sets the side for client
+  const joinDraft = ({
+    sideCode,
+    lobbyCode,
+    sideDisplay,
+  }: {
+    sideCode: string;
+    lobbyCode: string;
+    sideDisplay: string;
+  }) => {
     console.log("joined Draft: ", sideCode, lobbyCode);
-    if (!sideDisplay) {
-      setPlayerSide(sideDisplay);
-    } else {
-      setPlayerSide(sideDisplay);
-    }
-  });
+    setPlayerSide(sideDisplay);
+  };
+
+  socket.once("joinedDraft", joinDraft);
 
   const showReady = (state: DraftProps) => {
     setDraftState((prevState) => ({
@@ -98,7 +106,7 @@ export const checkTournamentCode = async (code: string) => {
     const response = await fetch(
       `http://localhost:8080/draft/api/checkTournamentCode/${encodedCode}`
     );
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

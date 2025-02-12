@@ -56,14 +56,8 @@ export const draftSocket = (io: Server) => {
         socket.join(lobbyCode);
         console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
-        const sideDisplay: string | null =
-          sideCode === blueCode ? "blue" : sideCode === redCode ? "red" : null;
-
-        if (sideCode !== blueCode && sideCode !== redCode) {
-          // Assign the user spectator if not using correct code
-          socket.emit("Spectator", { spectator: true });
-          return;
-        }
+        let sideDisplay: string | null =
+          sideCode === blueCode ? "blue" : sideCode === redCode ? "red" : 'spectator';
 
         socket.emit("joinedDraft", {
           success: true,
