@@ -75,11 +75,11 @@ function DraftButton({
               : "bg-gray"
           } ${
             banPhase || pickPhase ? "" : "hidden"
-          } max-h-16 flex items-center justify-center hover:cursor-pointer rounded-md  ${
+          } max-h-16 flex items-center justify-center hover:cursor-pointer rounded-md hover:shadow-lg  ${
             playerSide === "blue" && chosenChamp
-              ? " hover:brightness-150 hover:shadow-lg shadow-blue"
+              ? " hover:brightness-150  hover:shadow-blue/60"
               : playerSide === "red" && chosenChamp
-              ? " hover:brightness-150 hover:shadow-lg shadow-red"
+              ? " hover:brightness-150 hover:shadow-red/60"
               : "bg-gray"
           } transition duration-300`}
         >
