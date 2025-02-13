@@ -84,9 +84,13 @@ export interface DraftProps {
   banIndex: number;
   pickIndex: number;
   currentTurn: string;
+  currentBluePick: number;
+  currentRedPick: number;
+  currentBlueBan: number;
+  currentRedBan: number;
   displayTurn: "red" | "blue" | null;
   currentHover: string | null;
-  bluePick: string;
-  redPick: string;
+  bluePick: string | null;
+  redPick: string | null;
   draftComplete: boolean;
 }

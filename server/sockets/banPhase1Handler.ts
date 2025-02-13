@@ -69,15 +69,21 @@ export const banPhase1Handler = async ({
               if (state.bluePick) {
                 state.blueBans.push(state.bluePick);
                 state.bluePick = null;
+                state.currentBlueBan++;
               } else {
                 state.blueBans.push("nothing");
+                state.currentBlueBan++;
+                state.bluePick = null;
               }
             } else if (currentSide === state.redUser) {
               if (state.redPick) {
                 state.redBans.push(state.redPick);
                 state.redPick = null;
+                state.currentRedBan++;
               } else {
                 state.redBans.push("nothing");
+                state.currentRedBan++;
+                state.redPick = null;
               }
             }
             io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
@@ -94,6 +100,8 @@ export const banPhase1Handler = async ({
               clearInterval(interval);
               state.blueBans.push(state.bluePick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
+              state.bluePick = null;
+              state.currentBlueBan++;
               // Shut of listener incase it still is attached
               emitter.off("bluePick", banListener);
               emitter.off("redPick", banListener);
@@ -104,6 +112,8 @@ export const banPhase1Handler = async ({
               clearInterval(interval);
               state.redBans.push(state.redPick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
+              state.redPick = null;
+              state.currentRedBan++;
               // Shut of listener incase it still is attached
               emitter.off("bluePick", banListener);
               emitter.off("redPick", banListener);

@@ -28,6 +28,10 @@ function DraftPage() {
     banIndex: 0,
     pickIndex: 0,
     currentTurn: "",
+    currentBluePick: 0,
+    currentRedPick: 0,
+    currentBlueBan: 0,
+    currentRedBan: 0,
     displayTurn: null,
     currentHover: null,
     bluePick: "nothing",
@@ -48,7 +52,7 @@ function DraftPage() {
 
   useEffect(() => {
     setLoading(true);
-    const newSocket = io("https://backend.lowbudgetlcs.com");
+    const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
     setChampionRoles(championsData);
 
