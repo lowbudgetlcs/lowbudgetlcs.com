@@ -1,37 +1,48 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { DraftProps } from "./draftInterfaces";
 
- const DisplayBanImage = ({
-    banIndex,
-    bannedChampions,
-    currentHover,
-  }: {
-    banIndex: number;
-    bannedChampions: string[];
-    currentHover: DraftProps["currentHover"];
-  }) => {
-    // Check if the current slot should show the hovered champion
-    const isChampHovered = bannedChampions.length === banIndex && currentHover;
-  
-    const championName = bannedChampions[banIndex]
-      ? bannedChampions[banIndex].toLowerCase()
-      : "nothing";
-  
-      if (isChampHovered) {
-        return (
+const DisplayBanImage = ({
+  banIndex,
+  bannedChampions,
+  currentHover,
+}: {
+  banIndex: number;
+  bannedChampions: string[];
+  currentHover: DraftProps["currentHover"];
+}) => {
+  const [mounted, setMounted] = useState<boolean>(false);
+  const delay: number = 20;
+
+  useEffect(() => {
+    setTimeout(() => setMounted(true), delay);
+  });
+
+  // Check if the current slot should show the hovered champion
+  const isChampHovered = bannedChampions.length === banIndex && currentHover;
+
+  const championName = bannedChampions[banIndex]
+    ? bannedChampions[banIndex].toLowerCase()
+    : "nothing";
+
+  if (isChampHovered) {
+    return (
+      mounted && (
         <div
           style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${currentHover === "wukong" ? "monkeyking" : currentHover}/splash-art/centered')`,
+            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
+              currentHover === "wukong" ? "monkeyking" : currentHover
+            }/splash-art/centered')`,
           }}
           className={`relative w-full h-full bg-[51%_20%] bg-[size:420%] grayscale-[90%]`}
         ></div>
-        );
-      }
-    
-  
-    if (bannedChampions[banIndex] === "nothing") {
-      return (
+      )
+    );
+  }
+
+  if (bannedChampions[banIndex] === "nothing") {
+    return (
+      mounted && (
         <img
           src={tempImage}
           alt="nothing"
@@ -39,17 +50,22 @@ import { DraftProps } from "./draftInterfaces";
           height="200px"
           className="object-cover scale-90 grayscale opacity-25"
         />
-      );
-    } else if (championName !== "nothing") {
-      return (
+      )
+    );
+  } else if (championName !== "nothing") {
+    return (
+      mounted && (
         <div
           style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName === "wukong" ? "monkeyking" : championName}/tile')`,
+            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
+              championName === "wukong" ? "monkeyking" : championName
+            }/tile')`,
           }}
           className={`relative w-full h-full bg-cover scale-110`}
         ></div>
-      );
-    }
-  };
-  
-  export default memo(DisplayBanImage)
+      )
+    );
+  }
+};
+
+export default memo(DisplayBanImage);

@@ -182,6 +182,7 @@ function DraftDisplay({
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
           <DisplayBans
+            draftState={draftState}
             bans={draftState.blueBans}
             enemyBans={draftState.redBans}
             playerSide={"blue"}
@@ -204,6 +205,7 @@ function DraftDisplay({
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
           <DisplayBans
+            draftState={draftState}
             bans={draftState.redBans}
             enemyBans={draftState.blueBans}
             playerSide={"red"}

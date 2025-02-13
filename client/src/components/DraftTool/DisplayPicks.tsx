@@ -41,7 +41,10 @@ const DisplayPicks = ({
     }
 
     const isSlotActive = sidePick === pickIndex;
-    const previousSlotsFilled = Array.from({ length: pickIndex }, (_, i) => picks[i]).every(Boolean);
+    const previousSlotsFilled = Array.from(
+      { length: pickIndex },
+      (_, i) => picks[i]
+    ).every(Boolean);
 
     return isSlotActive && previousSlotsFilled;
   };
@@ -59,132 +62,65 @@ const DisplayPicks = ({
   }
   return (
     <>
-      <div
-        className={`pick1 w-64 h-28 overflow-hidden  ${
-          playerTurn === playerSide &&
-          playerSide === "blue" &&
-          currentPhase === "pickPhase1" &&
-          sidePick === 0
-            ? "border-blue transition-all delay-[20ms] border-4"
-            : playerTurn === playerSide &&
-              playerSide === "red" &&
-              currentPhase === "pickPhase1" &&
-              sidePick === 0
-            ? "border-red transition-all delay-[20ms] border-4"
-            : "border-gray border-2"
-        } bg-gray/60 rounded-md`}
-      >
-        {shouldRender(0) && (
-          <DisplayPickImage
-            playerSide={playerSide}
-            pickIndex={0}
-            pickedChampions={picks}
-            championRoles={championRoles}
-            currentHover={correctSideHover}
-          />
-        )}
-      </div>
-      <div
-        className={`pick2 w-64 h-28 overflow-hidden  ${
-          playerTurn === playerSide &&
-          playerSide === "blue" &&
-          currentPhase === "pickPhase1" &&
-          sidePick === 1
-            ? "border-blue transition-all delay-[20ms] border-4"
-            : playerTurn === playerSide &&
-              playerSide === "red" &&
-              currentPhase === "pickPhase1" &&
-              sidePick === 1
-            ? "border-red transition-all delay-[20ms] border-4"
-            : "border-gray border-2"
-        } bg-gray/60 rounded-md`}
-      >
-        {shouldRender(1) && (
-          <DisplayPickImage
-            playerSide={playerSide}
-            pickIndex={1}
-            pickedChampions={picks}
-            championRoles={championRoles}
-            currentHover={correctSideHover}
-          />
-        )}
-      </div>
-      <div
-        className={`pick3 w-64 h-28 overflow-hidden  ${
-          playerTurn === playerSide &&
-          playerSide === "blue" &&
-          currentPhase === "pickPhase1" &&
-          sidePick === 2
-            ? "border-blue transition-all delay-[20ms] border-4"
-            : playerTurn === playerSide &&
-              playerSide === "red" &&
-              currentPhase === "pickPhase1" &&
-              sidePick === 2
-            ? "border-red transition-all delay-[20ms] border-4"
-            : "border-gray border-2"
-        } bg-gray/60 rounded-md`}
-      >
-        {shouldRender(2) && (
-          <DisplayPickImage
-            playerSide={playerSide}
-            pickIndex={2}
-            pickedChampions={picks}
-            championRoles={championRoles}
-            currentHover={correctSideHover}
-          />
-        )}
-      </div>
+    {/* Pick Phase 1 */}
+      {[0, 1, 2].map((index) => (
+        <div
+          className={`pick1 w-64 h-28 overflow-hidden  ${
+            playerTurn === playerSide &&
+            playerSide === "blue" &&
+            currentPhase === "pickPhase1" &&
+            sidePick === index
+              ? "border-blue transition-all border-4"
+              : playerTurn === playerSide &&
+                playerSide === "red" &&
+                currentPhase === "pickPhase1" &&
+                sidePick === index
+              ? "border-red transition-all border-4"
+              : "border-gray border-2"
+          } bg-gray/60 rounded-md`}
+        >
+          {shouldRender(index) && (
+            <DisplayPickImage
+              playerSide={playerSide}
+              pickIndex={index}
+              pickedChampions={picks}
+              championRoles={championRoles}
+              currentHover={correctSideHover}
+            />
+          )}
+        </div>
+      ))}
+
       <div className="space h-4"></div>
-      <div
-        className={`pick4 w-64 h-28 overflow-hidden  ${
-          playerTurn === playerSide &&
-          playerSide === "blue" &&
-          currentPhase === "pickPhase2" &&
-          sidePick === 3
-            ? "border-blue transition-all delay-[20ms] border-4"
-            : playerTurn === playerSide &&
-              playerSide === "red" &&
-              currentPhase === "pickPhase2" &&
-              sidePick === 3
-            ? "border-red transition-all delay-[20ms] border-4"
-            : "border-gray border-2"
-        } bg-gray/60 rounded-md`}
-      >
-        {shouldRender(3) && (
-          <DisplayPickImage
-            playerSide={playerSide}
-            pickIndex={3}
-            pickedChampions={picks}
-            championRoles={championRoles}
-            currentHover={correctSideHover}
-          />
-        )}
-      </div>
-      <div
-        className={`pick5 w-64 h-28 overflow-hidden  ${
-          playerTurn === playerSide &&
-          playerSide === "blue" &&
-          currentPhase === "pickPhase2" &&
-          sidePick === 4
-            ? "border-blue transition-all delay-[20ms] border-4"
-            : playerTurn === playerSide &&
-              playerSide === "red" &&
-              currentPhase === "pickPhase2" &&
-              sidePick === 4
-            ? "border-red transition-all delay-[20ms] border-4"
-            : "border-gray border-2"
-        } bg-gray/60 rounded-md`}
-      >
-        {shouldRender(4) && (
-          <DisplayPickImage
-            playerSide={playerSide}
-            pickIndex={4}
-            pickedChampions={picks}
-            championRoles={championRoles}
-            currentHover={correctSideHover}
-          />
-        )}
-      </div>
+
+      {/* Pick Phase 2 */}
+      {[3, 4].map((index) => (
+        <div
+          className={`pick1 w-64 h-28 overflow-hidden  ${
+            playerTurn === playerSide &&
+            playerSide === "blue" &&
+            currentPhase === "pickPhase1" &&
+            sidePick === index
+              ? "border-blue transition-all delay-[20ms] border-4"
+              : playerTurn === playerSide &&
+                playerSide === "red" &&
+                currentPhase === "pickPhase1" &&
+                sidePick === index
+              ? "border-red transition-all delay-[20ms] border-4"
+              : "border-gray border-2"
+          } bg-gray/60 rounded-md`}
+        >
+          {shouldRender(index) && (
+            <DisplayPickImage
+              playerSide={playerSide}
+              pickIndex={index}
+              pickedChampions={picks}
+              championRoles={championRoles}
+              currentHover={correctSideHover}
+            />
+          )}
+        </div>
+      ))}
     </>
   );
 };
