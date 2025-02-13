@@ -242,6 +242,7 @@ https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
             <span className="text-blue">Blue Side</span> Link:
           </h3>
           <Link
+            target="_blank"
             to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`}
             className="text-xl hover:text-blue transition duration-300 py-4"
           >
@@ -254,6 +255,7 @@ https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
             <span className="text-red">Red Side</span> Link:
           </h3>
           <Link
+            target="_blank"
             to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`}
             className="text-xl hover:text-red transition duration-300 py-4"
           >
@@ -266,6 +268,7 @@ https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
             <span className="text-yellow">Spectator</span> Link:
           </h3>
           <Link
+            target="_blank"
             to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`}
             className="text-xl hover:text-yellow transition duration-300 py-4"
           >
