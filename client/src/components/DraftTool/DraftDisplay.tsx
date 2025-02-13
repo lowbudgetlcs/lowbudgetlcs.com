@@ -41,12 +41,12 @@ function DraftDisplay({
 
   useEffect(() => {
     if (!draftState.bluePick && chosenChamp) {
-      setChosenChamp(undefined)
+      setChosenChamp(undefined);
     }
     if (!draftState.redPick && chosenChamp) {
-      setChosenChamp(undefined)
+      setChosenChamp(undefined);
     }
-  }, [draftState.bluePick, draftState.redPick])
+  }, [draftState.bluePick, draftState.redPick]);
 
   useEffect(() => {
     if (draftState.displayTurn !== playerSide) {
@@ -108,15 +108,16 @@ function DraftDisplay({
           />
         </div>
         {/* Champion Pick Container */}
-        <div className="championPickContainer w-full">
-          <div className="searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4">
-            <div className="champFilter flex gap-4">
+        <div className="championPickContainer relative w-full">
+        <div className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${playerSide === draftState.displayTurn ? draftState.phaseType === "ban" ? "bg-red/25" : draftState.phaseType === "pick" ? "bg-blue/25" : "hidden" : "hidden"} z-0 filter blur-lg`}></div>
+          <div className="relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4">
+            <div className="relative champFilter flex gap-4">
               <RoleSelect
                 selectedRole={selectedRole}
                 setSelectedRole={setSelectedRole}
               />
             </div>
-            <form className="bg-gray flex items-center rounded-md">
+            <form className="relative bg-gray flex items-center rounded-md">
               <label htmlFor="championSearch" className="px-2">
                 <IoSearch className="text-3xl" />
               </label>
@@ -131,20 +132,24 @@ function DraftDisplay({
             </form>
           </div>
           {/* List of Champion Images */}
-          <div className="h-[616px] max-[1100px]:h-[580px] overflow-y-scroll">
-            <ul className="champions flex flex-wrap gap-2 justify-center">
-              <LoadChampIcons
-                championRoles={championRoles}
-                searchValue={searchValue}
-                selectedRole={selectedRole}
-                pickedChampions={draftState.bluePicks.concat(
-                  draftState.redPicks
-                )}
-                bannedChampions={draftState.blueBans.concat(draftState.redBans)}
-                chosenChamp={chosenChamp}
-                setChosenChamp={setChosenChamp}
-              />
-            </ul>
+          <div className="relative h-[616px] max-[1100px]:h-[580px] overflow-y-scroll bg-transparent">
+            <div className="relative">
+              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10">
+                <LoadChampIcons
+                  championRoles={championRoles}
+                  searchValue={searchValue}
+                  selectedRole={selectedRole}
+                  pickedChampions={draftState.bluePicks.concat(
+                    draftState.redPicks
+                  )}
+                  bannedChampions={draftState.blueBans.concat(
+                    draftState.redBans
+                  )}
+                  chosenChamp={chosenChamp}
+                  setChosenChamp={setChosenChamp}
+                />
+              </ul>
+            </div>
           </div>
         </div>
         {/* Red Side Picks */}
