@@ -68,7 +68,7 @@ function About() {
         <p className="summary text-lg md:text-xl px-16 py-4">
           For more detailed information check out the rules document!
         </p>
-        <NavLink target="_blank" to={'https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing'}>
+        <NavLink target="_blank" to={'https://docs.google.com/document/d/16uYlGmADc1x1v3MXQhRgUqICNabnjxqiirJmw7W-tQI/edit?usp=sharing'}>
               <Button>Rules Document</Button>
             </NavLink>
       </div>
