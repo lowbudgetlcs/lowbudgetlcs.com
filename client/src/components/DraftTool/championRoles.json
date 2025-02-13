@@ -15,6 +15,11 @@
     "roles": ["Mid", "Top"]
   },
   {
+    "name": "Akshan",
+    "displayName": "Akshan",
+    "roles": ["Mid"]
+  },
+  {
     "name": "Alistar",
     "displayName": "Alistar",
     "roles": ["Support"]
@@ -55,6 +60,11 @@
     "roles": ["Mid"]
   },
   {
+    "name": "Aurora",
+    "displayName": "Aurora",
+    "roles": ["Mid", "Top"]
+  },
+  {
     "name": "Azir",
     "displayName": "Azir",
     "roles": ["Mid"]
@@ -63,6 +73,11 @@
     "name": "Bard",
     "displayName": "Bard",
     "roles": ["Support"]
+  },
+  {
+    "name": "Belveth",
+    "displayName": "Bel'Veth",
+    "roles": ["Jungle"]
   },
   {
     "name": "Blitzcrank",
@@ -78,6 +93,11 @@
     "name": "Braum",
     "displayName": "Braum",
     "roles": ["Support"]
+  },
+  {
+    "name": "Briar",
+    "displayName": "Briar",
+    "roles": ["Jungle"]
   },
   {
     "name": "Caitlyn",
@@ -115,14 +135,14 @@
     "roles": ["Mid", "Jungle"]
   },
   {
-    "name": "DrMundo",
-    "displayName": "Dr. Mundo",
-    "roles": ["Top"]
-  },
-  {
     "name": "Draven",
     "displayName": "Draven",
     "roles": ["Bottom"]
+  },
+  {
+    "name": "DrMundo",
+    "displayName": "Dr. Mundo",
+    "roles": ["Top"]
   },
   {
     "name": "Ekko",
@@ -290,14 +310,19 @@
     "roles": ["Top", "Mid"]
   },
   {
-    "name": "Khazix",
-    "displayName": "Kha'Zix",
+    "name": "Kayn",
+    "displayName": "Kayn",
     "roles": ["Jungle"]
   },
   {
     "name": "Kennen",
     "displayName": "Kennen",
     "roles": ["Top", "Mid"]
+  },
+  {
+    "name": "Khazix",
+    "displayName": "Kha'Zix",
+    "roles": ["Jungle"]
   },
   {
     "name": "Kindred",
@@ -313,6 +338,11 @@
     "name": "KogMaw",
     "displayName": "Kog'Maw",
     "roles": ["Bottom"]
+  },
+  {
+    "name": "Ksante",
+    "displayName": "K'Sante",
+    "roles": ["Top", "Mid"]
   },
   {
     "name": "Leblanc",
@@ -430,6 +460,11 @@
     "roles": ["Jungle"]
   },
   {
+    "name": "Nilah",
+    "displayName": "Nilah",
+    "roles": ["Bottom"]
+  },
+  {
     "name": "Nocturne",
     "displayName": "Nocturne",
     "roles": ["Jungle"]
@@ -500,6 +535,11 @@
     "roles": ["Support"]
   },
   {
+    "name": "Renata",
+    "displayName": "Renata Glasc",
+    "roles": ["Support"]
+  },
+  {
     "name": "Renekton",
     "displayName": "Renekton",
     "roles": ["Top"]
@@ -532,7 +572,7 @@
   {
     "name": "Sejuani",
     "displayName": "Sejuani",
-    "roles": ["Jungle", "Top"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Senna",
@@ -572,7 +612,7 @@
   {
     "name": "Sion",
     "displayName": "Sion",
-    "roles": ["Top", "Jungle"]
+    "roles": ["Top"]
   },
   {
     "name": "Sivir",
@@ -583,6 +623,11 @@
     "name": "Skarner",
     "displayName": "Skarner",
     "roles": ["Jungle"]
+  },
+  {
+    "name": "Smolder",
+    "displayName": "Smolder",
+    "roles": ["Bottom"]
   },
   {
     "name": "Sona",
@@ -767,17 +812,22 @@
   {
     "name": "Yuumi",
     "displayName": "Yuumi",
-    "roles": ["Support", "Mid"]
+    "roles": ["Support"]
   },
   {
     "name": "Zac",
     "displayName": "Zac",
-    "roles": ["Jungle"]
+    "roles": ["Jungle", "Top"]
   },
   {
     "name": "Zed",
     "displayName": "Zed",
     "roles": ["Mid", "Jungle"]
+  },
+  {
+    "name": "Zeri",
+    "displayName": "Zeri",
+    "roles": ["Bottom"]
   },
   {
     "name": "Ziggs",
