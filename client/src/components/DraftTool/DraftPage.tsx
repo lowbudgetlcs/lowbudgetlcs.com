@@ -52,7 +52,7 @@ function DraftPage() {
 
   useEffect(() => {
     setLoading(true);
-    const newSocket = io("http://localhost:8080");
+    const newSocket = io("https://backend.lowbudgetlcs.com");
     setSocket(newSocket);
     setChampionRoles(championsData);
 
