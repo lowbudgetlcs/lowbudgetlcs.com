@@ -27,20 +27,18 @@ export async function insertDraft(draft: DraftInitializeProps) {
   }
 }
 
-export async function insertFinishedDraft(draft: DraftStateProps) {
+export async function insertFinishedDraft(
+  draft: DraftStateProps,
+  lobbyCode: string
+) {
   try {
-    // Should never hit
-    if (!draft.tournamentID) {
-      throw new Error("no tournament ID!");
-    }
-
     const insertDraft = await db
       .update(draftLobbies)
       .set({
         shortcode: draft.tournamentID,
         blueCode: draft.blueUser,
         redCode: draft.redUser,
-        lobbyCode: draft.tournamentID,
+        lobbyCode: lobbyCode,
         blueName: draft.blueDisplayName,
         redName: draft.redDisplayName,
         bPick1: draft.bluePicks[0],
@@ -64,7 +62,7 @@ export async function insertFinishedDraft(draft: DraftStateProps) {
         rBan4: draft.redBans[3],
         rBan5: draft.redBans[4],
       })
-      .where(eq(draftLobbies.shortcode, draft.tournamentID));
+      .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
     console.log("Draft inserted successfully:", insertDraft);
   } catch (err) {
