@@ -31,10 +31,10 @@ const DisplayBanImage = ({
         <div
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              currentHover === "wukong" ? "monkeyking" : currentHover
+              currentHover === "Wukong" ? "monkeyking" : currentHover
             }/tile')`,
           }}
-          className={`relative w-full h-full bg-[51%_20%] bg-[size:420%] grayscale-[90%]`}
+          className={`relative w-full h-full bg-cover grayscale-[90%]`}
         ></div>
       )
     );
@@ -58,10 +58,10 @@ const DisplayBanImage = ({
         <div
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              championName === "wukong" ? "monkeyking" : championName
+              championName === "Wukong" ? "monkeyking" : championName
             }/tile')`,
           }}
-          className={`relative w-full h-full bg-cover scale-110`}
+          className={`relative w-full h-full bg-cover`}
         ></div>
       )
     );

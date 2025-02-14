@@ -67,13 +67,18 @@ const DisplayBans = ({
             key={index}
             className={`w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 ${
               playerTurn === playerSide &&
+              playerSide === "blue" &&
               currentPhase === "banPhase1" &&
               sideBan === index &&
               !bans[index]
-                ? playerSide === "blue"
-                  ? "border-blue"
-                  : "border-red"
-                : "border-gray"
+                ? "border-blue border-4"
+                : playerTurn === playerSide &&
+                  playerSide === "red" &&
+                  currentPhase === "banPhase2" &&
+                  sideBan === index &&
+                  !bans[index]
+                ? "border-red border-4"
+                : "border-gray border-2"
             } border-2 bg-gray/60 rounded-md overflow-hidden transition-all`}
           >
             {shouldRender(index) && (
@@ -100,14 +105,19 @@ const DisplayBans = ({
             key={index}
             className={`w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 ${
               playerTurn === playerSide &&
+              playerSide === "blue" &&
               currentPhase === "banPhase2" &&
               sideBan === index &&
               !bans[index]
-                ? playerSide === "blue"
-                  ? "border-blue"
-                  : "border-red"
-                : "border-gray"
-            } border-2 bg-gray/60 rounded-md overflow-hidden transition-all`}
+                ? "border-blue border-4"
+                : playerTurn === playerSide &&
+                  playerSide === "red" &&
+                  currentPhase === "banPhase1" &&
+                  sideBan === index &&
+                  !bans[index]
+                ? "border-red border-4"
+                : "border-gray border-2"
+            } bg-gray/60 rounded-md overflow-hidden transition-all`}
           >
             {shouldRender(index) && (
               <DisplayBanImage

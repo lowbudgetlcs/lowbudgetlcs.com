@@ -22,13 +22,15 @@ const DisplayPickImage = ({
     setTimeout(() => setMounted(true), delay);
   });
 
-
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
     : "nothing";
 
-      // Check if the current slot should show the hovered champion
-  const isChampHovered = pickedChampions.length === pickIndex && currentHover && championName === "nothing";
+  // Check if the current slot should show the hovered champion
+  const isChampHovered =
+    pickedChampions.length === pickIndex &&
+    currentHover &&
+    championName === "nothing";
 
   const selectedChampion = championRoles.find(
     (champion) => champion.name.toLowerCase() === championName
@@ -46,7 +48,7 @@ const DisplayPickImage = ({
         <div
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              currentHover === "wukong" ? "monkeyking" : currentHover
+              currentHover === "Wukong" ? "monkeyking" : currentHover
             }/splash-art/centered')`,
           }}
           className="relative w-full h-full bg-[51%_20%] bg-[size:180%] grayscale-[90%]"

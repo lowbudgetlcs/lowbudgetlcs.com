@@ -62,9 +62,10 @@ const DisplayPicks = ({
   }
   return (
     <>
-    {/* Pick Phase 1 */}
+      {/* Pick Phase 1 */}
       {[0, 1, 2].map((index) => (
         <div
+          key={index}
           className={`pick1 w-64 h-28 overflow-hidden  ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
@@ -96,15 +97,16 @@ const DisplayPicks = ({
       {/* Pick Phase 2 */}
       {[3, 4].map((index) => (
         <div
+          key={index}
           className={`pick1 w-64 h-28 overflow-hidden  ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
-            currentPhase === "pickPhase1" &&
+            currentPhase === "pickPhase2" &&
             sidePick === index
               ? "border-blue transition-all delay-[20ms] border-4"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
-                currentPhase === "pickPhase1" &&
+                currentPhase === "pickPhase2" &&
                 sidePick === index
               ? "border-red transition-all delay-[20ms] border-4"
               : "border-gray border-2"
