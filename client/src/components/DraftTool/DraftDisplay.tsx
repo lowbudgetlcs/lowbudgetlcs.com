@@ -25,10 +25,13 @@ function DraftDisplay({
   // Clear the hover state when the phase changes
   useEffect(() => {
     setCurrentHover(null);
-  }, [draftState.activePhase, draftState.currentTurn]);
+  }, [draftState.activePhase, draftState.displayTurn]);
 
   useEffect(() => {
     const handleHover = (state: DraftProps) => {
+      if (state.currentHover) {
+        setChosenChamp(state.currentHover);
+      }
       setCurrentHover(state.currentHover);
     };
     socket.on("banHover", handleHover);
