@@ -32,7 +32,7 @@ const DisplayBanImage = ({
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
               currentHover === "wukong" ? "monkeyking" : currentHover
-            }/splash-art/centered')`,
+            }/tile')`,
           }}
           className={`relative w-full h-full bg-[51%_20%] bg-[size:420%] grayscale-[90%]`}
         ></div>
