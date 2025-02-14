@@ -62,7 +62,6 @@ export const banPhase1Handler = async ({
           timer--;
           state.timer = timer;
           io.to(lobbyCode).emit("timer", timer);
-          console.log(state.bluePick);
           if (timer <= 0) {
             clearInterval(interval);
             if (currentSide === state.blueUser) {
