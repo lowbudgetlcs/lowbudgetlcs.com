@@ -20,7 +20,7 @@ export async function insertDraft(draft: DraftInitializeProps) {
       })
       .returning();
 
-    console.log("Draft initial insert success:", draftLobbies.lobbyCode);
+    console.log("Draft initial insert success:", draft.lobbyCode);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");
@@ -64,7 +64,7 @@ export async function insertFinishedDraft(
       })
       .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
-    console.log("Draft full insert success:", draftLobbies.lobbyCode);
+    console.log("Draft full insert success:", lobbyCode);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");
