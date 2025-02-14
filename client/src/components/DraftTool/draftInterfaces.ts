@@ -90,7 +90,7 @@ export interface DraftProps {
   currentRedBan: number;
   displayTurn: "red" | "blue" | null;
   currentHover: string | null;
-  bluePick: string | null;
-  redPick: string | null;
+  bluePick: string;
+  redPick: string;
   draftComplete: boolean;
 }
