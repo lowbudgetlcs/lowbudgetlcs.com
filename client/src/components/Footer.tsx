@@ -19,7 +19,7 @@ function Footer() {
             <NavLink
               className="hover:text-orange transition"
               target="_blank"
-              to="https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing"
+              to="https://docs.google.com/document/d/16uYlGmADc1x1v3MXQhRgUqICNabnjxqiirJmw7W-tQI/edit?usp=sharing"
             >
               <div className="">Rules</div>
             </NavLink>
