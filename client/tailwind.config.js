@@ -47,7 +47,8 @@ export default {
         'slide-in-800': 'slide-in 0.8s 800ms forwards',
         'slide-in-900': 'slide-in 0.8s 900ms forwards',
         'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
-        'spin': 'spin 1s linear infinite'
+        'spin': 'spin 1s linear infinite',
+        'fadeIn': 'fadeIn 0.3s 1000ms forwards'
       },
       keyframes: {
         'slide-in': {
@@ -57,6 +58,10 @@ export default {
         spin: {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
         },
       },
       fontFamily: {
