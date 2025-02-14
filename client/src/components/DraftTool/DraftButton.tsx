@@ -22,6 +22,12 @@ function DraftButton({
     if (playerSide === "blue" && draftState.blueReady) {
       setReady(true);
     }
+    if (playerSide === "red" && !draftState.redReady) {
+      setReady(false);
+    }
+    if (playerSide === "blue" && !draftState.blueReady) {
+      setReady(false);
+    }
   }, [draftState.blueReady, draftState.redReady, playerSide]);
 
   useEffect(() => {

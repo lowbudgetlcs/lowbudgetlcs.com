@@ -68,15 +68,21 @@ export const pickPhase2Handler = async ({
               if (state.bluePick) {
                 state.bluePicks.push(state.bluePick);
                 state.bluePick = null;
+                state.currentBluePick++;
               } else {
                 state.bluePicks.push("nothing");
+                state.bluePick = null;
+                state.currentBluePick++;
               }
             } else if (currentSide === state.redUser) {
               if (state.redPick) {
                 state.redPicks.push(state.redPick);
                 state.redPick = null;
+                state.currentRedPick++;
               } else {
                 state.redPicks.push("nothing");
+                state.redPick = null;
+                state.currentRedPick++;
               }
             }
 
@@ -94,6 +100,8 @@ export const pickPhase2Handler = async ({
               clearInterval(interval);
               state.bluePicks.push(state.bluePick);
               io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
+              state.bluePick = null;
+              state.currentBluePick++;
               // Shut of listener incase it still is attached
               emitter.off("bluePick", pickListener);
               emitter.off("redPick", pickListener);
@@ -104,6 +112,8 @@ export const pickPhase2Handler = async ({
               clearInterval(interval);
               state.redPicks.push(state.redPick);
               io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
+              state.redPick = null;
+              state.currentRedPick++;
               // Shut of listener incase it still is attached
               emitter.off("bluePick", pickListener);
               emitter.off("redPick", pickListener);

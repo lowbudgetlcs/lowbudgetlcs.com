@@ -30,6 +30,10 @@ export interface DraftStateProps {
   banIndex: number;
   pickIndex: number;
   currentTurn: string;
+  currentBluePick: number;
+  currentRedPick: number;
+  currentBlueBan: number;
+  currentRedBan: number;
   displayTurn: "red" | "blue" | null;
   currentHover: string | null;
   bluePick: string | null;
@@ -48,10 +52,10 @@ export interface DraftInitializeProps {
 }
 
 export interface HandlerVarsProps {
-  io: Server,
-  lobbyCode: string,
-  state: DraftStateProps,
-  emitter: EventEmitter,
+  io: Server;
+  lobbyCode: string;
+  state: DraftStateProps;
+  emitter: EventEmitter;
 }
 
 export interface ClientDraftStateProps {
@@ -79,6 +83,10 @@ export interface ClientDraftStateProps {
   banIndex: number;
   pickIndex: number;
   currentTurn: string;
+  currentBluePick: number;
+  currentRedPick: number;
+  currentBlueBan: number;
+  currentRedBan: number;
   displayTurn: "red" | "blue" | null;
   currentHover: string | null;
   bluePick: string | null;
@@ -115,6 +123,10 @@ export const initializeDraftState = ({
       banIndex: 0,
       pickIndex: 0,
       currentTurn: "",
+      currentBluePick: 0,
+      currentRedPick: 0,
+      currentBlueBan: 0,
+      currentRedBan: 0,
       displayTurn: null,
       currentHover: null,
       bluePick: null,

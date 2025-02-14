@@ -14,7 +14,5 @@ export const endDraftHandler = async ({
   state.draftComplete = true;
   io.to(lobbyCode).emit("draftComplete", updateClientState(lobbyCode));
 
-  if (state.tournamentID) {
-    await insertFinishedDraft(state);
-  }
+  await insertFinishedDraft(state, lobbyCode);
 };

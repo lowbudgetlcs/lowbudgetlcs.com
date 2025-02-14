@@ -98,6 +98,7 @@ function DraftDisplay({
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
           <DisplayPicks
+            draftState={draftState}
             picks={draftState.bluePicks}
             enemyPicks={draftState.redPicks}
             championRoles={championRoles}
@@ -109,7 +110,17 @@ function DraftDisplay({
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer relative w-full">
-        <div className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${playerSide === draftState.displayTurn ? draftState.phaseType === "ban" ? "bg-red/25" : draftState.phaseType === "pick" ? "bg-blue/25" : "hidden" : "hidden"} z-0 filter blur-lg`}></div>
+          <div
+            className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
+              playerSide === draftState.displayTurn
+                ? draftState.phaseType === "ban"
+                  ? "bg-red/25"
+                  : draftState.phaseType === "pick"
+                  ? "bg-blue/25"
+                  : "hidden"
+                : "hidden"
+            } z-0 filter blur-lg`}
+          ></div>
           <div className="relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4">
             <div className="relative champFilter flex gap-4">
               <RoleSelect
@@ -155,6 +166,7 @@ function DraftDisplay({
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
           <DisplayPicks
+            draftState={draftState}
             picks={draftState.redPicks}
             enemyPicks={draftState.bluePicks}
             championRoles={championRoles}
@@ -170,6 +182,7 @@ function DraftDisplay({
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
           <DisplayBans
+            draftState={draftState}
             bans={draftState.blueBans}
             enemyBans={draftState.redBans}
             playerSide={"blue"}
@@ -192,6 +205,7 @@ function DraftDisplay({
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
           <DisplayBans
+            draftState={draftState}
             bans={draftState.redBans}
             enemyBans={draftState.blueBans}
             playerSide={"red"}
