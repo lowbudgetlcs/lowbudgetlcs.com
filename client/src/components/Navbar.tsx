@@ -117,7 +117,7 @@ function Navbar() {
         isTop ? "" : "bg-light-gray"
       }`}
     >
-      <div className="flex items-center justify-between px-4 text-lg h-full">
+      <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
         <div
           onClick={toggleNavbar}
           className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10"
