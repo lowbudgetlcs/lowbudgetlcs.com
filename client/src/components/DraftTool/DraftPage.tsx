@@ -8,6 +8,7 @@ import championsData from "./championRoles.json";
 import { Champion, DraftProps, DraftStateProps } from "./draftInterfaces";
 import DraftDisplay from "./DraftDisplay";
 import Button from "../Button";
+import { pastDraftHandler, PastLobbyProps } from "./pastDraftHandler";
 
 function DraftPage() {
   const [draftState, setDraftState] = useState<DraftProps>({
@@ -52,6 +53,34 @@ function DraftPage() {
 
   useEffect(() => {
     setLoading(true);
+    if (!lobbyCode) {
+      setError(true);
+      setLoading(false);
+      return;
+    }
+    // Checks if a draft has already happened and is in the database
+    // If it is, displays draft results without using websockets
+    const checkPastDraft = async () => {
+      try {
+        const pastDraft: PastLobbyProps | undefined = await pastDraftHandler(
+          lobbyCode
+        );
+        if (!pastDraft) {
+          setError(true);
+          console.error("Unexpected error finding past drafts");
+          return;
+        }
+        if (pastDraft.isValid && pastDraft.draftState) {
+          setDraftState(pastDraft.draftState);
+          return;
+        }
+      } catch (err) {
+        setError(true);
+        console.error("Error finding draft: ", err);
+      }
+    };
+
+    checkPastDraft();
     const newSocket = io("https://backend.lowbudgetlcs.com");
     setSocket(newSocket);
     setChampionRoles(championsData);
