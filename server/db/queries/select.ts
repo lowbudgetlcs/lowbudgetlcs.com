@@ -2,6 +2,7 @@ import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
 import { divisions, draftLobbies, games, players, teams } from "../schema";
 import { error } from "console";
+import { ClientDraftStateProps } from "../../sockets/draftState";
 
 export async function getPlayers() {
   const allPlayers = await db.select().from(players);
@@ -134,4 +135,72 @@ export async function getLobbyCodes(lobbyCode: string) {
     .from(draftLobbies)
     .where(eq(draftLobbies.lobbyCode, lobbyCode));
   return matchingCodes.length > 0 ? matchingCodes[0] : null;
+}
+
+// Finds valid past draft and returns it in the client state form
+export async function getPastDraft(lobbyCode: string) {
+  const result = await db
+    .select()
+    .from(draftLobbies)
+    .where(eq(draftLobbies.lobbyCode, lobbyCode));
+
+  const draft = result[0];
+  if (draft) {
+    const clientState: ClientDraftStateProps = {
+      draftStarted: false,
+      activePhase: "finished",
+      phaseType: null,
+      blueDisplayName: draft.blueName,
+      redDisplayName: draft.redName,
+      blueReady: true,
+      redReady: true,
+      timer: 30,
+      bansArray: [],
+      picksArray: [],
+      bluePicks: [
+        draft.bPick1 || "nothing",
+        draft.bPick2 || "nothing",
+        draft.bPick3 || "nothing",
+        draft.bPick4 || "nothing",
+        draft.bPick5 || "nothing",
+      ],
+      redPicks: [
+        draft.rPick1 || "nothing",
+        draft.rPick2 || "nothing",
+        draft.rPick3 || "nothing",
+        draft.rPick4 || "nothing",
+        draft.rPick5 || "nothing",
+      ],
+      blueBans: [
+        draft.bBan1 || "nothing",
+        draft.bBan2 || "nothing",
+        draft.bBan3 || "nothing",
+        draft.bBan4 || "nothing",
+        draft.bBan5 || "nothing",
+      ],
+      redBans: [
+        draft.rBan1 || "nothing",
+        draft.rBan2 || "nothing",
+        draft.rBan3 || "nothing",
+        draft.rBan4 || "nothing",
+        draft.rBan5 || "nothing",
+      ],
+      banIndex: 0,
+      pickIndex: 0,
+      currentTurn: "",
+      currentBluePick: 0,
+      currentRedPick: 0,
+      currentBlueBan: 0,
+      currentRedBan: 0,
+      displayTurn: null,
+      currentHover: null,
+      bluePick: null,
+      redPick: null,
+      draftComplete: true,
+    };
+
+    return clientState;
+  }
+
+  return null;
 }

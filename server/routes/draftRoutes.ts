@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
 import { insertDraft } from "../db/queries/insert";
-import { checkDBForURL, getMatchingShortCode } from "../db/queries/select";
+import { checkDBForURL, getMatchingShortCode, getPastDraft } from "../db/queries/select";
 import {
   DraftInitializeProps,
   draftState,
@@ -108,5 +108,26 @@ draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+draftRoutes.get(
+  "/api/pastDraft/:lobbyCode",
+  async (req: Request, res: Response) => {
+    try{
+
+      const lobbyCode = req.params.lobbyCode
+      const response = await getPastDraft(lobbyCode)
+
+      if (response) {
+        res.status(200).json({ valid: true, draftState: response });
+      } else {
+        res.status(200).json({ valid: false });
+      }
+    } catch(err) {
+      console.error("Error in Finding Past Game:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+
+
+   })
 
 export default draftRoutes;
