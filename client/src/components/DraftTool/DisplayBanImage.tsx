@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { memo, useLayoutEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { DraftProps } from "./draftInterfaces";
 
@@ -14,7 +14,7 @@ const DisplayBanImage = ({
   const [mounted, setMounted] = useState<boolean>(false);
   const delay: number = 20;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setTimeout(() => setMounted(true), delay);
   });
 
