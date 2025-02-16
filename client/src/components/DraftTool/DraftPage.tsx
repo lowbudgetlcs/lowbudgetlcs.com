@@ -9,36 +9,10 @@ import { Champion, DraftProps, DraftStateProps } from "./draftInterfaces";
 import DraftDisplay from "./DraftDisplay";
 import Button from "../Button";
 import { pastDraftHandler, PastLobbyProps } from "./pastDraftHandler";
+import { defaultDraftState } from "./defaultDraftState";
 
 function DraftPage() {
-  const [draftState, setDraftState] = useState<DraftProps>({
-    draftStarted: false,
-    activePhase: null,
-    phaseType: null,
-    blueDisplayName: "Blue Team",
-    redDisplayName: "Red Team",
-    blueReady: false,
-    redReady: false,
-    timer: 34,
-    bansArray: [],
-    picksArray: [],
-    bluePicks: [],
-    redPicks: [],
-    blueBans: [],
-    redBans: [],
-    banIndex: 0,
-    pickIndex: 0,
-    currentTurn: "",
-    currentBluePick: 0,
-    currentRedPick: 0,
-    currentBlueBan: 0,
-    currentRedBan: 0,
-    displayTurn: null,
-    currentHover: null,
-    bluePick: "nothing",
-    redPick: "nothing",
-    draftComplete: false,
-  });
+  const [draftState, setDraftState] = useState<DraftProps>(defaultDraftState);
   const [loading, setLoading] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
