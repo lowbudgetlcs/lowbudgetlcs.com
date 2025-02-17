@@ -43,12 +43,6 @@ function CreateDraft() {
         // Checks if the tournament code exists in the database (when a player generates one with the discord bot)
         const isTournamentValid = await checkTournamentCode(tournamentID);
 
-        // Should never hit this
-        if (typeof isTournamentValid === "undefined") {
-          console.error("Unexpected error during tournament validation.");
-          return;
-        }
-
         // If there is no code or the code is not in the database, show error to user on tournament input box
         if (!isTournamentValid) {
           setHasBadCode(true);
