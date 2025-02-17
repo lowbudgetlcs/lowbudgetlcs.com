@@ -1,5 +1,3 @@
-import { Socket } from "socket.io-client";
-
 export interface Champion {
   name: string;
   roles: string[];
@@ -44,7 +42,6 @@ export interface DraftDisplayProps {
   draftState: DraftProps;
   lobbyCode: string;
   sideCode: string | undefined;
-  socket: Socket;
   championRoles: Champion[];
   playerSide: string;
 }
@@ -53,7 +50,6 @@ export interface DraftButtonProps {
   draftState: DraftProps;
   lobbyCode: string;
   sideCode: string | undefined;
-  socket: Socket;
   championRoles: Champion[];
   playerSide: string;
   chosenChamp: string | undefined;

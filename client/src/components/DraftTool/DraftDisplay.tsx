@@ -7,15 +7,16 @@ import { ChangeEvent, useEffect, useState } from "react";
 import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
+import { useSocketContext } from "./DraftPage";
 
 function DraftDisplay({
   draftState,
   lobbyCode,
   sideCode,
-  socket,
   championRoles,
   playerSide,
 }: DraftDisplayProps) {
+  const { socket } = useSocketContext();
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
   const [chosenChamp, setChosenChamp] = useState<string>();
@@ -28,6 +29,9 @@ function DraftDisplay({
   }, [draftState.activePhase, draftState.displayTurn]);
 
   useEffect(() => {
+    if (!socket) {
+      return;
+    }
     const handleHover = (state: DraftProps) => {
       if (state.currentHover) {
         setChosenChamp(state.currentHover);
@@ -52,6 +56,10 @@ function DraftDisplay({
   }, [draftState.bluePick, draftState.redPick]);
 
   useEffect(() => {
+    if (!socket) {
+      return;
+    }
+
     if (draftState.displayTurn !== playerSide) {
       setChosenChamp("");
     } else {
@@ -198,7 +206,6 @@ function DraftDisplay({
           draftState={draftState}
           lobbyCode={lobbyCode}
           sideCode={sideCode}
-          socket={socket}
           championRoles={championRoles}
           playerSide={playerSide}
           chosenChamp={chosenChamp}

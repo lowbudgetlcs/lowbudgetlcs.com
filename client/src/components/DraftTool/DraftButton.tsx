@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { DraftButtonProps } from "./draftInterfaces";
 import { pickHandler, readyHandler } from "./draftHandler";
+import { useSocketContext } from "./DraftPage";
 
 function DraftButton({
   draftState,
   lobbyCode,
   sideCode,
-  socket,
   playerSide,
   chosenChamp,
   setChosenChamp,
 }: DraftButtonProps) {
+  const { socket } = useSocketContext();
+
   const [ready, setReady] = useState<boolean>(false);
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
