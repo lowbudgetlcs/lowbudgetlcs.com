@@ -43,12 +43,6 @@ function CreateDraft() {
         // Checks if the tournament code exists in the database (when a player generates one with the discord bot)
         const isTournamentValid = await checkTournamentCode(tournamentID);
 
-        // Should never hit this
-        if (typeof isTournamentValid === "undefined") {
-          console.error("Unexpected error during tournament validation.");
-          return;
-        }
-
         // If there is no code or the code is not in the database, show error to user on tournament input box
         if (!isTournamentValid) {
           setHasBadCode(true);
@@ -106,6 +100,7 @@ function CreateDraft() {
                     placeholder="Blue Team"
                     className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
                     name="blueName"
+                    maxLength={18}
                   ></input>
                 </div>
                 <div className="flex flex-col">
@@ -115,6 +110,7 @@ function CreateDraft() {
                     placeholder="Red Team"
                     className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
                     name="redName"
+                    maxLength={18}
                   ></input>
                 </div>
               </div>

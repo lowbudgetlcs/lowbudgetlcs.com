@@ -2,7 +2,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import Home from "./components/HomePage/Home";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import About from "./components/LeaguesPage/About";
+import About from "./components/AboutPage/About";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
 import Roster from "./components/RosterPage/Roster";
@@ -26,7 +26,7 @@ function App() {
   const location = useLocation()
   const isDraftRoute = location.pathname.startsWith("/draft/")
   return (
-    <div className=" relative font-serif max-h-screen bg-black">
+    <div className=" relative font-serif bg-black">
 
         <ScrollToTop />
         <Twitch />

@@ -1,4 +1,4 @@
-import { pgTable, index, foreignKey, unique, integer, varchar, text, serial, type AnyPgColumn, char, jsonb, timestamp, bigint, smallint, boolean } from "drizzle-orm/pg-core"
+import { pgTable, index, foreignKey, unique, integer, varchar, text, boolean, serial, type AnyPgColumn, char, jsonb, timestamp, bigint, smallint } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 
@@ -31,6 +31,7 @@ export const draftLobbies = pgTable("draft_lobbies", {
 	rBan3: text("r_ban_3"),
 	rBan4: text("r_ban_4"),
 	rBan5: text("r_ban_5"),
+	draftFinished: boolean("draft_finished").default(false).notNull(),
 }, (table) => [
 	index("draft_lobbies_lobby_code_idx").using("btree", table.lobbyCode.asc().nullsLast().op("text_ops")),
 	foreignKey({
@@ -80,11 +81,6 @@ export const players = pgTable("players", {
 	teamId: integer("team_id"),
 }, (table) => [
 	index("players_summoner_name_idx").using("btree", table.summonerName.asc().nullsLast().op("text_ops")),
-	foreignKey({
-			columns: [table.teamId],
-			foreignColumns: [teams.id],
-			name: "fk_team_id"
-		}).onDelete("set null"),
 	unique("players_riot_puuid_key").on(table.riotPuuid),
 ]);
 
@@ -96,6 +92,11 @@ export const teams = pgTable("teams", {
 	divisionId: integer("division_id"),
 }, (table) => [
 	index("teams_name_idx").using("btree", table.name.asc().nullsLast().op("text_ops")),
+	foreignKey({
+			columns: [table.captainId],
+			foreignColumns: [players.id],
+			name: "fk_captain_id"
+		}).onDelete("set null"),
 	foreignKey({
 			columns: [table.divisionId],
 			foreignColumns: [divisions.id],

@@ -25,8 +25,7 @@ export function connectionHandler(
   socket.emit("joinDraft", { lobbyCode, sideCode });
 
   // Error handling
-  socket.on("error", (err) => {
-    console.error("Socket Error: ", err.message);
+  socket.on("error", () => {
     setError(true);
   });
 

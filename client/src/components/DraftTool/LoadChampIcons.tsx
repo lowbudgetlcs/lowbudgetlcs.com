@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Champion } from "./draftInterfaces";
+import { useSocketContext } from "./DraftPage";
 
 interface LoadChampIconsProps {
   championRoles: Champion[];
@@ -21,11 +22,13 @@ export function LoadChampIcons({
   setChosenChamp,
 }: LoadChampIconsProps) {
   const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
-
+  const { socket } = useSocketContext();
   const handlePick = (championName: string) => {
     if (
       !pickedChampions.includes(championName) &&
-      !bannedChampions.includes(championName)
+      !bannedChampions.includes(championName) &&
+      socket //This will stop users from selecting champions on finished drafts
+      
     ) {
       setChosenChamp(championName);
     }
@@ -81,8 +84,7 @@ export function LoadChampIcons({
                   }`
                 : ""
             }
-            w-28 object-contain max-[1100px]:w-24`
-          }
+            w-28 object-contain max-[1100px]:w-24`}
               src={`${dDragonIconLink}${
                 champion.name === "Wukong" ? "monkeyking" : champion.name
               }/square`}
