@@ -11,7 +11,7 @@ function Summary() {
               provide an experience that mirrors what would happen if Riot Games
               suffered a catastrophic financial disaster.`,
     link: "/about",
-    btnText: "Learn More",
+    btnText: "About Us",
     image: aboutImage,
   };
 

@@ -50,7 +50,7 @@ function About() {
       </div>
       <div className="flex flex-col items-center pb-8">
         <p className="summary text-lg md:text-xl px-8 w-full md:w-2/3 py-8 md:text-center">
-          The LowBudget LCS is a competitive, free, and friendly amateur rec
+          The Low Budget LCS is a competitive, free, and friendly amateur rec
           league. We have multiple leagues that range across all skill levels.
           We provide an experience that mirrors what would happen if Riot Games
           suffered a catastrophic financial disaster.

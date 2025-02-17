@@ -12,7 +12,7 @@ function Footer() {
           </li>
           <li className="">
             <NavLink className="hover:text-orange transition" to="/about">
-              <div className="">Leagues</div>
+              <div className="">About</div>
             </NavLink>
           </li>
           <li className="">
@@ -44,22 +44,22 @@ function Footer() {
 
       <ul className="flex gap-8 p-4">
         <li className="w-8 h-auto">
-          <NavLink target="_blank" to="https://www.instagram.com/lowbudgetlcs">
+          <NavLink aria-label="Instagram Profile" target="_blank" to="https://www.instagram.com/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-instagram text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink target="_blank" to="https://discord.com/invite/XfsEEq4aPC">
+          <NavLink aria-label="Discord Server" target="_blank" to="https://discord.com/invite/XfsEEq4aPC">
             <i className="hover:text-orange transition duration-300 bi bi-discord text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink target="_blank" to="https://www.twitch.tv/lowbudgetlcs">
+          <NavLink aria-label="Twitch Channel" target="_blank" to="https://www.twitch.tv/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink target="_blank" to="https://www.youtube.com/@lowbudgetlcs9513">
+          <NavLink aria-label="Youtube Channel" target="_blank" to="https://www.youtube.com/@lowbudgetlcs9513">
             <i className="hover:text-orange transition duration-300 bi bi-youtube text-4xl"></i>
           </NavLink>
         </li>

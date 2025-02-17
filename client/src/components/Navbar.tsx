@@ -52,7 +52,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
             className="hover:text-orange transition duration-300"
             to="/about"
           >
-            <div className="navBox pl-14 py-10">Leagues</div>
+            <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-500 opacity-0">
