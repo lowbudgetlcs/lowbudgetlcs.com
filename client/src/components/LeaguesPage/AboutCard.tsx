@@ -6,9 +6,10 @@ interface AboutCardProps {
   rank: string;
   average: string;
   color: string;
+  sheet: string;
 }
 
-function AboutCard({ title, rank, average, color }: AboutCardProps) {
+function AboutCard({ title, rank, average, color, sheet }: AboutCardProps) {
   const [ref, inView] = useInView({
     threshold: 0.25,
     triggerOnce: true,
@@ -22,7 +23,7 @@ function AboutCard({ title, rank, average, color }: AboutCardProps) {
       } transition duration-1000 flex flex-col md:flex-row items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden gap-4 rounded-lg bg-gray/80 dark:bg-gray/40`}
     >
       <NavLink
-        to={`/rosters/${title.toLowerCase()}`}
+        to={sheet}
         state={{ league: title }}
         className={`relative group w-full h-24 md:w-56 md:h-full flex items-center justify-center text-center`}
       >
@@ -33,7 +34,7 @@ function AboutCard({ title, rank, average, color }: AboutCardProps) {
           className={`absolute right-0 bottom-0 h-2 w-full md:h-full md:w-2  group-hover:h-full md:group-hover:w-full ${color} transition-all duration-500`}
         ></div>
       </NavLink>
-      <div className="min-w-48 h-24 flex items-center max-w-lg p-2 md:p-4">
+      {/* <div className="min-w-48 h-24 flex items-center max-w-lg p-2 md:p-4">
         <ul>
           <li className="text-md md:text-lg">
             Maximum Rank: <span className="text-white/60">{rank}</span>
@@ -42,7 +43,7 @@ function AboutCard({ title, rank, average, color }: AboutCardProps) {
             Average Rank: <span className="text-white/60">{average}</span>
           </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 }
