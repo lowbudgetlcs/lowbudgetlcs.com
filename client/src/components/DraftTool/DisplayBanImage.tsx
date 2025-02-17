@@ -58,7 +58,7 @@ const DisplayBanImage = ({
         <div
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              championName === "Wukong" ? "monkeyking" : championName
+              championName === "wukong" ? "monkeyking" : championName
             }/tile')`,
           }}
           className={`relative w-full h-full bg-cover`}
