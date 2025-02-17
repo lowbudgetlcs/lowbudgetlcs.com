@@ -9,8 +9,8 @@ export interface PastLobbyProps {
 export const pastDraftHandler = async (lobbyCode: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/draft/api/pastDraft/${lobbyCode}`
-    );
+        `https://backend.lowbudgetlcs.com/draft/api/pastDraft/${lobbyCode}`
+      );
 
     if (!response.ok) {
       throw new Error("Something went wrong checking for past drafts!");
