@@ -100,6 +100,7 @@ function CreateDraft() {
                     placeholder="Blue Team"
                     className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
                     name="blueName"
+                    maxLength={18}
                   ></input>
                 </div>
                 <div className="flex flex-col">
@@ -109,6 +110,7 @@ function CreateDraft() {
                     placeholder="Red Team"
                     className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
                     name="redName"
+                    maxLength={18}
                   ></input>
                 </div>
               </div>
