@@ -50,7 +50,7 @@ function DraftPage() {
   const initialConnection = () => {
     setLoading(true);
 
-    const newSocket = io("http://localhost:8080");
+    const newSocket = io("https://backend.lowbudgetlcs.com");
     setSocket(newSocket);
 
     // Run connection Handler Function with lobby code
