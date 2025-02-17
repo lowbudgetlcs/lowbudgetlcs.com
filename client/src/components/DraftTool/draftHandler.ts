@@ -96,7 +96,7 @@ export const checkTournamentCode = async (code: string) => {
   try {
     const encodedCode = encodeURIComponent(code);
     const response = await fetch(
-      `http://localhost:8080/draft/api/checkTournamentCode/${encodedCode}`
+      `https://backend.lowbudgetlcs.com/draft/api/checkTournamentCode/${encodedCode}`
     );
 
     if (!response.ok) {

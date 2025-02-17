@@ -86,7 +86,6 @@ function DraftPage() {
           console.error("Unexpected error finding past drafts");
           return;
         } else if (pastDraft.isValid && pastDraft.draftState) {
-          console.log("Found past draft");
           setDraftState(pastDraft.draftState);
           setIsPastDraft(true);
           return;

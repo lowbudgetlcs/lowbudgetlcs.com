@@ -117,7 +117,6 @@ draftRoutes.get(
       const lobbyCode = req.params.lobbyCode
       const response = await getPastDraft(lobbyCode)
 
-      console.log(response)
       if (response && response.draftFinished) {
         res.status(200).json({ isValid: true, draftState: response.clientState });
       } else {
