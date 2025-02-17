@@ -145,7 +145,9 @@ export async function getPastDraft(lobbyCode: string) {
     .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
   const draft = result[0];
+  
   if (draft) {
+    const draftFinished = draft.draftFinished;
     const clientState: ClientDraftStateProps = {
       draftStarted: false,
       activePhase: "finished",
@@ -199,7 +201,7 @@ export async function getPastDraft(lobbyCode: string) {
       draftComplete: true,
     };
 
-    return clientState;
+    return { clientState, draftFinished };
   }
 
   return null;

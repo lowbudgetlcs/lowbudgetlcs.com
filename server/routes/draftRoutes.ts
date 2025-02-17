@@ -117,10 +117,11 @@ draftRoutes.get(
       const lobbyCode = req.params.lobbyCode
       const response = await getPastDraft(lobbyCode)
 
-      if (response) {
-        res.status(200).json({ valid: true, draftState: response });
+      console.log(response)
+      if (response && response.draftFinished) {
+        res.status(200).json({ isValid: true, draftState: response.clientState });
       } else {
-        res.status(200).json({ valid: false });
+        res.status(200).json({ isValid: false });
       }
     } catch(err) {
       console.error("Error in Finding Past Game:", err);
