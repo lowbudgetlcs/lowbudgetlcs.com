@@ -7,10 +7,9 @@ function Summary() {
   const aboutCard = {
     title: "Amateurs Unite!",
     text: `The LowBudget LCS is a competitive, free, and friendly amateur rec
-              league. We have 4 leagues that range across all skill levels. We
+              league. We have multiple leagues that range across all skill levels. We
               provide an experience that mirrors what would happen if Riot Games
-              suffered a catastrophic financial disaster. Season 13 is starting
-              in the fall!`,
+              suffered a catastrophic financial disaster.`,
     link: "/about",
     btnText: "Learn More",
     image: aboutImage,
