@@ -25,8 +25,7 @@ export function connectionHandler(
   socket.emit("joinDraft", { lobbyCode, sideCode });
 
   // Error handling
-  socket.on("error", (err) => {
-    console.error("Socket Error: ", err.message);
+  socket.on("error", () => {
     setError(true);
   });
 
@@ -97,7 +96,7 @@ export const checkTournamentCode = async (code: string) => {
   try {
     const encodedCode = encodeURIComponent(code);
     const response = await fetch(
-      `https://backend.lowbudgetlcs.com/draft/api/checkTournamentCode/${encodedCode}`
+      `http://localhost:8080/draft/api/checkTournamentCode/${encodedCode}`
     );
 
     if (!response.ok) {
