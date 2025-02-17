@@ -61,6 +61,7 @@ export async function insertFinishedDraft(
         rBan3: draft.redBans[2],
         rBan4: draft.redBans[3],
         rBan5: draft.redBans[4],
+        draftFinished: true,
       })
       .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
