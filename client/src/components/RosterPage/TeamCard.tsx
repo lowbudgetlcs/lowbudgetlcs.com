@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../Button";
 
-const commercialGradient =
-  "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark";
-const financialGradient =
-  "bg-gradient-to-r md:bg-gradient-to-b from-emerald-light to-emerald-dark";
-const economyGradient =
-  "bg-gradient-to-r md:bg-gradient-to-b from-gold-light to-gold-dark";
-const executiveGradient =
-  "bg-gradient-to-r md:bg-gradient-to-b from-challenger-blue to-challenger-gold";
+// const commercialGradient =
+//   "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark";
+// const financialGradient =
+//   "bg-gradient-to-r md:bg-gradient-to-b from-emerald-light to-emerald-dark";
+// const economyGradient =
+//   "bg-gradient-to-r md:bg-gradient-to-b from-gold-light to-gold-dark";
+// const executiveGradient =
+//   "bg-gradient-to-r md:bg-gradient-to-b from-challenger-blue to-challenger-gold";
 
 interface TeamProps {
   teamName: string;
@@ -26,7 +26,6 @@ function TeamCard({
   teamName,
   logo,
   playerList,
-  divisionId,
   isOpen,
   onToggle,
 }: TeamProps) {
@@ -106,21 +105,21 @@ function TeamCard({
     });
   };
 
-  let gradient;
-  switch (divisionId) {
-    case 1:
-      gradient = economyGradient;
-      break;
-    case 2:
-      gradient = commercialGradient;
-      break;
-    case 3:
-      gradient = financialGradient;
-      break;
-    case 4:
-      gradient = executiveGradient;
-      break;
-  }
+  // let gradient;
+  // switch (divisionId) {
+  //   case 1:
+  //     gradient = economyGradient;
+  //     break;
+  //   case 2:
+  //     gradient = commercialGradient;
+  //     break;
+  //   case 3:
+  //     gradient = financialGradient;
+  //     break;
+  //   case 4:
+  //     gradient = executiveGradient;
+  //     break;
+  // }
 
   const displayLogo = () => {
     if (logo) {
