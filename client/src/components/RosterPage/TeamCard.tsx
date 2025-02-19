@@ -192,7 +192,7 @@ function TeamCard({
         <div className="flex flex-col md:flex-row py-4 md:py-0 md:pl-4 gap-4 items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden">
           <div className="logoContainer flex flex-col md:flex-row gap-4 w-full md:w-auto md:h-full items-center">
             {displayLogo()}
-            <div className={`w-full h-3 md:w-3 md:h-full ${gradient}`}></div>
+            <div className={`w-full h-3 md:w-3 md:h-full bg-orange`}></div>
           </div>
           <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
             <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
@@ -272,7 +272,7 @@ function TeamCard({
         <div className="flex flex-col md:flex-row py-4 md:py-0 md:pl-4 gap-4 items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden">
           <div className="logoContainer flex flex-col md:flex-row gap-4 w-full md:w-auto md:h-full items-center">
             {displayLogo()}
-            <div className={`w-full h-3 md:w-3 md:h-full ${gradient}`}></div>
+            <div className={`w-full h-3 md:w-3 md:h-full bg-orange`}></div>
           </div>
           <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
             <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
