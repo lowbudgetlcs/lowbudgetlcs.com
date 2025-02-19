@@ -43,7 +43,7 @@ export const useFetchData = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8080/roster/api/rosterdata"
+          "https://backend.lowbudgetlcs.com/roster/api/rosterdata"
         );
 
         if (!response.ok) {
