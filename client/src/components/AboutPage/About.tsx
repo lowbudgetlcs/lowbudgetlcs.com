@@ -65,11 +65,11 @@ function About() {
           allowFullScreen
           className="max-w-full md:max-w-[560px] p-4"
         ></iframe>
-        <p className="text-lg md:text-xl px-8 w-full md:w-2/3 py-8 md:text-center">
+        <p className="text-lg md:text-xl w-full md:w-2/3 px-8 pt-4 text-center">
           The Low Budget LCS has four separate divisions defined by both max
           rank and a points system.
         </p>
-        <p className="text-white/60 text-lg px-8 text-center">
+        <p className="text-white/60 text-lg px-8 pt-2 pb-8 text-center">
           Click on a league to look at their Google Sheet!
         </p>
         <div className="cardContainer flex flex-col md:flex-row items-center justify-center flex-wrap gap-8 z-10 w-full md:px-8">
