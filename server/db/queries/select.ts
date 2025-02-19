@@ -1,22 +1,19 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
 import { divisions, draftLobbies, games, players, teams } from "../schema";
-import { error } from "console";
 import { ClientDraftStateProps } from "../../sockets/draftState";
 
-export async function getPlayers() {
-  const allPlayers = await db.select().from(players);
-  return allPlayers;
-}
+export async function getRosterData() {
+  try {
+    const divisionData = await db.select().from(divisions);
+    const teamData = await db.select().from(teams);
+    const playerData = await db.select().from(players);
 
-export async function getTeams() {
-  const allTeams = await db.select().from(teams);
-  return allTeams;
-}
-
-export async function getDivisions() {
-  const allDivisions = await db.select().from(divisions);
-  return allDivisions;
+    return { divisionData, teamData, playerData };
+  } catch (err) {
+    console.error("Error fetching roster data: ", err);
+    throw new Error("Failed to fetch roster data");
+  }
 }
 
 export async function getTournamentCodes() {
@@ -145,7 +142,7 @@ export async function getPastDraft(lobbyCode: string) {
     .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
   const draft = result[0];
-  
+
   if (draft) {
     const draftFinished = draft.draftFinished;
     const clientState: ClientDraftStateProps = {
