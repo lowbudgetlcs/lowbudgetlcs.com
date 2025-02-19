@@ -6,7 +6,6 @@ import About from "./components/AboutPage/About";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
 import Roster from "./components/RosterPage/Roster";
-import LeagueGroups from "./components/RosterPage/LeagueGroups";
 import LeaguePlayers from "./components/RosterPage/LeaguePlayers";
 import ErrorPage from "./components/ErrorPage";
 import { LeagueDataProvider } from "./components/leagueDataContext";
@@ -36,8 +35,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="rosters" element={<Roster />} />
-            <Route path="rosters/:league" element={<LeagueGroups />} />
-            <Route path="rosters/:league/:group" element={<LeaguePlayers />} />
+            <Route path="rosters/:league" element={<LeaguePlayers />} />
             <Route path="allstars" element={<AllStars />}>
               <Route path="economy" element={<ASEconomy/>}/>
               <Route path="commercial" element={<ASCommercial/>}/>
