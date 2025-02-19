@@ -114,9 +114,9 @@ function DraftPage() {
         ...state,
       }));
       if (state.phaseType === "pick") {
-        handlePickPhase(socket, state, draftState, setDraftState);
+        handlePickPhase(socket, state, setDraftState);
       } else if (state.phaseType === "ban") {
-        handleBanPhase(socket, state, draftState, setDraftState);
+        handleBanPhase(socket, state, setDraftState);
       }
     };
     socket.on("state", startReconnection);
@@ -136,7 +136,7 @@ function DraftPage() {
         ...state,
       }));
 
-      handleBanPhase(socket, state, draftState, setDraftState);
+      handleBanPhase(socket, state, setDraftState);
     };
 
     const startPickPhase = (state: DraftStateProps) => {
@@ -145,7 +145,7 @@ function DraftPage() {
         ...state,
       }));
 
-      handlePickPhase(socket, state, draftState, setDraftState);
+      handlePickPhase(socket, state, setDraftState);
     };
 
     const endDraft = (state: DraftStateProps) => {
