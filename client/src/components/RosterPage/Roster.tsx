@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useLeagueData } from "../leagueDataContext";
-import NotDone from "./NotDone";
+import ErrorPage from "../ErrorPage";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -40,7 +40,7 @@ function Roster() {
         <div className="absolute m-auto top-0 left-0 right-0 bottom-0 animate-spin w-8 h-8 border-4 border-orange border-t-transparent rounded-full"></div>
       </div>
     );
-  if (error) return <NotDone />;
+  if (error) return <ErrorPage />;
 
   return (
     <div className="accounts bg-white text-black dark:bg-black dark:text-white pb-12">
