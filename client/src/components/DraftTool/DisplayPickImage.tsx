@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect, useState } from "react";
+import { memo, } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
 
@@ -15,12 +15,6 @@ const DisplayPickImage = ({
   championRoles: Champion[];
   currentHover: DraftProps["currentHover"];
 }) => {
-  const [mounted, setMounted] = useState<boolean>(false);
-  const delay: number = 20;
-
-  useLayoutEffect(() => {
-    setTimeout(() => setMounted(true), delay);
-  });
 
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
@@ -44,7 +38,6 @@ const DisplayPickImage = ({
 
   if (isChampHovered) {
     return (
-      mounted && (
         <div
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
@@ -64,22 +57,18 @@ const DisplayPickImage = ({
           </p>
         </div>
       )
-    );
   }
 
   if (pickedChampions[pickIndex] === "nothing") {
     return (
-      mounted && (
         <img
           src={tempImage}
           alt="nothing"
           className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
         />
-      )
     );
   } else if (championName !== "nothing") {
     return (
-      mounted && (
         <div
           style={{
             backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
@@ -99,7 +88,6 @@ const DisplayPickImage = ({
           </p>
         </div>
       )
-    );
   } else {
     return null;
   }
