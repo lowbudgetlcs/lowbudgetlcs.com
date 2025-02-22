@@ -6,7 +6,7 @@ import {
   useState,
 } from "react";
 import { connectionHandler } from "./draftHandler";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
@@ -16,6 +16,7 @@ import DraftDisplay from "./DraftDisplay";
 import Button from "../Button";
 import { pastDraftHandler, PastLobbyProps } from "./pastDraftHandler";
 import { defaultDraftState } from "./defaultDraftState";
+import StreamDisplay from "./StreamView/StreamDisplay";
 
 export interface SocketContextProps {
   socket: Socket | null;
@@ -47,10 +48,14 @@ function DraftPage() {
   const lobbyCode: string | undefined = params.lobbyCode;
   const sideCode: string | undefined = params.sideCode;
 
+  // Check if "stream" is found in the browser to enable stream mode
+  const location = useLocation();
+  const streamMode = location.pathname.includes("stream");
+
   const initialConnection = () => {
     setLoading(true);
 
-    const newSocket = io("https://backend.lowbudgetlcs.com");
+    const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
 
     // Run connection Handler Function with lobby code
@@ -183,8 +188,19 @@ function DraftPage() {
       socket.off("currentTurn", handleCurrentTurn);
     };
   }, [socket]);
-
-  if (draftState && lobbyCode && (socket || isPastDraft) && !error) {
+  if (lobbyCode && streamMode) {
+    return (
+      <SocketContext.Provider value={{ socket }}>
+        <StreamDisplay
+          draftState={draftState}
+          lobbyCode={lobbyCode}
+          sideCode={sideCode}
+          championRoles={championRoles}
+          playerSide={playerSide}
+        />
+      </SocketContext.Provider>
+    );
+  } else if (draftState && lobbyCode && (socket || isPastDraft) && !error) {
     return (
       <SocketContext.Provider value={{ socket }}>
         <DraftDisplay
