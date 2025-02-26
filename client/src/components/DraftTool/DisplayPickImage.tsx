@@ -1,4 +1,4 @@
-import { memo, } from "react";
+import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
 
@@ -15,6 +15,7 @@ const DisplayPickImage = ({
   championRoles: Champion[];
   currentHover: DraftProps["currentHover"];
 }) => {
+  const [link, setLink] = useState<string>("");
 
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
@@ -26,68 +27,64 @@ const DisplayPickImage = ({
     currentHover &&
     championName === "nothing";
 
-  const selectedChampion = championRoles.find(
-    (champion) => champion.name.toLowerCase() === championName
-  );
-  const selectedHoveredChampion = championRoles.find(
-    (champion) => champion.name.toLowerCase() === currentHover?.toLowerCase()
+  useEffect(() => {
+    if (isChampHovered) {
+      setLink((prevLink) => {
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`;
+        if (imageURL !== prevLink) {
+          return imageURL;
+        }
+        return prevLink;
+      });
+    } else {
+      setLink((prevLink) => {
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered`;
+        if (imageURL !== prevLink) {
+          return imageURL;
+        }
+        return prevLink;
+      });
+    }
+  }, [currentHover, championName]);
+
+  const selectedChampion = championRoles.find((champion) =>
+    currentHover && championName === "nothing"
+      ? champion.name.toLowerCase() === currentHover?.toLowerCase()
+      : championName !== "nothing" &&
+        champion.name.toLowerCase() === championName
   );
 
   const displayName = selectedChampion?.displayName;
-  const hoveredDisplayName = selectedHoveredChampion?.displayName;
-
-  if (isChampHovered) {
-    return (
-        <div
-          style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              currentHover === "Wukong" ? "monkeyking" : currentHover
-            }/splash-art/centered')`,
-          }}
-          className="relative w-full h-full bg-[51%_20%] bg-[size:180%] grayscale-[90%]"
-        >
-          <p
-            className={
-              playerSide === "blue"
-                ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
-                : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
-            }
-          >
-            {hoveredDisplayName}
-          </p>
-        </div>
-      )
-  }
 
   if (pickedChampions[pickIndex] === "nothing") {
     return (
-        <img
-          src={tempImage}
-          alt="nothing"
-          className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
-        />
+      <img
+        src={tempImage}
+        alt="nothing"
+        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
+      />
     );
-  } else if (championName !== "nothing") {
+  } else if (championName !== "nothing" || isChampHovered) {
     return (
-        <div
-          style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              championName === "wukong" ? "monkeyking" : championName
-            }/splash-art/centered')`,
-          }}
-          className="relative w-full h-full bg-[51%_20%] bg-[size:180%]"
+      <div className="relative w-full h-full">
+        <img
+          src={link}
+          alt={displayName || "champion image"}
+          className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
+            isChampHovered ? "grayscale-[90%]" : ""
+          }`}
+        />
+        <p
+          className={
+            playerSide === "blue"
+              ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
+              : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
+          }
         >
-          <p
-            className={
-              playerSide === "blue"
-                ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
-                : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
-            }
-          >
-            {displayName}
-          </p>
-        </div>
-      )
+          {displayName}
+        </p>
+      </div>
+    );
   } else {
     return null;
   }
