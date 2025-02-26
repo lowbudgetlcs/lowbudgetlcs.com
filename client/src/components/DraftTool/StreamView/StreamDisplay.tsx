@@ -1,13 +1,9 @@
-import { IoSearch } from "react-icons/io5";
 import DisplayBans from "../DisplayBans";
-import RoleSelect from "../RoleSelect";
-import LoadChampIcons from "../LoadChampIcons";
 import { DraftDisplayProps, DraftProps } from "../draftInterfaces";
-import { ChangeEvent, useEffect, useState } from "react";
-import DraftButton from "../DraftButton";
+import { useEffect, useState } from "react";
 import Timer from "../Timer";
-import DisplayPicks from "../DisplayPicks";
 import { useSocketContext } from "../DraftPage";
+import StreamPicks from "./StreamPicks";
 
 function StreamDisplay({
   draftState,
@@ -17,8 +13,6 @@ function StreamDisplay({
   playerSide,
 }: DraftDisplayProps) {
   const { socket } = useSocketContext();
-  const [selectedRole, setSelectedRole] = useState<string>("All");
-  const [searchValue, setSearchValue] = useState<string>("");
   const [chosenChamp, setChosenChamp] = useState<string>();
 
   const [currentHover, setCurrentHover] = useState<string | null>(null);
@@ -67,9 +61,6 @@ function StreamDisplay({
     }
   }, [chosenChamp]);
 
-  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
   return (
     <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
       <div className="teamTitles relative flex justify-between px-4">
@@ -107,8 +98,8 @@ function StreamDisplay({
       {/* Main Container */}
       <div className="relative mainDraftContainer flex  flex-1">
         {/* Blue Side Picks */}
-        <div className="blueSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
-          <DisplayPicks
+        <div className="blueSidePicks flex gap-4 draftMd:p-4 p-0 px-2 py-4">
+          <StreamPicks
             draftState={draftState}
             picks={draftState.bluePicks}
             enemyPicks={draftState.redPicks}
@@ -121,8 +112,8 @@ function StreamDisplay({
         </div>
 
         {/* Red Side Picks */}
-        <div className="redSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
-          <DisplayPicks
+        <div className="redSidePicks flex gap-4 draftMd:p-4 p-0 px-2 py-4">
+          <StreamPicks
             draftState={draftState}
             picks={draftState.redPicks}
             enemyPicks={draftState.bluePicks}

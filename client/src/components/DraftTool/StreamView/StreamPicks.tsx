@@ -1,73 +1,130 @@
-import { memo } from "react";
-import tempImage from "../../assets/lblcsLogo.svg";
-import { Champion, DraftProps } from "../draftInterfaces";
+import { memo, useEffect, useState } from "react";
+import { Champion, DraftProps, DraftStateProps } from "../draftInterfaces";
+import StreamPickImage from "./StreamPickImage";
 
-const StreamPickImages = ({
-  playerSide,
-  pickIndex,
-  pickedChampions,
+const StreamPicks = ({
+  draftState,
+  picks,
+  enemyPicks,
   championRoles,
+  playerTurn,
+  playerSide,
+  currentPhase,
   currentHover,
 }: {
-  playerSide: string;
-  pickIndex: number;
-  pickedChampions: string[];
+  draftState: DraftProps;
+  picks: string[];
+  enemyPicks: string[];
   championRoles: Champion[];
+  playerTurn: string | null;
+  playerSide: string;
+  currentPhase: DraftStateProps["activePhase"];
   currentHover: DraftProps["currentHover"];
 }) => {
-  const championName = pickedChampions[pickIndex]
-    ? pickedChampions[pickIndex].toLowerCase()
-    : "nothing";
+  const [sidePick, setSidePick] = useState<number>();
 
-  // Check if the current slot should show the hovered champion
-  const isChampHovered =
-    pickedChampions.length === pickIndex &&
-    currentHover &&
-    championName === "nothing";
+  useEffect(() => {
+    if (playerSide === "blue") {
+      setSidePick(draftState.currentBluePick);
+    } else if (playerSide === "red") {
+      setSidePick(draftState.currentRedPick);
+    }
+  }, [
+    draftState.currentTurn,
+    draftState.currentRedPick,
+    draftState.currentBluePick,
+  ]);
 
-  const selectedChampion = championRoles.find((champion) =>
-    currentHover
-      ? champion.name.toLowerCase() === currentHover?.toLowerCase()
-      : championName !== "nothing" &&
-        champion.name.toLowerCase() === championName
-  );
+  const shouldRender = (pickIndex: number) => {
+    if (picks[pickIndex]) {
+      return true;
+    }
 
-  const displayName = selectedChampion?.displayName;
+    const isSlotActive = sidePick === pickIndex;
+    const previousSlotsFilled = Array.from(
+      { length: pickIndex },
+      (_, i) => picks[i]
+    ).every(Boolean);
 
-  if (pickedChampions[pickIndex] === "nothing") {
-    return (
-      <img
-        src={tempImage}
-        alt="nothing"
-        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
-      />
-    );
-  } else if (championName !== "nothing" || isChampHovered) {
-    return (
-      <div
-        style={{
-          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-            championName === "wukong" ? "monkeyking" : championName
-          }/splash-art/centered')`,
-        }}
-        className={`relative w-full h-full bg-[51%_20%] bg-[size:180%] ${
-          isChampHovered && " grayscale-[90%]"
-        }`}
-      >
-        <p
-          className={
-            playerSide === "blue"
-              ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
-              : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
-          }
-        >
-          {displayName}
-        </p>
-      </div>
-    );
-  } else {
-    return null;
+    return isSlotActive && previousSlotsFilled;
+  };
+  let correctSideHover: string | null = null;
+  if (currentPhase === "pickPhase1" || currentPhase === "pickPhase2") {
+    if (
+      playerSide !== playerTurn ||
+      currentHover === null ||
+      picks.concat(enemyPicks).includes(currentHover)
+    ) {
+      correctSideHover = null;
+    } else {
+      correctSideHover = currentHover;
+    }
   }
+  return (
+    <>
+      {/* Pick Phase 1 */}
+      {[0, 1, 2].map((index) => (
+        <div
+          key={index}
+          className={`pick1 w-32 h-64 overflow-hidden  ${
+            playerTurn === playerSide &&
+            playerSide === "blue" &&
+            currentPhase === "pickPhase1" &&
+            sidePick === index
+              ? "border-blue transition-all border-4"
+              : playerTurn === playerSide &&
+                playerSide === "red" &&
+                currentPhase === "pickPhase1" &&
+                sidePick === index
+              ? "border-red transition-all border-4"
+              : "border-gray border-2"
+          } bg-gray/60 rounded-md`}
+        >
+          {shouldRender(index) && (
+            <StreamPickImage
+              playerSide={playerSide}
+              pickIndex={index}
+              pickedChampions={picks}
+              championRoles={championRoles}
+              currentHover={correctSideHover}
+            />
+          )}
+        </div>
+      ))}
+
+      <div className="space h-4"></div>
+
+      {/* Pick Phase 2 */}
+      {[3, 4].map((index) => (
+        <div
+          key={index}
+          className={`pick1 w-32 h-64 overflow-hidden  ${
+            playerTurn === playerSide &&
+            playerSide === "blue" &&
+            currentPhase === "pickPhase2" &&
+            sidePick === index
+              ? "border-blue transition-all delay-[20ms] border-4"
+              : playerTurn === playerSide &&
+                playerSide === "red" &&
+                currentPhase === "pickPhase2" &&
+                sidePick === index
+              ? "border-red transition-all delay-[20ms] border-4"
+              : "border-gray border-2"
+          } bg-gray/60 rounded-md`}
+        >
+          {shouldRender(index) && (
+            <StreamPickImage
+              playerSide={playerSide}
+              pickIndex={index}
+              pickedChampions={picks}
+              championRoles={championRoles}
+              currentHover={correctSideHover}
+            />
+          )}
+        </div>
+      ))}
+    </>
+  );
 };
 
-export default memo(StreamPickImages);
+export default memo(StreamPicks);
