@@ -25,32 +25,34 @@ const StreamPickImages = ({
     currentHover &&
     championName === "nothing";
 
-  const selectedChampion = championRoles.find(
-    (champion) => champion.name.toLowerCase() === championName
-  );
-  const selectedHoveredChampion = championRoles.find(
-    (champion) => champion.name.toLowerCase() === currentHover?.toLowerCase()
+  const selectedChampion = championRoles.find((champion) =>
+    currentHover
+      ? champion.name.toLowerCase() === currentHover?.toLowerCase()
+      : championName !== "nothing" &&
+        champion.name.toLowerCase() === championName
   );
 
-  const displayName = isChampHovered
-    ? selectedHoveredChampion?.displayName
-    : selectedChampion?.displayName;
-  const champURLName = isChampHovered
-    ? currentHover === "Wukong"
-      ? "monkeyking"
-      : currentHover
-    : championName === "wukong"
-    ? "monkeyking"
-    : championName;
+  const displayName = selectedChampion?.displayName;
 
-  const displayImage = `url('https://cdn.communitydragon.org/latest/champion/${champURLName}/splash-art/centered')`;
-  if (isChampHovered || championName !== "nothing") {
+  if (pickedChampions[pickIndex] === "nothing") {
+    return (
+      <img
+        src={tempImage}
+        alt="nothing"
+        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
+      />
+    );
+  } else if (championName !== "nothing" || isChampHovered) {
     return (
       <div
         style={{
-          backgroundImage: displayImage,
+          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
+            championName === "wukong" ? "monkeyking" : championName
+          }/splash-art/centered')`,
         }}
-        className="relative w-full h-full bg-[51%_20%] bg-[size:180%] grayscale-[90%]"
+        className={`relative w-full h-full bg-[51%_20%] bg-[size:180%] ${
+          isChampHovered && " grayscale-[90%]"
+        }`}
       >
         <p
           className={
@@ -62,16 +64,6 @@ const StreamPickImages = ({
           {displayName}
         </p>
       </div>
-    );
-  }
-
-  if (pickedChampions[pickIndex] === "nothing") {
-    return (
-      <img
-        src={tempImage}
-        alt="nothing"
-        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
-      />
     );
   } else {
     return null;
