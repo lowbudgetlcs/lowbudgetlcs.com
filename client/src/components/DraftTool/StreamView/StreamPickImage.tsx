@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import tempImage from "../../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "../draftInterfaces";
 
@@ -15,6 +15,8 @@ const StreamPickImage = ({
   championRoles: Champion[];
   currentHover: DraftProps["currentHover"];
 }) => {
+  const [link, setLink] = useState<string | undefined>(undefined);
+
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
     : "nothing";
@@ -25,8 +27,28 @@ const StreamPickImage = ({
     currentHover &&
     championName === "nothing";
 
+  useEffect(() => {
+    if (isChampHovered) {
+      setLink((prevLink) => {
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${currentHover}/portrait`;
+        if (imageURL !== prevLink) {
+          return imageURL;
+        }
+        return prevLink;
+      });
+    } else {
+      setLink((prevLink) => {
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${championName}/portrait`;
+        if (imageURL !== prevLink) {
+          return imageURL;
+        }
+        return prevLink;
+      });
+    }
+  }, [currentHover, championName]);
+
   const selectedChampion = championRoles.find((champion) =>
-    currentHover
+    currentHover && championName === "nothing"
       ? champion.name.toLowerCase() === currentHover?.toLowerCase()
       : championName !== "nothing" &&
         champion.name.toLowerCase() === championName
@@ -44,16 +66,14 @@ const StreamPickImage = ({
     );
   } else if (championName !== "nothing" || isChampHovered) {
     return (
-      <div
-        style={{
-          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-            championName === "wukong" ? "monkeyking" : championName
-          }/splash-art/centered')`,
-        }}
-        className={`relative w-full h-full bg-[51%_20%] bg-[size:180%] ${
-          isChampHovered && " grayscale-[90%]"
-        }`}
-      >
+      <div className="relative w-full h-full">
+        <img
+          src={link}
+          alt={displayName || "champion image"}
+          className={`w-full h-full object-cover ${
+            isChampHovered ? "grayscale-[90%]" : ""
+          }`}
+        />
         <p
           className={
             playerSide === "blue"
