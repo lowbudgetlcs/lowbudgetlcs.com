@@ -188,7 +188,7 @@ function DraftPage() {
       socket.off("currentTurn", handleCurrentTurn);
     };
   }, [socket]);
-  if (lobbyCode && streamMode) {
+  if (lobbyCode && streamMode && (socket || isPastDraft) && !error) {
     return (
       <SocketContext.Provider value={{ socket }}>
         <StreamDisplay
