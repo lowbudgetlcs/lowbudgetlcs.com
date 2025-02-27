@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Timer from "../Timer";
 import { useSocketContext } from "../DraftPage";
 import StreamPicks from "./StreamPicks";
+import PickBox from "./PickBox";
 
 function StreamDisplay({
   draftState,
@@ -140,7 +141,7 @@ function StreamDisplay({
               currentHover={currentHover}
             />
           </div>
-
+          <PickBox draftState={draftState} championRoles={championRoles} />
           {/* Red Side Picks */}
           <div className="redSidePicks flex flex-row-reverse gap-4 draftMd:p-4 p-0 px-2 py-4">
             <StreamPicks
