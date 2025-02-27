@@ -62,95 +62,98 @@ function StreamDisplay({
   }, [chosenChamp]);
 
   return (
-    <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
-      <div className="teamTitles relative flex justify-between px-4">
-        <div
-          className={`blueTitle py-2 px-4 ${
-            draftState.blueReady || draftState.displayTurn === "blue"
-              ? "w-96"
-              : "w-52"
-          } bg-blue/60 ${
-            draftState.displayTurn === "blue" ? "animate-pulse" : ""
-          } transition-width duration-500 rounded-md`}
-        >
-          <h2 className="text-right font-bold text-xl">
-            {draftState.blueDisplayName}
-          </h2>
+    <div className="h-screen relative">
+      <div className="absolute w-full bottom-0 text-white flex flex-col">
+        <div className="teamTitles relative flex justify-between px-4">
+          <div
+            className={`blueTitle py-2 px-4 ${
+              draftState.blueReady || draftState.displayTurn === "blue"
+                ? "w-96"
+                : "w-52"
+            } bg-blue/60 ${
+              draftState.displayTurn === "blue" ? "animate-pulse" : ""
+            } transition-width duration-500 rounded-md`}
+          >
+            <h2 className="text-right font-bold text-xl">
+              {draftState.blueDisplayName}
+            </h2>
+          </div>
+          <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
+            <Timer
+              timer={draftState.timer}
+              displayTurn={draftState.displayTurn}
+            />
+          </div>
+          <div
+            className={`redTitle py-2 px-4 ${
+              draftState.redReady || draftState.displayTurn === "red"
+                ? "w-96"
+                : "w-52"
+            } bg-red/60 ${
+              draftState.displayTurn === "red" ? "animate-pulse" : ""
+            } transition-width duration-500 rounded-md`}
+          >
+            <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
+          </div>
         </div>
-        <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
-          <Timer
-            timer={draftState.timer}
-            displayTurn={draftState.displayTurn}
-          />
-        </div>
-        <div
-          className={`redTitle py-2 px-4 ${
-            draftState.redReady || draftState.displayTurn === "red"
-              ? "w-96"
-              : "w-52"
-          } bg-red/60 ${
-            draftState.displayTurn === "red" ? "animate-pulse" : ""
-          } transition-width duration-500 rounded-md`}
-        >
-          <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
-        </div>
-      </div>
-      {/* Main Container */}
-      <div className="relative mainDraftContainer flex  flex-1">
-        {/* Blue Side Picks */}
-        <div className="blueSidePicks flex gap-4 draftMd:p-4 p-0 px-2 py-4">
-          <StreamPicks
-            draftState={draftState}
-            picks={draftState.bluePicks}
-            enemyPicks={draftState.redPicks}
-            championRoles={championRoles}
-            playerTurn={draftState.displayTurn}
-            playerSide={"blue"}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
+        {/* Champion Bans*/}
+        <div className="champBans flex w-full justify-between gap-8 items-center pt-4 px-4">
+          {/* Blue Side Bans */}
+          <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
+            <DisplayBans
+              draftState={draftState}
+              bans={draftState.blueBans}
+              enemyBans={draftState.redBans}
+              playerSide={"blue"}
+              playerTurn={draftState.displayTurn}
+              currentPhase={draftState.activePhase}
+              currentHover={currentHover}
+            />
+          </div>
+
+          {/* Red Side Bans */}
+          <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
+            <DisplayBans
+              draftState={draftState}
+              bans={draftState.redBans}
+              enemyBans={draftState.blueBans}
+              playerSide={"red"}
+              playerTurn={draftState.displayTurn}
+              currentPhase={draftState.activePhase}
+              currentHover={currentHover}
+            />
+          </div>
         </div>
 
-        {/* Red Side Picks */}
-        <div className="redSidePicks flex gap-4 draftMd:p-4 p-0 px-2 py-4">
-          <StreamPicks
-            draftState={draftState}
-            picks={draftState.redPicks}
-            enemyPicks={draftState.bluePicks}
-            championRoles={championRoles}
-            playerTurn={draftState.displayTurn}
-            playerSide={"red"}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
-        </div>
-      </div>
-      {/* Champion Bans*/}
-      <div className="champBans flex w-full justify-between gap-8 items-center pt-8 max-[1100px]:pt-4 px-4">
-        {/* Blue Side Bans */}
-        <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
-          <DisplayBans
-            draftState={draftState}
-            bans={draftState.blueBans}
-            enemyBans={draftState.redBans}
-            playerSide={"blue"}
-            playerTurn={draftState.displayTurn}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
-        </div>
+        {/* Picks Container */}
+        <div className="relative champPicks flex justify-between flex-1">
+          {/* Blue Side Picks */}
+          <div className="blueSidePicks flex gap-4 draftMd:p-4 p-0 px-2 py-4">
+            <StreamPicks
+              draftState={draftState}
+              picks={draftState.bluePicks}
+              enemyPicks={draftState.redPicks}
+              championRoles={championRoles}
+              playerTurn={draftState.displayTurn}
+              playerSide={"blue"}
+              currentPhase={draftState.activePhase}
+              currentHover={currentHover}
+            />
+          </div>
 
-        {/* Red Side Bans */}
-        <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
-          <DisplayBans
-            draftState={draftState}
-            bans={draftState.redBans}
-            enemyBans={draftState.blueBans}
-            playerSide={"red"}
-            playerTurn={draftState.displayTurn}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
+          {/* Red Side Picks */}
+          <div className="redSidePicks flex flex-row-reverse gap-4 draftMd:p-4 p-0 px-2 py-4">
+            <StreamPicks
+              draftState={draftState}
+              picks={draftState.redPicks}
+              enemyPicks={draftState.bluePicks}
+              championRoles={championRoles}
+              playerTurn={draftState.displayTurn}
+              playerSide={"red"}
+              currentPhase={draftState.activePhase}
+              currentHover={currentHover}
+            />
+          </div>
         </div>
       </div>
     </div>
