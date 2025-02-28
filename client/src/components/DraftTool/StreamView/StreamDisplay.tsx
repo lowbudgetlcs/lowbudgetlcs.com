@@ -15,9 +15,11 @@ function StreamDisplay({
 }: DraftDisplayProps) {
   const { socket } = useSocketContext();
   const [chosenChamp, setChosenChamp] = useState<string>();
-
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [currentHover, setCurrentHover] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState(draftState.timer || 30);
 
+  const timerWidth = (timeLeft / 30) * 100;
   // Clear the hover state when the phase changes
   useEffect(() => {
     setCurrentHover(null);
@@ -33,6 +35,7 @@ function StreamDisplay({
       }
       setCurrentHover(state.currentHover);
     };
+
     socket.on("banHover", handleHover);
     socket.on("pickHover", handleHover);
     return () => {
@@ -61,6 +64,35 @@ function StreamDisplay({
       socket.emit("clientHover", { chosenChamp, lobbyCode, sideCode });
     }
   }, [chosenChamp]);
+
+  useEffect(() => {
+    if (draftState.displayTurn || draftState.phaseType) {
+      setTimeLeft(draftState.timer || 34);
+      setIsTimerRunning(true);
+    }
+  }, [draftState.displayTurn, draftState.phaseType, draftState.timer]);
+
+  useEffect(() => {
+    setTimeLeft(draftState.timer || 30);
+  }, [draftState.timer]);
+
+  useEffect(() => {
+    if (!isTimerRunning) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 0.1) {
+          setIsTimerRunning(false);
+          return 0;
+        }
+        return prevTime - 0.1;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isTimerRunning]);
 
   return (
     <div className="h-screen relative">
@@ -125,7 +157,20 @@ function StreamDisplay({
             />
           </div>
         </div>
-
+        <div
+          className={`timerLine w-full h-2 ${
+            draftState.displayTurn === "blue"
+              ? "bg-blue"
+              : draftState.displayTurn === "red"
+              ? "bg-red"
+              : "bg-gray"
+          } origin-center `}
+          style={{
+            width: "100%",
+            transform: `scaleX(${timerWidth / 100})`,
+            transformOrigin: "center",
+          }}
+        ></div>
         {/* Picks Container */}
         <div className="relative champPicks flex justify-between flex-1">
           {/* Blue Side Picks */}
