@@ -15,11 +15,14 @@ function StreamDisplay({
 }: DraftDisplayProps) {
   const { socket } = useSocketContext();
   const [chosenChamp, setChosenChamp] = useState<string>();
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [currentHover, setCurrentHover] = useState<string | null>(null);
+
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(draftState.timer || 30);
 
+  // calculate width of timer bar 
   const timerWidth = (timeLeft / 30) * 100;
+
   // Clear the hover state when the phase changes
   useEffect(() => {
     setCurrentHover(null);
@@ -67,13 +70,13 @@ function StreamDisplay({
 
   useEffect(() => {
     if (draftState.displayTurn || draftState.phaseType) {
-      setTimeLeft(draftState.timer || 34);
+      setTimeLeft(draftState.timer || 30);
       setIsTimerRunning(true);
     }
   }, [draftState.displayTurn, draftState.phaseType, draftState.timer]);
 
   useEffect(() => {
-    setTimeLeft(draftState.timer || 30);
+    setTimeLeft(draftState.timer);
   }, [draftState.timer]);
 
   useEffect(() => {
@@ -157,14 +160,15 @@ function StreamDisplay({
             />
           </div>
         </div>
+        {/* Timer Line */}
         <div
-          className={`timerLine w-full h-2 ${
+          className={`timerLine w-full h-2 m-2 ${
             draftState.displayTurn === "blue"
               ? "bg-blue"
               : draftState.displayTurn === "red"
               ? "bg-red"
-              : "bg-gray"
-          } origin-center `}
+              : ""
+          } origin-center transition-all duration-200`}
           style={{
             width: "100%",
             transform: `scaleX(${timerWidth / 100})`,
@@ -174,7 +178,7 @@ function StreamDisplay({
         {/* Picks Container */}
         <div className="relative champPicks flex justify-between flex-1">
           {/* Blue Side Picks */}
-          <div className="blueSidePicks flex gap-4 draftMd:p-4 p-0 px-2 py-4">
+          <div className="blueSidePicks flex gap-4 px-2">
             <StreamPicks
               draftState={draftState}
               picks={draftState.bluePicks}
@@ -188,7 +192,7 @@ function StreamDisplay({
           </div>
           <PickBox draftState={draftState} championRoles={championRoles} />
           {/* Red Side Picks */}
-          <div className="redSidePicks flex flex-row-reverse gap-4 draftMd:p-4 p-0 px-2 py-4">
+          <div className="redSidePicks flex flex-row-reverse gap-4 px-2 pb-4">
             <StreamPicks
               draftState={draftState}
               picks={draftState.redPicks}
