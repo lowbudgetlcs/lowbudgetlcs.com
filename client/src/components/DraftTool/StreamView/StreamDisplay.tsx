@@ -5,6 +5,7 @@ import Timer from "../Timer";
 import { useSocketContext } from "../DraftPage";
 import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";
+import BanBox from "./BanBox";
 
 function StreamDisplay({
   draftState,
@@ -20,7 +21,7 @@ function StreamDisplay({
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(draftState.timer || 30);
 
-  // calculate width of timer bar 
+  // calculate width of timer bar
   const timerWidth = (timeLeft / 30) * 100;
 
   // Clear the hover state when the phase changes
@@ -191,6 +192,7 @@ function StreamDisplay({
             />
           </div>
           <PickBox draftState={draftState} championRoles={championRoles} />
+          <BanBox draftState={draftState} championRoles={championRoles} />
           {/* Red Side Picks */}
           <div className="redSidePicks flex flex-row-reverse gap-4 px-2 pb-4">
             <StreamPicks

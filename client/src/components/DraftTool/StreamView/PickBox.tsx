@@ -33,7 +33,7 @@ const PickBox = ({
       socket &&
       champInfo &&
       draftState.pickIndex > 0 &&
-      (draftState.phaseType === "pick" || draftState.activePhase ==="finished")
+      (draftState.banIndex === 0 || draftState.activePhase === "finished")
     ) {
       // Reset and start animation when character changes
       setAnimationState("initial");
@@ -44,7 +44,14 @@ const PickBox = ({
         setAnimationState("completed");
       }, 1400);
     }
-  }, [currentPicks, draftState.activePhase, socket, champInfo]);
+  }, [
+    currentPicks,
+    draftState.activePhase,
+    draftState.banIndex,
+    draftState.pickIndex,
+    socket,
+    champInfo,
+  ]);
 
   const getAnimationStyles = () => {
     switch (animationState) {

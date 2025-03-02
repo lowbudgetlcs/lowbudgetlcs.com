@@ -31,7 +31,7 @@ const BanBox = ({
       socket &&
       champInfo &&
       draftState.banIndex > 0 &&
-      (draftState.phaseType === "ban" || draftState.activePhase === "finished")
+      (draftState.pickIndex === 0)
     ) {
       // Reset and start animation when character changes
       setAnimationState("initial");
@@ -42,7 +42,7 @@ const BanBox = ({
         setAnimationState("completed");
       }, 1400);
     }
-  }, [currentBans, draftState.activePhase, socket, champInfo]);
+  }, [currentBans, draftState.banIndex, draftState.pickIndex, socket, champInfo]);
 
   const getAnimationStyles = () => {
     switch (animationState) {
