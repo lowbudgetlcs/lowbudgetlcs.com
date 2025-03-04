@@ -168,11 +168,11 @@ function StreamDisplay({
               ? "bg-blue"
               : draftState.displayTurn === "red"
               ? "bg-red"
-              : ""
+              : "bg-gray"
           } origin-center transition-all duration-200`}
           style={{
             width: "100%",
-            transform: `scaleX(${timerWidth / 100})`,
+            transform: `scaleX(${timerWidth / 116})`,
             transformOrigin: "center",
           }}
         ></div>
