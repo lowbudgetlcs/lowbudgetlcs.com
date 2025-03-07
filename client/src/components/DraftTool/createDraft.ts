@@ -14,7 +14,7 @@ export const createDraft = async (
       // Create the Draft lobby
       // check draftRoutes.ts in server routes folder
       const response = await fetch(
-        "http://localhost:8080/draft/api/createDraft",
+        "https://backend.lowbudgetlcs.com/draft/api/createDraft",
         {
           method: "POST",
           headers: {
