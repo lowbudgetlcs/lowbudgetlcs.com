@@ -14,6 +14,15 @@ function DraftButton({
   const [ready, setReady] = useState<boolean>(false);
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
+  
+  useEffect(() => {
+    if (playerSide === "red" && draftState.redReady) {
+        setReady(true)
+    }
+    if (playerSide === "blue" && draftState.blueReady) {
+        setReady(true)
+    }
+  })
 
   useEffect(() => {
     if(draftState.phaseType === "ban") {
