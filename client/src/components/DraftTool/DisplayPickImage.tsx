@@ -35,7 +35,7 @@ const DisplayPickImage = ({
     return (
       <div
         style={{
-          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered')`,
+          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${currentHover === "wukong" ? "monkeyking" : currentHover}/splash-art/centered')`,
         }}
         className="relative w-full h-full bg-[51%_20%] bg-[size:180%] grayscale-[90%]"
       >
@@ -60,7 +60,7 @@ const DisplayPickImage = ({
     return (
       <div
         style={{
-          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered')`,
+          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName === "wukong" ? "monkeyking" : championName}/splash-art/centered')`,
         }}
         className="relative w-full h-full bg-[51%_20%] bg-[size:180%]"
       >

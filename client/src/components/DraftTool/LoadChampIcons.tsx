@@ -72,7 +72,8 @@ export function LoadChampIcons({
                 ? `box-border border-orange border-2 ${
                     champion.name === "Katarina" ||
                     champion.name === "Garen" ||
-                    champion.name === "Samira"
+                    champion.name === "Samira" ||
+                    champion.name === "Wukong"
                       ? "animate-spin"
                       : champion.name === "Zac"
                       ? "animate-bounce"
