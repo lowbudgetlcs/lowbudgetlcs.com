@@ -27,7 +27,7 @@ draftRoutes.get(
 );
 
 // Draft Lobby Creation
-const generateRandomString = () => Math.random().toString(36).substring(7);
+const generateRandomString = () => Math.random().toString(36).substring(2);
 
 draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
   try {
