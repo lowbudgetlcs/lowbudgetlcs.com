@@ -10,7 +10,7 @@ import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
-import { setClientDraftState, updateClientState } from "./clientDraftState";
+import { updateClientState } from "./clientDraftState";
 import { endDraftHandler } from "./endDraftHandler";
 export interface DraftUsersProps {
   blue: string;
@@ -23,7 +23,6 @@ export const draftSocket = (io: Server) => {
   io.on("connection", (socket) => {
     const getDraftState = (lobbyCode: string) => {
       if (!draftState[lobbyCode]) {
-        console.error(`State for lobby ${lobbyCode} is not initialized`);
         socket.emit("error", { draftNotInitialized: false });
         return null;
       }
@@ -39,12 +38,11 @@ export const draftSocket = (io: Server) => {
 
         // Redundant but I don't trust myself
         if (!state) {
-          console.error("Invalid Draft ID");
+          socket.emit("error", { invalidDraftID: true });
           return;
         }
         const redCode = state.redUser;
         const blueCode = state.blueUser;
-
 
         // Initialize EventEmitter for this lobby if not already
         if (!lobbyEmitters.has(lobbyCode)) {
@@ -80,7 +78,7 @@ export const draftSocket = (io: Server) => {
       const state = getDraftState(lobbyCode);
       // Redundant but I don't trust myself
       if (!state) {
-        console.error("Invalid Draft ID");
+        socket.emit("error", { invalidDraftID: true });
         return;
       }
 
@@ -142,7 +140,7 @@ export const draftSocket = (io: Server) => {
       const state = getDraftState(lobbyCode);
 
       if (!state) {
-        console.error("Invalid Draft ID");
+        socket.emit("error", { invalidDraftID: true });
         return;
       }
 
@@ -162,7 +160,7 @@ export const draftSocket = (io: Server) => {
       const state = getDraftState(lobbyCode);
       // Redundant but I don't trust myself
       if (!state) {
-        console.error("Invalid Draft ID");
+        socket.emit("error", { invalidDraftID: true });
         return;
       }
 
@@ -202,7 +200,7 @@ export const draftSocket = (io: Server) => {
 
       // Redundant but I don't trust myself
       if (!state) {
-        console.error("Invalid Draft ID");
+        socket.emit("error", { invalidDraftID: true });
         return;
       }
 
