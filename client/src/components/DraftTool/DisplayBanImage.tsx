@@ -1,5 +1,5 @@
 import { memo } from "react";
-import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
+import tempImage from "../../assets/lblcsLogo.svg";
 import { DraftProps } from "./draftInterfaces";
 
  const DisplayBanImage = ({
@@ -37,7 +37,7 @@ import { DraftProps } from "./draftInterfaces";
           alt="nothing"
           width="160px"
           height="200px"
-          className="object-cover"
+          className="object-cover scale-90 grayscale opacity-25"
         />
       );
     } else if (championName !== "nothing") {

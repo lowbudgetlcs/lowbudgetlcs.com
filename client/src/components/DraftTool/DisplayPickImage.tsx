@@ -1,5 +1,5 @@
 import { memo } from "react";
-import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
+import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
 
 const DisplayPickImage = ({
@@ -60,9 +60,7 @@ const DisplayPickImage = ({
       <img
         src={tempImage}
         alt="nothing"
-        className="object-cover max-w-full max-h-full"
-        width={"300px"}
-        height={"90px"}
+        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
       />
     );
   } else if (championName !== "nothing") {
