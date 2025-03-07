@@ -18,7 +18,7 @@ const Timer = ({
   }, [timer]);
   return (
     <p
-      className={`text-4xl${
+      className={`text-4xl ${
         displayTurn === "blue"
           ? "text-blue"
           : displayTurn === "red"
