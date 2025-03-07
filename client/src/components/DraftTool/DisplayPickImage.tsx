@@ -2,13 +2,14 @@ import { memo } from "react";
 import tempImage from "../../assets/Transparent_LBLCS_Logo.png";
 import { Champion, DraftProps } from "./draftInterfaces";
 
-
 const DisplayPickImage = ({
+  playerSide,
   pickIndex,
   pickedChampions,
   championRoles,
   currentHover,
 }: {
+  playerSide: string;
   pickIndex: number;
   pickedChampions: string[];
   championRoles: Champion[];
@@ -35,11 +36,19 @@ const DisplayPickImage = ({
     return (
       <div
         style={{
-          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${currentHover === "wukong" ? "monkeyking" : currentHover}/splash-art/centered')`,
+          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
+            currentHover === "wukong" ? "monkeyking" : currentHover
+          }/splash-art/centered')`,
         }}
         className="relative w-full h-full bg-[51%_20%] bg-[size:180%] grayscale-[90%]"
       >
-        <p className="absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md">
+        <p
+          className={
+            playerSide === "blue"
+              ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
+              : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
+          }
+        >
           {hoveredDisplayName}
         </p>
       </div>
@@ -60,11 +69,19 @@ const DisplayPickImage = ({
     return (
       <div
         style={{
-          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${championName === "wukong" ? "monkeyking" : championName}/splash-art/centered')`,
+          backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
+            championName === "wukong" ? "monkeyking" : championName
+          }/splash-art/centered')`,
         }}
         className="relative w-full h-full bg-[51%_20%] bg-[size:180%]"
       >
-        <p className="absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md">
+        <p
+          className={
+            playerSide === "blue"
+              ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
+              : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
+          }
+        >
           {displayName}
         </p>
       </div>
@@ -74,4 +91,4 @@ const DisplayPickImage = ({
   }
 };
 
-export default memo(DisplayPickImage)
+export default memo(DisplayPickImage);

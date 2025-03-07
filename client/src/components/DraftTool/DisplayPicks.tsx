@@ -90,6 +90,7 @@ const FirstPicks = memo(
           } bg-gray/60 rounded-md`}
         >
           <DisplayPickImage
+            playerSide={playerSide}
             pickIndex={i}
             pickedChampions={picks}
             championRoles={championRoles}
@@ -137,6 +138,7 @@ const LastPicks = memo(
           } bg-gray/60 rounded-md`}
         >
           <DisplayPickImage
+            playerSide={playerSide}
             pickIndex={i}
             pickedChampions={picks}
             championRoles={championRoles}
