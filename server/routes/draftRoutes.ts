@@ -31,7 +31,6 @@ const generateRandomString = () => Math.random().toString(36).substring(7);
 
 draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
   try {
-    console.log("Beginning Draft Creation");
 
     // Pull nick names and tournament ID from request (if there is one)
     const {
@@ -41,7 +40,6 @@ draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
     }: { redName: string; blueName: string; tournamentID: string | null } =
       req.body;
 
-    console.log("Received Data:", { redName, blueName, tournamentID });
 
     // Generate unique URLs for the draft
     let blueCode, redCode, lobbyCode;
@@ -95,7 +93,6 @@ draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
 
     // Initialize Draft
     initializeDraftState(draft);
-    console.log("Draft Created", draftState[lobbyCode]);
 
     // Save Draft to Database if tournament code is present, otherwise it will just have the record
     if (tournamentID) {

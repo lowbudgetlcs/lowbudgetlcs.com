@@ -11,9 +11,6 @@ export const readyHandler = (
 ) => {
   const { blueUser, redUser } = state;
 
-  // Starts the draft if both players are ready
-  console.log("BlueReady: ", state.blueReady, " RedReady: ", state.redReady);
-
   const isBlue = sideCode === blueUser;
   const isRed = sideCode === redUser;
 
@@ -30,12 +27,10 @@ export const readyHandler = (
       isBlue ? "blueReady" : "redReady",
       updateClientState(lobbyCode)
     );
-    console.log(`${isBlue ? "Blue" : "Red"} ready status updated:`, ready);
   }
 
   // Check if both players are redied up
   if (state.blueReady && state.redReady && !state.draftStarted) {
-    console.log("starting draft in room: ", lobbyCode);
     state.draftStarted = true;
     io.to(lobbyCode).emit("startDraft", true);
     return true;

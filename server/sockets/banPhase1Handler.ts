@@ -22,7 +22,6 @@ export const banPhase1Handler = async ({
     ];
 
     const startBanPhase = async () => {
-      console.log("Ban Phase Starting");
       io.to(lobbyCode).emit("banPhase", updateClientState(lobbyCode));
       state.phaseType = "ban";
 
@@ -43,7 +42,6 @@ export const banPhase1Handler = async ({
             io.to(lobbyCode).emit("currentTurn", updateClientState(lobbyCode));
           }
           await handleTurn(currentSide);
-          console.log("Switching turns");
         } catch (err) {
           console.error("Error during turn:", err);
           reject(err);
@@ -67,7 +65,6 @@ export const banPhase1Handler = async ({
 
           if (timer <= 0) {
             clearInterval(interval);
-            console.log(`Timer expired for ${currentSide}.`);
             if (currentSide === state.blueUser) {
               state.blueBans.push("nothing");
             } else if (currentSide === state.redUser) {
@@ -84,9 +81,7 @@ export const banPhase1Handler = async ({
         const banListener = () => {
           if (state.bluePick) {
             if (currentSide === state.blueUser) {
-              console.log("Ban received");
               clearInterval(interval);
-              console.log(`${currentSide} banned: ${state.bluePick}`);
               state.blueBans.push(state.bluePick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached
@@ -96,9 +91,7 @@ export const banPhase1Handler = async ({
             }
           } else if (state.redPick) {
             if (currentSide === state.redUser) {
-              console.log("Ban received");
               clearInterval(interval);
-              console.log(`${currentSide} banned: ${state.redPick}`);
               state.redBans.push(state.redPick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached

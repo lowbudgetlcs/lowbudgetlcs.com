@@ -20,7 +20,6 @@ export const pickPhase2Handler = async ({
     ];
 
     const startPickPhase = async () => {
-      console.log("Pick Phase Starting");
       io.to(lobbyCode).emit("pickPhase", updateClientState(lobbyCode));
       state.phaseType = "pick";
 
@@ -41,7 +40,6 @@ export const pickPhase2Handler = async ({
             io.to(lobbyCode).emit("currentTurn", updateClientState(lobbyCode));
           }
           await handleTurn(currentSide);
-          console.log("Switching turns");
         } catch (err) {
           console.error("Error during turn:", err);
           reject(err);
@@ -49,7 +47,6 @@ export const pickPhase2Handler = async ({
         }
       }
       state.pickIndex = 0;
-      console.log("Pick Phase 2 is complete :)");
       io.to(lobbyCode).emit("endPickPhase", true);
       resolve(true);
     };
@@ -65,7 +62,6 @@ export const pickPhase2Handler = async ({
 
           if (timer <= 0) {
             clearInterval(interval);
-            console.log(`Timer expired for ${currentSide}.`);
 
             // Add nothing pick to side array
             if (currentSide === state.blueUser) {
@@ -86,9 +82,7 @@ export const pickPhase2Handler = async ({
         const pickListener = () => {
           if (state.bluePick) {
             if (currentSide === state.blueUser) {
-              console.log("Pick received");
               clearInterval(interval);
-              console.log(`${currentSide} picked: ${state.bluePick}`);
               state.bluePicks.push(state.bluePick);
               io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached
@@ -98,9 +92,7 @@ export const pickPhase2Handler = async ({
             }
           } else if (state.redPick) {
             if (currentSide === state.redUser) {
-              console.log("Pick received");
               clearInterval(interval);
-              console.log(`${currentSide} picked: ${state.redPick}`);
               state.redPicks.push(state.redPick);
               io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached

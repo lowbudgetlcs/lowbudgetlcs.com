@@ -28,7 +28,6 @@ export const handleBanPhase = (
 
   // Ban champion based on side
   const addBannedChampion = (side: string, bannedChampion: string) => {
-    console.log("You are banning: ", side, " ", bannedChampion);
     if (side === "blue") {
       setDraftState((prevState) => ({
         ...prevState,
@@ -40,7 +39,6 @@ export const handleBanPhase = (
         redBans: [...prevState.redBans, bannedChampion],
       }));
     }
-    console.log("banned Champion: ", bannedChampion);
   };
 
   // Run function to display bans
@@ -57,7 +55,6 @@ export const handleBanPhase = (
     } else {
       return;
     }
-    console.log(`Ban received: ${bannedChampion}`);
 
     // Check if champion was already picked or banned (Should never have to since to but just in case)
     if (
@@ -75,7 +72,6 @@ export const handleBanPhase = (
 
   // Remove listeners at the end of ban phase
   socket.once("endBanPhase", () => {
-    console.log("BAN phase is over");
     socket.off("setBan", setBanSocket);
     socket.off("timer", timeHandler);
   });
@@ -119,7 +115,6 @@ export const handlePickPhase = (
         redPicks: [...prevState.redPicks, pickedChampion],
       }));
     }
-    console.log("picked Champion: ", pickedChampion);
   };
 
   // Run function to display picks
@@ -136,7 +131,6 @@ export const handlePickPhase = (
     } else {
       return;
     }
-    console.log(`Pick received: ${pickedChampion}`);
 
     // Check if champion was already picked or banned (Should never have to since to but just in case)
     if (
@@ -154,7 +148,6 @@ export const handlePickPhase = (
 
   // remove listeners at the end of pick phase
   socket.once("endPickPhase", () => {
-    console.log("PICK phase is over");
     socket.off("setPick", setPickSocket);
     socket.off("timer", timeHandler);
   });

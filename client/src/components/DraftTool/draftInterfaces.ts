@@ -46,8 +46,6 @@ export interface DraftDisplayProps {
   sideCode: string | undefined;
   socket: Socket;
   championRoles: Champion[];
-  banPhase: boolean;
-  pickPhase: boolean;
   playerSide: string;
 }
 
@@ -57,8 +55,6 @@ export interface DraftButtonProps {
   sideCode: string | undefined;
   socket: Socket;
   championRoles: Champion[];
-  banPhase: boolean;
-  pickPhase: boolean;
   playerSide: string;
   chosenChamp: string | undefined;
   setChosenChamp: React.Dispatch<React.SetStateAction<string | undefined>>;

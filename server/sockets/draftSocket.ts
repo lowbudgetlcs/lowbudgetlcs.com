@@ -31,7 +31,7 @@ export const draftSocket = (io: Server) => {
     };
 
     currentConnections++;
-    console.log("User connected. current connections: ", currentConnections);
+    console.log("Connected. Current connections: ", currentConnections);
 
     socket.on("joinDraft", async ({ lobbyCode, sideCode }) => {
       try {
@@ -45,7 +45,6 @@ export const draftSocket = (io: Server) => {
         const redCode = state.redUser;
         const blueCode = state.blueUser;
 
-        console.log(`The Valid lobby codes are ${blueCode} and ${redCode}`);
 
         // Initialize EventEmitter for this lobby if not already
         if (!lobbyEmitters.has(lobbyCode)) {
@@ -54,7 +53,6 @@ export const draftSocket = (io: Server) => {
 
         // Join room
         socket.join(lobbyCode);
-        console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
         let sideDisplay: string | null =
           sideCode === blueCode
@@ -152,11 +150,9 @@ export const draftSocket = (io: Server) => {
         if (state.currentTurn === sideCode) {
           if (state.phaseType === "ban") {
             state.currentHover = chosenChamp;
-            console.log(state.currentHover);
             io.to(lobbyCode).emit("banHover", state);
           } else if (state.phaseType === "pick") {
             state.currentHover = chosenChamp;
-            console.log(state.currentHover);
             io.to(lobbyCode).emit("pickHover", state);
           }
         }
@@ -241,7 +237,7 @@ export const draftSocket = (io: Server) => {
 
     socket.on("disconnect", () => {
       currentConnections--;
-      console.log("User disconnected. Current Users: ", currentConnections);
+      console.log("Disconnected. Current Users: ", currentConnections);
     });
   });
 };

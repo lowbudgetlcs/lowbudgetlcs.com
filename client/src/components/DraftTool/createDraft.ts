@@ -11,8 +11,6 @@ export const createDraft = async (
         tournamentID: tournamentID,
       };
   
-      console.log(data);
-  
       // Create the Draft lobby
       // check draftRoutes.ts in server routes folder
       const response = await fetch(

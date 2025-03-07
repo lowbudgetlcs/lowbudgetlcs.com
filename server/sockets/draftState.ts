@@ -121,12 +121,11 @@ export const initializeDraftState = ({
       redPick: null,
       draftComplete: false,
     };
-    console.log(`Draft state initialized for lobby with code: ${lobbyCode}`);
 
     setTimeout(() => {
       if (draftState[lobbyCode]) {
         delete draftState[lobbyCode];
-        console.log(`Draft state for lobby ${lobbyCode} deleted after 1 hour.`);
+        console.log(`Draft state for lobby ${lobbyCode} deleted`);
       }
     }, twoHours);
   }

@@ -8,7 +8,6 @@ export const endDraftHandler = async ({
   state,
 }: HandlerVarsProps) => {
   state.activePhase = "finished";
-  console.log("Draft Complete!");
   state.phaseType = null;
   state.displayTurn = null;
   state.timer = 0;

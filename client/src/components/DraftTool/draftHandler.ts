@@ -22,7 +22,6 @@ export function connectionHandler(
   setError: React.Dispatch<React.SetStateAction<boolean>>
 ) {
   // Initial connection
-  console.log("Client sent lobbyCode:", lobbyCode);
   socket.emit("joinDraft", { lobbyCode, sideCode });
 
   // Error handling
@@ -33,15 +32,12 @@ export function connectionHandler(
 
   // Sets the side for client
   const joinDraft = ({
-    sideCode,
-    lobbyCode,
     sideDisplay,
   }: {
     sideCode: string;
     lobbyCode: string;
     sideDisplay: string;
   }) => {
-    console.log("joined Draft: ", sideCode, lobbyCode);
     setPlayerSide(sideDisplay);
   };
 
@@ -68,7 +64,6 @@ export const readyHandler = (
     console.error("No socket Found!");
     return;
   }
-  console.log("Emitting: ", sideCode);
   socket.emit("ready", { lobbyCode, sideCode, ready });
 };
 
@@ -88,13 +83,11 @@ export const pickHandler = (
 
   if (banPhase) {
     // Send ban to server
-    console.log("Emitting ban:", { sideCode, chosenChamp });
     socket.emit("ban", { lobbyCode, sideCode, chosenChamp });
   }
 
   if (pickPhase) {
     // Send pick to server
-    console.log("Emitting pick:", { sideCode, chosenChamp });
     socket.emit("pick", { lobbyCode, sideCode, chosenChamp });
   }
 };
