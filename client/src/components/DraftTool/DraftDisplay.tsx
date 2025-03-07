@@ -52,10 +52,7 @@ function DraftDisplay({
   };
   return (
     <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
-      <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
-        <Timer timer={draftState.timer} displayTurn={draftState.displayTurn} />
-      </div>
-      <div className="teamTitles flex justify-between px-4">
+      <div className="teamTitles relative flex justify-between px-4">
         <div
           className={`blueTitle py-2 px-4 ${
             draftState.blueReady || draftState.displayTurn === "blue"
@@ -63,9 +60,17 @@ function DraftDisplay({
               : "w-52"
           } bg-blue/60 ${
             draftState.displayTurn === "blue" ? "animate-pulse" : ""
-          } transition-width duration-500`}
+          } transition-width duration-500 rounded-md`}
         >
-          <h2>{draftState.blueDisplayName}</h2>
+          <h2 className="text-right font-bold text-xl">
+            {draftState.blueDisplayName}
+          </h2>
+        </div>
+        <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
+          <Timer
+            timer={draftState.timer}
+            displayTurn={draftState.displayTurn}
+          />
         </div>
         <div
           className={`redTitle py-2 px-4 ${
@@ -74,9 +79,9 @@ function DraftDisplay({
               : "w-52"
           } bg-red/60 ${
             draftState.displayTurn === "red" ? "animate-pulse" : ""
-          } transition-width duration-500`}
+          } transition-width duration-500 rounded-md`}
         >
-          <h2>{draftState.redDisplayName}</h2>
+          <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
         </div>
       </div>
       {/* Main Container */}
@@ -117,8 +122,8 @@ function DraftDisplay({
             </form>
           </div>
           {/* List of Champion Images */}
-          <div className="">
-            <ul className="champions flex flex-wrap overflow-y-scroll max-h-[616px] gap-2 justify-center max-[1100px]:max-h-[580px]">
+          <div className="h-[616px] max-[1100px]:h-[580px] overflow-y-scroll">
+            <ul className="champions flex flex-wrap gap-2 justify-center">
               <LoadChampIcons
                 championRoles={championRoles}
                 searchValue={searchValue}
