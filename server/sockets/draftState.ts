@@ -31,6 +31,7 @@ export interface DraftStateProps {
   pickIndex: number;
   currentTurn: string;
   displayTurn: "red" | "blue" | null;
+  currentHover: string | null;
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
@@ -79,6 +80,7 @@ export interface ClientDraftStateProps {
   pickIndex: number;
   currentTurn: string;
   displayTurn: "red" | "blue" | null;
+  currentHover: string | null;
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
@@ -114,6 +116,7 @@ export const initializeDraftState = ({
       pickIndex: 0,
       currentTurn: "",
       displayTurn: null,
+      currentHover: null,
       bluePick: null,
       redPick: null,
       draftComplete: false,

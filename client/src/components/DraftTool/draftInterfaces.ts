@@ -89,6 +89,7 @@ export interface DraftProps {
   pickIndex: number;
   currentTurn: string;
   displayTurn: "red" | "blue" | null;
+  currentHover: string | null;
   bluePick: string;
   redPick: string;
   draftComplete: boolean;

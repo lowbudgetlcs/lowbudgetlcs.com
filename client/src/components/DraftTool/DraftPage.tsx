@@ -29,6 +29,7 @@ function DraftPage() {
     pickIndex: 0,
     currentTurn: "",
     displayTurn: null,
+    currentHover: null,
     bluePick: "nothing",
     redPick: "nothing",
     draftComplete: false,
@@ -86,7 +87,6 @@ function DraftPage() {
         ...prevState,
         ...state,
       }));
-
       if (state.phaseType === "pick") {
         handlePickPhase(socket, state, draftState, setDraftState);
       } else if (state.phaseType === "ban") {

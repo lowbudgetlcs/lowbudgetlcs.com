@@ -24,6 +24,7 @@ export const setClientDraftState = (state: DraftStateProps) => {
     pickIndex: state.pickIndex,
     currentTurn: state.currentTurn,
     displayTurn: state.displayTurn,
+    currentHover: state.currentHover,
     bluePick: state.bluePick,
     redPick: state.redPick,
     draftComplete: state.draftComplete,

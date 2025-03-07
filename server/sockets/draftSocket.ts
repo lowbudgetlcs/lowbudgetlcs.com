@@ -57,7 +57,11 @@ export const draftSocket = (io: Server) => {
         console.log(`${socket.id} joined draft ${lobbyCode} as ${sideCode}`);
 
         let sideDisplay: string | null =
-          sideCode === blueCode ? "blue" : sideCode === redCode ? "red" : 'spectator';
+          sideCode === blueCode
+            ? "blue"
+            : sideCode === redCode
+            ? "red"
+            : "spectator";
 
         socket.emit("joinedDraft", {
           success: true,
@@ -86,6 +90,7 @@ export const draftSocket = (io: Server) => {
 
       if (isDraftReady) {
         state.draftStarted = true;
+        state.currentHover = null;
         state.activePhase = "banPhase1";
         io.to(lobbyCode).emit("startBanPhase1", updateClientState(lobbyCode));
 
@@ -104,11 +109,13 @@ export const draftSocket = (io: Server) => {
 
         const isBanPhase1Done = await banPhase1Handler(handlerVars);
         if (isBanPhase1Done) {
+          state.currentHover = null;
           state.activePhase = "pickPhase1";
 
           const isPickPhase1Done = await pickPhase1Handler(handlerVars);
 
           if (isPickPhase1Done) {
+            state.currentHover = null;
             state.activePhase = "banPhase2";
             io.to(lobbyCode).emit(
               "startBanPhase2",
@@ -118,6 +125,7 @@ export const draftSocket = (io: Server) => {
             const isBanPhase2Done = await banPhase2Handler(handlerVars);
 
             if (isBanPhase2Done) {
+              state.currentHover = null;
               state.activePhase = "pickPhase2";
 
               const isPickPhase2Done = await pickPhase2Handler(handlerVars);
@@ -132,6 +140,28 @@ export const draftSocket = (io: Server) => {
       }
     });
 
+    socket.on("clientHover", ({ lobbyCode, sideCode, chosenChamp }) => {
+      const state = getDraftState(lobbyCode);
+
+      if (!state) {
+        console.error("Invalid Draft ID");
+        return;
+      }
+
+      if (state.activePhase && state.activePhase !== "finished") {
+        if (state.currentTurn === sideCode) {
+          if (state.phaseType === "ban") {
+            state.currentHover = chosenChamp;
+            console.log(state.currentHover);
+            io.to(lobbyCode).emit("banHover", state);
+          } else if (state.phaseType === "pick") {
+            state.currentHover = chosenChamp;
+            console.log(state.currentHover);
+            io.to(lobbyCode).emit("pickHover", state);
+          }
+        }
+      }
+    });
     socket.on("ban", ({ lobbyCode, sideCode, chosenChamp }) => {
       const state = getDraftState(lobbyCode);
       // Redundant but I don't trust myself
@@ -162,10 +192,12 @@ export const draftSocket = (io: Server) => {
         state.bluePick = chosenChamp;
         lobbyEmitters.get(lobbyCode)!.emit("bluePick", chosenChamp);
         state.bluePick = null;
+        state.currentHover = null;
       } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
         state.redPick = chosenChamp;
         lobbyEmitters.get(lobbyCode)!.emit("redPick", chosenChamp);
         state.redPick = null;
+        state.currentHover = null;
       }
     });
 

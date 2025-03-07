@@ -3,7 +3,7 @@ import jungleIcon from "../../assets/laneIcons/jungleIcon.svg";
 import middleIcon from "../../assets/laneIcons/middleIcon.svg";
 import bottomIcon from "../../assets/laneIcons/bottomIcon.svg";
 import supportIcon from "../../assets/laneIcons/supportIcon.svg";
-import React, { JSX } from "react";
+import React, { JSX, memo } from "react";
 
 function RoleSelect({
   selectedRole,
@@ -52,4 +52,4 @@ function RoleSelect({
   return <>{roleSelectors}</>;
 }
 
-export default RoleSelect;
+export default memo(RoleSelect);

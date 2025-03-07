@@ -61,7 +61,6 @@ export const pickPhase2Handler = async ({
         const interval = setInterval(() => {
           timer--;
           state.timer = timer;
-          console.log(`Timer: ${timer}`);
           io.to(lobbyCode).emit("timer", timer);
 
           if (timer <= 0) {
