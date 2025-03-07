@@ -107,14 +107,14 @@ function DraftDisplay({
                 setSelectedRole={setSelectedRole}
               />
             </div>
-            <form className="bg-gray flex items-center">
+            <form className="bg-gray flex items-center rounded-md">
               <label htmlFor="championSearch">
                 <IoSearch className="text-3xl" />
               </label>
               <input
                 type="text"
                 id="championSearch"
-                className="champSearch p-2 bg-gray focus:ring-0 focus:border-none"
+                className="champSearch p-2 bg-gray focus:ring-0 focus:border-none rounded-md"
                 placeholder="Search Champion"
                 value={searchValue}
                 onChange={handleSearchChange}
