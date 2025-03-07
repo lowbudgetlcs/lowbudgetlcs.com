@@ -67,10 +67,19 @@ export const pickPhase1Handler = async ({
 
             // Add nothing pick to side array
             if (currentSide === state.blueUser) {
-              state.bluePicks.push("nothing");
-            }
-            if (currentSide === state.redUser) {
-              state.redPicks.push("nothing");
+              if (state.bluePick) {
+                state.bluePicks.push(state.bluePick);
+                state.bluePick = null;
+              } else {
+                state.bluePicks.push("nothing");
+              }
+            } else if (currentSide === state.redUser) {
+              if (state.redPick) {
+                state.redPicks.push(state.redPick);
+                state.redPick = null;
+              } else {
+                state.redPicks.push("nothing");
+              }
             }
 
             io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));

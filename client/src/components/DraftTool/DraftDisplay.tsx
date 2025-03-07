@@ -40,6 +40,15 @@ function DraftDisplay({
   }, []);
 
   useEffect(() => {
+    if (!draftState.bluePick && chosenChamp) {
+      setChosenChamp(undefined)
+    }
+    if (!draftState.redPick && chosenChamp) {
+      setChosenChamp(undefined)
+    }
+  }, [draftState.bluePick, draftState.redPick])
+
+  useEffect(() => {
     if (draftState.displayTurn !== playerSide) {
       setChosenChamp("");
     } else {
@@ -108,13 +117,13 @@ function DraftDisplay({
               />
             </div>
             <form className="bg-gray flex items-center rounded-md">
-              <label htmlFor="championSearch">
+              <label htmlFor="championSearch" className="px-2">
                 <IoSearch className="text-3xl" />
               </label>
               <input
                 type="text"
                 id="championSearch"
-                className="champSearch p-2 bg-gray focus:ring-0 focus:border-none rounded-md"
+                className="champSearch p-2 bg-gray focus:border-none rounded-md focus:outline-0"
                 placeholder="Search Champion"
                 value={searchValue}
                 onChange={handleSearchChange}

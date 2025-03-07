@@ -148,9 +148,19 @@ export const draftSocket = (io: Server) => {
         if (state.currentTurn === sideCode) {
           if (state.phaseType === "ban") {
             state.currentHover = chosenChamp;
+
+            sideCode === state.blueUser
+              ? state.bluePick = chosenChamp
+              : state.redPick = chosenChamp;
+              
             io.to(lobbyCode).emit("banHover", state);
           } else if (state.phaseType === "pick") {
             state.currentHover = chosenChamp;
+
+            sideCode === state.blueUser
+              ? state.bluePick = chosenChamp
+              : state.redPick = chosenChamp;
+
             io.to(lobbyCode).emit("pickHover", state);
           }
         }

@@ -75,18 +75,18 @@ const FirstPicks = memo(
       pickDivs.push(
         <div
           key={i}
-          className={`pick${i + 1} w-64 h-28 overflow-hidden border-2 ${
+          className={`pick${i + 1} w-64 h-28 overflow-hidden  ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
             picks.length === i
-              ? "border-blue transition-all delay-[20ms]"
+              ? "border-blue transition-all delay-[20ms] border-4"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase1" &&
                 picks.length === i
-              ? "border-red transition-all delay-[20ms]"
-              : "border-gray"
+              ? "border-red transition-all delay-[20ms] border-4"
+              : "border-gray border-2"
           } bg-gray/60 rounded-md`}
         >
           <DisplayPickImage
@@ -123,18 +123,18 @@ const LastPicks = memo(
       pickDivs.push(
         <div
           key={i}
-          className={`pick${i + 1} w-64 h-28 overflow-hidden border-2 ${
+          className={`pick${i + 1} w-64 h-28 overflow-hidden  ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             picks.length === i
-              ? "border-blue transition-all delay-[20ms]"
+              ? "border-blue transition-all delay-[20ms] border-4"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 picks.length === i
-              ? "border-red transition-all delay-[20ms]"
-              : "border-gray"
+              ? "border-red transition-all delay-[20ms] border-4"
+              : "border-gray border-2"
           } bg-gray/60 rounded-md`}
         >
           <DisplayPickImage

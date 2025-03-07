@@ -64,9 +64,19 @@ export const banPhase2Handler = async ({
           if (timer <= 0) {
             clearInterval(interval);
             if (currentSide === state.blueUser) {
-              state.blueBans.push("nothing");
+              if (state.bluePick) {
+                state.blueBans.push(state.bluePick);
+                state.bluePick = null;
+              } else {
+                state.blueBans.push("nothing");
+              }
             } else if (currentSide === state.redUser) {
-              state.redBans.push("nothing");
+              if (state.redPick) {
+                state.redBans.push(state.redPick);
+                state.redPick = null;
+              } else {
+                state.redBans.push("nothing");
+              }
             }
             io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
             // Shut of listener incase it still is attached

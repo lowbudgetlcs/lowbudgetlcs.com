@@ -96,19 +96,19 @@ const FirstBans = ({
         key={i}
         className={`ban${
           i + 1
-        } w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 border-2 ${
+        } w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16  ${
           playerTurn === side &&
           side === "blue" &&
           currentPhase === "banPhase1" &&
           bans.length === i
-            ? "border-blue transition-all delay-[20ms]"
+            ? "border-blue transition-all delay-[20ms] border-4"
             : playerTurn === side &&
               side === "red" &&
               currentPhase === "banPhase1" &&
               bans.length === i
-            ? "border-red transition-all delay-[20ms]"
-            : "border-gray"
-        } bg-gray rounded-md overflow-hidden`}
+            ? "border-red transition-all delay-[20ms] border-4"
+            : "border-gray border-2"
+        } bg-gray/60 rounded-md overflow-hidden`}
       >
         <DisplayBanImage
           banIndex={i}
@@ -141,19 +141,19 @@ const LastBans = ({
         key={i}
         className={`ban${
           i + 1
-        } w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 border-2 ${
+        } w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 ${
           playerTurn === side &&
           side === "blue" &&
           currentPhase === "banPhase2" &&
           bans.length === i
-            ? "border-blue transition-all delay-[20ms]"
+            ? "border-blue transition-all delay-[20ms] border-4"
             : playerTurn === side &&
               side === "red" &&
               currentPhase === "banPhase2" &&
               bans.length === i
-            ? "border-red transition-all delay-[20ms]"
-            : "border-gray"
-        } bg-gray rounded-md overflow-hidden`}
+            ? "border-red transition-all delay-[20ms] border-4"
+            : "border-gray border-2"
+        } bg-gray/60 rounded-md overflow-hidden`}
       >
         <DisplayBanImage
           banIndex={i}

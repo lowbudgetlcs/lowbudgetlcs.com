@@ -14,28 +14,28 @@ function DraftButton({
   const [ready, setReady] = useState<boolean>(false);
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
-  
-  useEffect(() => {
-    if (playerSide === "red" && draftState.redReady) {
-        setReady(true)
-    }
-    if (playerSide === "blue" && draftState.blueReady) {
-        setReady(true)
-    }
-  })
 
   useEffect(() => {
-    if(draftState.phaseType === "ban") {
-        setPickPhase(false)
-        setBanPhase(true)
-    } else if (draftState.phaseType === "pick") {
-        setBanPhase(false)
-        setPickPhase(true)
-    } else {
-        setBanPhase(false)
-        setPickPhase(false)
+    if (playerSide === "red" && draftState.redReady) {
+      setReady(true);
     }
-  }, [draftState.phaseType])
+    if (playerSide === "blue" && draftState.blueReady) {
+      setReady(true);
+    }
+  }, [draftState.blueReady, draftState.redReady, playerSide]);
+
+  useEffect(() => {
+    if (draftState.phaseType === "ban") {
+      setPickPhase(false);
+      setBanPhase(true);
+    } else if (draftState.phaseType === "pick") {
+      setBanPhase(false);
+      setPickPhase(true);
+    } else {
+      setBanPhase(false);
+      setPickPhase(false);
+    }
+  }, [draftState.phaseType]);
   const toggleReady = () => {
     setReady((prevReady) => {
       const newReady = !prevReady;
