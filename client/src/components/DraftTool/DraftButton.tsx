@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DraftButtonProps } from "./draftInterfaces";
 import { pickHandler, readyHandler } from "./draftHandler";
 
@@ -7,13 +7,26 @@ function DraftButton({
   lobbyCode,
   sideCode,
   socket,
-  banPhase,
-  pickPhase,
   playerSide,
   chosenChamp,
   setChosenChamp,
 }: DraftButtonProps) {
   const [ready, setReady] = useState<boolean>(false);
+  const [banPhase, setBanPhase] = useState<boolean>(false);
+  const [pickPhase, setPickPhase] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(draftState.phaseType === "ban") {
+        setPickPhase(false)
+        setBanPhase(true)
+    } else if (draftState.phaseType === "pick") {
+        setBanPhase(false)
+        setPickPhase(true)
+    } else {
+        setBanPhase(false)
+        setPickPhase(false)
+    }
+  }, [draftState.phaseType])
   const toggleReady = () => {
     setReady((prevReady) => {
       const newReady = !prevReady;
@@ -29,7 +42,7 @@ function DraftButton({
   return (
     <>
       {/* Ready Button */}
-      {draftState.draftComplete === true ? (
+      {draftState.draftComplete ? (
         <button
           className={`Timer p-4 bg-gray ${
             banPhase || pickPhase ? "hidden" : ""
@@ -37,7 +50,7 @@ function DraftButton({
         >
           Draft Finished
         </button>
-      ) : (
+      ) : !draftState.activePhase ? (
         <button
           onClick={toggleReady}
           className={
@@ -56,16 +69,20 @@ function DraftButton({
         >
           {ready ? "Waiting" : "Ready"}
         </button>
+      ) : (
+        ""
       )}
       {/* Pick/Ban Button */}
-      {draftState.displayTurn === playerSide ? (
+      {draftState.displayTurn === playerSide &&
+      draftState.activePhase &&
+      draftState.activePhase !== "finished" ? (
         <button
           onClick={() => {
             if (chosenChamp) {
               sendPick(chosenChamp);
             }
           }}
-          className={`Timer p-4 ${
+          className={`lockIn p-4 ${
             chosenChamp
               ? playerSide === "blue"
                 ? "bg-blue"
@@ -89,7 +106,7 @@ function DraftButton({
         <button
           className={
             playerSide !== "spectator"
-              ? `Timer p-4 bg-gray ${
+              ? `waiting p-4 bg-gray ${
                   banPhase || pickPhase ? "" : "hidden"
                 } max-h-16 flex items-center justify-center hover:cursor-wait rounded-md`
               : "hidden"

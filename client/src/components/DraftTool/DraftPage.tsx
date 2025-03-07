@@ -37,8 +37,6 @@ function DraftPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket | null>(null);
 
-  const [banPhase, setBanPhase] = useState<boolean>(false);
-  const [pickPhase, setPickPhase] = useState<boolean>(false);
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
   const [playerSide, setPlayerSide] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
@@ -53,7 +51,6 @@ function DraftPage() {
     const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
     setChampionRoles(championsData);
-    console.log("lobby code: ", lobbyCode);
 
     // Run connection Handler Function with lobby code
     const startConnection = async () => {
@@ -68,7 +65,7 @@ function DraftPage() {
     };
     newSocket.on("connect", startConnection);
     setLoading(false);
-    
+
     // Cleanup on unmount
     return () => {
       newSocket.off("connect", startConnection);
@@ -109,8 +106,7 @@ function DraftPage() {
         ...prevState,
         ...state,
       }));
-      setPickPhase(false);
-      setBanPhase(true);
+
       handleBanPhase(socket, state, draftState, setDraftState);
     };
 
@@ -119,8 +115,7 @@ function DraftPage() {
         ...prevState,
         ...state,
       }));
-      setPickPhase(true);
-      setBanPhase(false);
+
       handlePickPhase(socket, state, draftState, setDraftState);
     };
 
@@ -129,8 +124,6 @@ function DraftPage() {
         ...prevState,
         ...state,
       }));
-      setBanPhase(false);
-      setPickPhase(false);
     };
 
     // Listening for beginning of phases
@@ -171,8 +164,6 @@ function DraftPage() {
           sideCode={sideCode}
           socket={socket}
           championRoles={championRoles}
-          banPhase={banPhase}
-          pickPhase={pickPhase}
           playerSide={playerSide}
         />
       </>

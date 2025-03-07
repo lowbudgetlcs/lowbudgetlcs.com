@@ -14,8 +14,6 @@ function DraftDisplay({
   sideCode,
   socket,
   championRoles,
-  banPhase,
-  pickPhase,
   playerSide,
 }: DraftDisplayProps) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
@@ -166,8 +164,6 @@ function DraftDisplay({
           lobbyCode={lobbyCode}
           sideCode={sideCode}
           socket={socket}
-          banPhase={banPhase}
-          pickPhase={pickPhase}
           championRoles={championRoles}
           playerSide={playerSide}
           chosenChamp={chosenChamp}
