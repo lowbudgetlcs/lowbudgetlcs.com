@@ -20,7 +20,7 @@ const DisplayBans = ({
   currentHover: DraftProps["currentHover"];
 }) => {
   const [sideBan, setSideBan] = useState<number>();
-
+  const [link, setLink] = useState<string>("#");
   useEffect(() => {
     if (playerSide === "blue") {
       setSideBan(draftState.currentBlueBan);
@@ -28,6 +28,18 @@ const DisplayBans = ({
       setSideBan(draftState.currentRedBan);
     }
   }, [draftState.currentBlueBan, draftState.currentRedBan, playerSide]);
+
+  // Pre-renders image for ban animation
+  // Image is hidden on the page inside img tag
+  useEffect(() => {
+    if (draftState.phaseType === "ban" && currentHover) {
+      setLink(
+        `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`
+      );
+    } else {
+      setLink("#");
+    }
+  }, [currentHover, draftState.phaseType]);
 
   const shouldRender = (banIndex: number) => {
     if (bans[banIndex]) return true;
@@ -128,6 +140,7 @@ const DisplayBans = ({
             )}
           </div>
         ))}
+        <img src={link} className="absolute top-0 w-0 h-0 opacity-0" />
       </div>
     </>
   );

@@ -22,6 +22,7 @@ const StreamPicks = ({
   currentHover: DraftProps["currentHover"];
 }) => {
   const [sidePick, setSidePick] = useState<number>();
+  const [link, setLink] = useState<string>("#");
 
   useEffect(() => {
     if (playerSide === "blue") {
@@ -34,6 +35,18 @@ const StreamPicks = ({
     draftState.currentRedPick,
     draftState.currentBluePick,
   ]);
+
+  // Pre-renders image for pick animation
+  // Image is hidden on the page inside img tag
+  useEffect(() => {
+    if (draftState.phaseType === "pick" && currentHover) {
+      setLink(
+        `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`
+      );
+    } else {
+      setLink("#");
+    }
+  }, [currentHover, draftState.phaseType]);
 
   const shouldRender = (pickIndex: number) => {
     if (picks[pickIndex]) {
@@ -123,6 +136,7 @@ const StreamPicks = ({
           )}
         </div>
       ))}
+      <img src={link} className="absolute top-0 w-0 h-0 opacity-0" />
     </>
   );
 };
