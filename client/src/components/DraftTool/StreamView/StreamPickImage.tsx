@@ -68,7 +68,7 @@ const StreamPickImage = ({
     return (
       <div className="relative w-full h-full">
         <img
-          src={link}
+          src={link ? link : "#"}
           alt={displayName || "champion image"}
           className={`w-full h-full object-cover ${
             isChampHovered ? "grayscale-[90%]" : ""
