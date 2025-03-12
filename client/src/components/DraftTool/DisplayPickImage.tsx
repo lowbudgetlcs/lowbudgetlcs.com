@@ -68,7 +68,7 @@ const DisplayPickImage = ({
     return (
       <div className="relative w-full h-full">
         <img
-          src={link}
+          src={link ? link  : "#"}
           alt={displayName || "champion image"}
           className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
             isChampHovered ? "grayscale-[90%]" : ""

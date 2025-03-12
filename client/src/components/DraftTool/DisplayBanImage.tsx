@@ -57,7 +57,7 @@ const DisplayBanImage = ({
     return (
       <div className={`relative w-full h-full`}>
         <img
-          src={link}
+          src={link ? link : "#"}
           className={`w-full h-full object-cover ${
             isChampHovered && "grayscale-[90%]"
           }`}
