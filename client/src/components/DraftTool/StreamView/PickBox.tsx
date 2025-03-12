@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Champion, DraftProps } from "../draftInterfaces";
-import { useSocketContext } from "../DraftPage";
 
 const PickBox = ({
   draftState,
@@ -10,31 +9,23 @@ const PickBox = ({
   championRoles: Champion[];
 }) => {
   const [animationState, setAnimationState] = useState("initial");
-  const [currentPicks, setCurrentPicks] = useState(
-    draftState.bluePicks.concat(draftState.redPicks)
-  );
   const [champInfo, setChampInfo] = useState<Champion | undefined>(undefined);
-  const { socket } = useSocketContext();
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const allPicks = draftState.picksArray;
     const lastPick = allPicks[allPicks.length - 1];
-    setCurrentPicks(allPicks);
 
     const selectedChampion = championRoles.find(
       (champion) => champion.name === lastPick
     );
 
     setChampInfo(selectedChampion);
+    setImageLoaded(false);
   }, [draftState.picksArray, championRoles]);
 
   useEffect(() => {
-    if (
-      socket &&
-      champInfo &&
-      draftState.pickIndex > 0 &&
-      (draftState.banIndex === 0 || draftState.activePhase === "finished")
-    ) {
+    if (imageLoaded) {
       // Reset and start animation when character changes
       setAnimationState("initial");
       setTimeout(() => setAnimationState("entering"), 100);
@@ -44,14 +35,7 @@ const PickBox = ({
         setAnimationState("completed");
       }, 1400);
     }
-  }, [
-    currentPicks,
-    draftState.activePhase,
-    draftState.banIndex,
-    draftState.pickIndex,
-    socket,
-    champInfo,
-  ]);
+  }, [imageLoaded]);
 
   const getAnimationStyles = () => {
     switch (animationState) {
@@ -79,6 +63,7 @@ const PickBox = ({
         <img
           src={champInfoURL}
           alt={champInfo.displayName}
+          onLoad={() => setImageLoaded(true)}
           className={`h-64 object-contain mb-4 shadow-black z-10 rounded-md border-2 border-gray`}
         />
         <h2 className="text-3xl font-bold z-10">{champInfo.displayName}</h2>
