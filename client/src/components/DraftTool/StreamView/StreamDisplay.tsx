@@ -163,7 +163,7 @@ function StreamDisplay({
         </div>
         {/* Timer Line */}
         <div
-          className={`timerLine w-full h-2 m-2 ${
+          className={`timerLine w-full h-2 m-2 self-center ${
             draftState.displayTurn === "blue"
               ? "bg-blue"
               : draftState.displayTurn === "red"
