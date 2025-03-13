@@ -8,9 +8,15 @@ export interface PastLobbyProps {
 // Checks if a draft has already happened and is in the database
 export const pastDraftHandler = async (lobbyCode: string) => {
   try {
+    const apiKey = process.env.VITE_BACKEND_API_KEY || "";
     const response = await fetch(
-        `https://backend.lowbudgetlcs.com/draft/api/pastDraft/${lobbyCode}`
-      );
+      `https://backend.lowbudgetlcs.com/draft/api/pastDraft/${lobbyCode}`,
+      {
+        headers: {
+          "x-api-key": apiKey,
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Something went wrong checking for past drafts!");

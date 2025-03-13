@@ -5,6 +5,7 @@ export const createDraft = async (
     tournamentID: FormDataEntryValue | null
   ) => {
     try {
+      const apiKey = process.env.VITE_BACKEND_API_KEY || "";
       const data = {
         blueName: blueName,
         redName: redName,
@@ -19,6 +20,7 @@ export const createDraft = async (
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-api-key": apiKey,
           },
           body: JSON.stringify(data),
         }

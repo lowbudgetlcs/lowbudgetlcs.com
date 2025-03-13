@@ -1,6 +1,7 @@
-import { memo, useLayoutEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { DraftProps } from "./draftInterfaces";
+import { usePastDraftContext } from "./DraftPage";
 
 const DisplayBanImage = ({
   banIndex,
@@ -11,59 +12,76 @@ const DisplayBanImage = ({
   bannedChampions: string[];
   currentHover: DraftProps["currentHover"];
 }) => {
-  const [mounted, setMounted] = useState<boolean>(false);
-  const delay: number = 20;
+  const [link, setLink] = useState<string>("");
 
-  useLayoutEffect(() => {
-    setTimeout(() => setMounted(true), delay);
-  });
-
-  // Check if the current slot should show the hovered champion
-  const isChampHovered = bannedChampions.length === banIndex && currentHover;
-
+  const {isPastDraft} = usePastDraftContext()
+  
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
     : "nothing";
 
-  if (isChampHovered) {
-    return (
-      mounted && (
-        <div
-          style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              currentHover === "Wukong" ? "monkeyking" : currentHover
-            }/tile')`,
-          }}
-          className={`relative w-full h-full bg-cover grayscale-[90%]`}
-        ></div>
-      )
-    );
-  }
+  // Check if the current slot should show the hovered champion
+  const isChampHovered =
+    bannedChampions.length === banIndex &&
+    currentHover &&
+    championName === "nothing";
+
+  useEffect(() => {
+    if (isChampHovered) {
+      setLink((prevLink) => {
+        const fixedName =
+          currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`;
+        if (imageURL !== prevLink) {
+          return imageURL;
+        }
+        return prevLink;
+      });
+    } else {
+      setLink((prevLink) => {
+        const fixedName =
+          championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`;
+        if (imageURL !== prevLink) {
+          return imageURL;
+        }
+        return prevLink;
+      });
+    }
+  }, [currentHover, championName]);
 
   if (bannedChampions[banIndex] === "nothing") {
     return (
-      mounted && (
-        <img
-          src={tempImage}
-          alt="nothing"
-          width="160px"
-          height="200px"
-          className="object-cover scale-90 grayscale opacity-25"
-        />
-      )
+      <img
+        src={tempImage}
+        alt="nothing"
+        width="160px"
+        height="200px"
+        className="object-cover scale-90 grayscale opacity-25"
+      />
     );
-  } else if (championName !== "nothing") {
+  } else if (championName !== "nothing" || isChampHovered) {
     return (
-      mounted && (
+      <div className={`relative w-full h-full`}>
+        <img
+          src={link ? link : "#"}
+          className={`w-full h-full object-cover grayscale-[90%]`}
+        />
         <div
-          style={{
-            backgroundImage: `url('https://cdn.communitydragon.org/latest/champion/${
-              championName === "wukong" ? "monkeyking" : championName
-            }/tile')`,
-          }}
-          className={`relative w-full h-full bg-cover`}
+          className={`banLine1 absolute w-full h-1 top-1/2 bg-red/80 rounded-md opacity-0 ${
+            championName !== "nothing" &&
+            !isPastDraft &&
+            "animate-line1X"
+          }`}
         ></div>
-      )
+        <div
+          className={`banLline2 absolute w-full h-1 bg-red/80 top-1/2 rounded-md opacity-0 ${
+            championName !== "nothing" &&
+            !isPastDraft &&
+            "animate-line2X"
+          }`}
+        ></div>
+      </div>
     );
   }
 };

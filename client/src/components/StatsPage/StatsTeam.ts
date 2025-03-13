@@ -1,4 +1,3 @@
-
 export interface GameStatsProps {
   gameId: number;
   win: boolean;
@@ -23,7 +22,7 @@ export interface GameStatsProps {
       doubleKills: number;
       tripleKills: number;
       quadraKills: number;
-      pentaKills: number;                                                                                                                                                                                 
+      pentaKills: number;
       gameLength: number;
       win: boolean;
       cs: number;
@@ -64,17 +63,23 @@ export interface BannedProps {
   banRate: number;
 }
 
-
 export const handleTeamSearch = async (
   teamID: number,
   // React Hooks
-  setError: React.Dispatch<React.SetStateAction<string | null>>,
+  setError: React.Dispatch<React.SetStateAction<string | null>>
 ) => {
   setError(null);
   try {
+    const apiKey = process.env.VITE_BACKEND_API_KEY || "";
+
     // Fetch game data from db
     const gameResponse = await fetch(
-      `https://backend.lowbudgetlcs.com/api/stats/team/${teamID}`
+      `https://backend.lowbudgetlcs.com/api/stats/team/${teamID}`,
+      {
+        headers: {
+          "x-api-key": apiKey,
+        },
+      }
     );
 
     if (!gameResponse.ok) {
@@ -91,9 +96,9 @@ export const handleTeamSearch = async (
     // Get game data and update gameList
     const gameData: Array<GameStatsProps> = await gameResponse.json();
     const flatArr = gameData.flat();
-    return flatArr
+    return flatArr;
   } catch (err: any) {
-    setError(err.message || "An unexpected error occurred");   
-    throw new Error("Some unexpected error in fetching player data occurred")
+    setError(err.message || "An unexpected error occurred");
+    throw new Error("Some unexpected error in fetching player data occurred");
   }
 };

@@ -9,7 +9,7 @@ export const handlePlayerSearch = async (
     setGameList([]);
     setError(null);
     try {
-
+      const apiKey = process.env.VITE_BACKEND_API_KEY || "";
       const splitSummoner = summonerName.trim().split("");
       const hashtagIndex = splitSummoner.indexOf("#");
       if (hashtagIndex !== -1) {
@@ -19,7 +19,12 @@ export const handlePlayerSearch = async (
       const summonerDisplay = summonerName.split("#").join(" #")
   
       const gameResponse = await fetch(
-        `https://backend.lowbudgetlcs.com/api/stats/player/${trimmedSummoner}`
+        `https://backend.lowbudgetlcs.com/api/stats/player/${trimmedSummoner}`,
+        {
+          headers: {
+            "x-api-key": apiKey,
+          },
+        }
       );
 
       if (!gameResponse.ok) {

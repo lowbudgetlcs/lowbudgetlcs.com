@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const url = "https://backend.lowbudgetlcs.com/api/checklive"
+const url = "https://backend.lowbudgetlcs.com/api/twitch/checklive"
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
   const [isLive, setIsLive] = useState();
   const [isTopClosed, setIsTopClosed] = useState(false)
-
+  const apiKey = process.env.VITE_BACKEND_API_KEY || "";
+  
   function toggleClose() {
     setIsClosed(true);
   }
@@ -20,6 +21,9 @@ function Twitch() {
       try {
         const response = await fetch(url, {
           method: "GET",
+          headers: {
+            "x-api-key": apiKey,
+          },
         });
 
         if (!response.ok) {

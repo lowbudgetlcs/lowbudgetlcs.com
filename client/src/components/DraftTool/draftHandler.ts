@@ -93,10 +93,15 @@ export const pickHandler = (
 
 // Checks if input tournament code is valid
 export const checkTournamentCode = async (code: string) => {
+  const apiKey = process.env.VITE_BACKEND_API_KEY || "";
   try {
     const encodedCode = encodeURIComponent(code);
     const response = await fetch(
-      `https://backend.lowbudgetlcs.com/draft/api/checkTournamentCode/${encodedCode}`
+      `https://backend.lowbudgetlcs.com/draft/api/checkTournamentCode/${encodedCode}`, {
+        headers: {
+          "x-api-key": apiKey,
+        },
+      }
     );
 
     if (!response.ok) {

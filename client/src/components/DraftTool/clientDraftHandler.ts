@@ -27,10 +27,14 @@ export const handleBanPhase = (
 
   // Run function to display bans
   const setBan = (state: DraftProps) => {
-    setDraftState((prevState) => ({
-      ...prevState,
-      ...state,
-    }));
+    setDraftState((prevState) => {
+      const { timer, ...rest } = prevState;
+      return {
+        ...rest,
+        ...state,
+        timer: 30,
+      };
+    });
   };
 
   // set listeners
@@ -69,10 +73,14 @@ export const handlePickPhase = (
 
   // Run function to display picks
   const setPick = (state: DraftStateProps) => {
-    setDraftState((prevState) => ({
-      ...prevState,
-      ...state,
-    }));
+    setDraftState((prevState) => {
+      const { timer, ...rest } = prevState;
+      return {
+        ...rest,
+        ...state,
+        timer: 30,
+      };
+    });
   };
 
   // Set listeners

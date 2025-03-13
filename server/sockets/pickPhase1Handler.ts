@@ -69,20 +69,24 @@ export const pickPhase1Handler = async ({
             if (currentSide === state.blueUser) {
               if (state.bluePick) {
                 state.bluePicks.push(state.bluePick);
+                state.picksArray.push(state.bluePick);
                 state.bluePick = null;
                 state.currentBluePick++;
               } else {
                 state.bluePicks.push("nothing");
+                state.picksArray.push("nothing");
                 state.bluePick = null;
                 state.currentBluePick++;
               }
             } else if (currentSide === state.redUser) {
               if (state.redPick) {
                 state.redPicks.push(state.redPick);
+                state.picksArray.push(state.redPick);
                 state.redPick = null;
                 state.currentRedPick++;
               } else {
                 state.redPicks.push("nothing");
+                state.picksArray.push("nothing");
                 state.redPick = null;
                 state.currentRedPick++;
               }
@@ -102,6 +106,7 @@ export const pickPhase1Handler = async ({
             if (currentSide === state.blueUser) {
               clearInterval(interval);
               state.bluePicks.push(state.bluePick);
+              state.picksArray.push(state.bluePick);
               io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
               state.bluePick = null;
               state.currentBluePick++;
@@ -114,6 +119,7 @@ export const pickPhase1Handler = async ({
             if (currentSide === state.redUser) {
               clearInterval(interval);
               state.redPicks.push(state.redPick);
+              state.picksArray.push(state.redPick);
               io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
               state.redPick = null;
               state.currentRedPick++;

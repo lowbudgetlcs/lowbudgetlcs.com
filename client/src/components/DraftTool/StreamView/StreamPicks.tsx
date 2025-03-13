@@ -1,8 +1,8 @@
 import { memo, useEffect, useState } from "react";
-import { Champion, DraftProps, DraftStateProps } from "./draftInterfaces";
-import DisplayPickImage from "./DisplayPickImage";
+import { Champion, DraftProps, DraftStateProps } from "../draftInterfaces";
+import StreamPickImage from "./StreamPickImage";
 
-const DisplayPicks = ({
+const StreamPicks = ({
   draftState,
   picks,
   enemyPicks,
@@ -22,6 +22,7 @@ const DisplayPicks = ({
   currentHover: DraftProps["currentHover"];
 }) => {
   const [sidePick, setSidePick] = useState<number>();
+  const [link, setLink] = useState<string>("#");
 
   useEffect(() => {
     if (playerSide === "blue") {
@@ -34,6 +35,18 @@ const DisplayPicks = ({
     draftState.currentRedPick,
     draftState.currentBluePick,
   ]);
+
+  // Pre-renders image for pick animation
+  // Image is hidden on the page inside img tag
+  useEffect(() => {
+    if (draftState.phaseType === "pick" && currentHover) {
+      setLink(
+        `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`
+      );
+    } else {
+      setLink("#");
+    }
+  }, [currentHover, draftState.phaseType]);
 
   const shouldRender = (pickIndex: number) => {
     if (picks[pickIndex]) {
@@ -66,23 +79,22 @@ const DisplayPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-64 h-28 overflow-hidden border-2 ${
+          className={`relative w-32 h-64 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
             sidePick === index
-              ? "border-blue transition-all "
+              ? "border-blue transition-all"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase1" &&
                 sidePick === index
               ? "border-red transition-all"
               : "border-gray"
-          } bg-gray/60 rounded-md`}
+          } bg-gray/60 rounded-md flex items-center`}
         >
           {shouldRender(index) && (
-            <DisplayPickImage
-              playerSide={playerSide}
+            <StreamPickImage
               pickIndex={index}
               pickedChampions={picks}
               championRoles={championRoles}
@@ -114,7 +126,7 @@ const DisplayPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-64 h-28 overflow-hidden border-2 ${
+          className={`relative w-32 h-64 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
@@ -126,11 +138,10 @@ const DisplayPicks = ({
                 sidePick === index
               ? "border-red transition-all delay-[20ms]"
               : "border-gray"
-          } bg-gray/60 rounded-md`}
+          } bg-gray/60 rounded-md flex items-center`}
         >
           {shouldRender(index) && (
-            <DisplayPickImage
-              playerSide={playerSide}
+            <StreamPickImage
               pickIndex={index}
               pickedChampions={picks}
               championRoles={championRoles}
@@ -155,8 +166,9 @@ const DisplayPicks = ({
           ></div>
         </div>
       ))}
+      <img src={link} className="absolute top-0 w-0 h-0 opacity-0" />
     </>
   );
 };
 
-export default memo(DisplayPicks);
+export default memo(StreamPicks);

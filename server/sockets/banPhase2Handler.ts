@@ -66,18 +66,26 @@ export const banPhase2Handler = async ({
             if (currentSide === state.blueUser) {
               if (state.bluePick) {
                 state.blueBans.push(state.bluePick);
+                state.bansArray.push(state.bluePick);
                 state.bluePick = null;
-                state.currentBlueBan++
+                state.currentBlueBan++;
               } else {
                 state.blueBans.push("nothing");
+                state.bansArray.push("nothing");
+                state.currentBlueBan++;
+                state.bluePick = null;
               }
             } else if (currentSide === state.redUser) {
               if (state.redPick) {
                 state.redBans.push(state.redPick);
+                state.bansArray.push(state.redPick);
                 state.redPick = null;
-                state.currentRedBan++
+                state.currentRedBan++;
               } else {
                 state.redBans.push("nothing");
+                state.bansArray.push("nothing");
+                state.currentRedBan++;
+                state.redPick = null;
               }
             }
             io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
@@ -93,6 +101,7 @@ export const banPhase2Handler = async ({
             if (currentSide === state.blueUser) {
               clearInterval(interval);
               state.blueBans.push(state.bluePick);
+              state.bansArray.push(state.bluePick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               state.bluePick = null;
               state.currentBlueBan++
@@ -105,6 +114,7 @@ export const banPhase2Handler = async ({
             if (currentSide === state.redUser) {
               clearInterval(interval);
               state.redBans.push(state.redPick);
+              state.bansArray.push(state.redPick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               state.redPick = null;
               state.currentRedBan++
