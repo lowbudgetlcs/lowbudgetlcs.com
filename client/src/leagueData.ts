@@ -52,8 +52,6 @@ export const useFetchData = () => {
 
         const rosterData: RosterProps = await response.json();
 
-        console.log(rosterData)
-
         setPlayers(rosterData.playerData);
         setTeams(rosterData.teamData);
         setDivisions(rosterData.divisionData);
