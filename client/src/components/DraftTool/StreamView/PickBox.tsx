@@ -28,25 +28,25 @@ const PickBox = ({
     if (imageLoaded) {
       // Reset and start animation when character changes
       setAnimationState("initial");
-      setTimeout(() => setAnimationState("entering"), 100);
-      setTimeout(() => setAnimationState("visible"), 500);
-      setTimeout(() => setAnimationState("exiting"), 1000);
+      setTimeout(() => setAnimationState("entering"), 200);
+      setTimeout(() => setAnimationState("visible"), 200);
+      setTimeout(() => setAnimationState("exiting"), 1500);
       setTimeout(() => {
         setAnimationState("completed");
-      }, 1400);
+      }, 2000);
     }
   }, [imageLoaded]);
 
   const getAnimationStyles = () => {
     switch (animationState) {
       case "initial":
-        return { opacity: 0, transform: "translateX(-100%)" };
+        return { opacity: 0, transform: "translateX(-50%)" };
       case "entering":
         return { opacity: 1, transform: "translateX(0)" };
       case "visible":
         return { opacity: 1, transform: "translateX(0)" };
       case "exiting":
-        return { opacity: 0, transform: "translateX(100%)" };
+        return { opacity: 0, transform: "translateX(50%)" };
       default:
         return { opacity: 0 };
     }
