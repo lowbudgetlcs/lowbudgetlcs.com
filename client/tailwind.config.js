@@ -52,6 +52,9 @@ export default {
         'selectPulse': 'selectPulse 0.5s linear',
         'line1X': 'line1X 0.8s linear',
         'line2X': 'line2X 0.8s ease-out',
+        'moveToRight': 'moveToRight 0.5s linear',
+        'scaleBounce': 'scaleBounce 0.5s linear',
+        'smallScaleBounce': 'smallScaleBounce 0.5s linear',
       },
       keyframes: {
         'slide-in': {
@@ -72,19 +75,33 @@ export default {
           '100%': { filter: 'brightness(1)', transform: 'scale(1)' },
         },
         line1X: {
-          '0%':   { transform: 'scale(20) rotate(45deg)', opacity: 0 },
-          '25%':  { transform: 'scale(1.5) rotate(45deg)', opacity: 1 },
-          '75%':  { transform: 'scale(1.5) rotate(45deg)', opacity: 1 },
-          '100%': { transform: 'scale(1.5) rotate(45deg)', opacity: 0 }, 
+          '0%': { transform: 'scale(20) rotate(45deg)', opacity: 0 },
+          '25%': { transform: 'scale(1.5) rotate(45deg)', opacity: 1 },
+          '75%': { transform: 'scale(1.5) rotate(45deg)', opacity: 1 },
+          '100%': { transform: 'scale(1.5) rotate(45deg)', opacity: 0 },
         },
         line2X: {
-          '0%':   { transform: 'scale(20) rotate(-45deg)', opacity: 0 },
-          '25%':  { transform: 'scale(20) rotate(-45deg)', opacity: 0 }, 
-          '50%':  { transform: 'scale(1.5) rotate(-45deg)', opacity: 1 },
-          '75%':  { transform: 'scale(1.5) rotate(-45deg)', opacity: 1 },
+          '0%': { transform: 'scale(20) rotate(-45deg)', opacity: 0 },
+          '25%': { transform: 'scale(20) rotate(-45deg)', opacity: 0 },
+          '50%': { transform: 'scale(1.5) rotate(-45deg)', opacity: 1 },
+          '75%': { transform: 'scale(1.5) rotate(-45deg)', opacity: 1 },
           '100%': { transform: 'scale(1.5) rotate(-45deg)', opacity: 0 },
         },
-        
+        moveToRight: {
+          '0%': { transform: 'translateX(0) translateY(-100%) scale(1)' },
+          '50%': { transform: 'translateX(150%) translateY(0) scale(1.5)' },
+          '100%': { transform: 'translateX(250%) translateY(100%) scale(1)' },
+        },
+        scaleBounce: {
+          '0%': { transform: 'scale(1.8)' },
+          '50%': { transform: 'scale(2.0)' },
+          '100%': { transform: 'scale(1.8)' },
+        },
+        smallScaleBounce: {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.1)' },
+          '100%': { transform: 'scale(1)' },
+        },
       },
       fontFamily: {
         'serif': ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
