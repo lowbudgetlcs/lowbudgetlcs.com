@@ -70,7 +70,7 @@ export const handleTeamSearch = async (
 ) => {
   setError(null);
   try {
-    const apiKey = process.env.VITE_BACKEND_API_KEY || "";
+    const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
 
     // Fetch game data from db
     const gameResponse = await fetch(
