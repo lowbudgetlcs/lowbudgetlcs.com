@@ -30,7 +30,10 @@ const StreamPickImage = ({
   useEffect(() => {
     if (isChampHovered) {
       setLink((prevLink) => {
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${currentHover}/portrait`;
+        // Fixes Wukong's name
+        const fixedName =
+          currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -38,7 +41,10 @@ const StreamPickImage = ({
       });
     } else {
       setLink((prevLink) => {
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${championName}/portrait`;
+        // Fixes Wukong's name
+        const fixedName =
+          championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`;
         if (imageURL !== prevLink) {
           return imageURL;
         }

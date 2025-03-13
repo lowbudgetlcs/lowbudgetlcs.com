@@ -30,7 +30,9 @@ const DisplayPickImage = ({
   useEffect(() => {
     if (isChampHovered) {
       setLink((prevLink) => {
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`;
+        const fixedName =
+          currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -38,7 +40,9 @@ const DisplayPickImage = ({
       });
     } else {
       setLink((prevLink) => {
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${championName}/splash-art/centered`;
+        const fixedName =
+          championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -68,7 +72,7 @@ const DisplayPickImage = ({
     return (
       <div className="relative w-full h-full">
         <img
-          src={link ? link  : "#"}
+          src={link ? link : "#"}
           alt={displayName || "champion image"}
           className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
             isChampHovered ? "grayscale-[90%]" : ""

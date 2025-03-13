@@ -26,7 +26,9 @@ const DisplayBanImage = ({
   useEffect(() => {
     if (isChampHovered) {
       setLink((prevLink) => {
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${currentHover}/tile`;
+        const fixedName =
+          currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -34,7 +36,9 @@ const DisplayBanImage = ({
       });
     } else {
       setLink((prevLink) => {
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${championName}/tile`;
+        const fixedName =
+          championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
