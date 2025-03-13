@@ -28,7 +28,6 @@ export function LoadChampIcons({
       !pickedChampions.includes(championName) &&
       !bannedChampions.includes(championName) &&
       socket //This will stop users from selecting champions on finished drafts
-      
     ) {
       setChosenChamp(championName);
     }
@@ -61,6 +60,18 @@ export function LoadChampIcons({
             onClick={() => {
               handlePick(champion.name);
             }}
+            className={`border-2 border-gray rounded-md transition duration-75 ease-linear bg-black group
+              ${
+                pickedChampions.includes(champion.name) ||
+                bannedChampions.includes(champion.name)
+                  ? ""
+                  : "hover:scale-105"
+              } 
+              ${
+                chosenChamp === champion.name &&
+                "scale-105 border-orange"
+              }
+              `}
           >
             <img
               className={`
@@ -68,11 +79,11 @@ export function LoadChampIcons({
               pickedChampions.includes(champion.name) ||
               bannedChampions.includes(champion.name)
                 ? "grayscale"
-                : "hover:cursor-pointer"
+                : "hover:cursor-pointer group-hover:brightness-110"
             } 
             ${
               chosenChamp === champion.name
-                ? `box-border border-orange border-2 ${
+                ? `brightness-110 ${
                     champion.name === "Katarina" ||
                     champion.name === "Garen" ||
                     champion.name === "Samira" ||
@@ -84,12 +95,22 @@ export function LoadChampIcons({
                   }`
                 : ""
             }
-            w-28 object-contain max-[1100px]:w-24`}
+            w-28 object-contain max-[1100px]:w-24 select-none rounded-md`}
               src={`${dDragonIconLink}${
                 champion.name === "Wukong" ? "monkeyking" : champion.name
               }/square`}
               alt={champion.name}
             />
+            <p
+              className={`text-center ${
+                pickedChampions.includes(champion.name) ||
+                bannedChampions.includes(champion.name)
+                  ? ""
+                  : "hover:cursor-pointer"
+              } select-none`}
+            >
+              {champion.displayName}
+            </p>
           </li>
         );
       });
