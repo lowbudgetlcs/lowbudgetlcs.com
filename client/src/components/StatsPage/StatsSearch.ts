@@ -9,7 +9,7 @@ export const handlePlayerSearch = async (
     setGameList([]);
     setError(null);
     try {
-      const apiKey = process.env.VITE_BACKEND_API_KEY || "";
+      const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
       const splitSummoner = summonerName.trim().split("");
       const hashtagIndex = splitSummoner.indexOf("#");
       if (hashtagIndex !== -1) {
