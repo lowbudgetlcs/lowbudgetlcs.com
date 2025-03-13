@@ -62,11 +62,18 @@ const DisplayBanImage = ({
       <div className={`relative w-full h-full`}>
         <img
           src={link ? link : "#"}
-          className={`w-full h-full object-cover ${
-            isChampHovered && "grayscale-[90%]"
-          }`}
+          className={`w-full h-full object-cover grayscale-[90%]`}
         />
-
+        <div
+          className={`banLine1 absolute w-full h-1 top-1/2 bg-red/80 rounded-md opacity-0 ${
+            championName !== "nothing" && "animate-line1X"
+          }`}
+        ></div>
+        <div
+          className={`banLline2 absolute w-full h-1 bg-red/80 top-1/2 rounded-md opacity-0 ${
+            championName !== "nothing" && "animate-line2X"
+          }`}
+        ></div>
       </div>
     );
   }
