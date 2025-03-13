@@ -98,9 +98,9 @@ export default {
           '100%': { transform: 'scale(1.8)' },
         },
         smallScaleBounce: {
-          '0%': { transform: 'scale(1)' },
-          '50%': { transform: 'scale(1.1)' },
-          '100%': { transform: 'scale(1)' },
+          '0%': { transform: 'scale(1.15)' },
+          '50%': { transform: 'scale(1.05)' },
+          '100%': { transform: 'scale(1.15)' },
         },
       },
       fontFamily: {
