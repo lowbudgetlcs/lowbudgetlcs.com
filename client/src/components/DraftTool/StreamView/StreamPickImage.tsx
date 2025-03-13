@@ -67,7 +67,7 @@ const StreamPickImage = ({
       <img
         src={tempImage}
         alt="nothing"
-        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
+        className="w-full grayscale opacity-25"
       />
     );
   } else if (championName !== "nothing" || isChampHovered) {

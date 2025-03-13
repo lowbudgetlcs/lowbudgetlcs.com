@@ -91,7 +91,7 @@ const StreamPicks = ({
                 sidePick === index
               ? "border-red transition-all border-4"
               : "border-gray border-2"
-          } bg-gray/60 rounded-md`}
+          } bg-gray/60 rounded-md flex items-center`}
         >
           {shouldRender(index) && (
             <StreamPickImage
