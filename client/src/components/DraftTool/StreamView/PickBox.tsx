@@ -55,7 +55,7 @@ const PickBox = ({
 
   const champInfoURL = `https://cdn.communitydragon.org/latest/champion/${champInfo.name}/splash-art/centered`;
   return (
-    <div className="fixed bottom-12 inset-x-0 flex items-center justify-center z-50">
+    <div className="fixed top-[10%] inset-x-0 flex items-center justify-center z-50">
       <div
         className="flex flex-col items-center transition-all duration-500 ease-in-out"
         style={getAnimationStyles()}
