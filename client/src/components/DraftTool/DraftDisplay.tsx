@@ -8,6 +8,7 @@ import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
 import { useSocketContext } from "./DraftPage";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 function DraftDisplay({
   draftState,
@@ -73,18 +74,28 @@ function DraftDisplay({
   return (
     <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
       <div className="teamTitles relative flex justify-between px-4">
-        <div
-          className={`blueTitle py-2 px-4 ${
-            draftState.blueReady || draftState.displayTurn === "blue"
-              ? "w-96"
-              : "w-52"
-          } bg-blue/60 ${
-            draftState.displayTurn === "blue" ? "animate-pulse" : ""
-          } transition-width duration-500 rounded-md`}
-        >
-          <h2 className="text-right font-bold text-xl">
-            {draftState.blueDisplayName}
-          </h2>
+        <div className={`blueTitle flex items-center gap-4`}>
+          <div
+            className={`py-2 px-4 ${
+              draftState.blueReady || draftState.displayTurn === "blue"
+                ? "w-96"
+                : "w-52"
+            } bg-blue/60 ${
+              draftState.displayTurn === "blue" ? "animate-pulse" : ""
+            } transition-width duration-500 rounded-md`}
+          >
+            <h2 className="text-right font-bold text-xl">
+              {draftState.blueDisplayName}
+            </h2>
+          </div>
+          <div
+            className={`sideIndicator flex gap-1 text-2xl items-center ${
+              playerSide !== "blue" && "hidden"
+            }`}
+          >
+            <FaArrowLeft />
+            <p className="opacity-80">You</p>
+          </div>
         </div>
         <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
           <Timer
@@ -92,20 +103,30 @@ function DraftDisplay({
             displayTurn={draftState.displayTurn}
           />
         </div>
-        <div
-          className={`redTitle py-2 px-4 ${
-            draftState.redReady || draftState.displayTurn === "red"
-              ? "w-96"
-              : "w-52"
-          } bg-red/60 ${
-            draftState.displayTurn === "red" ? "animate-pulse" : ""
-          } transition-width duration-500 rounded-md`}
-        >
-          <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
+        <div className={`redTitle flex items-center gap-4`}>
+          <div
+            className={`sideIndicator flex gap-1 text-2xl items-center ${
+              playerSide !== "red" && "hidden"
+            }`}
+          >
+            <p className="opacity-80">You</p>
+            <FaArrowRight />
+          </div>
+          <div
+            className={`py-2 px-4 ${
+              draftState.redReady || draftState.displayTurn === "red"
+                ? "w-96"
+                : "w-52"
+            } bg-red/60 ${
+              draftState.displayTurn === "red" ? "animate-pulse" : ""
+            } transition-width duration-500 rounded-md`}
+          >
+            <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
+          </div>
         </div>
       </div>
       {/* Main Container */}
-      <div className="relative mainDraftContainer flex  flex-1">
+      <div className="relative mainDraftContainer flex flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
           <DisplayPicks
@@ -156,7 +177,7 @@ function DraftDisplay({
           {/* List of Champion Images */}
           <div className="relative h-[616px] max-[1100px]:h-[580px] overflow-y-scroll bg-transparent">
             <div className="relative">
-              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10">
+              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
                 <LoadChampIcons
                   championRoles={championRoles}
                   searchValue={searchValue}
