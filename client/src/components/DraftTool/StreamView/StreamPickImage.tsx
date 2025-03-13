@@ -4,13 +4,11 @@ import { Champion, DraftProps } from "../draftInterfaces";
 import { usePastDraftContext } from "../DraftPage";
 
 const StreamPickImage = ({
-  playerSide,
   pickIndex,
   pickedChampions,
   championRoles,
   currentHover,
 }: {
-  playerSide: string;
   pickIndex: number;
   pickedChampions: string[];
   championRoles: Champion[];
@@ -83,17 +81,8 @@ const StreamPickImage = ({
             isChampHovered ? "grayscale-[90%]" : ""
           } ${
             championName !== "nothing" && !isPastDraft && "animate-smallScaleBounce"
-          }`}
+          } scale-105`}
         />
-        <p
-          className={
-            playerSide === "blue"
-              ? "absolute z-10 bottom-0 right-0 font-bold bg-black/80 px-2 rounded-tl-md"
-              : "absolute z-10 bottom-0 left-0 font-bold bg-black/80 px-2 rounded-tr-md"
-          }
-        >
-          {displayName === "Nunu & Willump" ? "Nunu" : displayName}
-        </p>
         <div
           className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
             championName !== "nothing" && !isPastDraft && "animate-moveToRight"

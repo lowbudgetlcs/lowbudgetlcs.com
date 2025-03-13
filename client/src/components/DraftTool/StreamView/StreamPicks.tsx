@@ -95,7 +95,6 @@ const StreamPicks = ({
         >
           {shouldRender(index) && (
             <StreamPickImage
-              playerSide={playerSide}
               pickIndex={index}
               pickedChampions={picks}
               championRoles={championRoles}
@@ -143,7 +142,6 @@ const StreamPicks = ({
         >
           {shouldRender(index) && (
             <StreamPickImage
-              playerSide={playerSide}
               pickIndex={index}
               pickedChampions={picks}
               championRoles={championRoles}
