@@ -177,10 +177,14 @@ function DraftPage() {
       return;
     }
     const handleCurrentTurn = (state: DraftProps) => {
-      setDraftState((prevState) => ({
-        ...prevState,
-        ...state,
-      }));
+      setDraftState((prevState) => {
+        const { timer, ...rest } = prevState;
+        return {
+          ...rest,
+          ...state,
+          timer: 30,
+        };
+      });
     };
     socket.on("currentTurn", handleCurrentTurn);
 
