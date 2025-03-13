@@ -1,7 +1,6 @@
 import DisplayBans from "../DisplayBans";
 import { DraftDisplayProps, DraftProps } from "../draftInterfaces";
 import { useEffect, useState } from "react";
-import Timer from "../Timer";
 import { useSocketContext } from "../DraftPage";
 import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";
@@ -19,7 +18,7 @@ function StreamDisplay({
   const [currentHover, setCurrentHover] = useState<string | null>(null);
 
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(draftState.timer || 30);
+  const [timeLeft, setTimeLeft] = useState( Math.max(draftState.timer - 4, 0) || 30);
 
   // calculate width of timer bar
   const timerWidth = (timeLeft / 30) * 100;
@@ -115,12 +114,6 @@ function StreamDisplay({
               {draftState.blueDisplayName}
             </h2>
           </div>
-          <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
-            <Timer
-              timer={draftState.timer}
-              displayTurn={draftState.displayTurn}
-            />
-          </div>
           <div
             className={`redTitle py-2 px-4 ${
               draftState.redReady || draftState.displayTurn === "red"
@@ -172,7 +165,7 @@ function StreamDisplay({
           } origin-center transition-all duration-200`}
           style={{
             width: "100%",
-            transform: `scaleX(${timerWidth / 116})`,
+            transform: `scaleX(${timerWidth / 100})`,
             transformOrigin: "center",
           }}
         ></div>
