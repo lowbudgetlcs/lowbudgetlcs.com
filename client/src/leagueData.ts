@@ -38,12 +38,17 @@ export const useFetchData = () => {
   const [divisions, setDivisions] = useState<DivisionProps[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const apiKey = process.env.VITE_BACKEND_API_KEY || "";
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://backend.lowbudgetlcs.com/roster/api/rosterdata"
+          "https://backend.lowbudgetlcs.com/roster/api/rosterdata",
+          {
+            headers: {
+              "x-api-key": apiKey,
+            },
+          }
         );
 
         if (!response.ok) {

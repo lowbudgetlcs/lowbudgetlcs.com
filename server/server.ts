@@ -44,7 +44,7 @@ const apiLimiter = rateLimit({
 const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const apiKey = process.env.SERVER_API_KEY;
 
-  const requestApiKey = req.query.api_key;
+  const requestApiKey = req.headers['x-api-key'];
 
   if (!requestApiKey || requestApiKey !== apiKey) {
     return res.status(401).json({ message: "Invalid or missing API key." });
