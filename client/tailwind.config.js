@@ -48,7 +48,10 @@ export default {
         'slide-in-900': 'slide-in 0.8s 900ms forwards',
         'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
         'spin': 'spin 6s linear infinite',
-        'fadeIn': 'fadeIn 0.3s 1000ms forwards'
+        'fadeIn': 'fadeIn 0.3s 1000ms forwards',
+        'selectPulse': 'selectPulse 0.5s linear',
+        'line1X': 'line1X 0.8s linear',
+        'line2X': 'line2X 0.8s ease-out',
       },
       keyframes: {
         'slide-in': {
@@ -63,6 +66,25 @@ export default {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
+        selectPulse: {
+          '0%': { filter: 'brightness(1)', transform: 'scale(1)' },
+          '50%': { filter: 'brightness(1.25)', transform: 'scale(1.1)' },
+          '100%': { filter: 'brightness(1)', transform: 'scale(1)' },
+        },
+        line1X: {
+          '0%':   { transform: 'scale(20) rotate(45deg)', opacity: 0 },
+          '25%':  { transform: 'scale(1.5) rotate(45deg)', opacity: 1 },
+          '75%':  { transform: 'scale(1.5) rotate(45deg)', opacity: 1 },
+          '100%': { transform: 'scale(1.5) rotate(45deg)', opacity: 0 }, 
+        },
+        line2X: {
+          '0%':   { transform: 'scale(20) rotate(-45deg)', opacity: 0 },
+          '25%':  { transform: 'scale(20) rotate(-45deg)', opacity: 0 }, 
+          '50%':  { transform: 'scale(1.5) rotate(-45deg)', opacity: 1 },
+          '75%':  { transform: 'scale(1.5) rotate(-45deg)', opacity: 1 },
+          '100%': { transform: 'scale(1.5) rotate(-45deg)', opacity: 0 },
+        },
+        
       },
       fontFamily: {
         'serif': ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
