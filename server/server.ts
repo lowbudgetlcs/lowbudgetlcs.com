@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import http from "http";
 import { rateLimit } from "express-rate-limit";
@@ -19,7 +19,6 @@ const io = new Server(server, {
     origin: isProduction ? "https://lowbudgetlcs.com" : "*",
   },
 });
-
 
 // Validate twitch env variables present
 try {
@@ -42,9 +41,22 @@ const apiLimiter = rateLimit({
   max: 2000, // Limit each IP to 2000 requests per windowMs
 });
 
+const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const apiKey = process.env.SERVER_API_KEY;
+
+  const requestApiKey = req.query.api_key;
+
+  if (!requestApiKey || requestApiKey !== apiKey) {
+    return res.status(401).json({ message: "Invalid or missing API key." });
+  }
+
+  next();
+};
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/", apiLimiter);
+app.use(apiKeyMiddleware);
 
 // Forces website to be https on production
 if (isProduction) {
