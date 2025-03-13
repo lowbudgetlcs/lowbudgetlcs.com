@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
+import { usePastDraftContext } from "./DraftPage";
 
 const DisplayPickImage = ({
   playerSide,
@@ -16,6 +17,8 @@ const DisplayPickImage = ({
   currentHover: DraftProps["currentHover"];
 }) => {
   const [link, setLink] = useState<string>("");
+
+  const { isPastDraft } = usePastDraftContext();
 
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
@@ -70,12 +73,14 @@ const DisplayPickImage = ({
     );
   } else if (championName !== "nothing" || isChampHovered) {
     return (
-      <div className="relative w-full h-full">
+      <div className={`relative w-full h-full`}>
         <img
           src={link ? link : "#"}
           alt={displayName || "champion image"}
           className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
             isChampHovered ? "grayscale-[90%]" : ""
+          } ${
+            championName !== "nothing" && !isPastDraft && "animate-scaleBounce"
           }`}
         />
         <p
@@ -87,6 +92,11 @@ const DisplayPickImage = ({
         >
           {displayName}
         </p>
+        <div
+          className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
+            championName !== "nothing" && !isPastDraft && "animate-moveToRight"
+          }`}
+        ></div>
       </div>
     );
   } else {

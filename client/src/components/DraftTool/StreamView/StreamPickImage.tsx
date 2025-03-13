@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "../draftInterfaces";
+import { usePastDraftContext } from "../DraftPage";
 
 const StreamPickImage = ({
   playerSide,
@@ -16,6 +17,8 @@ const StreamPickImage = ({
   currentHover: DraftProps["currentHover"];
 }) => {
   const [link, setLink] = useState<string | undefined>(undefined);
+
+  const { isPastDraft } = usePastDraftContext();
 
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
@@ -78,6 +81,8 @@ const StreamPickImage = ({
           alt={displayName || "champion image"}
           className={`w-full h-full object-cover ${
             isChampHovered ? "grayscale-[90%]" : ""
+          } ${
+            championName !== "nothing" && !isPastDraft && "animate-smallScaleBounce"
           }`}
         />
         <p
@@ -89,6 +94,11 @@ const StreamPickImage = ({
         >
           {displayName === "Nunu & Willump" ? "Nunu" : displayName}
         </p>
+        <div
+          className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
+            championName !== "nothing" && !isPastDraft && "animate-moveToRight"
+          }`}
+        ></div>
       </div>
     );
   } else {
