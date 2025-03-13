@@ -47,7 +47,7 @@ export default {
         'slide-in-800': 'slide-in 0.8s 800ms forwards',
         'slide-in-900': 'slide-in 0.8s 900ms forwards',
         'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
-        'spin': 'spin 1s linear infinite',
+        'spin': 'spin 6s linear infinite',
         'fadeIn': 'fadeIn 0.3s 1000ms forwards'
       },
       keyframes: {
