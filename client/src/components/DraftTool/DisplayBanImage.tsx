@@ -1,6 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { DraftProps } from "./draftInterfaces";
+import { usePastDraftContext } from "./DraftPage";
 
 const DisplayBanImage = ({
   banIndex,
@@ -13,6 +14,8 @@ const DisplayBanImage = ({
 }) => {
   const [link, setLink] = useState<string>("");
 
+  const {isPastDraft} = usePastDraftContext()
+  
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
     : "nothing";
@@ -66,12 +69,16 @@ const DisplayBanImage = ({
         />
         <div
           className={`banLine1 absolute w-full h-1 top-1/2 bg-red/80 rounded-md opacity-0 ${
-            championName !== "nothing" && "animate-line1X"
+            championName !== "nothing" &&
+            !isPastDraft &&
+            "animate-line1X"
           }`}
         ></div>
         <div
           className={`banLline2 absolute w-full h-1 bg-red/80 top-1/2 rounded-md opacity-0 ${
-            championName !== "nothing" && "animate-line2X"
+            championName !== "nothing" &&
+            !isPastDraft &&
+            "animate-line2X"
           }`}
         ></div>
       </div>

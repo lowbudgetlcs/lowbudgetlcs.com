@@ -21,13 +21,29 @@ import StreamDisplay from "./StreamView/StreamDisplay";
 export interface SocketContextProps {
   socket: Socket | null;
 }
-const SocketContext = createContext<SocketContextProps | undefined>(undefined);
 
+export interface PastDraftContextProps {
+  isPastDraft: boolean | null;
+}
+const SocketContext = createContext<SocketContextProps | undefined>(undefined);
+const PastDraftContext = createContext<PastDraftContextProps | undefined>(
+  undefined
+);
 export const useSocketContext = () => {
   const context = useContext(SocketContext);
   if (!context) {
     throw new Error(
       "useSocketContext must be used within a SocketContext Provider"
+    );
+  }
+  return context;
+};
+
+export const usePastDraftContext = () => {
+  const context = useContext(PastDraftContext);
+  if (!context) {
+    throw new Error(
+      "usePastDraftContext must be used within a SocketContext Provider"
     );
   }
   return context;
@@ -195,25 +211,29 @@ function DraftPage() {
   if (lobbyCode && streamMode && (socket || isPastDraft) && !error) {
     return (
       <SocketContext.Provider value={{ socket }}>
-        <StreamDisplay
-          draftState={draftState}
-          lobbyCode={lobbyCode}
-          sideCode={sideCode}
-          championRoles={championRoles}
-          playerSide={playerSide}
-        />
+        <PastDraftContext.Provider value={{ isPastDraft }}>
+          <StreamDisplay
+            draftState={draftState}
+            lobbyCode={lobbyCode}
+            sideCode={sideCode}
+            championRoles={championRoles}
+            playerSide={playerSide}
+          />
+        </PastDraftContext.Provider>
       </SocketContext.Provider>
     );
   } else if (draftState && lobbyCode && (socket || isPastDraft) && !error) {
     return (
       <SocketContext.Provider value={{ socket }}>
-        <DraftDisplay
-          draftState={draftState}
-          lobbyCode={lobbyCode}
-          sideCode={sideCode}
-          championRoles={championRoles}
-          playerSide={playerSide}
-        />
+        <PastDraftContext.Provider value={{ isPastDraft }}>
+          <DraftDisplay
+            draftState={draftState}
+            lobbyCode={lobbyCode}
+            sideCode={sideCode}
+            championRoles={championRoles}
+            playerSide={playerSide}
+          />
+        </PastDraftContext.Provider>
       </SocketContext.Provider>
     );
   } else if (loading) {
