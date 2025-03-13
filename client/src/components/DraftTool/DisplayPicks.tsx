@@ -66,18 +66,18 @@ const DisplayPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`pick1 w-64 h-28 overflow-hidden  ${
+          className={`relative w-64 h-28 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
             sidePick === index
-              ? "border-blue transition-all border-4"
+              ? "border-blue transition-all "
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase1" &&
                 sidePick === index
-              ? "border-red transition-all border-4"
-              : "border-gray border-2"
+              ? "border-red transition-all"
+              : "border-gray"
           } bg-gray/60 rounded-md`}
         >
           {shouldRender(index) && (
@@ -89,6 +89,22 @@ const DisplayPicks = ({
               currentHover={correctSideHover}
             />
           )}
+          <div
+            className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+              ${
+                playerTurn === playerSide &&
+                playerSide === "blue" &&
+                currentPhase === "pickPhase1" &&
+                sidePick === index
+                  ? "to-blue"
+                  : playerTurn === playerSide &&
+                    playerSide === "red" &&
+                    currentPhase === "pickPhase1" &&
+                    sidePick === index
+                  ? "to-red"
+                  : "hidden"
+              }`}
+          ></div>
         </div>
       ))}
 
@@ -98,18 +114,18 @@ const DisplayPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`pick1 w-64 h-28 overflow-hidden  ${
+          className={`relative w-64 h-28 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             sidePick === index
-              ? "border-blue transition-all delay-[20ms] border-4"
+              ? "border-blue transition-all delay-[20ms]"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 sidePick === index
-              ? "border-red transition-all delay-[20ms] border-4"
-              : "border-gray border-2"
+              ? "border-red transition-all delay-[20ms]"
+              : "border-gray"
           } bg-gray/60 rounded-md`}
         >
           {shouldRender(index) && (
@@ -121,6 +137,22 @@ const DisplayPicks = ({
               currentHover={correctSideHover}
             />
           )}
+          <div
+            className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+              ${
+                playerTurn === playerSide &&
+                playerSide === "blue" &&
+                currentPhase === "pickPhase2" &&
+                sidePick === index
+                  ? "to-blue"
+                  : playerTurn === playerSide &&
+                    playerSide === "red" &&
+                    currentPhase === "pickPhase2" &&
+                    sidePick === index
+                  ? "to-red"
+                  : "hidden"
+              }`}
+          ></div>
         </div>
       ))}
     </>

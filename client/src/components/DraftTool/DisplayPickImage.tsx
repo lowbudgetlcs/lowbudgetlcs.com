@@ -81,8 +81,8 @@ const DisplayPickImage = ({
         <p
           className={
             playerSide === "blue"
-              ? "absolute bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
-              : "absolute bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
+              ? "absolute z-50 bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
+              : "absolute z-50 bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
           }
         >
           {displayName}
