@@ -1,5 +1,5 @@
 import { useState } from "react";
-import StatsSearchUI from "./StatsSearchUI";
+import StatsSearchUI from "./PlayerPage/StatsSearchUI";
 import { Link } from "react-router-dom";
 
 function StatsMain() {
