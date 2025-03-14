@@ -42,6 +42,12 @@ function App() {
             <Route path="executive" element={<ASExecutive />} />
           </Route>
           <Route path="stats" element={<StatsMain />} />
+          <Route path="stats/season" element={<StatsSeason />} />
+          <Route path="stats/season/:season" element={<StatsMain />} />
+          <Route path="stats/season/:season/teams" element={<StatsMain />} />
+          <Route path="stats/season/:season/teams/:teamid" element={<StatsMain />} />
+          <Route path="stats/season/:season/teams/:teamid/matchhistory" element={<StatsMain />} />
+          <Route path="stats/season/:season/players" element={<StatsMain />} />
           {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
           <Route path="stats/team/" element={<StatsSeason />} />
           {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
