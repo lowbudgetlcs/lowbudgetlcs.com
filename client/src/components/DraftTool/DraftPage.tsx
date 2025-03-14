@@ -71,7 +71,7 @@ function DraftPage() {
   const initialConnection = () => {
     setLoading(true);
 
-    const newSocket = io("http://backend.lowbudgetlcs.com");
+    const newSocket = io("https://backend.lowbudgetlcs.com");
     setSocket(newSocket);
 
     // Run connection Handler Function with lobby code
