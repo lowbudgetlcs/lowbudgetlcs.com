@@ -1,6 +1,6 @@
 import { useState } from "react";
 import StatsSearchUI from "./StatsSearchUI";
-import StatsSeason from "./StatsSeason";
+import { Link } from "react-router-dom";
 
 function StatsMain() {
   const [isSearchActive, setIsSearchActive] = useState<Boolean>(false);
@@ -9,8 +9,6 @@ function StatsMain() {
   const displayStatOptions = () => {
     if (isSearchActive) {
       return <StatsSearchUI />;
-    } else if (isTeamsActive) {
-      return <StatsSeason />;
     } else {
       return (
         <div className="statsMainContainer flex flex-col md:flex-row justify-center p-8 gap-8">
@@ -22,14 +20,13 @@ function StatsMain() {
               Search Player
             </h2>
           </div>
-          <div
-            onClick={() => setIsTeamsActive(true)}
+          <Link to={"season"}
             className={`relative card cursor-pointer bg-gradient-to-br from-orange to-black flex items-center justify-center w-full min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
           >
             <h2 className="text-3xl text-white text-center font-semibold z-10">
               Team Stats
             </h2>
-          </div>
+          </Link>
         </div>
       );
     }
