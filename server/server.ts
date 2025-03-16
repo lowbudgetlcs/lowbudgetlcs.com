@@ -8,6 +8,7 @@ import { getTwitchConfig } from "./services/twitchService";
 import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./sockets/draftSocket";
+import statRoutes from "./routes/statRoutes";
 
 const app = express();
 const port = 8080;
@@ -72,6 +73,7 @@ if (isProduction) {
 app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
+app.use("/stats", statRoutes);
 
 // Initialize draftSocket with the io instance
 draftSocket(io);
