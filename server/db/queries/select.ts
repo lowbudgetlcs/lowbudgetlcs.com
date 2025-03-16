@@ -1,6 +1,15 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import { divisions, draftLobbies, games, players, teams } from "../schema";
+import {
+  divisions,
+  draftLobbies,
+  games,
+  playerGameData,
+  players,
+  series,
+  teams,
+  teamToSeries,
+} from "../schema";
 import { ClientDraftStateProps } from "../../sockets/draftState";
 
 export async function getRosterData() {
@@ -202,4 +211,103 @@ export async function getPastDraft(lobbyCode: string) {
   }
 
   return null;
+}
+
+// Match History fetch
+export async function getSeriesData(seriesID: number) {
+  const results = await db
+    .select({
+      divisionInfo: {
+        divisionID: divisions.id,
+        divisionName: divisions.name,
+      },
+      teamInfo: {
+        teamID: teams.id,
+        teamName: teams.name,
+        teamLogo: teams.logo,
+      },
+      seriesInfo: {
+        seriesID: series.id,
+        winnerID: series.winnerId,
+        loserID: series.loserId,
+      },
+      gameInfo: {
+        id: games.id,
+        shortcode: games.shortcode,
+        gameNum: games.gameNum,
+        winnerId: games.winnerId,
+        loserId: games.loserId,
+      },
+    })
+    .from(series)
+    .where(eq(series.id, seriesID))
+    .leftJoin(teamToSeries, eq(series.id, teamToSeries.seriesId))
+    .leftJoin(teams, eq(teams.id, teamToSeries.teamId))
+    .leftJoin(divisions, eq(divisions.id, teams.divisionId))
+    .leftJoin(games, eq(games.seriesId, series.id));
+
+  if (!results.length) {
+    return null;
+  }
+  interface TeamArrayProps {
+    teamID: number;
+    teamName: string;
+    teamLogo: string | null;
+  }
+  // Remove duplicate teams from teams array
+  const teamArray: TeamArrayProps[] = [];
+  results.forEach((result) => {
+    const team = result.teamInfo;
+    if (team === null) {
+      return;
+    }
+    if (
+      !teamArray.some((existingTeam) => existingTeam.teamID === team.teamID)
+    ) {
+      teamArray.push(team);
+    }
+  });
+
+  interface GamesArrayProps {
+    id: number;
+    shortcode: string;
+    gameNum: number;
+    winnerId: number | null;
+    loserId: number | null;
+  }
+  // Remove duplicate games from games array
+  const gamesArray: GamesArrayProps[] = [];
+  results.forEach((result) => {
+    const game = result.gameInfo;
+    if (game === null) {
+      return;
+    }
+    if (!gamesArray.some((existingGame) => existingGame.id === game.id)) {
+      gamesArray.push(game);
+    }
+  });
+
+  const seriesData = {
+    divisionInfo: results[0].divisionInfo,
+    seriesInfo: results[0].seriesInfo,
+    teams: teamArray,
+    games: gamesArray,
+  };
+
+  seriesData.teams.forEach((team) => {
+    if (!team) {
+      return;
+    }
+
+    // Assign winner property to each team
+    if (seriesData.seriesInfo.winnerID === team.teamID) {
+      const winnerProp = { winner: true };
+      Object.assign(team, winnerProp);
+    } else {
+      const winnerProp = { winner: false };
+      Object.assign(team, winnerProp);
+    }
+  });
+
+  return seriesData;
 }

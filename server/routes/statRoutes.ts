@@ -1,4 +1,9 @@
 
+import express, { Request, Response } from "express";
+import { matchHistoryHandler } from "../statHandlers/matchHistoryHandler";
+const statRoutes = express.Router();
+
+
 // Player Stats from DB
 // app.get(
 //   "/api/stats/player/:summonerName",
@@ -33,3 +38,20 @@
 //     }
 //   }
 // });
+
+statRoutes.get("/api/matchhistory/match/:seriesID", async (req: Request, res: Response) => {
+  try {
+    console.log("pinged");
+    const seriesID: number = Number(req.params.seriesID);
+    const response = await matchHistoryHandler(seriesID);
+    res.json(response);
+  } catch (err: any) {
+    if (err.message === "No Match Found") {
+      res.status(404).json({ error: "No Match Found" });
+    } else {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+});
+
+export default statRoutes;
