@@ -7,6 +7,8 @@ import {
   playerGameData,
   players,
   series,
+  teamGameData,
+  teamPerformances,
   teams,
   teamToSeries,
 } from "../schema";
@@ -238,13 +240,20 @@ export async function getSeriesData(seriesID: number) {
         winnerId: games.winnerId,
         loserId: games.loserId,
       },
+      teamPerformances: teamPerformances,
+      gameData: teamGameData,
     })
     .from(series)
     .where(eq(series.id, seriesID))
     .leftJoin(teamToSeries, eq(series.id, teamToSeries.seriesId))
     .leftJoin(teams, eq(teams.id, teamToSeries.teamId))
     .leftJoin(divisions, eq(divisions.id, teams.divisionId))
-    .leftJoin(games, eq(games.seriesId, series.id));
+    .leftJoin(games, eq(games.seriesId, series.id))
+    .leftJoin(teamPerformances, eq(teamPerformances.gameId, games.id))
+    .leftJoin(
+      teamGameData,
+      eq(teamGameData.teamPerformanceId, teamPerformances.id)
+    );
 
   if (!results.length) {
     return null;
@@ -255,19 +264,6 @@ export async function getSeriesData(seriesID: number) {
     teamLogo: string | null;
   }
   // Remove duplicate teams from teams array
-  const teamArray: TeamArrayProps[] = [];
-  results.forEach((result) => {
-    const team = result.teamInfo;
-    if (team === null) {
-      return;
-    }
-    if (
-      !teamArray.some((existingTeam) => existingTeam.teamID === team.teamID)
-    ) {
-      teamArray.push(team);
-    }
-  });
-
   interface GamesArrayProps {
     id: number;
     shortcode: string;
@@ -275,15 +271,55 @@ export async function getSeriesData(seriesID: number) {
     winnerId: number | null;
     loserId: number | null;
   }
-  // Remove duplicate games from games array
+  interface GameDataArrayProps {
+    id: number;
+    teamPerformanceId: number;
+    win: boolean;
+    side: string;
+    gold: number;
+    gameLength: number;
+    kills: number;
+    barons: number;
+    dragons: number;
+    grubs: number;
+    heralds: number;
+    towers: number;
+    inhibitors: number;
+    firstBaron: boolean;
+    firstDragon: boolean;
+    firstGrub: boolean;
+    firstHerald: boolean;
+    firstTower: boolean;
+    firstInhibitor: boolean;
+    firstBlood: boolean;
+  }
+
+  const teamArray: TeamArrayProps[] = [];
   const gamesArray: GamesArrayProps[] = [];
+  const gameDataArray: GameDataArrayProps[] = [];
+
+  // Remove duplicate objects from arrays
   results.forEach((result) => {
+    const team = result.teamInfo;
     const game = result.gameInfo;
-    if (game === null) {
+    const gameData = result.gameData;
+
+    // Make typescript happy (there will ALWAYS be data)
+    if (!game || !team || !gameData) {
       return;
     }
     if (!gamesArray.some((existingGame) => existingGame.id === game.id)) {
       gamesArray.push(game);
+    }
+    if (
+      !teamArray.some((existingTeam) => existingTeam.teamID === team.teamID)
+    ) {
+      teamArray.push(team);
+    }
+    if (
+      !gameDataArray.some((existingData) => existingData.id === gameData.id)
+    ) {
+      gameDataArray.push(gameData);
     }
   });
 
@@ -292,6 +328,7 @@ export async function getSeriesData(seriesID: number) {
     seriesInfo: results[0].seriesInfo,
     teams: teamArray,
     games: gamesArray,
+    gameData: gameDataArray,
   };
 
   seriesData.teams.forEach((team) => {
