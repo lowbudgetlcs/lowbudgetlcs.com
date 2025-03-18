@@ -14,6 +14,14 @@ import {
   teamToSeries,
 } from "../schema";
 import { ClientDraftStateProps } from "../../sockets/draftState";
+import {
+  FullPlayerDataProps,
+  GameDataArrayProps,
+  GamesArrayProps,
+  PlayerDataArrayProps,
+  TeamPerformanceProps,
+  TeamProps,
+} from "../statTypes";
 
 export async function getRosterData() {
   try {
@@ -224,11 +232,7 @@ export async function getSeriesData(seriesID: number) {
         divisionID: divisions.id,
         divisionName: divisions.name,
       },
-      teamInfo: {
-        teamID: teams.id,
-        teamName: teams.name,
-        teamLogo: teams.logo,
-      },
+      teamInfo: teams,
       seriesInfo: {
         seriesID: series.id,
         winnerID: series.winnerId,
@@ -259,49 +263,8 @@ export async function getSeriesData(seriesID: number) {
   if (!results.length) {
     return null;
   }
-  interface TeamArrayProps {
-    teamID: number;
-    teamName: string;
-    teamLogo: string | null;
-  }
-  // Remove duplicate teams from teams array
-  interface GamesArrayProps {
-    id: number;
-    shortcode: string;
-    gameNum: number;
-    winnerId: number | null;
-    loserId: number | null;
-  }
-  interface GameDataArrayProps {
-    id: number;
-    teamPerformanceId: number;
-    win: boolean;
-    side: string;
-    gold: number;
-    gameLength: number;
-    kills: number;
-    barons: number;
-    dragons: number;
-    grubs: number;
-    heralds: number;
-    towers: number;
-    inhibitors: number;
-    firstBaron: boolean;
-    firstDragon: boolean;
-    firstGrub: boolean;
-    firstHerald: boolean;
-    firstTower: boolean;
-    firstInhibitor: boolean;
-    firstBlood: boolean;
-  }
 
-  interface TeamPerformanceProps {
-    id: number;
-    divisionId: number | null;
-    teamId: number | null;
-    gameId: number | null;
-  }
-  const teamArray: TeamArrayProps[] = [];
+  const teamArray: TeamProps[] = [];
   const gamesArray: GamesArrayProps[] = [];
   const gameDataArray: GameDataArrayProps[] = [];
   const performanceArray: TeamPerformanceProps[] = [];
@@ -326,9 +289,7 @@ export async function getSeriesData(seriesID: number) {
     if (!gamesArray.some((existingGame) => existingGame.id === game.id)) {
       gamesArray.push(game);
     }
-    if (
-      !teamArray.some((existingTeam) => existingTeam.teamID === team.teamID)
-    ) {
+    if (!teamArray.some((existingTeam) => existingTeam.id === team.id)) {
       teamArray.push(team);
     }
     if (
@@ -342,10 +303,10 @@ export async function getSeriesData(seriesID: number) {
   // TODO: Yes this is convoluted but it works... Refactor later
   performanceArray.forEach((performance) => {
     teamArray.forEach((team) => {
-      if (performance.teamId === team.teamID) {
+      if (performance.teamId === team.id) {
         gameDataArray.forEach((game) => {
           if (performance.id === game.teamPerformanceId) {
-            Object.assign(game, { teamId: team.teamID });
+            Object.assign(game, { teamId: team.id });
           }
         });
       }
@@ -366,7 +327,7 @@ export async function getSeriesData(seriesID: number) {
     }
 
     // Assign winner property to each team
-    if (seriesData.seriesInfo.winnerID === team.teamID) {
+    if (seriesData.seriesInfo.winnerID === team.id) {
       const winnerProp = { winner: true };
       Object.assign(team, winnerProp);
     } else {
@@ -378,6 +339,7 @@ export async function getSeriesData(seriesID: number) {
   return seriesData;
 }
 
+// Gets match data based off of game ID (for series data)
 export const getPlayerStatData = async (gameId: number) => {
   const results = await db
     .select({
@@ -398,4 +360,133 @@ export const getPlayerStatData = async (gameId: number) => {
   }
 
   return results;
+};
+
+// Gets specific match data based off of tournament code
+export const getMatch = async (shortcode: string) => {
+  const results = await db
+    .select({
+      team: teams,
+      teamGameData: teamGameData,
+      winner: games.winnerId,
+      teamPerformances: teamPerformances,
+      playerData: {
+        playerId: players.id,
+        teamId: players.teamId,
+        playerName: players.summonerName,
+      },
+      playerGameData: playerGameData,
+      playerPerformances: playerPerformances,
+    })
+    .from(games)
+    .where(eq(games.shortcode, shortcode))
+    .leftJoin(playerPerformances, eq(playerPerformances.gameId, games.id))
+    .leftJoin(
+      playerGameData,
+      eq(playerGameData.playerPerformanceId, playerPerformances.id)
+    )
+    .leftJoin(players, eq(players.id, playerPerformances.playerId))
+    .leftJoin(teams, eq(players.teamId, teams.id))
+    .leftJoin(teamPerformances, eq(teamPerformances.gameId, games.id))
+    .leftJoin(
+      teamGameData,
+      eq(teamGameData.teamPerformanceId, teamPerformances.id)
+    );
+  if (!results.length) {
+    return null;
+  }
+  const teamArray: TeamProps[] = [];
+  const playerDataArray: PlayerDataArrayProps[] = [];
+  const teamGameDataArray: GameDataArrayProps[] = [];
+  const performanceArray: TeamPerformanceProps[] = [];
+  results.forEach((result) => {
+    const teamData = result.team;
+    const player = result.playerData;
+    const playerGameData = result.playerGameData;
+    const teamGameData = result.teamGameData;
+    const teamPerformance = result.teamPerformances;
+    // Make typescript happy (there will ALWAYS be data)
+    if (
+      !teamData ||
+      !player ||
+      !playerGameData ||
+      !teamGameData ||
+      !teamPerformance
+    ) {
+      return;
+    }
+
+    const playerData = {
+      ...player,
+      performanceData: playerGameData,
+    };
+
+    if (!teamArray.some((existingTeam) => existingTeam.id === teamData.id)) {
+      teamArray.push(teamData);
+    }
+
+    if (
+      !teamGameDataArray.some(
+        (existingTeam) => existingTeam.id === teamGameData.id
+      )
+    ) {
+      teamGameDataArray.push(teamGameData);
+    }
+
+    if (
+      !performanceArray.some(
+        (existingPerformance) => existingPerformance.id === teamPerformance.id
+      )
+    ) {
+      performanceArray.push(teamPerformance);
+    }
+
+    playerDataArray.push(playerData);
+  });
+
+  // Adds the team id to each gameData object to combine team and player data to one query
+  // TODO: Yes this is convoluted but it works... Refactor later
+  performanceArray.forEach((performance) => {
+    teamArray.forEach((team) => {
+      if (performance.teamId === team.id) {
+        teamGameDataArray.forEach((game) => {
+          if (game.teamPerformanceId === performance.id) {
+            Object.assign(game, { teamId: team.id });
+          }
+        });
+      }
+    });
+  });
+
+  const fullTeamDataArray: FullPlayerDataProps[] = [];
+
+  teamArray.forEach((team) => {
+    const playerArray: PlayerDataArrayProps[] = [];
+    playerDataArray.forEach((player) => {
+      if (player.teamId === team.id) {
+        playerArray.push(player);
+      }
+    });
+    let teamGameData: object = {};
+    performanceArray.forEach((performance) => {
+      if (performance.teamId === team.id) {
+        teamGameDataArray.forEach((game) => {
+          if (game.teamPerformanceId === performance.id) {
+            teamGameData = game;
+          }
+        });
+      }
+    });
+
+    fullTeamDataArray.push({
+      ...team,
+      ...teamGameData,
+      players: playerArray,
+    });
+  });
+
+  const refinedResult = {
+    teams: fullTeamDataArray,
+  };
+  return refinedResult;
 };

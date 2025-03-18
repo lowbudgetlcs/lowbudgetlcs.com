@@ -17,7 +17,7 @@ const seriesHandler = async (seriesId: number) => {
     teams.forEach((team) => {
       const gameWins = { gameWins: 0 };
       for (let i = 0; i < games.length; i++) {
-        if (games[i].winnerId === team.teamID) {
+        if (games[i].winnerId === team.id) {
           gameWins.gameWins++;
         }
       }
