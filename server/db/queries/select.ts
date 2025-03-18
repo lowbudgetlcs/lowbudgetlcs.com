@@ -5,6 +5,7 @@ import {
   draftLobbies,
   games,
   playerGameData,
+  playerPerformances,
   players,
   series,
   teamGameData,
@@ -348,3 +349,25 @@ export async function getSeriesData(seriesID: number) {
 
   return seriesData;
 }
+
+export const getPlayerStatData = async (gameId: number) => {
+  const results = await db
+    .select({
+      playerId: players.id,
+      teamId: players.teamId,
+      playerName: players.summonerName,
+      playerGameData: playerGameData,
+    })
+    .from(playerPerformances)
+    .where(eq(playerPerformances.gameId, gameId))
+    .leftJoin(
+      playerGameData,
+      eq(playerGameData.playerPerformanceId, playerPerformances.id)
+    )
+    .leftJoin(players, eq(players.id, playerPerformances.playerId));
+  if (!results.length) {
+    return null;
+  }
+
+  return results;
+};
