@@ -295,19 +295,33 @@ export async function getSeriesData(seriesID: number) {
     firstBlood: boolean;
   }
 
+  interface TeamPerformanceProps {
+    id: number;
+    divisionId: number | null;
+    teamId: number | null;
+    gameId: number | null;
+  }
   const teamArray: TeamArrayProps[] = [];
   const gamesArray: GamesArrayProps[] = [];
   const gameDataArray: GameDataArrayProps[] = [];
-
+  const performanceArray: TeamPerformanceProps[] = [];
   // Remove duplicate objects from arrays
   results.forEach((result) => {
     const team = result.teamInfo;
     const game = result.gameInfo;
     const gameData = result.gameData;
-
+    const teamPerformance = result.teamPerformances;
     // Make typescript happy (there will ALWAYS be data)
-    if (!game || !team || !gameData) {
+    if (!game || !team || !gameData || !teamPerformance) {
       return;
+    }
+
+    if (
+      !performanceArray.some(
+        (existingPerformance) => existingPerformance.id === teamPerformance.id
+      )
+    ) {
+      performanceArray.push(teamPerformance);
     }
     if (!gamesArray.some((existingGame) => existingGame.id === game.id)) {
       gamesArray.push(game);
@@ -322,6 +336,20 @@ export async function getSeriesData(seriesID: number) {
     ) {
       gameDataArray.push(gameData);
     }
+  });
+
+  // Adds the team id to each gameData object to track who wins each game easier
+  // TODO: Yes this is convoluted but it works... Refactor later
+  performanceArray.forEach((performance) => {
+    teamArray.forEach((team) => {
+      if (performance.teamId === team.teamID) {
+        gameDataArray.forEach((game) => {
+          if (performance.id === game.teamPerformanceId) {
+            Object.assign(game, { teamId: team.teamID });
+          }
+        });
+      }
+    });
   });
 
   const seriesData = {
