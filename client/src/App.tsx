@@ -20,6 +20,8 @@ import StatsSeason from "./components/StatsPage/StatsSeason";
 // import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
 import CreateDraft from "./components/DraftTool/CreateDraft";
 import DraftPage from "./components/DraftTool/DraftPage";
+import SeasonSummary from "./components/StatsPage/SeasonSummary";
+import MatchDisplay from "./components/StatsPage/MatchHistoryPage/MatchDisplay";
 
 function App() {
   const location = useLocation();
@@ -43,7 +45,8 @@ function App() {
           </Route>
           <Route path="stats" element={<StatsMain />} />
           <Route path="stats/season" element={<StatsSeason />} />
-          <Route path="stats/season/:season" element={<StatsMain />} />
+          <Route path="stats/season/:season" element={<SeasonSummary />} />
+          <Route path="stats/season/:season/matchhistory/:matchID" element={<SeasonSummary />} />
           <Route path="stats/season/:season/teams" element={<StatsMain />} />
           <Route path="stats/season/:season/teams/:teamid" element={<StatsMain />} />
           <Route path="stats/season/:season/teams/:teamid/matchhistory" element={<StatsMain />} />
@@ -51,10 +54,11 @@ function App() {
           {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
           <Route path="stats/team/" element={<StatsSeason />} />
           {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
-          <Route path="*" element={<ErrorPage />} />
+          <Route path="stats/matchhistory/match/:shortcode" element={<MatchDisplay/>} />
           <Route path="draft" element={<CreateDraft />} />
           <Route path="draft/:lobbyCode" element={<DraftPage />} />
           <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage />} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </LeagueDataProvider>
       {!isDraftRoute && <Footer />}
