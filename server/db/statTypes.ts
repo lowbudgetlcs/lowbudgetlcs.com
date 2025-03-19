@@ -84,14 +84,8 @@ export interface PlayerDataArrayProps {
   performanceData: PlayerGameDataProps;
 }
 
-export interface TeamDataProps {
-  id: number;
-  name: string;
-  logo: string | null;
-  captainId: number | null;
-  divisionId: number | null;
-}
-
-export interface FullPlayerDataProps extends TeamDataProps {
+export interface FullPlayerDataProps {
+  team: TeamProps;
+  teamData: GameDataArrayProps;
   players: PlayerDataArrayProps[];
 }

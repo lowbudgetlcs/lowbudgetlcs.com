@@ -440,8 +440,14 @@ export const getMatch = async (shortcode: string) => {
     ) {
       performanceArray.push(teamPerformance);
     }
-
-    playerDataArray.push(playerData);
+    if (
+      !playerDataArray.some(
+        (existingPlayerData) =>
+          existingPlayerData.playerId === playerData.playerId
+      )
+    ) {
+      playerDataArray.push(playerData);
+    }
   });
 
   // Adds the team id to each gameData object to combine team and player data to one query
@@ -458,7 +464,7 @@ export const getMatch = async (shortcode: string) => {
     });
   });
 
-  const fullTeamDataArray: FullPlayerDataProps[] = [];
+  const fullTeamData: FullPlayerDataProps[] = [];
 
   teamArray.forEach((team) => {
     const playerArray: PlayerDataArrayProps[] = [];
@@ -467,26 +473,27 @@ export const getMatch = async (shortcode: string) => {
         playerArray.push(player);
       }
     });
-    let teamGameData: object = {};
+    const teamGameData: GameDataArrayProps[] = [];
     performanceArray.forEach((performance) => {
       if (performance.teamId === team.id) {
         teamGameDataArray.forEach((game) => {
           if (game.teamPerformanceId === performance.id) {
-            teamGameData = game;
+            teamGameData.push(game);
           }
         });
       }
     });
-
-    fullTeamDataArray.push({
-      ...team,
-      ...teamGameData,
+    fullTeamData.push({
+      team: team,
+      teamData: teamGameData[0],
       players: playerArray,
     });
   });
 
-  const refinedResult = {
-    teams: fullTeamDataArray,
-  };
-  return refinedResult;
+  if (!fullTeamData) {
+    console.error("No team data");
+    return null;
+  } else {
+    return fullTeamData;
+  }
 };
