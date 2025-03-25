@@ -1,4 +1,4 @@
-import { useSessionStorageState } from "../../hooks/useLocalStorageState";
+import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import Button from "../Button";
 import NavList from "../NavList";
 import { createDraft } from "./createDraft";
@@ -223,13 +223,18 @@ function DraftCodes({
   const removeDraftLinks = () => {
     setDraftLinks(undefined);
   };
+  const blueLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
+  const redLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`;
+  const specLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`;
+  const streamLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/stream`;
+
   const copyLinks = () => {
-    navigator.clipboard.writeText(`Blue Side Link:
-https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}
-Red Side Link:
-https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}
-Spectator Link:
-https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
+    navigator.clipboard.writeText(`Blue:
+${blueLink}
+Red:
+${redLink}
+Spectator:
+${specLink}`);
   };
 
   return (
@@ -238,43 +243,66 @@ https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
         <Button>Re-Create Draft Links</Button>
       </div>
       <div className="flex flex-col gap-2">
-        <div className="BlueLinkDiv flex flex-col">
+        <p className="text-red text-center px-4">WARNING: you CANNOT get back to this page if the tab/browser is closed or if button above is pressed</p>
+        <div className="BlueLinkDiv flex flex-col px-4 md:px-0">
           <h3 className="text-2xl font-bold">
             <span className="text-blue">Blue Side</span> Link:
           </h3>
-          <Link
-            target="_blank"
-            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`}
-            className="text-xl hover:text-blue transition duration-300 py-4"
-          >
-            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}/
-            {draftLinks.blueCode}
-          </Link>
+          <div className="link flex flex-col md:flex-row">
+            <Link
+              target="_blank"
+              to={blueLink}
+              className="text-xl hover:text-blue transition duration-300 py-4 flex-1"
+            >
+              {blueLink}
+            </Link>
+            <div
+              className="copy"
+              onClick={() => navigator.clipboard.writeText(blueLink)}
+            >
+              <Button>Copy Link</Button>
+            </div>
+          </div>
         </div>
-        <div className="RedLinkDiv flex flex-col">
+        <div className="RedLinkDiv flex flex-col px-4 md:px-0">
           <h3 className="text-2xl font-bold">
             <span className="text-red">Red Side</span> Link:
           </h3>
-          <Link
-            target="_blank"
-            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`}
-            className="text-xl hover:text-red transition duration-300 py-4"
-          >
-            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}/
-            {draftLinks.redCode}
-          </Link>
+          <div className="link flex flex-col md:flex-row">
+            <Link
+              target="_blank"
+              to={redLink}
+              className="text-xl hover:text-red transition duration-300 py-4 flex-1"
+            >
+              {redLink}
+            </Link>
+            <div
+              className="copy"
+              onClick={() => navigator.clipboard.writeText(redLink)}
+            >
+              <Button>Copy Link</Button>
+            </div>
+          </div>
         </div>
-        <div className="specLinkDiv flex flex-col">
+        <div className="specLinkDiv flex flex-col px-4 md:px-0">
           <h3 className="text-2xl font-bold">
             <span className="text-yellow">Spectator</span> Link:
           </h3>
-          <Link
-            target="_blank"
-            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`}
-            className="text-xl hover:text-yellow transition duration-300 py-4"
-          >
-            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}
-          </Link>
+          <div className="link flex flex-col md:flex-row">
+            <Link
+              target="_blank"
+              to={specLink}
+              className="text-xl hover:text-yellow transition duration-300 py-4 flex-1"
+            >
+              {specLink}
+            </Link>
+            <div
+              className="copy"
+              onClick={() => navigator.clipboard.writeText(specLink)}
+            >
+              <Button>Copy Link</Button>
+            </div>
+          </div>
         </div>
       </div>
       <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
