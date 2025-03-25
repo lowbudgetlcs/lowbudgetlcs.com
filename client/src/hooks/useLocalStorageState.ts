@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getItem, setItem } from "../utils/sessionStorage";
 
-export function useLocalStorageState<T>(key: string, initialValue: T) {
+export function useSessionStorageState<T>(key: string, initialValue: T) {
   const [value, setValue] = useState(() => {
     const item = getItem(key);
 
