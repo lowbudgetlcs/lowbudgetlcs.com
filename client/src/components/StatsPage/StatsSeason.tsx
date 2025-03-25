@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 function StatsSeason() {
   return (
     <>
-      <div className="seasonList flex flex-col justify-center items-center py-4 text-center">
+      <div className="seasonList flex flex-col justify-center items-center py-4 text-center text-white">
         <h2 className="text-center text-2xl font-bold p-4">Choose a Season</h2>
         <div className="flex flex-row items-center flex-wrap justify-center gap-4">
           {/* <Link to={"13"} className="cursor-pointer">
