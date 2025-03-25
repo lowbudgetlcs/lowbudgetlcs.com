@@ -1,4 +1,4 @@
-import { useLocalStorageState } from "../../hooks/useLocalStorageState";
+import { useSessionStorageState } from "../../hooks/useLocalStorageState";
 import Button from "../Button";
 import NavList from "../NavList";
 import { createDraft } from "./createDraft";
@@ -12,7 +12,9 @@ interface DraftLinkProps {
   redCode: string;
 }
 function CreateDraft() {
-  const [draftLinks, setDraftLinks] = useLocalStorageState<DraftLinkProps | undefined>("draftLinks", undefined)
+  const [draftLinks, setDraftLinks] = useSessionStorageState<
+    DraftLinkProps | undefined
+  >("draftLinks", undefined);
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
 
   // Check if urls have been previously generated
