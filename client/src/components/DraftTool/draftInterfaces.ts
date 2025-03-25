@@ -66,3 +66,9 @@ export interface DraftExportObjectProps {
   redPicks: string[];
   redBans: string[];
 }
+
+export interface DraftLinkProps {
+  lobbyCode: string;
+  blueCode: string;
+  redCode: string;
+}
