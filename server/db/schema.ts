@@ -1,64 +1,7 @@
-import { pgTable, index, foreignKey, unique, integer, varchar, text, boolean, serial, type AnyPgColumn, char, jsonb, timestamp, bigint, smallint } from "drizzle-orm/pg-core"
+import { pgTable, integer, text, unique, serial, varchar, type AnyPgColumn, index, foreignKey, char, jsonb, timestamp, boolean, bigint, smallint } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 
-
-export const draftLobbies = pgTable("draft_lobbies", {
-	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
-	shortcode: varchar(),
-	blueCode: text("blue_code").notNull(),
-	redCode: text("red_code").notNull(),
-	lobbyCode: text("lobby_code").notNull(),
-	redName: text("red_name").notNull(),
-	blueName: text("blue_name").notNull(),
-	bPick1: text("b_pick_1"),
-	bPick2: text("b_pick_2"),
-	bPick3: text("b_pick_3"),
-	bPick4: text("b_pick_4"),
-	bPick5: text("b_pick_5"),
-	rPick1: text("r_pick_1"),
-	rPick2: text("r_pick_2"),
-	rPick3: text("r_pick_3"),
-	rPick4: text("r_pick_4"),
-	rPick5: text("r_pick_5"),
-	bBan1: text("b_ban_1"),
-	bBan2: text("b_ban_2"),
-	bBan3: text("b_ban_3"),
-	bBan4: text("b_ban_4"),
-	bBan5: text("b_ban_5"),
-	rBan1: text("r_ban_1"),
-	rBan2: text("r_ban_2"),
-	rBan3: text("r_ban_3"),
-	rBan4: text("r_ban_4"),
-	rBan5: text("r_ban_5"),
-	draftFinished: boolean("draft_finished").default(false).notNull(),
-}, (table) => [
-	index("draft_lobbies_lobby_code_idx").using("btree", table.lobbyCode.asc().nullsLast().op("text_ops")),
-	foreignKey({
-			columns: [table.shortcode],
-			foreignColumns: [games.shortcode],
-			name: "draft_lobbies_shortcode_fkey"
-		}),
-	unique("draft_lobbies_shortcode_key").on(table.shortcode),
-]);
-
-export const commandChannelPermissions = pgTable("command_channel_permissions", {
-	id: serial().primaryKey().notNull(),
-	name: varchar().notNull(),
-	channelId: text("channel_id").notNull(),
-});
-
-export const commandRolePermissions = pgTable("command_role_permissions", {
-	id: serial().primaryKey().notNull(),
-	name: varchar().notNull(),
-	roleId: text("role_id").notNull(),
-});
-
-export const roleIds = pgTable("role_ids", {
-	id: serial().primaryKey().notNull(),
-	name: text().notNull(),
-	roleId: text("role_id").notNull(),
-});
 
 export const meta = pgTable("meta", {
 	id: integer().primaryKey().notNull(),
@@ -73,6 +16,18 @@ export const divisions = pgTable("divisions", {
 }, (table) => [
 	unique("divisions_name_key").on(table.name),
 ]);
+
+export const commandRolePermissions = pgTable("command_role_permissions", {
+	id: serial().primaryKey().notNull(),
+	name: varchar().notNull(),
+	roleId: text("role_id").notNull(),
+});
+
+export const commandChannelPermissions = pgTable("command_channel_permissions", {
+	id: serial().primaryKey().notNull(),
+	name: varchar().notNull(),
+	channelId: text("channel_id").notNull(),
+});
 
 export const players = pgTable("players", {
 	id: serial().primaryKey().notNull(),
@@ -211,57 +166,6 @@ export const playerPerformances = pgTable("player_performances", {
 	unique("player_performances_player_id_game_id_key").on(table.playerId, table.gameId),
 ]);
 
-export const playerGameData = pgTable("player_game_data", {
-	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "player_game_data_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
-	playerPerformanceId: integer("player_performance_id").notNull(),
-	kills: integer().default(0).notNull(),
-	deaths: integer().default(0).notNull(),
-	assists: integer().default(0).notNull(),
-	level: integer().default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	gold: bigint({ mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	visionScore: bigint("vision_score", { mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	damage: bigint({ mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	healing: bigint({ mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	shielding: bigint({ mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	damageTaken: bigint("damage_taken", { mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	selfMitigatedDamage: bigint("self_mitigated_damage", { mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	damageToTurrets: bigint("damage_to_turrets", { mode: "number" }).default(0).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	longestLife: bigint("longest_life", { mode: "number" }).default(0).notNull(),
-	doubleKills: smallint("double_kills").default(0).notNull(),
-	tripleKills: smallint("triple_kills").default(0).notNull(),
-	quadraKills: smallint("quadra_kills").default(0).notNull(),
-	pentaKills: smallint("penta_kills").default(0).notNull(),
-	cs: integer().default(0).notNull(),
-	championName: varchar("champion_name", { length: 25 }).notNull(),
-	item0: integer(),
-	item1: integer(),
-	item2: integer(),
-	item3: integer(),
-	item4: integer(),
-	item5: integer(),
-	trinket: integer(),
-	keystoneRune: integer("keystone_rune").notNull(),
-	secondaryTree: integer("secondary_tree").notNull(),
-	summoner1: integer().notNull(),
-	summoner2: integer().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.playerPerformanceId],
-			foreignColumns: [playerPerformances.id],
-			name: "player_game_data_player_performance_id_fkey"
-		}),
-	unique("player_game_data_player_performance_id_key").on(table.playerPerformanceId),
-]);
-
 export const teamPerformances = pgTable("team_performances", {
 	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "team_performances_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
 	teamId: integer("team_id"),
@@ -321,6 +225,57 @@ export const teamGameData = pgTable("team_game_data", {
 	unique("team_game_data_team_performance_id_key").on(table.teamPerformanceId),
 ]);
 
+export const playerGameData = pgTable("player_game_data", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "player_game_data_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	playerPerformanceId: integer("player_performance_id").notNull(),
+	kills: integer().default(0).notNull(),
+	deaths: integer().default(0).notNull(),
+	assists: integer().default(0).notNull(),
+	level: integer().default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	gold: bigint({ mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	visionScore: bigint("vision_score", { mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	damage: bigint({ mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	healing: bigint({ mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	shielding: bigint({ mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	damageTaken: bigint("damage_taken", { mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	selfMitigatedDamage: bigint("self_mitigated_damage", { mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	damageToTurrets: bigint("damage_to_turrets", { mode: "number" }).default(0).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	longestLife: bigint("longest_life", { mode: "number" }).default(0).notNull(),
+	doubleKills: smallint("double_kills").default(0).notNull(),
+	tripleKills: smallint("triple_kills").default(0).notNull(),
+	quadraKills: smallint("quadra_kills").default(0).notNull(),
+	pentaKills: smallint("penta_kills").default(0).notNull(),
+	cs: integer().default(0).notNull(),
+	championName: varchar("champion_name", { length: 25 }).notNull(),
+	item0: integer(),
+	item1: integer(),
+	item2: integer(),
+	item3: integer(),
+	item4: integer(),
+	item5: integer(),
+	trinket: integer(),
+	keystoneRune: integer("keystone_rune").notNull(),
+	secondaryTree: integer("secondary_tree").notNull(),
+	summoner1: integer().notNull(),
+	summoner2: integer().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.playerPerformanceId],
+			foreignColumns: [playerPerformances.id],
+			name: "player_game_data_player_performance_id_fkey"
+		}),
+	unique("player_game_data_player_performance_id_key").on(table.playerPerformanceId),
+]);
+
 export const gameDumps = pgTable("game_dumps", {
 	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "game_dumps_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
 	gameId: integer("game_id").notNull(),
@@ -332,4 +287,66 @@ export const gameDumps = pgTable("game_dumps", {
 			name: "game_dumps_game_id_fkey"
 		}),
 	unique("game_dumps_game_id_key").on(table.gameId),
+]);
+
+export const draftLobbies = pgTable("draft_lobbies", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	shortcode: varchar(),
+	blueCode: text("blue_code").notNull(),
+	redCode: text("red_code").notNull(),
+	lobbyCode: text("lobby_code").notNull(),
+	redName: text("red_name").notNull(),
+	blueName: text("blue_name").notNull(),
+	bPick1: text("b_pick_1"),
+	bPick2: text("b_pick_2"),
+	bPick3: text("b_pick_3"),
+	bPick4: text("b_pick_4"),
+	bPick5: text("b_pick_5"),
+	rPick1: text("r_pick_1"),
+	rPick2: text("r_pick_2"),
+	rPick3: text("r_pick_3"),
+	rPick4: text("r_pick_4"),
+	rPick5: text("r_pick_5"),
+	bBan1: text("b_ban_1"),
+	bBan2: text("b_ban_2"),
+	bBan3: text("b_ban_3"),
+	bBan4: text("b_ban_4"),
+	bBan5: text("b_ban_5"),
+	rBan1: text("r_ban_1"),
+	rBan2: text("r_ban_2"),
+	rBan3: text("r_ban_3"),
+	rBan4: text("r_ban_4"),
+	rBan5: text("r_ban_5"),
+	draftFinished: boolean("draft_finished").default(false).notNull(),
+	fearlessCode: text("fearless_code"),
+}, (table) => [
+	index("draft_lobbies_lobby_code_idx").using("btree", table.lobbyCode.asc().nullsLast().op("text_ops")),
+	foreignKey({
+			columns: [table.shortcode],
+			foreignColumns: [games.shortcode],
+			name: "draft_lobbies_shortcode_fkey"
+		}),
+	foreignKey({
+			columns: [table.fearlessCode],
+			foreignColumns: [fearlessDraftLobbies.fearlessCode],
+			name: "fk_fearless_code"
+		}),
+	unique("draft_lobbies_shortcode_key").on(table.shortcode),
+]);
+
+export const fearlessDraftLobbies = pgTable("fearless_draft_lobbies", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "fearless_draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	fearlessCode: text("fearless_code").notNull(),
+	blueCode: text("blue_code").notNull(),
+	redCode: text("red_code").notNull(),
+	redName: text("red_name").notNull(),
+	blueName: text("blue_name").notNull(),
+	draftLobby1: text("draft_lobby_1"),
+	draftLobby2: text("draft_lobby_2"),
+	draftLobby3: text("draft_lobby_3"),
+	draftLobby4: text("draft_lobby_4"),
+	draftLobby5: text("draft_lobby_5"),
+	fearlessComplete: boolean("fearless_complete").default(false),
+}, (table) => [
+	unique("unique_fearless_code").on(table.fearlessCode),
 ]);
