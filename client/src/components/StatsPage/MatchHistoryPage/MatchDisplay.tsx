@@ -54,10 +54,12 @@ const MatchDisplay = () => {
         </div>
       </div>
       <div className="statContainer flex flex-col lg:flex-row justify-center">
-        <div className="blueStats">
+        <div className="blueStats  bg-blue/40">
           <PlayerStatDisplay currentTeam={blueTeam} />
         </div>
-        <div className="redStats"></div>
+        <div className="redStats bg-red/40">
+          <PlayerStatDisplay currentTeam={redTeam} />
+        </div>
       </div>
     </div>
   );
