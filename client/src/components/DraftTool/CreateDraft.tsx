@@ -1,8 +1,9 @@
+import { useLocalStorageState } from "../../hooks/useLocalStorageState";
 import Button from "../Button";
 import NavList from "../NavList";
 import { createDraft } from "./createDraft";
 import { checkTournamentCode, DraftCodeProps } from "./draftHandler";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 interface DraftLinkProps {
@@ -11,9 +12,11 @@ interface DraftLinkProps {
   redCode: string;
 }
 function CreateDraft() {
-  const [draftLinks, setDraftLinks] = useState<DraftLinkProps>();
+  const [draftLinks, setDraftLinks] = useLocalStorageState<DraftLinkProps | undefined>("draftLinks", undefined)
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
 
+  // Check if urls have been previously generated
+  useEffect(() => {}, []);
   // Required variables for Nav List
   const [activeLink, setActiveLink] = useState<string>("Default Draft");
   const toggleActive = (navItem: string) => {
