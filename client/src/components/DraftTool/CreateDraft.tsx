@@ -236,6 +236,12 @@ ${redLink}
 Spectator:
 ${specLink}`);
   };
+  const copySpecLinks = () => {
+    navigator.clipboard.writeText(`Spectator:
+${specLink}
+Stream:
+${streamLink}`);
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -243,7 +249,10 @@ ${specLink}`);
         <Button>Re-Create Draft Links</Button>
       </div>
       <div className="flex flex-col gap-2">
-        <p className="text-red text-center px-4">WARNING: you CANNOT get back to this page if the tab/browser is closed or if button above is pressed</p>
+        <p className="text-red text-center px-4">
+          WARNING: you CANNOT get back to this page if the tab/browser is closed
+          or if button above is pressed
+        </p>
         <div className="BlueLinkDiv flex flex-col px-4 md:px-0">
           <h3 className="text-2xl font-bold">
             <span className="text-blue">Blue Side</span> Link:
@@ -304,9 +313,34 @@ ${specLink}`);
             </div>
           </div>
         </div>
+        <div className="specLinkDiv flex flex-col px-4 md:px-0">
+          <h3 className="text-2xl font-bold">
+            <span className="text-purple">Stream</span> Link:
+          </h3>
+          <div className="link flex flex-col md:flex-row">
+            <Link
+              target="_blank"
+              to={streamLink}
+              className="text-xl hover:text-purple transition duration-300 py-4 flex-1"
+            >
+              {streamLink}
+            </Link>
+            <div
+              className="copy"
+              onClick={() => navigator.clipboard.writeText(streamLink)}
+            >
+              <Button>Copy Link</Button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
-        <Button>Copy All Links</Button>
+      <div className="copyBtns flex gap-8">
+        <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
+          <Button>Copy All Links</Button>
+        </div>
+        <div onClick={copySpecLinks} className="button hover:cursor-pointer pb-4">
+          <Button>Copy Spectate Links</Button>
+        </div>
       </div>
     </div>
   );
