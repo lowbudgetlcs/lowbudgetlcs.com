@@ -5,6 +5,7 @@ import { TeamProps } from "../../leagueData";
 const SeasonSummary = () => {
   // Get season from URL
   const { season } = useParams();
+  //   Get teams and divisions from context
   const { divisions, teams } = useLeagueData();
   return (
     <div className="text-white py-4">
@@ -27,7 +28,9 @@ const SeasonSummary = () => {
               if (division.name !== "TEST") {
                 return (
                   <div className="flex flex-col py-2 px-4">
-                    <h3 className="font-bold border-b-2 border-orange">{division.name}</h3>
+                    <h3 className="font-bold border-b-2 border-orange">
+                      {division.name}
+                    </h3>
                     <div className="team1 flex justify-between gap-4 bg-gray p-0.5">
                       <p>{topTeams[0].name}</p>
                       <p className="text-yellow">1st</p>
@@ -37,9 +40,9 @@ const SeasonSummary = () => {
                       <p className="text-white/70">2nd</p>
                     </div>
                     <div className="team3 flex justify-between gap-4 bg-gray p-0.5">
-                        <p>{topTeams[2].name}</p>
-                        <p className="text-gold-light brightness-75">3rd</p>
-                      </div>
+                      <p>{topTeams[2].name}</p>
+                      <p className="text-gold-light brightness-75">3rd</p>
+                    </div>
                   </div>
                 );
               }
@@ -49,6 +52,23 @@ const SeasonSummary = () => {
         {/* Recent Matches  */}
         <div className="recentMatches border-2 border-gray rounded-md p-4">
           <h2 className="text-2xl font-bold">Recent Matches</h2>
+          <div className="matchList">
+            {/* Match */}
+            <div className="matchContainer flex gap-4">
+                <div className="timeContainer"></div>
+              <div className="teamsContainer">
+                <div className="team">
+                  <div className="teamLogo"></div>
+                  <div className="teamName"></div>
+                </div>
+                <div className="vs">VS</div>
+                <div className="team">
+                  <div className="teamLogo"></div>
+                  <div className="teamName"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
