@@ -11,7 +11,7 @@ import { io, Socket } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
 import championsData from "./championRoles.json";
-import { Champion, DraftProps, DraftStateProps } from "./draftInterfaces";
+import { Champion, DraftProps } from "./draftInterfaces";
 import DraftDisplay from "./DraftDisplay";
 import Button from "../Button";
 import { pastDraftHandler, PastLobbyProps } from "./pastDraftHandler";
@@ -71,7 +71,7 @@ function DraftPage() {
   const initialConnection = () => {
     setLoading(true);
 
-    const newSocket = io("https://backend.lowbudgetlcs.com");
+    const newSocket = io("http://localhost:8080");
     setSocket(newSocket);
 
     // Run connection Handler Function with lobby code
@@ -128,7 +128,7 @@ function DraftPage() {
     if (!socket) {
       return;
     }
-    const startReconnection = (state: DraftStateProps) => {
+    const startReconnection = (state: DraftProps) => {
       setLoading(true);
       setDraftState((prevState) => ({
         ...prevState,
@@ -151,7 +151,7 @@ function DraftPage() {
     if (!socket || !draftState) {
       return;
     }
-    const startBanPhase = (state: DraftStateProps) => {
+    const startBanPhase = (state: DraftProps) => {
       setDraftState((prevState) => ({
         ...prevState,
         ...state,
@@ -160,7 +160,7 @@ function DraftPage() {
       handleBanPhase(socket, state, setDraftState);
     };
 
-    const startPickPhase = (state: DraftStateProps) => {
+    const startPickPhase = (state: DraftProps) => {
       setDraftState((prevState) => ({
         ...prevState,
         ...state,
@@ -169,7 +169,7 @@ function DraftPage() {
       handlePickPhase(socket, state, setDraftState);
     };
 
-    const endDraft = (state: DraftStateProps) => {
+    const endDraft = (state: DraftProps) => {
       setDraftState((prevState) => ({
         ...prevState,
         ...state,
