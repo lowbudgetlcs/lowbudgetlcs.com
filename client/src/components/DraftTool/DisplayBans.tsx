@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { DraftProps, DraftStateProps } from "./draftInterfaces";
+import { DraftProps } from "./draftInterfaces";
 import DisplayBanImage from "./DisplayBanImage";
 
 const DisplayBans = ({
@@ -16,7 +16,7 @@ const DisplayBans = ({
   enemyBans: string[];
   playerSide: string;
   playerTurn: string | null;
-  currentPhase: DraftStateProps["activePhase"];
+  currentPhase: DraftProps["activePhase"];
   currentHover: DraftProps["currentHover"];
 }) => {
   const [sideBan, setSideBan] = useState<number>();
