@@ -257,16 +257,16 @@ ${streamLink}`);
           <h3 className="text-2xl font-bold">
             <span className="text-blue">Blue Side</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row">
+          <div className="link flex flex-col md:flex-row py-4 items-center">
             <Link
               target="_blank"
               to={blueLink}
-              className="text-xl hover:text-blue transition duration-300 py-4 flex-1"
+              className="text-xl hover:text-blue transition duration-300 flex-1"
             >
               {blueLink}
             </Link>
             <div
-              className="copy"
+              className="copy hover:cursor-pointer"
               onClick={() => navigator.clipboard.writeText(blueLink)}
             >
               <Button>Copy Link</Button>
@@ -277,16 +277,16 @@ ${streamLink}`);
           <h3 className="text-2xl font-bold">
             <span className="text-red">Red Side</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row">
+          <div className="link flex flex-col md:flex-row py-4 items-center">
             <Link
               target="_blank"
               to={redLink}
-              className="text-xl hover:text-red transition duration-300 py-4 flex-1"
+              className="text-xl hover:text-red transition duration-300 flex-1"
             >
               {redLink}
             </Link>
             <div
-              className="copy"
+              className="copy hover:cursor-pointer"
               onClick={() => navigator.clipboard.writeText(redLink)}
             >
               <Button>Copy Link</Button>
@@ -297,16 +297,16 @@ ${streamLink}`);
           <h3 className="text-2xl font-bold">
             <span className="text-yellow">Spectator</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row">
+          <div className="link flex flex-col md:flex-row py-4 items-center">
             <Link
               target="_blank"
               to={specLink}
-              className="text-xl hover:text-yellow transition duration-300 py-4 flex-1"
+              className="text-xl hover:text-yellow transition duration-300 flex-1"
             >
               {specLink}
             </Link>
             <div
-              className="copy"
+              className="copy hover:cursor-pointer"
               onClick={() => navigator.clipboard.writeText(specLink)}
             >
               <Button>Copy Link</Button>
@@ -317,16 +317,16 @@ ${streamLink}`);
           <h3 className="text-2xl font-bold">
             <span className="text-purple">Stream</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row">
+          <div className="link flex flex-col md:flex-row py-4 items-center">
             <Link
               target="_blank"
               to={streamLink}
-              className="text-xl hover:text-purple transition duration-300 py-4 flex-1"
+              className="text-xl hover:text-purple transition duration-300 flex-1"
             >
               {streamLink}
             </Link>
             <div
-              className="copy"
+              className="copy hover:cursor-pointer"
               onClick={() => navigator.clipboard.writeText(streamLink)}
             >
               <Button>Copy Link</Button>
