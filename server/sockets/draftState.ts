@@ -39,6 +39,7 @@ export interface DraftStateProps {
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
+  fearlessCode: string | null;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -92,6 +93,7 @@ export interface ClientDraftStateProps {
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
+  fearlessCode: string | null;
 }
 export const initializeDraftState = ({
   lobbyCode,
@@ -132,6 +134,7 @@ export const initializeDraftState = ({
       bluePick: null,
       redPick: null,
       draftComplete: false,
+      fearlessCode: null,
     };
 
     setTimeout(() => {
