@@ -2,13 +2,18 @@ import { IoSearch } from "react-icons/io5";
 import DisplayBans from "./DisplayBans";
 import RoleSelect from "./RoleSelect";
 import LoadChampIcons from "./LoadChampIcons";
-import { DraftDisplayProps, DraftProps } from "./draftInterfaces";
+import {
+  DraftDisplayProps,
+  DraftExportObjectProps,
+  DraftProps,
+} from "./draftInterfaces";
 import { ChangeEvent, useEffect, useState } from "react";
 import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
 import { useSocketContext } from "./DraftPage";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import downloadFile from "../../utils/downloadFile";
 
 function DraftDisplay({
   draftState,
@@ -23,6 +28,9 @@ function DraftDisplay({
   const [chosenChamp, setChosenChamp] = useState<string>();
 
   const [currentHover, setCurrentHover] = useState<string | null>(null);
+  const [draftObject, setDraftObject] = useState<DraftExportObjectProps | null>(
+    null
+  );
 
   // Clear the hover state when the phase changes
   useEffect(() => {
@@ -71,6 +79,19 @@ function DraftDisplay({
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+
+  useEffect(() => {
+    if (draftState.draftComplete || draftState.activePhase === "finished") {
+      setDraftObject({
+        blueName: draftState.blueDisplayName,
+        bluePicks: draftState.bluePicks,
+        blueBans: draftState.blueBans,
+        redName: draftState.redDisplayName,
+        redPicks: draftState.redPicks,
+        redBans: draftState.redBans,
+      });
+    }
+  }, [draftState.draftComplete, draftState.activePhase]);
   return (
     <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
       <div className="teamTitles relative flex justify-between px-4">
@@ -223,15 +244,26 @@ function DraftDisplay({
             currentHover={currentHover}
           />
         </div>
-        <DraftButton
-          draftState={draftState}
-          lobbyCode={lobbyCode}
-          sideCode={sideCode}
-          championRoles={championRoles}
-          playerSide={playerSide}
-          chosenChamp={chosenChamp}
-          setChosenChamp={setChosenChamp}
-        />
+        <div className="flex flex-col gap-4 items-center justify-center">
+          <DraftButton
+            draftState={draftState}
+            lobbyCode={lobbyCode}
+            sideCode={sideCode}
+            championRoles={championRoles}
+            playerSide={playerSide}
+            chosenChamp={chosenChamp}
+            setChosenChamp={setChosenChamp}
+          />
+
+          {draftObject && (
+            <button
+              className={`Timer p-4 bg-green/60 hover:bg-green hover:cursor-pointer font-bold max-h-16 flex items-center justify-center rounded-md transition duration-300`}
+              onClick={() => downloadFile(JSON.stringify(draftObject), `Draft-${lobbyCode}.json`, "application/json")}
+            >
+              Download Draft File (JSON Format)
+            </button>
+          )}
+        </div>
 
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">

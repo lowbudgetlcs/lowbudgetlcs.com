@@ -90,3 +90,12 @@ export interface DraftProps {
   redPick: string;
   draftComplete: boolean;
 }
+
+export interface DraftExportObjectProps {
+  blueName: string;
+  bluePicks: string[];
+  blueBans: string[];
+  redName: string;
+  redPicks: string[];
+  redBans: string[];
+}
