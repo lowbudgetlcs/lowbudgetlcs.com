@@ -2,7 +2,7 @@
 #
 # COMMAND is defined below, SERVCE=client|server is optional to run operations
 # on only the client or only the server.
-# Define services
+# Basically 'make build SERVICE=client' will only build the client, etc
 CLIENT = lblcs-client
 SERVER = lblcs-server
 SERVICES = client server
