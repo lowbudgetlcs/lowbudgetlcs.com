@@ -1,11 +1,11 @@
 services:
-  lowbudget-client:
-    image: lowbudget-client
-    container_name: lowbudget-client 
+  client:
+    image: lblcs-client
+    container_name: lblcs-client-container
     ports:
-      - "3000:3000"
+      - "3000:80"
 
-  lowbudget-server:
-    image: lowbudget-server
-    container_name: lowbudget-server 
+  server:
+    image: lblcs-server
+    container_name: lblcs-server-container
     env_file: server/.env

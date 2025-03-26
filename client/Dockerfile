@@ -1,19 +1,19 @@
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
-# Install deps and build dist
-WORKDIR /build
-COPY package*.json .
-RUN npm i 
-COPY . .
-RUN npm run build && npm prun --production
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --frozen-lockfile
+COPY ./ ./
+RUN npm run build 
 
 # Run dist in much smaller image
-FROM node:18-alpine AS runner
+FROM nginx:stable-alpine AS prod 
 
-RUN npm i -g serve
-COPY --from=builder /build/package.json ./
-COPY --from=builder /build/node_modules ./node_modules
-COPY --from=builder /build/dist ./dist
+WORKDIR /usr/share/nginx/
+
+COPY --from=builder /usr/src/app/nginx /etc/nginx/conf.d
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html/
 ENV NODE_ENV=production
+EXPOSE 443
 
-CMD [ "npm", "run", "start" ]
+CMD [ "nginx", "-g", "daemon off;" ]

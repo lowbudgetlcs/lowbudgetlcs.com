@@ -3,8 +3,8 @@
 # COMMAND is defined below, SERVCE=client|server is optional to run operations
 # on only the client or only the server.
 # Define services
-CLIENT = lowbudget-client
-SERVER = lowbudget-server
+CLIENT = lblcs-client
+SERVER = lblcs-server
 SERVICES = client server
 
 # Default to building and running both services
@@ -16,16 +16,22 @@ ifeq ($(SERVICE),all)
 	docker build -t $(CLIENT) -f client/Dockerfile client
 	docker build -t $(SERVER) -f server/Dockerfile server
 else
-	docker build -t lowbudget-$(SERVICE) -f Dockerfile.$(SERVICE) .
+	docker build -t lblcs-$(SERVICE) -f $(SERVICE)/Dockerfile $(SERVICE)
 endif
 
 # Start services using Docker Compose
 run:
-	docker-compose up -d $(if $(filter $(SERVICE),all),,lowbudget-$(SERVICE)-container)
+ifeq ($(SERVICE),all)
+	docker-compose up -d
+else ifeq ($(SERVICE),client)
+	docker-compose up -d client
+else
+	docker-compose up -d server 
+endif
 
 # Stop and remove containers
 stop:
-	docker-compose down $(if $(filter $(SERVICE),all),,lowbudget-$(SERVICE)-container)
+	docker-compose down 
 
 # Remove images
 clean:
@@ -36,9 +42,5 @@ erase: stop clean
 # Full rebuild
 all: stop clean build run
 
-# Show logs
-logs:
-	docker-compose logs -f $(if $(filter $(SERVICE),all),,lowbudget-$(SERVICE))
-
-.PHONY: all build run stop clean logs erase
+.PHONY: all build run stop clean erase
 
