@@ -14,6 +14,7 @@ export interface DraftStateProps {
     | null;
   phaseType: "pick" | "ban" | null;
   tournamentID: string | null;
+  lobbyCode: string;
   blueUser: string;
   redUser: string;
   blueDisplayName: string;
@@ -39,7 +40,7 @@ export interface DraftStateProps {
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
-  fearlessCode: string | null;
+  fearlessCode?: string;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -93,7 +94,7 @@ export interface ClientDraftStateProps {
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
-  fearlessCode: string | null;
+  fearlessCode?: string;
 }
 export const initializeDraftState = ({
   lobbyCode,
@@ -109,6 +110,7 @@ export const initializeDraftState = ({
       activePhase: null,
       phaseType: null,
       tournamentID: tournamentID,
+      lobbyCode: lobbyCode,
       blueUser: blueUser,
       redUser: redUser,
       blueDisplayName: blueDisplayName,
@@ -134,7 +136,7 @@ export const initializeDraftState = ({
       bluePick: null,
       redPick: null,
       draftComplete: false,
-      fearlessCode: null,
+      fearlessCode: undefined,
     };
 
     setTimeout(() => {

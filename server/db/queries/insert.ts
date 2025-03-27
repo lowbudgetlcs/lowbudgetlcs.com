@@ -4,7 +4,8 @@ import {
   DraftStateProps,
 } from "../../sockets/draftState";
 import { db } from "../index";
-import { draftLobbies } from "../schema";
+import { draftLobbies, fearlessDraftLobbies } from "../schema";
+import { FearlessInitializerProps } from "../../draftTool/interfaces/initializerInferfaces";
 
 export async function insertDraft(draft: DraftInitializeProps) {
   try {
@@ -66,6 +67,33 @@ export async function insertFinishedDraft(
       .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
     console.log("Draft full insert success:", lobbyCode);
+  } catch (err) {
+    console.error("Error inserting into DB: ", err);
+    throw new Error("Failed to insert draft into database.");
+  }
+}
+
+export async function insertInitialFearlessLobby(
+  draft: FearlessInitializerProps
+) {
+  try {
+    const insertFearlessLobby = await db
+      .insert(fearlessDraftLobbies)
+      .values({
+        fearlessCode: draft.fearlessCode,
+        blueCode: draft.blueCode,
+        redCode: draft.redCode,
+        blueName: draft.blueDisplayName,
+        redName: draft.redDisplayName,
+        draftLobby1: draft.draftLobbyCodes[0],
+        draftLobby2: draft.draftLobbyCodes[1] || null,
+        draftLobby3: draft.draftLobbyCodes[2] || null,
+        draftLobby4: draft.draftLobbyCodes[3] || null,
+        draftLobby5: draft.draftLobbyCodes[4] || null,
+      })
+      .returning();
+
+    console.log("Draft initial insert success:", draft.fearlessCode);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");
