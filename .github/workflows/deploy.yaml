@@ -37,8 +37,8 @@ jobs:
       - name: Build and push Docker image
         run: |
           # Build client
-          touch .env
-          echo VITE_BACKEND_URL="${{ vars.VITE_BACKEND_URL }}" >> .env
+          touch client/.env
+          echo VITE_BACKEND_URL="${{ vars.VITE_BACKEND_URL }}" >> client/.env
           docker build -t lblcs/${{ env.APP }}:latest-client -f client/Dockerfile client/
           docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:latest-client
           docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:${{ env.VERSION }}-client
