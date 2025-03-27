@@ -75,7 +75,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd docker/lblcs/${{ env.APP }}
+            cd /lblcs/docker/${{ env.APP }}
             echo CLIENT_ID="${{ secrets.CLIENT_ID }}" > .env
             echo CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" >> .env
             echo PRODUCTION="${{ vars.PRODUCTION }}" >> .env
