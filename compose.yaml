@@ -9,3 +9,5 @@ services:
     image: lblcs-server
     container_name: lblcs-server-container
     env_file: server/.env
+    ports:
+      - "3001:8080"

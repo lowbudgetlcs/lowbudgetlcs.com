@@ -7,5 +7,4 @@ COPY ./ ./
 RUN npx tsc && npm prune --production
 
 ENV NODE_ENV=production
-EXPOSE 8080
 CMD [ "npm", "run", "start" ]
