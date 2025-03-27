@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import ErrorPage from "../ErrorPage";
 import { useLeagueData } from "../leagueDataContext";
+import ErrorPage from "../ErrorPage";
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -57,13 +57,12 @@ function Roster() {
               state={{
                 league: "Economy",
                 teams: teams,
-                players: players,
                 divisions: divisions,
                 error: error,
                 loading: loading,
               }}
               to={"/rosters/economy"}
-              className={`relative card cursor-pointer  bg-gradient-to-br from-gold-light to-gold-dark flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
               <h2 className="z-10 text-3xl text-white text-center font-semibold">
                 Economy
@@ -79,7 +78,7 @@ function Roster() {
                 loading: loading,
               }}
               to={"/rosters/commercial"}
-              className={`relative card cursor-pointer bg-gradient-to-br from-platinum-light to-platinum-dark flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
               <h2 className="text-3xl text-white text-center font-semibold z-10">
                 Commercial
@@ -97,7 +96,7 @@ function Roster() {
                 loading: loading,
               }}
               to={"/rosters/financial"}
-              className={`relative card cursor-pointer bg-gradient-to-br from-emerald-light to-emerald-dark flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
               <h2 className="text-3xl text-white text-center font-semibold z-10">
                 Financial
@@ -113,10 +112,26 @@ function Roster() {
                 loading: loading,
               }}
               to={"/rosters/executive"}
-              className={`relative card cursor-pointer bg-gradient-to-br from-challenger-blue to-challenger-gold flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
             >
               <h2 className="text-3xl text-white text-center font-semibold z-10">
                 Executive
+              </h2>
+            </NavLink>
+            <NavLink
+              state={{
+                league: "CEO",
+                teams: teams,
+                players: players,
+                divisions: divisions,
+                error: error,
+                loading: loading,
+              }}
+              to={"/rosters/ceo"}
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+            >
+              <h2 className="text-3xl text-white text-center font-semibold z-10">
+                CEO
               </h2>
             </NavLink>
           </div>

@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 type FetchError = Error & { message: string };
 
+export interface RosterProps {
+  divisionData: DivisionProps[];
+  teamData: TeamProps[];
+  playerData: PlayerProps[];
+}
 export interface PlayerProps {
   id: number;
   primaryRiotId: string;
@@ -33,29 +38,28 @@ export const useFetchData = () => {
   const [divisions, setDivisions] = useState<DivisionProps[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [playersResponse, teamsResponse, divisionsResponse] = await Promise.all([
-          fetch("https://backend.lowbudgetlcs.com/api/getPlayers"),
-          fetch("https://backend.lowbudgetlcs.com/api/getTeams"),
-          fetch("https://backend.lowbudgetlcs.com/api/getDivisions"),
-        ]);
+        const response = await fetch(
+          "https://backend.lowbudgetlcs.com/roster/api/rosterdata",
+          {
+            headers: {
+              "x-api-key": apiKey,
+            },
+          }
+        );
 
-        if (!playersResponse.ok || !teamsResponse.ok || !divisionsResponse.ok) {
+        if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        const [playersData, teamsData, divisionsData] = await Promise.all([
-          playersResponse.json() as Promise<PlayerProps[]>,
-          teamsResponse.json() as Promise<TeamProps[]>,
-          divisionsResponse.json() as Promise<DivisionProps[]>,
-        ]);
+        const rosterData: RosterProps = await response.json();
 
-        setPlayers(playersData);
-        setTeams(teamsData);
-        setDivisions(divisionsData);
+        setPlayers(rosterData.playerData);
+        setTeams(rosterData.teamData);
+        setDivisions(rosterData.divisionData);
       } catch (err) {
         const error = err as FetchError;
         setError(error.message);

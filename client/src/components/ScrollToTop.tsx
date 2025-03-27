@@ -7,11 +7,11 @@ const ScrollToTop = () => {
 
   // Automatically scrolls to top whenever pathname changes
   useEffect(() => {
-    if(!pathname.indexOf('allstars')) {
+    if(pathname.indexOf('allstars') === -1) {
       window.scrollTo(0, 0);
     }
   }, [pathname]);
-  return '';
+  return null;
 }
 
 export default ScrollToTop;

@@ -1,28 +1,19 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import {
-  divisions,
-  games,
-  performances,
-  playerData,
-  players,
-  teams,
-} from "../schema";
-import { error } from "console";
+import { divisions, draftLobbies, games, players, teams } from "../schema";
+import { ClientDraftStateProps } from "../../sockets/draftState";
 
-export async function getPlayers() {
-  const allPlayers = await db.select().from(players);
-  return allPlayers;
-}
+export async function getRosterData() {
+  try {
+    const divisionData = await db.select().from(divisions);
+    const teamData = await db.select().from(teams);
+    const playerData = await db.select().from(players);
 
-export async function getTeams() {
-  const allTeams = await db.select().from(teams);
-  return allTeams;
-}
-
-export async function getDivisions() {
-  const allDivisions = await db.select().from(divisions);
-  return allDivisions;
+    return { divisionData, teamData, playerData };
+  } catch (err) {
+    console.error("Error fetching roster data: ", err);
+    throw new Error("Failed to fetch roster data");
+  }
 }
 
 export async function getTournamentCodes() {
@@ -30,13 +21,13 @@ export async function getTournamentCodes() {
   return tournamentCodes;
 }
 
-export async function getIdFromPerformance(id: number) {
-  const performanceStats = await db
-    .select({ performanceId: performances.id })
-    .from(performances)
-    .where(eq(performances.playerId, id));
-  return performanceStats;
-}
+// export async function getIdFromPerformance(id: number) {
+//   const performanceStats = await db
+//     .select({ performanceId: performances.id })
+//     .from(performances)
+//     .where(eq(performances.playerId, id));
+//   return performanceStats;
+// }
 
 export async function getPlayer(summonerName: string) {
   const player = await db
@@ -50,34 +41,165 @@ export async function getPlayer(summonerName: string) {
 
   return player;
 }
-export async function getPlayerGameStats(id: number) {
-  const gameStats = await db
-    .select()
-    .from(playerData)
-    .where(eq(playerData.performanceId, id));
-  return gameStats;
+// export async function getPlayerGameStats(id: number) {
+//   const gameStats = await db
+//     .select()
+//     .from(playerData)
+//     .where(eq(playerData.performanceId, id));
+//   return gameStats;
+// }
+
+// export async function getAllGameIDs(id: number) {
+//   const gameStats = await db
+//     .select({
+//       gameId: games.id,
+//       teamWinId: games.winnerId,
+//       teamLoseId: games.loserId,
+//     })
+//     .from(games)
+//     .leftJoin(performances, eq(games.id, performances.gameId))
+//     .where(eq(performances.teamId, id));
+//   return gameStats;
+// }
+// export async function getTeamGameStats(id: number) {
+//   const gameStats = await db
+//     .select({
+//       gameId: games.id,
+//       playerId: players.id,
+//       playerName: players.summonerName,
+//       playerStats: playerData,
+//     })
+//     .from(games)
+//     .leftJoin(performances, eq(games.id, performances.gameId)) // Join games and performances
+//     .leftJoin(playerData, eq(playerData.performanceId, performances.id)) // Join performances and playerData
+//     .leftJoin(players, eq(players.id, performances.playerId)) // Join performances and players
+//     .where(eq(performances.teamId, id)); // Filter by team ID
+//   return gameStats;
+// }
+
+export async function checkDBForURL(blueCode: string, redCode: string) {
+  const matchingURL = await db
+    .select({
+      blueCode: draftLobbies.blueCode,
+      redCode: draftLobbies.redCode,
+    })
+    .from(draftLobbies)
+    .where(
+      sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode}`
+    );
+  return matchingURL;
 }
 
-export async function getAllGameIDs(id: number) {
-  const gameStats = await db
-    .select({ gameId: games.id, teamWinId: games.winnerId, teamLoseId: games.loserId })
-    .from(games)
-    .leftJoin(performances, eq(games.id, performances.gameId))
-    .where(eq(performances.teamId, id));
-  return gameStats;
+// Check to see if shortCode exists in game table
+export async function getMatchingShortCode(shortCode: string) {
+  try {
+    const matchingCode = await db
+      .select({ shortCode: games.shortcode })
+      .from(games)
+      .where(eq(games.shortcode, shortCode));
+    const checkDupes = await checkDuplicateShortCode(shortCode);
+    if (checkDupes) {
+      return false;
+    } else {
+      return matchingCode.length > 0;
+    }
+  } catch (err) {
+    console.error("Error checking tournamentID with server: ", err);
+    throw new Error("Failed to check tournamentID");
+  }
 }
-export async function getTeamGameStats(id: number) {
-  const gameStats = await db
+
+export async function checkDuplicateShortCode(shortCode: string) {
+  try {
+    const matchingCode = await db
+      .select({ shortCode: draftLobbies.shortcode })
+      .from(draftLobbies)
+      .where(eq(draftLobbies.shortcode, shortCode));
+    return matchingCode.length > 0;
+  } catch (err) {
+    console.error("Error checking tournamentID with server: ", err);
+    throw new Error("Failed to check tournamentID");
+  }
+}
+
+export async function getLobbyCodes(lobbyCode: string) {
+  const matchingCodes = await db
     .select({
-      gameId: games.id,
-      playerId: players.id,
-      playerName: players.summonerName,
-      playerStats: playerData,
+      lobbyCode: draftLobbies.lobbyCode,
+      redCode: draftLobbies.redCode,
+      blueCode: draftLobbies.blueCode,
     })
-    .from(games)
-    .leftJoin(performances, eq(games.id, performances.gameId)) // Join games and performances
-    .leftJoin(playerData, eq(playerData.performanceId, performances.id)) // Join performances and playerData
-    .leftJoin(players, eq(players.id, performances.playerId)) // Join performances and players
-    .where(eq(performances.teamId, id)); // Filter by team ID
-  return gameStats;
+    .from(draftLobbies)
+    .where(eq(draftLobbies.lobbyCode, lobbyCode));
+  return matchingCodes.length > 0 ? matchingCodes[0] : null;
+}
+
+// Finds valid past draft and returns it in the client state form
+export async function getPastDraft(lobbyCode: string) {
+  const result = await db
+    .select()
+    .from(draftLobbies)
+    .where(eq(draftLobbies.lobbyCode, lobbyCode));
+
+  const draft = result[0];
+
+  if (draft) {
+    const draftFinished = draft.draftFinished;
+    const clientState: ClientDraftStateProps = {
+      draftStarted: false,
+      activePhase: "finished",
+      phaseType: null,
+      blueDisplayName: draft.blueName,
+      redDisplayName: draft.redName,
+      blueReady: true,
+      redReady: true,
+      timer: 30,
+      bansArray: [],
+      picksArray: [],
+      bluePicks: [
+        draft.bPick1 || "nothing",
+        draft.bPick2 || "nothing",
+        draft.bPick3 || "nothing",
+        draft.bPick4 || "nothing",
+        draft.bPick5 || "nothing",
+      ],
+      redPicks: [
+        draft.rPick1 || "nothing",
+        draft.rPick2 || "nothing",
+        draft.rPick3 || "nothing",
+        draft.rPick4 || "nothing",
+        draft.rPick5 || "nothing",
+      ],
+      blueBans: [
+        draft.bBan1 || "nothing",
+        draft.bBan2 || "nothing",
+        draft.bBan3 || "nothing",
+        draft.bBan4 || "nothing",
+        draft.bBan5 || "nothing",
+      ],
+      redBans: [
+        draft.rBan1 || "nothing",
+        draft.rBan2 || "nothing",
+        draft.rBan3 || "nothing",
+        draft.rBan4 || "nothing",
+        draft.rBan5 || "nothing",
+      ],
+      banIndex: 0,
+      pickIndex: 0,
+      currentTurn: "",
+      currentBluePick: 0,
+      currentRedPick: 0,
+      currentBlueBan: 0,
+      currentRedBan: 0,
+      displayTurn: null,
+      currentHover: null,
+      bluePick: null,
+      redPick: null,
+      draftComplete: true,
+    };
+
+    return { clientState, draftFinished };
+  }
+
+  return null;
 }

@@ -52,13 +52,13 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
             className="hover:text-orange transition duration-300"
             to="/about"
           >
-            <div className="navBox pl-14 py-10">Leagues</div>
+            <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-500 opacity-0">
           <NavLink
             className="hover:text-orange transition duration-300"
-            to="https://docs.google.com/document/d/1poO5lo9Mh8k85Vhh3UNCFJNxvSfsWGTkN7v-EdT9Rp8/edit?usp=sharing"
+            to="https://docs.google.com/document/d/16uYlGmADc1x1v3MXQhRgUqICNabnjxqiirJmw7W-tQI/edit?usp=sharing"
             target="_blank"
           >
             <div className="navBox pl-14 py-10">Rules</div>
@@ -86,11 +86,9 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to=""
+            to="/draft"
           >
-            <div className="navBox pl-14 py-10 line-through decoration-orange decoration-4">
-              Stats
-            </div>
+            <div className="navBox pl-14 py-10">Draft Tool</div>
           </NavLink>
         </li>
       </ul>
@@ -119,7 +117,7 @@ function Navbar() {
         isTop ? "" : "bg-light-gray"
       }`}
     >
-      <div className="flex items-center justify-between px-4 text-lg h-full">
+      <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
         <div
           onClick={toggleNavbar}
           className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10"
