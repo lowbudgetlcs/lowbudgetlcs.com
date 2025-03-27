@@ -74,7 +74,7 @@ export const handleTeamSearch = async (
 
     // Fetch game data from db
     const gameResponse = await fetch(
-      `https://backend.lowbudgetlcs.com/api/stats/team/${teamID}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/stats/team/${teamID}`,
       {
         headers: {
           "x-api-key": apiKey,

@@ -19,7 +19,7 @@ export const handlePlayerSearch = async (
       const summonerDisplay = summonerName.split("#").join(" #")
   
       const gameResponse = await fetch(
-        `https://backend.lowbudgetlcs.com/api/stats/player/${trimmedSummoner}`,
+        `${import.meta.env.VITE_BACKEND_URL}/api/stats/player/${trimmedSummoner}`,
         {
           headers: {
             "x-api-key": apiKey,

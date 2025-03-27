@@ -4,7 +4,6 @@ import App from "./App.tsx";
 import "./index.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { BrowserRouter } from "react-router-dom";
-
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>

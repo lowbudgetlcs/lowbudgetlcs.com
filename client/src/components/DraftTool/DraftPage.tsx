@@ -71,7 +71,7 @@ function DraftPage() {
   const initialConnection = () => {
     setLoading(true);
 
-    const newSocket = io("http://localhost:8080");
+    const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}`);
     setSocket(newSocket);
 
     // Run connection Handler Function with lobby code

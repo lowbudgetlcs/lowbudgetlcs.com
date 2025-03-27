@@ -97,7 +97,7 @@ export const checkTournamentCode = async (code: string) => {
   try {
     const encodedCode = encodeURIComponent(code);
     const response = await fetch(
-      `https://backend.lowbudgetlcs.com/draft/api/checkTournamentCode/${encodedCode}`, {
+      `${import.meta.env.VITE_BACKEND_URL}/draft/api/checkTournamentCode/${encodedCode}`, {
         headers: {
           "x-api-key": apiKey,
         },
