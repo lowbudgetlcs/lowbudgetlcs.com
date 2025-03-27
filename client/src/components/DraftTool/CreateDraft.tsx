@@ -3,25 +3,23 @@ import Button from "../Button";
 import NavList from "../NavList";
 import { createDraft } from "./createDraft";
 import { checkTournamentCode, DraftCodeProps } from "./draftHandler";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import { DraftLinkProps } from "./draftInterfaces";
 import DraftCodes from "./DraftCodes";
-
+import createFearlessDraft from "./createFearlessDraft";
 
 function CreateDraft() {
   const [draftLinks, setDraftLinks] = useSessionStorageState<
     DraftLinkProps | undefined
   >("draftLinks", undefined);
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
-
-  // Check if urls have been previously generated
-  useEffect(() => {}, []);
+  const [draftCount, setDraftCount] = useState<number>(3);
   // Required variables for Nav List
   const [activeLink, setActiveLink] = useState<string>("Default Draft");
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
-  const navItems = ["Default Draft", "LBLCS Tournament"];
+  const navItems = ["Default Draft", "LBLCS Tournament", "Fearless Draft"];
 
   const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,21 +50,31 @@ function CreateDraft() {
         }
       }
 
-      // Create draft. This will send to the database if their is a tournament code
-      // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
-      const draftResult: DraftCodeProps = await createDraft(
-        blueName,
-        redName,
-        tournamentID || null
-      );
+      if (draftType === "Fearless") {
+        // Create draft. This will send to the database
+        //Creates 1 - 5 drafts
+        const fearlessResult = await createFearlessDraft(
+          blueName,
+          redName,
+          draftCount
+        );
+      } else {
+        // Create draft. This will send to the database if their is a tournament code
+        // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
+        const draftResult: DraftCodeProps = await createDraft(
+          blueName,
+          redName,
+          tournamentID || null
+        );
 
-      // For Draft Links
-      const draftLobbyCodes = {
-        lobbyCode: draftResult.draft.lobbyCode,
-        blueCode: draftResult.draft.blueCode,
-        redCode: draftResult.draft.redCode,
-      };
-      setDraftLinks(draftLobbyCodes);
+        // For Draft Links
+        const draftLobbyCodes = {
+          lobbyCode: draftResult.draft.lobbyCode,
+          blueCode: draftResult.draft.blueCode,
+          redCode: draftResult.draft.redCode,
+        };
+        setDraftLinks(draftLobbyCodes);
+      }
     } catch (err) {
       console.error("Error during form submission:", err);
     }
@@ -96,7 +104,7 @@ function CreateDraft() {
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col">
-                  <p>Blue Side</p>
+                  <p className="text-xl font-bold">Blue Side</p>
                   <input
                     type="text"
                     placeholder="Blue Team"
@@ -106,7 +114,7 @@ function CreateDraft() {
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p>Red Side</p>
+                  <p className="text-xl font-bold">Red Side</p>
                   <input
                     type="text"
                     placeholder="Red Team"
@@ -147,7 +155,7 @@ function CreateDraft() {
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col">
-                  <p className="text-xl">Blue Side</p>
+                  <p className="text-xl font-bold">Blue Side</p>
                   <input
                     type="text"
                     placeholder="Blue Team"
@@ -156,7 +164,7 @@ function CreateDraft() {
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl">Red Side</p>
+                  <p className="text-xl font-bold">Red Side</p>
                   <input
                     type="text"
                     placeholder="Red Team"
@@ -175,9 +183,36 @@ function CreateDraft() {
               onSubmit={handleFormSubmission}
             >
               <input type="hidden" name="draftType" value="Fearless"></input>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col">
+                <p className="text-xl font-bold">Draft Count</p>
+                <select
+                  name="draftAmount"
+                  className="bg-gray/60 border-2 border-gray text-white text-sm rounded-md focus:ring-gray focus:border-orange block w-full p-2.5 cursor-pointer"
+                  onChange={() => setDraftCount(3)}
+                >
+                  <option className={`bg-gray`} value={1}>
+                    1
+                  </option>
+                  <option className={`bg-gray`} value={2}>
+                    2
+                  </option>
+                  <option className={`bg-gray`} value={3} selected>
+                    3
+                  </option>
+                  <option className={`bg-gray`} value={4}>
+                    4
+                  </option>
+                  <option className={`bg-gray`} value={4}>
+                    5
+                  </option>
+                </select>
+              </div>
+              <p className="opacity-0 hover:cursor-default">
+                LaChance Licks Toes
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <div className="flex flex-col">
-                  <p>Blue Side</p>
+                  <p className="text-xl font-bold">Blue Side</p>
                   <input
                     type="text"
                     placeholder="Blue Team"
@@ -186,7 +221,7 @@ function CreateDraft() {
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p>Red Side</p>
+                  <p className="text-xl font-bold">Red Side</p>
                   <input
                     type="text"
                     placeholder="Red Team"
@@ -195,6 +230,7 @@ function CreateDraft() {
                   ></input>
                 </div>
               </div>
+
               <button type="submit" className="">
                 <Button>Create Draft</Button>
               </button>
@@ -207,6 +243,5 @@ function CreateDraft() {
     </div>
   );
 }
-
 
 export default CreateDraft;
