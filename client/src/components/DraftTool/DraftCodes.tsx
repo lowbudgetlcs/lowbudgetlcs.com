@@ -44,84 +44,84 @@ ${streamLink}`);
           WARNING: you CANNOT get back to this page if the tab/browser is closed
           or if button above is pressed
         </p>
-        <div className="BlueLinkDiv flex flex-col px-4 md:px-0">
-          <h3 className="text-2xl font-bold">
+        {/* Blue Link */}
+        <div className="BlueLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
+          <h3 className="text-2xl font-bold md:w-44">
             <span className="text-blue">Blue Side</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row py-4 items-center">
-            <Link
-              target="_blank"
-              to={blueLink}
-              className="text-xl hover:text-blue transition duration-300 flex-1"
-            >
-              {blueLink}
-            </Link>
-            <div
-              className="copy hover:cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(blueLink)}
-            >
-              <Button>Copy Link</Button>
-            </div>
+          <Link
+            target="_blank"
+            to={blueLink}
+            className="text-xl hover:text-blue transition duration-300 flex-1 underline underline-offset-2"
+          >
+            Click Here (opens new tab)
+          </Link>
+
+          <div
+            className="copy hover:cursor-pointer"
+            onClick={() => navigator.clipboard.writeText(blueLink)}
+          >
+            <Button>Copy Link</Button>
           </div>
         </div>
-        <div className="RedLinkDiv flex flex-col px-4 md:px-0">
-          <h3 className="text-2xl font-bold">
+        {/* Red Link */}
+        <div className="RedLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
+          <h3 className="text-2xl font-bold md:w-44">
             <span className="text-red">Red Side</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row py-4 items-center">
-            <Link
-              target="_blank"
-              to={redLink}
-              className="text-xl hover:text-red transition duration-300 flex-1"
-            >
-              {redLink}
-            </Link>
-            <div
-              className="copy hover:cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(redLink)}
-            >
-              <Button>Copy Link</Button>
-            </div>
+          <Link
+            target="_blank"
+            to={redLink}
+            className="text-xl hover:text-red transition duration-300 flex-1 underline underline-offset-2"
+          >
+            Click Here (opens new tab)
+          </Link>
+
+          <div
+            className="copy hover:cursor-pointer"
+            onClick={() => navigator.clipboard.writeText(redLink)}
+          >
+            <Button>Copy Link</Button>
           </div>
         </div>
-        <div className="specLinkDiv flex flex-col px-4 md:px-0">
-          <h3 className="text-2xl font-bold">
+        {/* Spec Link */}
+        <div className="specLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
+          <h3 className="text-2xl font-bold md:w-44">
             <span className="text-yellow">Spectator</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row py-4 items-center">
-            <Link
-              target="_blank"
-              to={specLink}
-              className="text-xl hover:text-yellow transition duration-300 flex-1"
-            >
-              {specLink}
-            </Link>
-            <div
-              className="copy hover:cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(specLink)}
-            >
-              <Button>Copy Link</Button>
-            </div>
+          <Link
+            target="_blank"
+            to={specLink}
+            className="text-xl hover:text-yellow transition duration-300 flex-1 underline underline-offset-2"
+          >
+            Click Here (opens new tab)
+          </Link>
+
+          <div
+            className="copy hover:cursor-pointer"
+            onClick={() => navigator.clipboard.writeText(specLink)}
+          >
+            <Button>Copy Link</Button>
           </div>
         </div>
-        <div className="specLinkDiv flex flex-col px-4 md:px-0">
-          <h3 className="text-2xl font-bold">
+        {/* Stream Link */}
+        <div className="steamLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
+          <h3 className="text-2xl font-bold md:w-44">
             <span className="text-purple">Stream</span> Link:
           </h3>
-          <div className="link flex flex-col md:flex-row py-4 items-center">
-            <Link
-              target="_blank"
-              to={streamLink}
-              className="text-xl hover:text-purple transition duration-300 flex-1"
-            >
-              {streamLink}
-            </Link>
-            <div
-              className="copy hover:cursor-pointer"
-              onClick={() => navigator.clipboard.writeText(streamLink)}
-            >
-              <Button>Copy Link</Button>
-            </div>
+          <Link
+            target="_blank"
+            to={streamLink}
+            className="text-xl hover:text-purple transition duration-300 flex-1 underline underline-offset-2"
+          >
+            Click Here (opens new tab)
+          </Link>
+
+          <div
+            className="copy hover:cursor-pointer"
+            onClick={() => navigator.clipboard.writeText(streamLink)}
+          >
+            <Button>Copy Link</Button>
           </div>
         </div>
       </div>
