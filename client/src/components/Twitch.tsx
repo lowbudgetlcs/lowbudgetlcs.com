@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
-const url = `${import.meta.env.VITE_BACKEND_URL}/api/twitch/checklive`
+const url = `${import.meta.env.VITE_BACKEND_URL}/twitch/api/checklive`
 
 function Twitch() {
   const [isClosed, setIsClosed] = useState(false);
