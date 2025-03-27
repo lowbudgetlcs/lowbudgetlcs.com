@@ -10,7 +10,7 @@ export const pastDraftHandler = async (lobbyCode: string) => {
   try {
     const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
     const response = await fetch(
-      `https://backend.lowbudgetlcs.com/draft/api/pastDraft/${lobbyCode}`,
+      `${import.meta.env.VITE_BACKEND_URL}/draft/api/pastDraft/${lobbyCode}`,
       {
         headers: {
           "x-api-key": apiKey,

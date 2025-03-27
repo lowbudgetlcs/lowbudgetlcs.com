@@ -1,17 +1,10 @@
-FROM node:18-alpine
+FROM node:22-alpine AS builder
 
 WORKDIR /app
+COPY package*.json .
+RUN npm install --frozen-lockfile
+COPY ./ ./
+RUN npx tsc && npm prune --production
 
-COPY package.json .
-
-RUN npm install
-
-COPY . .
-
-RUN npx tsc
-
-#IDK WHAT PORT THIS USES (PROBABLY 8080?)
-EXPOSE 8080
-
-#IDK HOW TO RUN THIS APP
+ENV NODE_ENV=production
 CMD [ "npm", "run", "start" ]

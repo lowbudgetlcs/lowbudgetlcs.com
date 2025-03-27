@@ -1,17 +1,18 @@
-FROM node:18-alpine
+FROM node:22-alpine AS builder
 
-WORKDIR /app
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install --frozen-lockfile
+COPY ./ ./
+RUN npm run build 
 
-COPY package.json .
+# Run dist in much smaller image
+FROM nginx:stable-alpine AS prod 
 
-RUN npm install
+WORKDIR /usr/share/nginx/
 
-RUN npm i -g serve
+COPY --from=builder /usr/src/app/nginx /etc/nginx/conf.d
+COPY --from=builder /usr/src/app/dist /usr/share/nginx/html/
+ENV NODE_ENV=production
 
-COPY . .
-
-RUN npm run build
-
-EXPOSE 3000
-
-CMD [ "serve", "-s", "dist" ]
+CMD [ "nginx", "-g", "daemon off;" ]

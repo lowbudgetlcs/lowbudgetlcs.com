@@ -71,7 +71,7 @@ function DraftPage() {
   const initialConnection = () => {
     setLoading(true);
 
-    const newSocket = io("https://backend.lowbudgetlcs.com");
+    const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}`);
     setSocket(newSocket);
 
     // Run connection Handler Function with lobby code

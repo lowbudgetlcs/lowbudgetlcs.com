@@ -43,7 +43,7 @@ export const useFetchData = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://backend.lowbudgetlcs.com/roster/api/rosterdata",
+          `${import.meta.env.VITE_BACKEND_URL}/roster/api/rosterdata`,
           {
             headers: {
               "x-api-key": apiKey,

@@ -2,10 +2,9 @@
 .vscode
 .dockerignore
 .gitignore
-.env
 config
 build
 node_modules
-dockerfile
+Dockerfile
 README.md
 .eslint.cjs
