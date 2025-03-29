@@ -1,9 +1,9 @@
 export interface FearlessInitializerProps {
   fearlessCode: string;
-  blueCode: string;
-  redCode: string;
-  blueDisplayName: string;
-  redDisplayName: string;
+  team1Code: string;
+  team2Code: string;
+  team1Name: string;
+  team2Name: string;
   draftCount: number;
   draftLobbyCodes: string[];
 }

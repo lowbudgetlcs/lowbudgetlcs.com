@@ -7,11 +7,18 @@ import { FormEvent, useState } from "react";
 import { DraftLinkProps } from "./draftInterfaces";
 import DraftCodes from "./DraftCodes";
 import createFearlessDraft from "./createFearlessDraft";
+import {
+  FearlessDraftLinkProps,
+  FearlessInitializerProps,
+} from "./interfaces/draftInterfaces";
 
 function CreateDraft() {
   const [draftLinks, setDraftLinks] = useSessionStorageState<
     DraftLinkProps | undefined
   >("draftLinks", undefined);
+  const [fearlessDraftLinks, setFearlessDraftLinks] = useSessionStorageState<
+    FearlessDraftLinkProps | undefined
+  >("fearlessDraftLinks", undefined);
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
   const [draftCount, setDraftCount] = useState<number>(3);
   // Required variables for Nav List
@@ -31,7 +38,8 @@ function CreateDraft() {
     const tournamentID = formData.get("tournamentID") as string | null;
     let blueName = (formData.get("blueName") as string | null) || "Blue Team";
     let redName = (formData.get("redName") as string | null) || "Red Team";
-
+    let team1Name = (formData.get("team1Name") as string | null) || "Team 1";
+    let team2Name = (formData.get("team2Name") as string | null) || "Team 2";
     try {
       // Only runs if the LBLCS Tournament option is selected
       if (draftType === "Tournament") {
@@ -53,11 +61,18 @@ function CreateDraft() {
       if (draftType === "Fearless") {
         // Create draft. This will send to the database
         //Creates 1 - 5 drafts
-        const fearlessResult = await createFearlessDraft(
-          blueName,
-          redName,
-          draftCount
-        );
+        const fearlessData: FearlessInitializerProps =
+          await createFearlessDraft(team1Name, team2Name, draftCount);
+
+        const fearlessDraftLobbyCodes = {
+          fearlessCode: fearlessData.fearlessCode,
+          team1Code: fearlessData.team1Code,
+          team2Code: fearlessData.team2Code,
+          team1DisplayName: fearlessData.team1DisplayName,
+          team2DisplayName: fearlessData.team2DisplayName,
+          draftLobbyCodes: fearlessData.draftLobbyCodes,
+        };
+        setFearlessDraftLinks(fearlessDraftLobbyCodes);
       } else {
         // Create draft. This will send to the database if their is a tournament code
         // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
@@ -87,6 +102,8 @@ function CreateDraft() {
       </div>
       {draftLinks ? (
         <DraftCodes draftLinks={draftLinks} setDraftLinks={setDraftLinks} />
+      ) : fearlessDraftLinks ? (
+        <DraftCodes/>
       ) : (
         <div className="draftInput">
           <h2 className="text-center text-2xl font-bold">Create Draft</h2>
@@ -188,7 +205,8 @@ function CreateDraft() {
                 <select
                   name="draftAmount"
                   className="bg-gray/60 border-2 border-gray text-white text-sm rounded-md focus:ring-gray focus:border-orange block w-full p-2.5 cursor-pointer"
-                  onChange={() => setDraftCount(3)}
+                  onChange={(e) => setDraftCount(Number(e.target.value))}
+                  defaultValue={3}
                 >
                   <option className={`bg-gray`} value={1}>
                     1
@@ -196,13 +214,13 @@ function CreateDraft() {
                   <option className={`bg-gray`} value={2}>
                     2
                   </option>
-                  <option className={`bg-gray`} value={3} selected>
+                  <option className={`bg-gray`} value={3}>
                     3
                   </option>
                   <option className={`bg-gray`} value={4}>
                     4
                   </option>
-                  <option className={`bg-gray`} value={4}>
+                  <option className={`bg-gray`} value={5}>
                     5
                   </option>
                 </select>
@@ -212,21 +230,21 @@ function CreateDraft() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <div className="flex flex-col">
-                  <p className="text-xl font-bold">Blue Side</p>
+                  <p className="text-xl font-bold">Team 1 Name</p>
                   <input
                     type="text"
-                    placeholder="Blue Team"
-                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
-                    name="blueName"
+                    placeholder="Team 1"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
+                    name="team1Name"
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl font-bold">Red Side</p>
+                  <p className="text-xl font-bold">Team 2 Name</p>
                   <input
                     type="text"
-                    placeholder="Red Team"
-                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
-                    name="redName"
+                    placeholder="Team 2"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
+                    name="team2Name"
                   ></input>
                 </div>
               </div>

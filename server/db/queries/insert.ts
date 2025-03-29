@@ -81,10 +81,10 @@ export async function insertInitialFearlessLobby(
       .insert(fearlessDraftLobbies)
       .values({
         fearlessCode: draft.fearlessCode,
-        blueCode: draft.blueCode,
-        redCode: draft.redCode,
-        blueName: draft.blueDisplayName,
-        redName: draft.redDisplayName,
+        team1Code: draft.team1Code,
+        team2Code: draft.team2Code,
+        team1Name: draft.team1Name,
+        team2Name: draft.team2Name,
         draftLobby1: draft.draftLobbyCodes[0],
         draftLobby2: draft.draftLobbyCodes[1] || null,
         draftLobby3: draft.draftLobbyCodes[2] || null,
@@ -93,7 +93,7 @@ export async function insertInitialFearlessLobby(
       })
       .returning();
 
-    console.log("Draft initial insert success:", draft.fearlessCode);
+    console.log("Fearless initial insert success:", draft.fearlessCode);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");
