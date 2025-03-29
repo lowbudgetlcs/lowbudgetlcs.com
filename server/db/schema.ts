@@ -36,7 +36,6 @@ export const players = pgTable("players", {
 	teamId: integer("team_id"),
 }, (table) => [
 	index("players_summoner_name_idx").using("btree", table.summonerName.asc().nullsLast().op("text_ops")),
-	unique("players_riot_puuid_key").on(table.riotPuuid),
 ]);
 
 export const teams = pgTable("teams", {
@@ -88,6 +87,50 @@ export const games = pgTable("games", {
 			name: "fk_winner_id"
 		}),
 	unique("games_shortcode_key").on(table.shortcode),
+]);
+
+export const draftLobbies = pgTable("draft_lobbies", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	shortcode: varchar(),
+	blueCode: text("blue_code").notNull(),
+	redCode: text("red_code").notNull(),
+	lobbyCode: text("lobby_code").notNull(),
+	redName: text("red_name").notNull(),
+	blueName: text("blue_name").notNull(),
+	bPick1: text("b_pick_1"),
+	bPick2: text("b_pick_2"),
+	bPick3: text("b_pick_3"),
+	bPick4: text("b_pick_4"),
+	bPick5: text("b_pick_5"),
+	rPick1: text("r_pick_1"),
+	rPick2: text("r_pick_2"),
+	rPick3: text("r_pick_3"),
+	rPick4: text("r_pick_4"),
+	rPick5: text("r_pick_5"),
+	bBan1: text("b_ban_1"),
+	bBan2: text("b_ban_2"),
+	bBan3: text("b_ban_3"),
+	bBan4: text("b_ban_4"),
+	bBan5: text("b_ban_5"),
+	rBan1: text("r_ban_1"),
+	rBan2: text("r_ban_2"),
+	rBan3: text("r_ban_3"),
+	rBan4: text("r_ban_4"),
+	rBan5: text("r_ban_5"),
+	draftFinished: boolean("draft_finished").default(false).notNull(),
+	fearlessCode: text("fearless_code"),
+}, (table) => [
+	foreignKey({
+			columns: [table.shortcode],
+			foreignColumns: [games.shortcode],
+			name: "draft_lobbies_shortcode_fkey"
+		}),
+	foreignKey({
+			columns: [table.fearlessCode],
+			foreignColumns: [fearlessDraftLobbies.fearlessCode],
+			name: "fk_fearless_code"
+		}),
+	unique("draft_lobbies_shortcode_key").on(table.shortcode),
 ]);
 
 export const series = pgTable("series", {
@@ -164,6 +207,23 @@ export const playerPerformances = pgTable("player_performances", {
 			name: "player_performances_team_id_fkey"
 		}),
 	unique("player_performances_player_id_game_id_key").on(table.playerId, table.gameId),
+]);
+
+export const fearlessDraftLobbies = pgTable("fearless_draft_lobbies", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "fearless_draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	fearlessCode: text("fearless_code").notNull(),
+	team1Code: text("team1_code").notNull(),
+	team2Code: text("team2_code").notNull(),
+	team1Name: text("team1_name").notNull(),
+	team2Name: text("team2_name").notNull(),
+	draftLobby1: text("draft_lobby_1"),
+	draftLobby2: text("draft_lobby_2"),
+	draftLobby3: text("draft_lobby_3"),
+	draftLobby4: text("draft_lobby_4"),
+	draftLobby5: text("draft_lobby_5"),
+	fearlessComplete: boolean("fearless_complete").default(false),
+}, (table) => [
+	unique("unique_fearless_code").on(table.fearlessCode),
 ]);
 
 export const teamPerformances = pgTable("team_performances", {
@@ -287,66 +347,4 @@ export const gameDumps = pgTable("game_dumps", {
 			name: "game_dumps_game_id_fkey"
 		}),
 	unique("game_dumps_game_id_key").on(table.gameId),
-]);
-
-export const draftLobbies = pgTable("draft_lobbies", {
-	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
-	shortcode: varchar(),
-	blueCode: text("blue_code").notNull(),
-	redCode: text("red_code").notNull(),
-	lobbyCode: text("lobby_code").notNull(),
-	redName: text("red_name").notNull(),
-	blueName: text("blue_name").notNull(),
-	bPick1: text("b_pick_1"),
-	bPick2: text("b_pick_2"),
-	bPick3: text("b_pick_3"),
-	bPick4: text("b_pick_4"),
-	bPick5: text("b_pick_5"),
-	rPick1: text("r_pick_1"),
-	rPick2: text("r_pick_2"),
-	rPick3: text("r_pick_3"),
-	rPick4: text("r_pick_4"),
-	rPick5: text("r_pick_5"),
-	bBan1: text("b_ban_1"),
-	bBan2: text("b_ban_2"),
-	bBan3: text("b_ban_3"),
-	bBan4: text("b_ban_4"),
-	bBan5: text("b_ban_5"),
-	rBan1: text("r_ban_1"),
-	rBan2: text("r_ban_2"),
-	rBan3: text("r_ban_3"),
-	rBan4: text("r_ban_4"),
-	rBan5: text("r_ban_5"),
-	draftFinished: boolean("draft_finished").default(false).notNull(),
-	fearlessCode: text("fearless_code"),
-}, (table) => [
-	index("draft_lobbies_lobby_code_idx").using("btree", table.lobbyCode.asc().nullsLast().op("text_ops")),
-	foreignKey({
-			columns: [table.shortcode],
-			foreignColumns: [games.shortcode],
-			name: "draft_lobbies_shortcode_fkey"
-		}),
-	foreignKey({
-			columns: [table.fearlessCode],
-			foreignColumns: [fearlessDraftLobbies.fearlessCode],
-			name: "fk_fearless_code"
-		}),
-	unique("draft_lobbies_shortcode_key").on(table.shortcode),
-]);
-
-export const fearlessDraftLobbies = pgTable("fearless_draft_lobbies", {
-	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "fearless_draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
-	fearlessCode: text("fearless_code").notNull(),
-	blueCode: text("blue_code").notNull(),
-	redCode: text("red_code").notNull(),
-	redName: text("red_name").notNull(),
-	blueName: text("blue_name").notNull(),
-	draftLobby1: text("draft_lobby_1"),
-	draftLobby2: text("draft_lobby_2"),
-	draftLobby3: text("draft_lobby_3"),
-	draftLobby4: text("draft_lobby_4"),
-	draftLobby5: text("draft_lobby_5"),
-	fearlessComplete: boolean("fearless_complete").default(false),
-}, (table) => [
-	unique("unique_fearless_code").on(table.fearlessCode),
 ]);
