@@ -22,50 +22,34 @@ export const fearlessLobbyInitializer = async ({
   draftCount,
 }: FearlessInitializerProps) => {
   try {
-    const draftLobbies = [];
-    // Create draft lobbies
-    // Amout specified by draftCount variable from client
-    for (let i = 0; i < draftCount; i++) {
-      const lobbyCode = randomUUID();
-      const draftInfo = {
-        lobbyCode: lobbyCode,
-        team1Code: team1Code,
-        team2Code: team2Code,
-        team1Name: team1Name,
-        team2Name: team2Name,
-        tournamentID: null, //Can change later to track fearless for LBLCS
-        fearlessCode: fearlessCode,
-      };
-      const initializedDraft = fearlessDraftStateInitializer(draftInfo);
-      draftLobbies.push(initializedDraft);
-    }
 
-    // Verify draftLobbies array contents
+    // Verify fearless state is not already existing
     if (!fearlessState[fearlessCode]) {
       fearlessState[fearlessCode] = {
         fearlessCode: fearlessCode,
         fearlessComplete: false,
-        blueCode: blueCode,
-        redCode: redCode,
-        blueDisplayName: blueDisplayName,
-        redDisplayName: redDisplayName,
+        team1Code: team1Code,
+        team2Code: team2Code,
+        team1Name: team1Name,
+        team2Name: team2Name,
         draftCount: draftCount,
         completedDrafts: 0,
         currentDraft: null,
+        currentBlueSide: null,
+        currentRedSide: null,
         allPicks: [],
         allBans: [],
-        draftLobbyCodes: draftLobbies.map((lobby) => lobby.lobbyCode),
+        draftLobbyCodes: null,
       };
 
       // Save Fearless Lobby to Database
       await insertInitialFearlessLobby({
         fearlessCode,
-        blueCode,
-        redCode,
-        blueDisplayName,
-        redDisplayName,
+        team1Code,
+        team2Code,
+        team1Name,
+        team2Name,
         draftCount,
-        draftLobbyCodes: draftLobbies.map((lobby) => lobby.lobbyCode),
       });
 
       // Sets expiration in server record (Currently 24 hours)

@@ -5,7 +5,6 @@ export interface FearlessInitializerProps {
   team1Name: string;
   team2Name: string;
   draftCount: number;
-  draftLobbyCodes: string[];
 }
 
 // Holds the server's version of fearless state
@@ -13,21 +12,18 @@ export interface FearlessInitializerProps {
 export interface FearlessStateServerProps {
   fearlessCode: string;
   fearlessComplete: boolean;
-  redCode: string;
-  blueCode: string;
-  blueDisplayName: string;
-  redDisplayName: string;
+  team1Code: string;
+  team2Code: string;
+  team1Name: string;
+  team2Name: string;
   draftCount: number;
   completedDrafts: number;
-  currentDraft: number | null;
+  currentDraft: string | null;
+  currentBlueSide: string | null;
+  currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
-  draftLobbyCodes: string[];
-  // draftLobbyCode1: string;
-  // draftLobbyCode2: string | null;
-  // draftLobbyCode3: string | null;
-  // draftLobbyCode4: string | null;
-  // draftLobbyCode5: string | null;
+  draftLobbyCodes: string[] | null;
 }
 
 export interface DraftInitializerProps {

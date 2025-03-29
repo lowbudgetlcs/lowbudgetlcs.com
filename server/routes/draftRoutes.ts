@@ -79,24 +79,25 @@ draftRoutes.post(
     try {
       // Pull nick names and tournament ID from request (if there is one)
       const {
-        redName,
-        blueName,
+        team1Name,
+        team2Name,
         draftCount,
-      }: { redName: string; blueName: string; draftCount: number } = req.body;
+      }: { team1Name: string; team2Name: string; draftCount: number } =
+        req.body;
       // Generate unique URLs for the draft
-      const blueCode = randomUUID();
-      const redCode = randomUUID();
+      const team1Code = randomUUID();
+      const team2Code = randomUUID();
       const fearlessCode = randomUUID();
 
       const fearlessLobby: FearlessInitializerProps = {
         fearlessCode: fearlessCode,
-        blueCode: blueCode,
-        redCode: redCode,
-        blueDisplayName: blueName,
-        redDisplayName: redName,
+        team1Code: team1Code,
+        team2Code: team2Code,
+        team1Name: team1Name,
+        team2Name: team2Name,
         draftCount: draftCount,
-        draftLobbyCodes: [],
       };
+
       // Initialize Fearless Lobby
       const fearlessData = await fearlessLobbyInitializer(fearlessLobby);
 
@@ -104,11 +105,10 @@ draftRoutes.post(
       res.status(201).json({
         fearlessLobby: {
           fearlessCode: fearlessData.fearlessCode,
-          blueCode: fearlessData.blueCode,
-          redCode: fearlessData.redCode,
-          blueName: fearlessData.blueDisplayName,
-          redName: fearlessData.redDisplayName,
-          draftLobbyCodes: fearlessData.draftLobbyCodes,
+          team1Code: fearlessData.team1Code,
+          team2Code: fearlessData.team2Code,
+          team1Name: fearlessData.team1Name,
+          team2Name: fearlessData.team2Name,
         },
       });
     } catch (err) {

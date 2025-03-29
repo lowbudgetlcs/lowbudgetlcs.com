@@ -85,11 +85,6 @@ export async function insertInitialFearlessLobby(
         team2Code: draft.team2Code,
         team1Name: draft.team1Name,
         team2Name: draft.team2Name,
-        draftLobby1: draft.draftLobbyCodes[0],
-        draftLobby2: draft.draftLobbyCodes[1] || null,
-        draftLobby3: draft.draftLobbyCodes[2] || null,
-        draftLobby4: draft.draftLobbyCodes[3] || null,
-        draftLobby5: draft.draftLobbyCodes[4] || null,
       })
       .returning();
 
