@@ -8,8 +8,7 @@ import { insertDraft } from "../../db/queries/insert";
 const fearlessSideAssignment = async (
   teamCode: string,
   fearlessLobby: FearlessStateServerProps,
-  chosenSide: string,
-  currentDraft: number
+  chosenSide: string
 ) => {
   try {
     const { team1Code, team2Code, team1Name, team2Name, fearlessCode } =
@@ -17,7 +16,7 @@ const fearlessSideAssignment = async (
     let { currentBlueSide, currentRedSide } = fearlessLobby;
 
     // Just in case, should never happen
-    if (teamCode !== fearlessLobby.team1Code) {
+    if (teamCode !== team1Code) {
       return;
     }
 
@@ -35,11 +34,11 @@ const fearlessSideAssignment = async (
       currentBlueSide === team1Code ? team1Name : team2Name;
     const redDisplayName = currentRedSide === team1Code ? team1Name : team2Name;
 
-    // Make the Typescript happy 
+    // Make the Typescript happy
     if (!currentBlueSide || !currentRedSide) {
       return;
     }
-    
+
     const lobbyCode = randomUUID();
     const draftInfo = {
       lobbyCode: lobbyCode,
@@ -58,7 +57,6 @@ const fearlessSideAssignment = async (
 
     // Insert Standard incomplete draft to db
     await insertDraft(initializedDraft);
-
   } catch (err) {
     console.error("Error inserting draft after side assignment: ", err);
     throw new Error("Internal Server Error");
