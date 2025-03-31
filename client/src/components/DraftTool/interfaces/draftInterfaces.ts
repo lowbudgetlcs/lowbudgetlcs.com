@@ -2,11 +2,11 @@ export interface FearlessInitializerProps {
     fearlessCode: string;
     team1Code: string;
     team2Code: string;
-    team1DisplayName: string;
-    team2DisplayName: string;
+    team1Name: string;
+    team2Name: string;
     draftCount: number;
-    draftLobbyCodes: string[];
   }
+  
 
 export interface FearlessDraftLinkProps {
     fearlessCode: string;
@@ -14,5 +14,4 @@ export interface FearlessDraftLinkProps {
     team2Code: string;
     team1DisplayName: string;
     team2DisplayName: string;
-    draftLobbyCodes: string[];
 }

@@ -216,12 +216,9 @@ export const fearlessDraftLobbies = pgTable("fearless_draft_lobbies", {
 	team2Code: text("team2_code").notNull(),
 	team1Name: text("team1_name").notNull(),
 	team2Name: text("team2_name").notNull(),
-	draftLobby1: text("draft_lobby_1"),
-	draftLobby2: text("draft_lobby_2"),
-	draftLobby3: text("draft_lobby_3"),
-	draftLobby4: text("draft_lobby_4"),
-	draftLobby5: text("draft_lobby_5"),
 	fearlessComplete: boolean("fearless_complete").default(false),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	totalDrafts: bigint("total_drafts", { mode: "number" }),
 }, (table) => [
 	unique("unique_fearless_code").on(table.fearlessCode),
 ]);

@@ -1,3 +1,5 @@
+import { FearlessInitializerProps } from "./interfaces/draftInterfaces";
+
 const createFearlessDraft = async (
   blueName: FormDataEntryValue,
   redName: FormDataEntryValue,
@@ -6,8 +8,8 @@ const createFearlessDraft = async (
   try {
     const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
     const data = {
-      blueName: blueName,
-      redName: redName,
+      team1Name: blueName,
+      team2Name: redName,
       draftCount: draftCount,
     };
     const response = await fetch(
@@ -28,7 +30,12 @@ const createFearlessDraft = async (
       );
     }
 
-    const result = await response.json();
+    const result: FearlessInitializerProps = await response.json();
+    if (!result) {
+      throw new Error(
+        `Server error: ${response.status} ${response.statusText}`
+      );
+    }
     return result;
   } catch (err) {
     console.error("Error in Creating Fearless DB Entry:", err);

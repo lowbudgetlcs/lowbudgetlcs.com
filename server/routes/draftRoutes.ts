@@ -103,13 +103,12 @@ draftRoutes.post(
 
       // Success Response
       res.status(201).json({
-        fearlessLobby: {
-          fearlessCode: fearlessData.fearlessCode,
-          team1Code: fearlessData.team1Code,
-          team2Code: fearlessData.team2Code,
-          team1Name: fearlessData.team1Name,
-          team2Name: fearlessData.team2Name,
-        },
+        fearlessCode: fearlessData.fearlessCode,
+        team1Code: fearlessData.team1Code,
+        team2Code: fearlessData.team2Code,
+        team1Name: fearlessData.team1Name,
+        team2Name: fearlessData.team2Name,
+        draftCount: fearlessData.draftCount,
       });
     } catch (err) {
       console.error("Error in Draft Creation:", err);

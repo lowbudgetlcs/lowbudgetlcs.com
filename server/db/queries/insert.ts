@@ -85,6 +85,7 @@ export async function insertInitialFearlessLobby(
         team2Code: draft.team2Code,
         team1Name: draft.team1Name,
         team2Name: draft.team2Name,
+        totalDrafts: draft.draftCount
       })
       .returning();
 

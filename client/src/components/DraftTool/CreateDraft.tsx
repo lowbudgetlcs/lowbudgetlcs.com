@@ -7,17 +7,16 @@ import { FormEvent, useState } from "react";
 import { DraftLinkProps } from "./draftInterfaces";
 import DraftCodes from "./DraftCodes";
 import createFearlessDraft from "./createFearlessDraft";
-import {
-  FearlessDraftLinkProps,
-  FearlessInitializerProps,
-} from "./interfaces/draftInterfaces";
+import { FearlessInitializerProps } from "./interfaces/draftInterfaces";
+import FearlessLinks from "./draftCreation/FearlessLinks";
+import { redirect } from "react-router-dom";
 
 function CreateDraft() {
   const [draftLinks, setDraftLinks] = useSessionStorageState<
     DraftLinkProps | undefined
   >("draftLinks", undefined);
   const [fearlessDraftLinks, setFearlessDraftLinks] = useSessionStorageState<
-    FearlessDraftLinkProps | undefined
+    FearlessInitializerProps | undefined
   >("fearlessDraftLinks", undefined);
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
   const [draftCount, setDraftCount] = useState<number>(3);
@@ -61,18 +60,16 @@ function CreateDraft() {
       if (draftType === "Fearless") {
         // Create draft. This will send to the database
         //Creates 1 - 5 drafts
-        const fearlessData: FearlessInitializerProps =
-          await createFearlessDraft(team1Name, team2Name, draftCount);
-
-        const fearlessDraftLobbyCodes = {
-          fearlessCode: fearlessData.fearlessCode,
-          team1Code: fearlessData.team1Code,
-          team2Code: fearlessData.team2Code,
-          team1DisplayName: fearlessData.team1DisplayName,
-          team2DisplayName: fearlessData.team2DisplayName,
-          draftLobbyCodes: fearlessData.draftLobbyCodes,
-        };
-        setFearlessDraftLinks(fearlessDraftLobbyCodes);
+        const fearlessData = await createFearlessDraft(
+          team1Name,
+          team2Name,
+          draftCount
+        );
+        if (!fearlessData) {
+          redirect("/error", 500)
+          return;
+        }
+        setFearlessDraftLinks(fearlessData);
       } else {
         // Create draft. This will send to the database if their is a tournament code
         // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
@@ -103,7 +100,10 @@ function CreateDraft() {
       {draftLinks ? (
         <DraftCodes draftLinks={draftLinks} setDraftLinks={setDraftLinks} />
       ) : fearlessDraftLinks ? (
-        <DraftCodes/>
+        <FearlessLinks
+          fearlessDraftLinks={fearlessDraftLinks}
+          setFearlessDraftLinks={setFearlessDraftLinks}
+        />
       ) : (
         <div className="draftInput">
           <h2 className="text-center text-2xl font-bold">Create Draft</h2>
@@ -236,6 +236,7 @@ function CreateDraft() {
                     placeholder="Team 1"
                     className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
                     name="team1Name"
+                    maxLength={18}
                   ></input>
                 </div>
                 <div className="flex flex-col">
@@ -245,6 +246,7 @@ function CreateDraft() {
                     placeholder="Team 2"
                     className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
                     name="team2Name"
+                    maxLength={18}
                   ></input>
                 </div>
               </div>
