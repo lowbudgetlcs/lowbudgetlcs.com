@@ -1,6 +1,7 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { FearlessStateProps } from "../interfaces/draftInterfaces";
 import { Socket } from "socket.io-client";
+import { Outlet } from "react-router-dom";
 
 export interface FearlessContextProps {
   fearlessState: FearlessStateProps | undefined;
@@ -15,14 +16,14 @@ export interface FearlessSocketContextProps {
 const FearlessStateContext = createContext<FearlessContextProps | undefined>(undefined);
 const FearlessSocketContext = createContext<FearlessSocketContextProps | undefined>(undefined);
 
-export const FearlessProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const FearlessProvider: React.FC = ()=> {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [fearlessState, setFearlessState] = useState<FearlessStateProps | undefined>(undefined);
   
   return (
     <FearlessSocketContext.Provider value={{ socket, setSocket }}>
       <FearlessStateContext.Provider value={{ fearlessState, setFearlessState }}>
-        {children}
+        <Outlet/>
       </FearlessStateContext.Provider>
     </FearlessSocketContext.Provider>
   );
