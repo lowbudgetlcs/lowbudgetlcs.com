@@ -12,7 +12,8 @@ export const fearlessSocket = (io: Namespace) => {
     socket.on("joinFearless", ({ fearlessCode, teamCode }) => {
       try {
         const series = fearlessState[fearlessCode];
-
+        console.log(fearlessCode)
+        console.log(fearlessState)
         if (!series) {
           socket.emit("error", { message: "Invalid fearless series code" });
           return;
@@ -33,15 +34,15 @@ export const fearlessSocket = (io: Namespace) => {
         socket.data.teamCode = teamCode;
 
         socket.emit("joinedFearless", {
-          success: true,
           teamDisplay,
-          fearlessCode,
-          teamCode,
+          fearlessState: series
         });
         // Send current state to client
         socket.emit("fearlessState", updateFearlessClientState(fearlessCode));
 
-        console.log(`User joined fearless series ${fearlessCode} as ${teamDisplay}`);
+        console.log(
+          `User joined fearless series ${fearlessCode} as ${teamDisplay}`
+        );
       } catch (error) {
         console.error("Error joining fearless series:", error);
         socket.emit("error", { message: "Internal server error" });
@@ -74,15 +75,12 @@ export const fearlessSocket = (io: Namespace) => {
         // The current draft should now be set
         if (series.currentDraft) {
           // Notify all clients in the series
-          io.to(fearlessCode).emit("sideSelected", {
-            selectedSide,
-            currentDraftIndex: series.completedDrafts,
-            lobbyCode: series.currentDraft,
-            // Pass team-specific codes
-            team1Side: selectedSide,
-            team2Side: selectedSide === "blue" ? "red" : "blue",
-          });
+          io.to(fearlessCode).emit(
+            "sideSelected",
+            updateFearlessClientState(fearlessCode)
+          );
         }
+        socket.emit("fearlessState", updateFearlessClientState(fearlessCode));
 
         console.log(
           `Side selected for fearless series ${fearlessCode}: ${selectedSide}`
