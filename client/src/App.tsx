@@ -20,6 +20,7 @@ import StatsSeason from "./components/StatsPage/StatsSeason";
 // import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
 import CreateDraft from "./components/DraftTool/CreateDraft";
 import DraftPage from "./components/DraftTool/DraftPage";
+import FearlessMain from "./components/DraftTool/mainPages/FearlessMain";
 
 function App() {
   const location = useLocation();
@@ -49,6 +50,9 @@ function App() {
           <Route path="draft" element={<CreateDraft />} />
           <Route path="draft/:lobbyCode" element={<DraftPage />} />
           <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage />} />
+          <Route path="draft/fearless/:fearlessCode" element={<FearlessMain />} />
+          <Route path="draft/fearless/:fearlessCode/:teamCode" element={<FearlessMain />} />
+          <Route path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode" element={<DraftPage />} />
         </Routes>
       </LeagueDataProvider>
       {!isDraftRoute && <Footer />}
