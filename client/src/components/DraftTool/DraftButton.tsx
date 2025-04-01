@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DraftButtonProps } from "./draftInterfaces";
 import { pickHandler, readyHandler } from "./draftHandler";
-import { useSocketContext } from "./DraftPage";
+import { useSocketContext } from "./providers/DraftProvider";
 
 function DraftButton({
   draftState,

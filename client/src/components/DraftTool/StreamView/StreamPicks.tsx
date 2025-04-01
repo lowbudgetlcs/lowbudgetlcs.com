@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { Champion, DraftProps, DraftStateProps } from "../draftInterfaces";
+import { Champion, DraftProps } from "../draftInterfaces";
 import StreamPickImage from "./StreamPickImage";
 
 const StreamPicks = ({
@@ -18,7 +18,7 @@ const StreamPicks = ({
   championRoles: Champion[];
   playerTurn: string | null;
   playerSide: string;
-  currentPhase: DraftStateProps["activePhase"];
+  currentPhase: DraftProps["activePhase"];
   currentHover: DraftProps["currentHover"];
 }) => {
   const [sidePick, setSidePick] = useState<number>();

@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
-import { usePastDraftContext } from "./DraftPage";
+import { usePastDraftContext } from "./providers/DraftProvider";
 
 const DisplayPickImage = ({
   playerSide,

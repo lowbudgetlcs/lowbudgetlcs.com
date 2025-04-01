@@ -1,13 +1,11 @@
 import {
-  createContext,
-  useContext,
   useEffect,
   useLayoutEffect,
   useState,
 } from "react";
 import { connectionHandler } from "./draftHandler";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
 
 import championsData from "./championRoles.json";
@@ -17,43 +15,16 @@ import Button from "../Button";
 import { pastDraftHandler, PastLobbyProps } from "./pastDraftHandler";
 import { defaultDraftState } from "./defaultDraftState";
 import StreamDisplay from "./StreamView/StreamDisplay";
-
-export interface SocketContextProps {
-  socket: Socket | null;
-}
-
-export interface PastDraftContextProps {
-  isPastDraft: boolean | null;
-}
-const SocketContext = createContext<SocketContextProps | undefined>(undefined);
-const PastDraftContext = createContext<PastDraftContextProps | undefined>(
-  undefined
-);
-export const useSocketContext = () => {
-  const context = useContext(SocketContext);
-  if (!context) {
-    throw new Error(
-      "useSocketContext must be used within a SocketContext Provider"
-    );
-  }
-  return context;
-};
-
-export const usePastDraftContext = () => {
-  const context = useContext(PastDraftContext);
-  if (!context) {
-    throw new Error(
-      "usePastDraftContext must be used within a SocketContext Provider"
-    );
-  }
-  return context;
-};
+import {
+  usePastDraftContext,
+  useSocketContext,
+} from "./providers/DraftProvider";
 
 function DraftPage() {
   const [draftState, setDraftState] = useState<DraftProps>(defaultDraftState);
-  const [isPastDraft, setIsPastDraft] = useState<boolean>(false);
+  const { isPastDraft, setIsPastDraft } = usePastDraftContext();
   const [loading, setLoading] = useState<boolean>(false);
-  const [socket, setSocket] = useState<Socket | null>(null);
+  const { socket, setSocket } = useSocketContext();
 
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
   const [playerSide, setPlayerSide] = useState<string>("");
@@ -70,12 +41,19 @@ function DraftPage() {
 
   const initialConnection = () => {
     setLoading(true);
-
-    const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}`);
+    console.log("Attempting to connect to:", `${import.meta.env.VITE_BACKEND_URL}`);
+    const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}/draft`)
     setSocket(newSocket);
 
+    newSocket.on('error', (error) => {
+      console.error("Socket connection error:", error.message);
+      setError(true);
+      setLoading(false);
+    });
+    
     // Run connection Handler Function with lobby code
     const startConnection = () => {
+
       connectionHandler(
         newSocket,
         lobbyCode,
@@ -87,6 +65,7 @@ function DraftPage() {
     };
     newSocket.on("connect", startConnection);
     setLoading(false);
+
   };
 
   useLayoutEffect(() => {
@@ -208,33 +187,26 @@ function DraftPage() {
       socket.off("currentTurn", handleCurrentTurn);
     };
   }, [socket]);
+
   if (lobbyCode && streamMode && (socket || isPastDraft) && !error) {
     return (
-      <SocketContext.Provider value={{ socket }}>
-        <PastDraftContext.Provider value={{ isPastDraft }}>
-          <StreamDisplay
-            draftState={draftState}
-            lobbyCode={lobbyCode}
-            sideCode={sideCode}
-            championRoles={championRoles}
-            playerSide={playerSide}
-          />
-        </PastDraftContext.Provider>
-      </SocketContext.Provider>
+      <StreamDisplay
+        draftState={draftState}
+        lobbyCode={lobbyCode}
+        sideCode={sideCode}
+        championRoles={championRoles}
+        playerSide={playerSide}
+      />
     );
   } else if (draftState && lobbyCode && (socket || isPastDraft) && !error) {
     return (
-      <SocketContext.Provider value={{ socket }}>
-        <PastDraftContext.Provider value={{ isPastDraft }}>
-          <DraftDisplay
-            draftState={draftState}
-            lobbyCode={lobbyCode}
-            sideCode={sideCode}
-            championRoles={championRoles}
-            playerSide={playerSide}
-          />
-        </PastDraftContext.Provider>
-      </SocketContext.Provider>
+      <DraftDisplay
+        draftState={draftState}
+        lobbyCode={lobbyCode}
+        sideCode={sideCode}
+        championRoles={championRoles}
+        playerSide={playerSide}
+      />
     );
   } else if (loading) {
     return (

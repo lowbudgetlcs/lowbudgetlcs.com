@@ -11,9 +11,9 @@ import { ChangeEvent, useEffect, useState } from "react";
 import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
-import { useSocketContext } from "./DraftPage";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import downloadFile from "../../utils/downloadFile";
+import { useSocketContext } from "./providers/DraftProvider";
 
 function DraftDisplay({
   draftState,

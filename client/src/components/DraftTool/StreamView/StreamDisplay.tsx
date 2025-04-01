@@ -1,10 +1,10 @@
 import DisplayBans from "../DisplayBans";
 import { DraftDisplayProps, DraftProps } from "../draftInterfaces";
 import { useEffect, useState } from "react";
-import { useSocketContext } from "../DraftPage";
 import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";
 import BanBox from "./BanBox";
+import { useSocketContext } from "../providers/DraftProvider";
 
 function StreamDisplay({
   draftState,

@@ -1,10 +1,10 @@
 import React from "react";
 import { Socket } from "socket.io-client";
-import { DraftProps, DraftStateProps } from "./draftInterfaces";
+import { DraftProps } from "./draftInterfaces";
 
 export const handleBanPhase = (
   socket: Socket,
-  serverDraftState: DraftStateProps,
+  serverDraftState: DraftProps,
   setDraftState: React.Dispatch<React.SetStateAction<DraftProps>>
 ) => {
   let banTimer = 30;
@@ -50,7 +50,7 @@ export const handleBanPhase = (
 
 export const handlePickPhase = (
   socket: Socket,
-  serverDraftState: DraftStateProps,
+  serverDraftState: DraftProps,
   setDraftState: React.Dispatch<React.SetStateAction<DraftProps>>
 ) => {
   let pickTimer = 30;
@@ -72,7 +72,7 @@ export const handlePickPhase = (
   };
 
   // Run function to display picks
-  const setPick = (state: DraftStateProps) => {
+  const setPick = (state: DraftProps) => {
     setDraftState((prevState) => {
       const { timer, ...rest } = prevState;
       return {

@@ -22,6 +22,8 @@ import CreateDraft from "./components/DraftTool/CreateDraft";
 import DraftPage from "./components/DraftTool/DraftPage";
 import FearlessMain from "./components/DraftTool/mainPages/FearlessMain";
 import { FearlessProvider } from "./components/DraftTool/providers/FearlessProvider";
+import FearlessDraftPage from "./components/DraftTool/mainPages/FearlessDraftPage";
+import { DraftContextProvider } from "./components/DraftTool/providers/DraftProvider";
 
 function App() {
   const location = useLocation();
@@ -49,14 +51,24 @@ function App() {
           {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
           <Route path="*" element={<ErrorPage />} />
           <Route path="draft" element={<CreateDraft />} />
-          <Route path="draft/:lobbyCode" element={<DraftPage />} />
-          <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage />} />
-          <Route element={<FearlessProvider/>}>
-            <Route path="draft/fearless/:fearlessCode" element={<FearlessMain />} />
-            <Route path="draft/fearless/:fearlessCode/:teamCode" element={<FearlessMain />} />
-            <Route path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode" element={<DraftPage />} />
+          <Route element={<DraftContextProvider />}>
+            <Route path="draft/:lobbyCode" element={<DraftPage />} />
+            <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage />} />
+            <Route element={<FearlessProvider />}>
+              <Route
+                path="draft/fearless/:fearlessCode"
+                element={<FearlessMain />}
+              />
+              <Route
+                path="draft/fearless/:fearlessCode/:teamCode"
+                element={<FearlessMain />}
+              />
+              <Route
+                path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode"
+                element={<FearlessDraftPage />}
+              />
+            </Route>
           </Route>
-
         </Routes>
       </LeagueDataProvider>
       {!isDraftRoute && <Footer />}
