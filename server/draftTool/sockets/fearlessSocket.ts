@@ -1,10 +1,10 @@
-import { Server, Socket } from "socket.io";
+import { Namespace, Server, Socket } from "socket.io";
 import { fearlessState } from "../initializers/fearlessLobbyInitializer";
 import { updateFearlessClientState } from "../states/clientFearlessState";
 import fearlessSideAssignment from "../initializers/fearlessSideAssignment";
 import { draftState } from "../../sockets/draftState";
 
-export const fearlessSocket = (io: Server) => {
+export const fearlessSocket = (io: Namespace) => {
   io.on("connection", (socket: Socket) => {
     console.log("New connection to fearless socket");
 

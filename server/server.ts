@@ -74,9 +74,13 @@ app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 
+// Set up namespaces
+const draftNamespace = io.of("/draft")
+const fearlessNamespace = io.of("/fearless")
+
 // Initialize draftSocket with the io instance
-draftSocket(io);
-fearlessSocket(io);
+draftSocket(draftNamespace);
+fearlessSocket(fearlessNamespace);
 
 server.listen(port, () => {
   console.log("Server started on port " + port);

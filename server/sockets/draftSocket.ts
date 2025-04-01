@@ -1,4 +1,4 @@
-import { Server } from "socket.io";
+import { Namespace, Server } from "socket.io";
 import { readyHandler } from "./readyHandler";
 import {
   ClientDraftStateProps,
@@ -19,7 +19,7 @@ export interface DraftUsersProps {
 
 const lobbyEmitters: Map<string, EventEmitter> = new Map();
 let currentConnections: number = 0;
-export const draftSocket = (io: Server) => {
+export const draftSocket = (io: Namespace) => {
   io.on("connection", (socket) => {
     const getDraftState = (lobbyCode: string) => {
       if (!draftState[lobbyCode]) {
