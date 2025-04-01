@@ -18,12 +18,15 @@ export const endDraftHandler = async ({
     const fearlessCode = state.fearlessCode;
     const fearlessData = fearlessState[fearlessCode];
 
+    // Tells fearless room draft is finished (if there is one)
     if (fearlessData) {
-      io.to(fearlessCode).emit("draftCompleted", {
+      const fearlessNamespace = io.server.of("/fearless");
+      fearlessNamespace.to(fearlessCode).emit("draftCompleted", {
         fearlessCode,
         lobbyCode: lobbyCode,
       });
     }
   }
+
   await insertFinishedDraft(state, lobbyCode);
 };
