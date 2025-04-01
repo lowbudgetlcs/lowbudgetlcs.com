@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { DraftButtonProps } from "./draftInterfaces";
 import { pickHandler, readyHandler } from "./draftHandler";
 import { useSocketContext } from "./providers/DraftProvider";
+import { useFearlessStateContext } from "./providers/FearlessProvider";
+import Button from "../Button";
+import { Link } from "react-router-dom";
 
 function DraftButton({
   draftState,
@@ -12,7 +15,7 @@ function DraftButton({
   setChosenChamp,
 }: DraftButtonProps) {
   const { socket } = useSocketContext();
-
+  const { fearlessState } = useFearlessStateContext();
   const [ready, setReady] = useState<boolean>(false);
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
@@ -56,10 +59,21 @@ function DraftButton({
     pickHandler(lobbyCode, sideCode, chosenChamp, socket, banPhase, pickPhase);
     setChosenChamp("");
   };
+
+  console.log(fearlessState)
   return (
     <>
       {/* Ready Button */}
-      {draftState.draftComplete ? (
+      {draftState.draftComplete &&
+      fearlessState &&
+      fearlessState.draftLobbyCodes &&
+      fearlessState.draftLobbyCodes.includes(lobbyCode) &&
+      fearlessState.currentDraft !== lobbyCode &&
+      !fearlessState.fearlessComplete ? (
+        <Link to={`/draft/fearless/${fearlessState.fearlessCode}/${sideCode}`}>
+          <Button>Next Draft</Button>
+        </Link>
+      ) : draftState.draftComplete ? (
         <button
           className={`Timer p-4 bg-gray ${
             banPhase || pickPhase ? "hidden" : ""

@@ -12,7 +12,7 @@ import {
 
 const FearlessMain = () => {
   const { fearlessCode, teamCode } = useParams();
-  const { socket, setSocket } = useFearlessSocketContext();
+  const { fearlessSocket, setFearlessSocket } = useFearlessSocketContext();
   const { fearlessState, setFearlessState } = useFearlessStateContext();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,7 +24,7 @@ const FearlessMain = () => {
   const initialConnection = () => {
     setLoading(true);
     const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}/fearless`);
-    setSocket(newSocket);
+    setFearlessSocket(newSocket);
 
     const startConnection = () =>
       fearlessConnectionHandler(
@@ -45,7 +45,7 @@ const FearlessMain = () => {
 
   // Handle Fearless state updates
   useEffect(() => {
-    if (!socket) {
+    if (!fearlessSocket) {
       return;
     }
 
@@ -56,8 +56,8 @@ const FearlessMain = () => {
       }));
     };
 
-    socket.on("fearlessState", updateFearlessState);
-  }, [socket]);
+    fearlessSocket.on("fearlessState", updateFearlessState);
+  }, [fearlessSocket]);
   // Add this before your render conditions
   console.log("FearlessMain render state:", {
     loading,
@@ -75,6 +75,7 @@ const FearlessMain = () => {
   } else if (fearlessState && team) {
     return fearlessState.currentDraft ? (
       <>
+        {/* Navigates to FearlessDraftPage */}
         <Navigate
           to={`/draft/fearless/${fearlessCode}/${teamCode}/${fearlessState.currentDraft}`}
         />

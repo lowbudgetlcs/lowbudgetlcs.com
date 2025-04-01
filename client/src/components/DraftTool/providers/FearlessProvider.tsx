@@ -1,29 +1,54 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect } from "react";
 import { FearlessStateProps } from "../interfaces/draftInterfaces";
 import { Socket } from "socket.io-client";
 import { Outlet } from "react-router-dom";
+import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
 
 export interface FearlessContextProps {
   fearlessState: FearlessStateProps | undefined;
-  setFearlessState: React.Dispatch<React.SetStateAction<FearlessStateProps | undefined>>;
+  setFearlessState: React.Dispatch<
+    React.SetStateAction<FearlessStateProps | undefined>
+  >;
 }
 
 export interface FearlessSocketContextProps {
-  socket: Socket | null;
-  setSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
+  fearlessSocket: Socket | null;
+  setFearlessSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
 }
 
-const FearlessStateContext = createContext<FearlessContextProps | undefined>(undefined);
-const FearlessSocketContext = createContext<FearlessSocketContextProps | undefined>(undefined);
+const FearlessStateContext = createContext<FearlessContextProps | undefined>(
+  undefined
+);
+const FearlessSocketContext = createContext<
+  FearlessSocketContextProps | undefined
+>(undefined);
 
-export const FearlessProvider: React.FC = ()=> {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [fearlessState, setFearlessState] = useState<FearlessStateProps | undefined>(undefined);
-  
+export const FearlessProvider: React.FC = () => {
+  const [fearlessSocket, setFearlessSocket] =
+    useSessionStorageState<Socket | null>("fearlessSocket", null);
+  const [fearlessState, setFearlessState] = useSessionStorageState<
+    FearlessStateProps | undefined
+  >("fearlessState", undefined);
+
+  useEffect(() => {
+    if (!fearlessSocket) return;
+
+    const updateFearlessState = (newState: FearlessStateProps) => {
+      setFearlessState((prevState) => ({
+        ...prevState,
+        ...newState,
+      }));
+    };
+    fearlessSocket.on("newFearlessState", updateFearlessState);
+  }, [fearlessSocket]);
   return (
-    <FearlessSocketContext.Provider value={{ socket, setSocket }}>
-      <FearlessStateContext.Provider value={{ fearlessState, setFearlessState }}>
-        <Outlet/>
+    <FearlessSocketContext.Provider
+      value={{ fearlessSocket, setFearlessSocket }}
+    >
+      <FearlessStateContext.Provider
+        value={{ fearlessState, setFearlessState }}
+      >
+        <Outlet />
       </FearlessStateContext.Provider>
     </FearlessSocketContext.Provider>
   );

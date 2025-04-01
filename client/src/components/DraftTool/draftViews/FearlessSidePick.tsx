@@ -12,13 +12,13 @@ const FearlessSidePick = ({
 }) => {
   const { teamCode } = useParams();
   const {fearlessState} = useFearlessStateContext();
-  const {socket} = useFearlessSocketContext();
+  const {fearlessSocket} = useFearlessSocketContext();
 
-  if (!teamCode || !socket || !fearlessState) return;
+  if (!teamCode || !fearlessSocket || !fearlessState) return;
   const handleSideSelect = (side: string) =>
     sideSelectHandler(
       fearlessState.fearlessCode,
-      socket,
+      fearlessSocket,
       side,
       setSelectedSide
     );

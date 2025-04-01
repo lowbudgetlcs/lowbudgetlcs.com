@@ -12,6 +12,7 @@ import { banPhase2Handler } from "./banPhase2Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
 import { updateClientState } from "./clientDraftState";
 import { endDraftHandler } from "./endDraftHandler";
+import { fearlessEmitters } from "../draftTool/sockets/fearlessSocket";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -129,6 +130,7 @@ export const draftSocket = (io: Namespace) => {
               if (isPickPhase2Done) {
                 await endDraftHandler(handlerVars);
                 if (state.fearlessCode) {
+                  fearlessEmitters.get(state.fearlessCode)!.emit("draftCompleted", (state.fearlessCode, lobbyCode))
                   const draftSockets = await io.in(lobbyCode).fetchSockets();
                   draftSockets.forEach((socket) => {
                     socket.leave(lobbyCode);

@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { connectionHandler } from "../draftHandler";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -15,18 +11,22 @@ import Button from "../../Button";
 import { pastDraftHandler, PastLobbyProps } from "../pastDraftHandler";
 import { defaultDraftState } from "../defaultDraftState";
 import StreamDisplay from "../StreamView/StreamDisplay";
-import { useFearlessStateContext } from "../providers/FearlessProvider";
+import {
+  useFearlessSocketContext,
+  useFearlessStateContext,
+} from "../providers/FearlessProvider";
 import {
   usePastDraftContext,
   useSocketContext,
 } from "../providers/DraftProvider";
+import { FearlessStateProps } from "../interfaces/draftInterfaces";
 
 function FearlessDraftPage() {
   const [draftState, setDraftState] = useState<DraftProps>(defaultDraftState);
   const { isPastDraft, setIsPastDraft } = usePastDraftContext();
   const [loading, setLoading] = useState<boolean>(false);
   const { socket, setSocket } = useSocketContext();
-
+  const { fearlessSocket } = useFearlessSocketContext();
   const [championRoles, setChampionRoles] = useState<Champion[]>([]);
   const [playerSide, setPlayerSide] = useState<string>("");
   const [error, setError] = useState<boolean>(false);
@@ -37,12 +37,14 @@ function FearlessDraftPage() {
 
   // Set fearless mode
   const fearlessDraft = location.pathname.includes("fearless");
-  const { fearlessState } = useFearlessStateContext();
+
+  const { fearlessState, setFearlessState } = useFearlessStateContext();
 
   // Grab the lobby code
   const params = useParams();
   let lobbyCode: string | undefined = params.lobbyCode;
   let sideCode: string | undefined = params.sideCode;
+  const fearlessCode = params.fearlessCode;
 
   // If it is a fearless draft will get the current draft info from the state
   if (fearlessDraft && fearlessState && fearlessState.currentDraft) {
@@ -191,25 +193,53 @@ function FearlessDraftPage() {
       socket.off("currentTurn", handleCurrentTurn);
     };
   }, [socket]);
+
+  useEffect(() => {
+    if (!fearlessSocket) return;
+    if (draftState.draftComplete) {
+      fearlessSocket.emit("draftCompleted")
+    }
+  })
+  useEffect(() => {
+    if (!fearlessSocket) return;
+
+    const handleNextDraft = (newFearlessState: FearlessStateProps) => {
+      setFearlessState((prevState) => ({
+        ...prevState,
+        ...newFearlessState,
+      }));
+    };
+    fearlessSocket.on("nextDraft", handleNextDraft);
+
+    return () => {
+      fearlessSocket.off("nextDraft", handleNextDraft)
+    }
+  }, [draftState.draftComplete, fearlessSocket]);
+
+  useEffect(() => {
+    if (!fearlessSocket) return;
+    if (!fearlessCode) return
+    fearlessSocket.emit("fearlessStateUpdate", (fearlessCode))
+  }, [fearlessCode, fearlessSocket])
   if (lobbyCode && streamMode && (socket || isPastDraft) && !error) {
     return (
-          <StreamDisplay
-            draftState={draftState}
-            lobbyCode={lobbyCode}
-            sideCode={sideCode}
-            championRoles={championRoles}
-            playerSide={playerSide}
-          />
+      <StreamDisplay
+        draftState={draftState}
+        lobbyCode={lobbyCode}
+        sideCode={sideCode}
+        championRoles={championRoles}
+        playerSide={playerSide}
+      />
     );
   } else if (draftState && lobbyCode && (socket || isPastDraft) && !error) {
     return (
-          <DraftDisplay
-            draftState={draftState}
-            lobbyCode={lobbyCode}
-            sideCode={sideCode}
-            championRoles={championRoles}
-            playerSide={playerSide}
-          />
+      <DraftDisplay
+        draftState={draftState}
+        lobbyCode={lobbyCode}
+        sideCode={sideCode}
+        championRoles={championRoles}
+        playerSide={playerSide}
+      />
     );
   } else if (loading) {
     return (

@@ -3,7 +3,9 @@ import { fearlessState } from "../initializers/fearlessLobbyInitializer";
 import { updateFearlessClientState } from "../states/clientFearlessState";
 import fearlessSideAssignment from "../initializers/fearlessSideAssignment";
 import { draftState } from "../../sockets/draftState";
+import EventEmitter from "events";
 
+export const fearlessEmitters: Map<string, EventEmitter> = new Map();
 export const fearlessSocket = (io: Namespace) => {
   io.on("connection", (socket: Socket) => {
     console.log("New connection to fearless socket");
@@ -12,8 +14,8 @@ export const fearlessSocket = (io: Namespace) => {
     socket.on("joinFearless", ({ fearlessCode, teamCode }) => {
       try {
         const series = fearlessState[fearlessCode];
-        console.log(fearlessCode)
-        console.log(fearlessState)
+        console.log(fearlessCode);
+        console.log(fearlessState);
         if (!series) {
           socket.emit("error", { message: "Invalid fearless series code" });
           return;
@@ -27,6 +29,10 @@ export const fearlessSocket = (io: Namespace) => {
           teamDisplay = "team2";
         }
 
+        if (!fearlessEmitters.has(fearlessCode)) {
+          fearlessEmitters.set(fearlessCode, new EventEmitter());
+        }
+
         // Join the fearless room
         socket.join(fearlessCode);
         socket.data.fearlessCode = fearlessCode;
@@ -35,7 +41,7 @@ export const fearlessSocket = (io: Namespace) => {
 
         socket.emit("joinedFearless", {
           teamDisplay,
-          fearlessState: series
+          fearlessState: series,
         });
         // Send current state to client
         socket.emit("fearlessState", updateFearlessClientState(fearlessCode));
@@ -91,69 +97,76 @@ export const fearlessSocket = (io: Namespace) => {
       }
     });
 
-    // Handle draft completion notification
-    socket.on("draftCompleted", ({ fearlessCode, lobbyCode }) => {
-      try {
-        const series = fearlessState[fearlessCode];
-
-        if (!series) {
-          socket.emit("error", { message: "Invalid fearless series code" });
-          return;
-        }
-
-        // Get the draft state for this completed draft
-        const completedDraft = draftState[lobbyCode];
-        if (!completedDraft) {
-          socket.emit("error", { message: "Draft not found" });
-          return;
-        }
-
-        // Update the fearless state with the completed draft's data
-        // Extract picks and bans
-        series.allPicks.push(
-          ...completedDraft.bluePicks,
-          ...completedDraft.redPicks
-        );
-        series.allBans.push(
-          ...completedDraft.blueBans,
-          ...completedDraft.redBans
-        );
-
-        // Increment completed drafts counter
-        series.completedDrafts++;
-
-        // Clear current draft
-        series.currentDraft = null;
-        series.currentBlueSide = null;
-        series.currentRedSide = null;
-
-        // Check if series is complete
-        if (series.completedDrafts >= series.draftCount) {
-          series.fearlessComplete = true;
-
-          // Notify all clients that the series is complete
-          io.to(fearlessCode).emit("fearlessCompleted", {
-            team1Name: series.team1Name,
-            team2Name: series.team2Name,
-            allPicks: series.allPicks,
-            allBans: series.allBans,
-          });
-        } else {
-          // Notify clients to move to the next draft
-          io.to(fearlessCode).emit("nextDraft", {
-            currentDraftIndex: series.completedDrafts,
-            remainingDrafts: series.draftCount - series.completedDrafts,
-          });
-        }
-
-        console.log(
-          `Draft completed for fearless series ${fearlessCode}: ${series.completedDrafts}/${series.draftCount}`
-        );
-      } catch (error) {
-        console.error("Error handling draft completion:", error);
-        socket.emit("error", { message: "Internal server error" });
-      }
+    socket.on("fearlessStateUpdate", ({ fearlessCode }) => {
+      socket.emit("newFearlessState", updateFearlessClientState(fearlessCode));
     });
+
+    // Handle draft completion notification
+    fearlessEmitters
+      .get(fearlessCode)!
+      .on("draftCompleted", (fearlessCode, lobbyCode) => {
+        try {
+          const series = fearlessState[fearlessCode];
+          console.log("Hit this");
+          console.log("Code: ", fearlessCode);
+          if (!series) {
+            socket.emit("error", {
+              message: "Invalid fearless series code",
+            });
+            return;
+          }
+
+          // Get the draft state for this completed draft
+          const completedDraft = draftState[lobbyCode];
+          if (!completedDraft) {
+            socket.emit("error", { message: "Draft not found" });
+            return;
+          }
+
+          // Update the fearless state with the completed draft's data
+          // Extract picks and bans
+          series.allPicks.push(
+            ...completedDraft.bluePicks,
+            ...completedDraft.redPicks
+          );
+          series.allBans.push(
+            ...completedDraft.blueBans,
+            ...completedDraft.redBans
+          );
+
+          // Increment completed drafts counter
+          series.completedDrafts++;
+
+          // Clear current draft
+          series.currentDraft = null;
+          series.currentBlueSide = null;
+          series.currentRedSide = null;
+
+          // Check if series is complete
+          if (series.completedDrafts >= series.draftCount) {
+            series.fearlessComplete = true;
+
+            // Notify all clients that the series is complete
+            io.to(fearlessCode).emit(
+              "fearlessCompleted",
+              updateFearlessClientState(fearlessCode)
+            );
+          } else {
+            // Notify clients to move to the next draft
+            io.to(fearlessCode).emit(
+              "nextDraft",
+              updateFearlessClientState(fearlessCode)
+            );
+          }
+
+          console.log(
+            `Draft completed for fearless series ${fearlessCode}: ${series.completedDrafts}/${series.draftCount}`
+          );
+        } catch (error) {
+          console.error("Error handling draft completion:", error);
+          socket.emit("error", { message: "Internal server error" });
+        }
+      });
 
     // Clean up on disconnect
     socket.on("disconnect", () => {
