@@ -26,6 +26,20 @@ export interface FearlessStateServerProps {
   draftLobbyCodes: string[] | null;
 }
 
+export interface FearlessStateClientProps {
+  fearlessCode: string;
+  fearlessComplete: boolean;
+  team1Name: string;
+  team2Name: string;
+  draftCount: number;
+  completedDrafts: number;
+  currentDraft: string | null;
+  currentBlueSide: string | null;
+  currentRedSide: string | null;
+  allPicks: string[];
+  allBans: string[];
+  draftLobbyCodes: string[] | null;
+}
 export interface DraftInitializerProps {
   lobbyCode: string;
   blueUser: string;

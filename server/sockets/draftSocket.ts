@@ -128,7 +128,14 @@ export const draftSocket = (io: Server) => {
 
               if (isPickPhase2Done) {
                 await endDraftHandler(handlerVars);
-                io.in(lobbyCode).disconnectSockets();
+                if (state.fearlessCode) {
+                  const draftSockets = await io.in(lobbyCode).fetchSockets();
+                  draftSockets.forEach((socket) => {
+                    socket.leave(lobbyCode);
+                  });
+                } else {
+                  io.in(lobbyCode).disconnectSockets();
+                }
               }
             }
           }
@@ -150,16 +157,16 @@ export const draftSocket = (io: Server) => {
             state.currentHover = chosenChamp;
 
             sideCode === state.blueUser
-              ? state.bluePick = chosenChamp
-              : state.redPick = chosenChamp;
-              
+              ? (state.bluePick = chosenChamp)
+              : (state.redPick = chosenChamp);
+
             io.to(lobbyCode).emit("banHover", state);
           } else if (state.phaseType === "pick") {
             state.currentHover = chosenChamp;
 
             sideCode === state.blueUser
-              ? state.bluePick = chosenChamp
-              : state.redPick = chosenChamp;
+              ? (state.bluePick = chosenChamp)
+              : (state.redPick = chosenChamp);
 
             io.to(lobbyCode).emit("pickHover", state);
           }

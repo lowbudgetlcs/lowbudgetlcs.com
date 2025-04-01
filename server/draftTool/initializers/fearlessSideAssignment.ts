@@ -22,17 +22,16 @@ const fearlessSideAssignment = async (
 
     // Assumes team 1 is setting the sides
     if (chosenSide === "blue") {
-      currentBlueSide === team1Code;
-      currentRedSide === team2Code;
-    } else if (chosenSide === "red") {
-      currentRedSide === team1Code;
-      currentBlueSide === team2Code;
+      currentBlueSide = team1Name;
+      currentRedSide = team2Name;
+    } else {
+      currentRedSide = team1Name;
+      currentBlueSide = team2Name;
     }
 
     // Display names depending on side set
-    const blueDisplayName =
-      currentBlueSide === team1Code ? team1Name : team2Name;
-    const redDisplayName = currentRedSide === team1Code ? team1Name : team2Name;
+    const blueDisplayName = currentBlueSide;
+    const redDisplayName = currentRedSide;
 
     // Make the Typescript happy
     if (!currentBlueSide || !currentRedSide) {
@@ -42,8 +41,8 @@ const fearlessSideAssignment = async (
     const lobbyCode = randomUUID();
     const draftInfo = {
       lobbyCode: lobbyCode,
-      blueUser: currentBlueSide, //Blue Code
-      redUser: currentRedSide, //Red Code
+      blueUser: currentBlueSide === team1Name ? team1Code : team2Code, //Blue Code
+      redUser: currentRedSide === team1Name ? team1Code : team2Code, //Red Code
       blueDisplayName: blueDisplayName,
       redDisplayName: redDisplayName,
       tournamentID: null, //Can change later to track fearless for LBLCS
@@ -57,6 +56,7 @@ const fearlessSideAssignment = async (
 
     // Insert Standard incomplete draft to db
     await insertDraft(initializedDraft);
+
   } catch (err) {
     console.error("Error inserting draft after side assignment: ", err);
     throw new Error("Internal Server Error");

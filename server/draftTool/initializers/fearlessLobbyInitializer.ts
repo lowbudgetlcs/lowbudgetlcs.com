@@ -10,7 +10,7 @@ import {
 import fearlessDraftStateInitializer from "./fearlessDraftStateInitializer";
 const twentyFourHours = 60 * 60 * 24000; // 24 hours in milliseconds
 
-// Holds EVERY active fearless lobby (for 12 hours)
+// Holds EVERY active fearless lobby (for 24 hours)
 export const fearlessState: Record<string, FearlessStateServerProps> = {};
 
 export const fearlessLobbyInitializer = async ({
