@@ -1,4 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { FearlessStateProps } from "../interfaces/draftInterfaces";
 import { Socket } from "socket.io-client";
 import { Outlet } from "react-router-dom";
@@ -10,7 +17,12 @@ export interface FearlessContextProps {
     React.SetStateAction<FearlessStateProps | undefined>
   >;
   fearlessSocket: Socket | null;
-  initializeFearlessSocket: (fearlessCode: string) => void;
+  team: string | undefined;
+  loading: boolean;
+  error: boolean;
+  initializeFearless: (fearlessCode: string, teamCode: string) => void;
+  notifyDraftComplete: (fearlessCode: string, lobbyCode: string) => void;
+  handleSideSelect: (side: "blue" | "red") => void;
 }
 
 const FearlessContext = createContext<FearlessContextProps | undefined>(
@@ -22,24 +34,63 @@ export const FearlessProvider: React.FC = () => {
   const [fearlessState, setFearlessState] = useState<
     FearlessStateProps | undefined
   >(undefined);
+  const [team, setTeam] = useState<string | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const { createSocket, disconnectSocket, clientId } = useSocketContext();
 
-  // Initialize fearless socket
-  const initializeFearlessSocket = (fearlessCode: string) => {
-    if (fearlessSocket) {
-      disconnectSocket(fearlessSocket);
-    }
+  // Used to track if page is loading/loaded (stop looping pls)
+  const isInitializing = useRef(false);
+  const currentFearlessCode = useRef<string | null>(null);
 
-    const newSocket = createSocket("/fearless");
-    setFearlessSocket(newSocket);
+  // Initialize fearless socket and state
+  const initializeFearless = useCallback(
+    (fearlessCode: string, teamCode: string) => {
+      // Prevent multiple initialization attempts for the same code (NO LOOPS)
+      if (
+        isInitializing.current ||
+        currentFearlessCode.current === fearlessCode
+      ) {
+        return;
+      }
 
-    // Store the fearless code in session storage
-    sessionStorage.setItem("activeFearlessCode", fearlessCode);
+      isInitializing.current = true;
+      currentFearlessCode.current = fearlessCode;
+      setLoading(true);
+      setError(false);
 
-    newSocket.emit("joinFearless", { fearlessCode, clientId });
-  };
+      // Clean up existing socket if it exists.
+      if (fearlessSocket) {
+        disconnectSocket(fearlessSocket);
+      }
 
-  // Update fearless state
+      const newSocket = createSocket("/fearless");
+      setFearlessSocket(newSocket);
+
+      // Set up handlers for initial connection
+      const handleJoined = ({ teamDisplay, fearlessState }: any) => {
+        setTeam(teamDisplay);
+        setFearlessState(fearlessState);
+        setLoading(false);
+        isInitializing.current = false;
+      };
+
+      const handleError = (err: any) => {
+        console.error("Error connecting to fearless:", err);
+        setError(true);
+        setLoading(false);
+        isInitializing.current = false;
+      };
+
+      // Establish connection once
+      newSocket.once("joinedFearless", handleJoined);
+      newSocket.once("error", handleError);
+      newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
+    },
+    [createSocket, disconnectSocket, clientId]
+  );
+
+  // Socket event listeners & state updater
   useEffect(() => {
     if (!fearlessSocket) return;
 
@@ -52,21 +103,47 @@ export const FearlessProvider: React.FC = () => {
 
     fearlessSocket.on("fearlessState", updateFearlessState);
     fearlessSocket.on("newFearlessState", updateFearlessState);
+    fearlessSocket.on("nextDraft", updateFearlessState);
 
     return () => {
       fearlessSocket.off("fearlessState", updateFearlessState);
       fearlessSocket.off("newFearlessState", updateFearlessState);
+      fearlessSocket.off("nextDraft", updateFearlessState);
     };
   }, [fearlessSocket]);
 
-  // Cleanup on unmount
+  // Select a side for the draft
+  const handleSideSelect = useCallback(
+    (side: "blue" | "red") => {
+      if (!fearlessSocket || !fearlessState) return;
+
+      fearlessSocket.emit("selectSide", {
+        fearlessCode: fearlessState.fearlessCode,
+        selectedSide: side,
+      });
+    },
+    [fearlessSocket, fearlessState]
+  );
+
+  // Notify about completed draft
+  const notifyDraftComplete = useCallback(
+    (fearlessCode: string, lobbyCode: string) => {
+      if (!fearlessSocket) return;
+      fearlessSocket.emit("draftCompleted", { fearlessCode, lobbyCode });
+    },
+    [fearlessSocket]
+  );
+
+  // Clean up on unmount
   useEffect(() => {
     return () => {
       if (fearlessSocket) {
         disconnectSocket(fearlessSocket);
       }
+      isInitializing.current = false;
+      currentFearlessCode.current = null;
     };
-  }, []);
+  }, [fearlessSocket, disconnectSocket]);
 
   return (
     <FearlessContext.Provider
@@ -74,14 +151,18 @@ export const FearlessProvider: React.FC = () => {
         fearlessState,
         setFearlessState,
         fearlessSocket,
-        initializeFearlessSocket,
+        team,
+        loading,
+        error,
+        initializeFearless,
+        handleSideSelect,
+        notifyDraftComplete,
       }}
     >
       <Outlet />
     </FearlessContext.Provider>
   );
 };
-
 export const useFearlessContext = () => {
   const context = useContext(FearlessContext);
   if (!context) {

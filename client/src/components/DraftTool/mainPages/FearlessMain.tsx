@@ -1,60 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { io } from "socket.io-client";
-import { FearlessStateProps } from "../interfaces/draftInterfaces";
-import fearlessConnectionHandler from "../connectionHandlers/fearlessConnectionHandler";
 import FearlessSidePick from "../draftViews/FearlessSidePick";
 import Button from "../../Button";
 import { useFearlessContext } from "../providers/FearlessProvider";
 
 const FearlessMain = () => {
   const { fearlessCode, teamCode } = useParams();
-  const { fearlessSocket, fearlessState, setFearlessState } =
-    useFearlessContext();
+  const { 
+    fearlessState, 
+    team, 
+    loading, 
+    error,
+    initializeFearless
+  } = useFearlessContext();
 
-  const [loading, setLoading] = useState<boolean>(false);
-  const [selectedSide, setSelectedSide] = useState<string>();
-  const [team, setTeam] = useState<string>();
-  const [error, setError] = useState<boolean>(false);
 
-  //   Opens the socket and starts the side selection
-  const initialConnection = () => {
-    setLoading(true);
-    const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}/fearless`);
-    setFearlessSocket(newSocket);
-
-    const startConnection = () =>
-      fearlessConnectionHandler(
-        newSocket,
-        fearlessCode,
-        teamCode,
-        setError,
-        setFearlessState,
-        setTeam,
-        setLoading
-      );
-
-    newSocket.on("connect", startConnection);
-  };
+  // Initialize fearless connection
   useEffect(() => {
-    initialConnection();
-  }, []);
-
+    if (!fearlessCode || !teamCode) return;
+    
+    initializeFearless(fearlessCode, teamCode);
+  }, [fearlessCode, teamCode, initializeFearless]);
   // Handle Fearless state updates
-  useEffect(() => {
-    if (!fearlessSocket) {
-      return;
-    }
-
-    const updateFearlessState = (state: FearlessStateProps) => {
-      setFearlessState((prevState) => ({
-        ...prevState,
-        ...state,
-      }));
-    };
-
-    fearlessSocket.on("fearlessState", updateFearlessState);
-  }, [fearlessSocket]);
   // Add this before your render conditions
   console.log("FearlessMain render state:", {
     loading,
@@ -62,7 +29,9 @@ const FearlessMain = () => {
     hasTeam: team,
     error,
   });
-  if (loading || (!fearlessState && !team)) {
+
+
+  if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
         <p>Loading Draft</p>
@@ -81,7 +50,6 @@ const FearlessMain = () => {
       <>
         <FearlessSidePick
           teamDisplay={team}
-          setSelectedSide={setSelectedSide}
         />
       </>
     );
