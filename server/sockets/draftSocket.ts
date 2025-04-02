@@ -130,7 +130,10 @@ export const draftSocket = (io: Namespace) => {
               if (isPickPhase2Done) {
                 await endDraftHandler(handlerVars);
                 if (state.fearlessCode) {
-                  fearlessEmitters.get(state.fearlessCode)!.emit("draftCompleted", (state.fearlessCode, lobbyCode))
+                  fearlessEmitters.get(state.fearlessCode)!.emit("draftCompleted", {
+                    fearlessCode: state.fearlessCode, 
+                    lobbyCode: lobbyCode
+                  });
                   const draftSockets = await io.in(lobbyCode).fetchSockets();
                   draftSockets.forEach((socket) => {
                     socket.leave(lobbyCode);
