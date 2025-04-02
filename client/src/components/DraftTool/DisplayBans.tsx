@@ -8,7 +8,7 @@ const DisplayBans = ({ playerSide }: { playerSide: string }) => {
   const { draftState, currentHover } = useDraftContext();
 
   const currentPhase = draftState.activePhase;
-  const playerTurn = draftState.currentTurn;
+  const playerTurn = draftState.displayTurn;
   const bans = playerSide === "blue" ? draftState.blueBans : draftState.redBans;
   const enemyBans =
     playerSide === "blue" ? draftState.redBans : draftState.blueBans;

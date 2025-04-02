@@ -17,7 +17,7 @@ function DraftPage() {
     error,
     initializeDraft,
   } = useDraftContext();
-  const [championRoles, setChampionRoles] = useState<Champion[]>(championData);
+  const [championRoles] = useState<Champion[]>(championData);
 
   // Grab the lobby code
   const params = useParams();
