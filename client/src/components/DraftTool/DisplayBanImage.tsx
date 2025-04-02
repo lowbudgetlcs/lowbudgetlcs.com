@@ -27,7 +27,7 @@ const DisplayBanImage = ({
     championName === "nothing";
 
   useEffect(() => {
-    if (isChampHovered) {
+    if (isChampHovered && currentHover) {
       setLink((prevLink) => {
         const fixedName =
           currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
@@ -48,7 +48,7 @@ const DisplayBanImage = ({
         return prevLink;
       });
     }
-  }, [currentHover, championName]);
+  }, [currentHover, championName, isChampHovered]);
 
   if (bannedChampions[banIndex] === "nothing") {
     return (
@@ -63,10 +63,13 @@ const DisplayBanImage = ({
   } else if (championName !== "nothing" || isChampHovered) {
     return (
       <div className={`relative w-full h-full`}>
-        <img
-          src={link ? link : "#"}
-          className={`w-full h-full object-cover grayscale-[90%]`}
-        />
+        {link && (
+          <img
+            src={link}
+            alt={championName !== "nothing" ? championName : "loading..."}
+            className={`w-full h-full object-cover grayscale-[90%]`}
+          />
+        )}
         <div
           className={`banLine1 absolute w-full h-1 top-1/2 bg-red/80 rounded-md opacity-0 ${
             championName !== "nothing" &&
@@ -84,6 +87,7 @@ const DisplayBanImage = ({
       </div>
     );
   }
+  return null;
 };
 
 export default memo(DisplayBanImage);
