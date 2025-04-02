@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
-import { usePastDraftContext } from "./providers/DraftProvider";
+import { useDraftContext } from "./providers/DraftProvider";
 
 const DisplayPickImage = ({
   playerSide,
@@ -18,7 +18,7 @@ const DisplayPickImage = ({
 }) => {
   const [link, setLink] = useState<string>("");
 
-  const { isPastDraft } = usePastDraftContext();
+  const { isPastDraft } = useDraftContext();
 
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()

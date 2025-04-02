@@ -5,15 +5,12 @@ import { FearlessStateProps } from "../interfaces/draftInterfaces";
 import fearlessConnectionHandler from "../connectionHandlers/fearlessConnectionHandler";
 import FearlessSidePick from "../draftViews/FearlessSidePick";
 import Button from "../../Button";
-import {
-  useFearlessSocketContext,
-  useFearlessStateContext,
-} from "../providers/FearlessProvider";
+import { useFearlessContext } from "../providers/FearlessProvider";
 
 const FearlessMain = () => {
   const { fearlessCode, teamCode } = useParams();
-  const { fearlessSocket, setFearlessSocket } = useFearlessSocketContext();
-  const { fearlessState, setFearlessState } = useFearlessStateContext();
+  const { fearlessSocket, fearlessState, setFearlessState } =
+    useFearlessContext();
 
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedSide, setSelectedSide] = useState<string>();

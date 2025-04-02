@@ -4,23 +4,6 @@ export interface Champion {
   displayName: string;
 }
 
-export interface DraftDisplayProps {
-  draftState: DraftProps;
-  lobbyCode: string;
-  sideCode: string | undefined;
-  championRoles: Champion[];
-  playerSide: string;
-}
-
-export interface DraftButtonProps {
-  draftState: DraftProps;
-  lobbyCode: string;
-  sideCode: string | undefined;
-  championRoles: Champion[];
-  playerSide: string;
-  chosenChamp: string | undefined;
-  setChosenChamp: React.Dispatch<React.SetStateAction<string | undefined>>;
-}
 export interface DraftProps {
   draftStarted: boolean;
   activePhase:

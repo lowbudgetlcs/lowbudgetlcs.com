@@ -1,34 +1,23 @@
-import {
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
-import { connectionHandler } from "./draftHandler";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { io } from "socket.io-client";
-import { handleBanPhase, handlePickPhase } from "./clientDraftHandler";
+import { useEffect, useState } from "react";
 
-import championsData from "./championRoles.json";
-import { Champion, DraftProps } from "./draftInterfaces";
+import { Link, useLocation, useParams } from "react-router-dom";
+import { Champion } from "./draftInterfaces";
 import DraftDisplay from "./DraftDisplay";
 import Button from "../Button";
-import { pastDraftHandler, PastLobbyProps } from "./pastDraftHandler";
-import { defaultDraftState } from "./defaultDraftState";
 import StreamDisplay from "./StreamView/StreamDisplay";
-import {
-  usePastDraftContext,
-  useSocketContext,
-} from "./providers/DraftProvider";
+import { useDraftContext } from "./providers/DraftProvider";
+import championData from "./championRoles.json";
 
 function DraftPage() {
-  const [draftState, setDraftState] = useState<DraftProps>(defaultDraftState);
-  const { isPastDraft, setIsPastDraft } = usePastDraftContext();
-  const [loading, setLoading] = useState<boolean>(false);
-  const { socket, setSocket } = useSocketContext();
-
-  const [championRoles, setChampionRoles] = useState<Champion[]>([]);
-  const [playerSide, setPlayerSide] = useState<string>("");
-  const [error, setError] = useState<boolean>(false);
+  const {
+    draftState,
+    draftSocket,
+    isPastDraft,
+    loading,
+    error,
+    initializeDraft,
+  } = useDraftContext();
+  const [championRoles, setChampionRoles] = useState<Champion[]>(championData);
 
   // Grab the lobby code
   const params = useParams();
@@ -39,175 +28,23 @@ function DraftPage() {
   const location = useLocation();
   const streamMode = location.pathname.includes("stream");
 
-  const initialConnection = () => {
-    setLoading(true);
-    console.log("Attempting to connect to:", `${import.meta.env.VITE_BACKEND_URL}`);
-    const newSocket = io(`${import.meta.env.VITE_BACKEND_URL}/draft`)
-    setSocket(newSocket);
-
-    newSocket.on('error', (error) => {
-      console.error("Socket connection error:", error.message);
-      setError(true);
-      setLoading(false);
-    });
-    
-    // Run connection Handler Function with lobby code
-    const startConnection = () => {
-
-      connectionHandler(
-        newSocket,
-        lobbyCode,
-        sideCode,
-        setDraftState,
-        setPlayerSide,
-        setError
-      );
-    };
-    newSocket.on("connect", startConnection);
-    setLoading(false);
-
-  };
-
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!lobbyCode) {
-      setError(true);
-      setLoading(false);
       return;
     }
-    // Checks if a draft has already happened and is in the database
-    // If it is, displays draft results without using websockets
-    const checkPastDraft = async () => {
-      try {
-        const pastDraft: PastLobbyProps | undefined = await pastDraftHandler(
-          lobbyCode
-        );
-        if (!pastDraft) {
-          setError(true);
-          console.error("Unexpected error finding past drafts");
-          return;
-        } else if (pastDraft.isValid && pastDraft.draftState) {
-          setDraftState(pastDraft.draftState);
-          setIsPastDraft(true);
-          return;
-        } else {
-          initialConnection();
-        }
-      } catch (err) {
-        setError(true);
-        console.error("Error finding draft: ", err);
-      }
-    };
-    // Yes this has to be here
-    setChampionRoles(championsData);
-    checkPastDraft();
-  }, []);
 
-  // Might be rudundant with state changes
-  useEffect(() => {
-    if (!socket) {
-      return;
-    }
-    const startReconnection = (state: DraftProps) => {
-      setLoading(true);
-      setDraftState((prevState) => ({
-        ...prevState,
-        ...state,
-      }));
-      if (state.phaseType === "pick") {
-        handlePickPhase(socket, state, setDraftState);
-      } else if (state.phaseType === "ban") {
-        handleBanPhase(socket, state, setDraftState);
-      }
-    };
-    socket.on("state", startReconnection);
-    setLoading(false);
-    return () => {
-      socket.off("state", startReconnection);
-    };
-  }, [socket]);
+    initializeDraft(lobbyCode, sideCode);
+  }, [lobbyCode, sideCode, initializeDraft]);
 
-  useEffect(() => {
-    if (!socket || !draftState) {
-      return;
-    }
-    const startBanPhase = (state: DraftProps) => {
-      setDraftState((prevState) => ({
-        ...prevState,
-        ...state,
-      }));
-
-      handleBanPhase(socket, state, setDraftState);
-    };
-
-    const startPickPhase = (state: DraftProps) => {
-      setDraftState((prevState) => ({
-        ...prevState,
-        ...state,
-      }));
-
-      handlePickPhase(socket, state, setDraftState);
-    };
-
-    const endDraft = (state: DraftProps) => {
-      setDraftState((prevState) => ({
-        ...prevState,
-        ...state,
-      }));
-    };
-
-    // Listening for beginning of phases
-    socket.on("banPhase", startBanPhase);
-    socket.on("pickPhase", startPickPhase);
-    socket.once("draftComplete", endDraft);
-
-    return () => {
-      socket.off("banPhase", startBanPhase);
-      socket.off("pickPhase", startPickPhase);
-      socket.off("draftComplete", endDraft);
-    };
-  }, [socket, draftState.activePhase]);
-
-  useEffect(() => {
-    if (!socket) {
-      return;
-    }
-    const handleCurrentTurn = (state: DraftProps) => {
-      setDraftState((prevState) => {
-        const { timer, ...rest } = prevState;
-        return {
-          ...rest,
-          ...state,
-          timer: 30,
-        };
-      });
-    };
-    socket.on("currentTurn", handleCurrentTurn);
-
-    return () => {
-      socket.off("currentTurn", handleCurrentTurn);
-    };
-  }, [socket]);
-
-  if (lobbyCode && streamMode && (socket || isPastDraft) && !error) {
-    return (
-      <StreamDisplay
-        draftState={draftState}
-        lobbyCode={lobbyCode}
-        sideCode={sideCode}
-        championRoles={championRoles}
-        playerSide={playerSide}
-      />
-    );
-  } else if (draftState && lobbyCode && (socket || isPastDraft) && !error) {
-    return (
-      <DraftDisplay
-        draftState={draftState}
-        lobbyCode={lobbyCode}
-        sideCode={sideCode}
-        championRoles={championRoles}
-        playerSide={playerSide}
-      />
-    );
+  if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
+    return <StreamDisplay championRoles={championRoles} />;
+  } else if (
+    draftState &&
+    lobbyCode &&
+    (draftSocket || isPastDraft) &&
+    !error
+  ) {
+    return <DraftDisplay championRoles={championRoles} />;
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
@@ -230,6 +67,8 @@ function DraftPage() {
       </div>
     );
   }
+  // Should never hit
+  return null;
 }
 
 export default DraftPage;

@@ -1,35 +1,45 @@
-import { createContext, useContext, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { FearlessStateProps } from "../interfaces/draftInterfaces";
 import { Socket } from "socket.io-client";
 import { Outlet } from "react-router-dom";
-import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
+import { useSocketContext } from "./SocketProvider";
 
 export interface FearlessContextProps {
   fearlessState: FearlessStateProps | undefined;
   setFearlessState: React.Dispatch<
     React.SetStateAction<FearlessStateProps | undefined>
   >;
-}
-
-export interface FearlessSocketContextProps {
   fearlessSocket: Socket | null;
-  setFearlessSocket: React.Dispatch<React.SetStateAction<Socket | null>>;
+  initializeFearlessSocket: (fearlessCode: string) => void;
 }
 
-const FearlessStateContext = createContext<FearlessContextProps | undefined>(
+const FearlessContext = createContext<FearlessContextProps | undefined>(
   undefined
 );
-const FearlessSocketContext = createContext<
-  FearlessSocketContextProps | undefined
->(undefined);
 
 export const FearlessProvider: React.FC = () => {
-  const [fearlessSocket, setFearlessSocket] =
-    useSessionStorageState<Socket | null>("fearlessSocket", null);
-  const [fearlessState, setFearlessState] = useSessionStorageState<
+  const [fearlessSocket, setFearlessSocket] = useState<Socket | null>(null);
+  const [fearlessState, setFearlessState] = useState<
     FearlessStateProps | undefined
-  >("fearlessState", undefined);
+  >(undefined);
+  const { createSocket, disconnectSocket, clientId } = useSocketContext();
 
+  // Initialize fearless socket
+  const initializeFearlessSocket = (fearlessCode: string) => {
+    if (fearlessSocket) {
+      disconnectSocket(fearlessSocket);
+    }
+
+    const newSocket = createSocket("/fearless");
+    setFearlessSocket(newSocket);
+
+    // Store the fearless code in session storage
+    sessionStorage.setItem("activeFearlessCode", fearlessCode);
+
+    newSocket.emit("joinFearless", { fearlessCode, clientId });
+  };
+
+  // Update fearless state
   useEffect(() => {
     if (!fearlessSocket) return;
 
@@ -39,36 +49,44 @@ export const FearlessProvider: React.FC = () => {
         ...newState,
       }));
     };
+
+    fearlessSocket.on("fearlessState", updateFearlessState);
     fearlessSocket.on("newFearlessState", updateFearlessState);
+
+    return () => {
+      fearlessSocket.off("fearlessState", updateFearlessState);
+      fearlessSocket.off("newFearlessState", updateFearlessState);
+    };
   }, [fearlessSocket]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (fearlessSocket) {
+        disconnectSocket(fearlessSocket);
+      }
+    };
+  }, []);
+
   return (
-    <FearlessSocketContext.Provider
-      value={{ fearlessSocket, setFearlessSocket }}
+    <FearlessContext.Provider
+      value={{
+        fearlessState,
+        setFearlessState,
+        fearlessSocket,
+        initializeFearlessSocket,
+      }}
     >
-      <FearlessStateContext.Provider
-        value={{ fearlessState, setFearlessState }}
-      >
-        <Outlet />
-      </FearlessStateContext.Provider>
-    </FearlessSocketContext.Provider>
+      <Outlet />
+    </FearlessContext.Provider>
   );
 };
 
-export const useFearlessStateContext = () => {
-  const context = useContext(FearlessStateContext);
+export const useFearlessContext = () => {
+  const context = useContext(FearlessContext);
   if (!context) {
     throw new Error(
-      "useFearlessStateContext must be used within a FearlessStateContext Provider"
-    );
-  }
-  return context;
-};
-
-export const useFearlessSocketContext = () => {
-  const context = useContext(FearlessSocketContext);
-  if (!context) {
-    throw new Error(
-      "useSocketContext must be used within a SocketContext Provider"
+      "useFearlessContext must be used within a FearlessProvider"
     );
   }
   return context;

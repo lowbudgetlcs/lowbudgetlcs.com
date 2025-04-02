@@ -2,96 +2,51 @@ import { IoSearch } from "react-icons/io5";
 import DisplayBans from "./DisplayBans";
 import RoleSelect from "./RoleSelect";
 import LoadChampIcons from "./LoadChampIcons";
-import {
-  DraftDisplayProps,
-  DraftExportObjectProps,
-  DraftProps,
-} from "./draftInterfaces";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Champion } from "./draftInterfaces";
+import { ChangeEvent, useCallback, useState } from "react";
 import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import downloadFile from "../../utils/downloadFile";
-import { useSocketContext } from "./providers/DraftProvider";
+import { useDraftContext } from "./providers/DraftProvider";
 
-function DraftDisplay({
-  draftState,
-  lobbyCode,
-  sideCode,
-  championRoles,
-  playerSide,
-}: DraftDisplayProps) {
-  const { socket } = useSocketContext();
+function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
-  const [chosenChamp, setChosenChamp] = useState<string>();
-
-  const [currentHover, setCurrentHover] = useState<string | null>(null);
-  const [draftObject, setDraftObject] = useState<DraftExportObjectProps | null>(
-    null
-  );
-
-  // Clear the hover state when the phase changes
-  useEffect(() => {
-    setCurrentHover(null);
-  }, [draftState.activePhase, draftState.displayTurn]);
-
-  useEffect(() => {
-    if (!socket) {
-      return;
-    }
-    const handleHover = (state: DraftProps) => {
-      if (state.currentHover) {
-        setChosenChamp(state.currentHover);
-      }
-      setCurrentHover(state.currentHover);
-    };
-    socket.on("banHover", handleHover);
-    socket.on("pickHover", handleHover);
-    return () => {
-      socket.off("banHover", handleHover);
-      socket.off("pickHover", handleHover);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!draftState.bluePick && chosenChamp) {
-      setChosenChamp(undefined);
-    }
-    if (!draftState.redPick && chosenChamp) {
-      setChosenChamp(undefined);
-    }
-  }, [draftState.bluePick, draftState.redPick]);
-
-  useEffect(() => {
-    if (!socket) {
-      return;
-    }
-
-    if (draftState.displayTurn !== playerSide) {
-      setChosenChamp("");
-    } else {
-      socket.emit("clientHover", { chosenChamp, lobbyCode, sideCode });
-    }
-  }, [chosenChamp]);
+  const { draftState, playerSide } = useDraftContext();
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+  const downloadDraftData = useCallback(() => {
+    if (!draftState.draftComplete) return;
 
-  useEffect(() => {
-    if (draftState.draftComplete || draftState.activePhase === "finished") {
-      setDraftObject({
-        blueName: draftState.blueDisplayName,
-        bluePicks: draftState.bluePicks,
-        blueBans: draftState.blueBans,
-        redName: draftState.redDisplayName,
-        redPicks: draftState.redPicks,
-        redBans: draftState.redBans,
-      });
-    }
-  }, [draftState.draftComplete, draftState.activePhase]);
+    const draftObject = {
+      blueName: draftState.blueDisplayName,
+      bluePicks: draftState.bluePicks,
+      blueBans: draftState.blueBans,
+      redName: draftState.redDisplayName,
+      redPicks: draftState.redPicks,
+      redBans: draftState.redBans,
+    };
+
+    const lobbyCode = sessionStorage.getItem("activeLobbyCode");
+    downloadFile(
+      JSON.stringify(draftObject),
+      `Draft-${lobbyCode}.json`,
+      "application/json"
+    );
+  }, [
+    draftState.draftComplete,
+    draftState.blueDisplayName,
+    draftState.bluePicks,
+    draftState.blueBans,
+    draftState.redDisplayName,
+    draftState.redPicks,
+    draftState.redBans,
+  ]);
+
   return (
     <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
       <div className="teamTitles relative flex justify-between px-4">
@@ -150,16 +105,7 @@ function DraftDisplay({
       <div className="relative mainDraftContainer flex flex-1">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
-          <DisplayPicks
-            draftState={draftState}
-            picks={draftState.bluePicks}
-            enemyPicks={draftState.redPicks}
-            championRoles={championRoles}
-            playerTurn={draftState.displayTurn}
-            playerSide={"blue"}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
+          <DisplayPicks championRoles={championRoles} playerSide={"blue"} />
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer relative w-full">
@@ -203,14 +149,6 @@ function DraftDisplay({
                   championRoles={championRoles}
                   searchValue={searchValue}
                   selectedRole={selectedRole}
-                  pickedChampions={draftState.bluePicks.concat(
-                    draftState.redPicks
-                  )}
-                  bannedChampions={draftState.blueBans.concat(
-                    draftState.redBans
-                  )}
-                  chosenChamp={chosenChamp}
-                  setChosenChamp={setChosenChamp}
                 />
               </ul>
             </div>
@@ -218,47 +156,22 @@ function DraftDisplay({
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
-          <DisplayPicks
-            draftState={draftState}
-            picks={draftState.redPicks}
-            enemyPicks={draftState.bluePicks}
-            championRoles={championRoles}
-            playerTurn={draftState.displayTurn}
-            playerSide={"red"}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
+          <DisplayPicks championRoles={championRoles} playerSide={"red"} />
         </div>
       </div>
       {/* Champion Bans*/}
       <div className="champBans flex w-full justify-between gap-8 items-center pt-8 max-[1100px]:pt-4 px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
-          <DisplayBans
-            draftState={draftState}
-            bans={draftState.blueBans}
-            enemyBans={draftState.redBans}
-            playerSide={"blue"}
-            playerTurn={draftState.displayTurn}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
+          <DisplayBans playerSide={"blue"} />
         </div>
         <div className="flex flex-col gap-4 items-center justify-center">
-          <DraftButton
-            draftState={draftState}
-            lobbyCode={lobbyCode}
-            sideCode={sideCode}
-            championRoles={championRoles}
-            playerSide={playerSide}
-            chosenChamp={chosenChamp}
-            setChosenChamp={setChosenChamp}
-          />
+          <DraftButton />
 
-          {draftObject && (
+          {draftState.draftComplete && (
             <button
-              className={`Timer p-4 bg-green/60 hover:bg-green hover:cursor-pointer font-bold max-h-16 flex items-center justify-center rounded-md transition duration-300`}
-              onClick={() => downloadFile(JSON.stringify(draftObject), `Draft-${lobbyCode}.json`, "application/json")}
+              className={`downloadBtn p-4 bg-green/60 hover:bg-green hover:cursor-pointer font-bold max-h-16 flex items-center justify-center rounded-md transition duration-300`}
+              onClick={downloadDraftData}
             >
               Download Draft File (JSON Format)
             </button>
@@ -267,15 +180,7 @@ function DraftDisplay({
 
         {/* Red Side Bans */}
         <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
-          <DisplayBans
-            draftState={draftState}
-            bans={draftState.redBans}
-            enemyBans={draftState.blueBans}
-            playerSide={"red"}
-            playerTurn={draftState.displayTurn}
-            currentPhase={draftState.activePhase}
-            currentHover={currentHover}
-          />
+          <DisplayBans playerSide={"red"} />
         </div>
       </div>
     </div>

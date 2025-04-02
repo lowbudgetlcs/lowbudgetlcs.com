@@ -1,7 +1,7 @@
 import sideSelectHandler from "../fearlessHandlers/sideSelectHandler";
 import { useParams } from "react-router-dom";
 import Button from "../../Button";
-import { useFearlessSocketContext, useFearlessStateContext } from "../providers/FearlessProvider";
+import { useFearlessContext } from "../providers/FearlessProvider";
 
 const FearlessSidePick = ({
   teamDisplay,
@@ -11,8 +11,7 @@ const FearlessSidePick = ({
   setSelectedSide: React.Dispatch<React.SetStateAction<string | undefined>>
 }) => {
   const { teamCode } = useParams();
-  const {fearlessState} = useFearlessStateContext();
-  const {fearlessSocket} = useFearlessSocketContext();
+  const {fearlessState, fearlessSocket} = useFearlessContext();
 
   if (!teamCode || !fearlessSocket || !fearlessState) return;
   const handleSideSelect = (side: string) =>

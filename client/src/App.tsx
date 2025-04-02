@@ -23,7 +23,8 @@ import DraftPage from "./components/DraftTool/DraftPage";
 import FearlessMain from "./components/DraftTool/mainPages/FearlessMain";
 import { FearlessProvider } from "./components/DraftTool/providers/FearlessProvider";
 import FearlessDraftPage from "./components/DraftTool/mainPages/FearlessDraftPage";
-import { DraftContextProvider } from "./components/DraftTool/providers/DraftProvider";
+import { SocketProvider } from "./components/DraftTool/providers/SocketProvider";
+import { DraftProvider } from "./components/DraftTool/providers/DraftProvider";
 
 function App() {
   const location = useLocation();
@@ -35,25 +36,30 @@ function App() {
       {!isDraftRoute && <Navbar />}
       <LeagueDataProvider>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="rosters" element={<Roster />} />
-          <Route path="rosters/:league" element={<LeaguePlayers />} />
-          <Route path="allstars" element={<AllStars />}>
-            <Route path="economy" element={<ASEconomy />} />
-            <Route path="commercial" element={<ASCommercial />} />
-            <Route path="financial" element={<ASFinancial />} />
-            <Route path="executive" element={<ASExecutive />} />
-          </Route>
-          <Route path="stats" element={<StatsMain />} />
-          {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
-          <Route path="stats/team/" element={<StatsSeason />} />
-          {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
-          <Route path="*" element={<ErrorPage />} />
-          <Route path="draft" element={<CreateDraft />} />
-          <Route element={<DraftContextProvider />}>
-            <Route path="draft/:lobbyCode" element={<DraftPage />} />
-            <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage />} />
+          <Route element={<SocketProvider />}>
+            <Route path="/" element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="rosters" element={<Roster />} />
+            <Route path="rosters/:league" element={<LeaguePlayers />} />
+            <Route path="allstars" element={<AllStars />}>
+              <Route path="economy" element={<ASEconomy />} />
+              <Route path="commercial" element={<ASCommercial />} />
+              <Route path="financial" element={<ASFinancial />} />
+              <Route path="executive" element={<ASExecutive />} />
+            </Route>
+            <Route path="stats" element={<StatsMain />} />
+            {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
+            <Route path="stats/team/" element={<StatsSeason />} />
+            {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
+            <Route path="*" element={<ErrorPage />} />
+            <Route path="draft" element={<CreateDraft />} />
+            <Route element={<DraftProvider />}>
+              <Route path="draft/:lobbyCode" element={<DraftPage />} />
+              <Route
+                path="draft/:lobbyCode/:sideCode"
+                element={<DraftPage />}
+              />
+            </Route>
             <Route element={<FearlessProvider />}>
               <Route
                 path="draft/fearless/:fearlessCode"
@@ -63,10 +69,12 @@ function App() {
                 path="draft/fearless/:fearlessCode/:teamCode"
                 element={<FearlessMain />}
               />
-              <Route
-                path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode"
-                element={<FearlessDraftPage />}
-              />
+              <Route element={<DraftProvider />}>
+                <Route
+                  path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode"
+                  element={<FearlessDraftPage />}
+                />
+              </Route>
             </Route>
           </Route>
         </Routes>

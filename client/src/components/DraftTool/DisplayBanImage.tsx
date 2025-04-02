@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { DraftProps } from "./draftInterfaces";
-import { usePastDraftContext } from "./providers/DraftProvider";
+import { useDraftContext } from "./providers/DraftProvider";
 
 const DisplayBanImage = ({
   banIndex,
@@ -14,7 +14,7 @@ const DisplayBanImage = ({
 }) => {
   const [link, setLink] = useState<string>("");
 
-  const {isPastDraft} = usePastDraftContext()
+  const {isPastDraft} = useDraftContext()
   
   const championName = bannedChampions[banIndex]
     ? bannedChampions[banIndex].toLowerCase()
