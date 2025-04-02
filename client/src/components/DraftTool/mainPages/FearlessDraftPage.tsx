@@ -196,31 +196,33 @@ function FearlessDraftPage() {
 
   useEffect(() => {
     if (!fearlessSocket) return;
-    if (draftState.draftComplete) {
-      fearlessSocket.emit("draftCompleted")
-    }
-  })
-  useEffect(() => {
-    if (!fearlessSocket) return;
-
-    const handleNextDraft = (newFearlessState: FearlessStateProps) => {
-      setFearlessState((prevState) => ({
-        ...prevState,
-        ...newFearlessState,
-      }));
-    };
-    fearlessSocket.on("nextDraft", handleNextDraft);
-
-    return () => {
-      fearlessSocket.off("nextDraft", handleNextDraft)
-    }
-  }, [draftState.draftComplete, fearlessSocket]);
-
-  useEffect(() => {
-    if (!fearlessSocket) return;
     if (!fearlessCode) return
     fearlessSocket.emit("fearlessStateUpdate", (fearlessCode))
   }, [fearlessCode, fearlessSocket])
+
+  useEffect(() => {
+    if (!fearlessSocket) return;
+    
+    console.log("Draft complete status:", draftState.draftComplete);
+    console.log("Current fearlessState:", fearlessState);
+    
+    if (draftState.draftComplete) {
+      console.log("Emitting draftCompleted event");
+      fearlessSocket.emit("draftCompleted");
+    }
+    const handleNextDraft = (newFearlessState: FearlessStateProps) => {
+        setFearlessState((prevState) => ({
+          ...prevState,
+          ...newFearlessState,
+        }));
+      };
+      fearlessSocket.on("nextDraft", handleNextDraft);
+  
+      return () => {
+        fearlessSocket.off("nextDraft", handleNextDraft)
+      }
+  }, [draftState.draftComplete, fearlessSocket]);
+
   if (lobbyCode && streamMode && (socket || isPastDraft) && !error) {
     return (
       <StreamDisplay

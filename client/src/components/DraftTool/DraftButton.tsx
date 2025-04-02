@@ -4,7 +4,7 @@ import { pickHandler, readyHandler } from "./draftHandler";
 import { useSocketContext } from "./providers/DraftProvider";
 import { useFearlessStateContext } from "./providers/FearlessProvider";
 import Button from "../Button";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 function DraftButton({
   draftState,
@@ -19,6 +19,9 @@ function DraftButton({
   const [ready, setReady] = useState<boolean>(false);
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
+
+  const params = useParams();
+  const teamCode = params.teamCode;
 
   useEffect(() => {
     if (playerSide === "red" && draftState.redReady) {
@@ -60,7 +63,14 @@ function DraftButton({
     setChosenChamp("");
   };
 
-  console.log(fearlessState)
+  console.log("DraftButton render conditions:", {
+    draftComplete: draftState.draftComplete,
+    hasFearlessState: !!fearlessState,
+    draftLobbyCodes: fearlessState?.draftLobbyCodes,
+    currentDraft: fearlessState?.currentDraft,
+    lobbyCode,
+    fearlessComplete: fearlessState?.fearlessComplete,
+  });
   return (
     <>
       {/* Ready Button */}
@@ -70,7 +80,7 @@ function DraftButton({
       fearlessState.draftLobbyCodes.includes(lobbyCode) &&
       fearlessState.currentDraft !== lobbyCode &&
       !fearlessState.fearlessComplete ? (
-        <Link to={`/draft/fearless/${fearlessState.fearlessCode}/${sideCode}`}>
+        <Link to={`/draft/fearless/${fearlessState.fearlessCode}/${teamCode}`}>
           <Button>Next Draft</Button>
         </Link>
       ) : draftState.draftComplete ? (
