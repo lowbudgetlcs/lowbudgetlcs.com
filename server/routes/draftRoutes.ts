@@ -8,7 +8,8 @@ import {
 } from "../sockets/draftState";
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
 import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
-import { randomUUID } from "crypto";
+import ShortUniqueId from "short-unique-id";
+const { randomUUID } = new ShortUniqueId({ length: 10 });
 
 draftRoutes.get(
   "/api/checkTournamentCode/:code",
