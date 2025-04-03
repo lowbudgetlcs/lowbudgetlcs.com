@@ -10,12 +10,17 @@ import DisplayPicks from "./DisplayPicks";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import downloadFile from "../../utils/downloadFile";
 import { useDraftContext } from "./providers/DraftProvider";
+import { useLocation } from "react-router-dom";
+import FearlessNav from "./draftNavbars/FearlessNav";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
   const { draftState, playerSide } = useDraftContext();
 
+  const location = useLocation()
+  const isFearless = location.pathname.includes("/fearless")
+  console.log(isFearless)
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
@@ -109,6 +114,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer relative w-full">
+          {isFearless && <FearlessNav/>}
           <div
             className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
               playerSide === draftState.displayTurn
