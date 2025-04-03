@@ -6,6 +6,7 @@ import Button from "../../Button";
 import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
+import { useFearlessContext } from "../providers/FearlessProvider";
 
 function FearlessDraftPage() {
   const {
@@ -16,30 +17,40 @@ function FearlessDraftPage() {
     error,
     initializeDraft,
   } = useDraftContext();
-  
-  const [championRoles] = useState<Champion[]>(championData);
 
+  const [championRoles] = useState<Champion[]>(championData);
+  const { fearlessState, initializeFearless } = useFearlessContext();
   // Set stream mode
   const location = useLocation();
   const streamMode = location.pathname.includes("stream");
-
-
 
   // Grab the codes
   const params = useParams();
   const teamCode = params.teamCode;
   const lobbyCode = params.lobbyCode;
-
+  const fearlessCode = params.fearlessCode;
   // Initialize draft
   useEffect(() => {
     if (!lobbyCode) return;
     initializeDraft(lobbyCode, teamCode);
   }, [lobbyCode, teamCode, initializeDraft]);
 
+  useEffect(() => {
+    if (!fearlessCode || !teamCode) return;
+
+    if (!fearlessState) {
+      initializeFearless(fearlessCode, teamCode);
+    }
+  }, [fearlessCode, teamCode, initializeFearless]);
 
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
     return <StreamDisplay championRoles={championRoles} />;
-  } else if (draftState && lobbyCode && (draftSocket || isPastDraft) && !error) {
+  } else if (
+    draftState &&
+    lobbyCode &&
+    (draftSocket || isPastDraft) &&
+    !error
+  ) {
     return <DraftDisplay championRoles={championRoles} />;
   } else if (loading) {
     return (

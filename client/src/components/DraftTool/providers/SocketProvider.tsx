@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { getClientId } from "../../../utils/clientId";
 import { Outlet } from "react-router-dom";
@@ -35,16 +35,6 @@ export const SocketProvider: React.FC = () => {
       activeSocketMap.delete(socket);
     }
   };
-  
-  // Cleanup on component unmount
-  useEffect(() => {
-    return () => {
-      activeSocketMap.forEach((_, socket) => {
-        socket.disconnect();
-      });
-    };
-  }, []);
-
   return (
     <SocketContext.Provider value={{ createSocket, disconnectSocket, clientId }}>
       <Outlet/>

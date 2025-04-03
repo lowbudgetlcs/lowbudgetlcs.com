@@ -81,10 +81,18 @@ export const FearlessProvider: React.FC = () => {
         isInitializing.current = false;
       };
 
+      newSocket.on("connect", () => {
+        console.log("Socket connected, emitting joinFearless", fearlessCode);
+        newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
+      });
+
       // Establish connection once
       newSocket.once("joinedFearless", handleJoined);
       newSocket.once("error", handleError);
-      newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
+      if (newSocket.connected) {
+        console.log("Socket already connected, emitting joinFearless");
+        newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
+      }
     },
     [createSocket, disconnectSocket, clientId]
   );
@@ -92,7 +100,7 @@ export const FearlessProvider: React.FC = () => {
   // Socket event listeners & state updater
   useEffect(() => {
     if (!fearlessSocket) return;
-
+    console.log("UPDATING FEARLESS");
     const updateFearlessState = (newState: FearlessStateProps) => {
       setFearlessState((prevState) => ({
         ...prevState,
@@ -103,11 +111,15 @@ export const FearlessProvider: React.FC = () => {
     fearlessSocket.on("fearlessState", updateFearlessState);
     fearlessSocket.on("newFearlessState", updateFearlessState);
     fearlessSocket.on("nextDraft", updateFearlessState);
+    fearlessSocket.on("fearlessCompleted", updateFearlessState);
+    fearlessSocket.on("sideSelected", updateFearlessState);
 
     return () => {
       fearlessSocket.off("fearlessState", updateFearlessState);
       fearlessSocket.off("newFearlessState", updateFearlessState);
       fearlessSocket.off("nextDraft", updateFearlessState);
+      fearlessSocket.off("fearlessCompleted", updateFearlessState);
+      fearlessSocket.off("sideSelected", updateFearlessState);
     };
   }, [fearlessSocket]);
 
@@ -123,17 +135,6 @@ export const FearlessProvider: React.FC = () => {
     },
     [fearlessSocket, fearlessState]
   );
-
-  // Clean up on unmount
-  useEffect(() => {
-    return () => {
-      if (fearlessSocket) {
-        disconnectSocket(fearlessSocket);
-      }
-      isInitializing.current = false;
-      currentFearlessCode.current = null;
-    };
-  }, [fearlessSocket, disconnectSocket]);
 
   return (
     <FearlessContext.Provider

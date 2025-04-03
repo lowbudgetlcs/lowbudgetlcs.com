@@ -21,15 +21,6 @@ const FearlessMain = () => {
     
     initializeFearless(fearlessCode, teamCode);
   }, [fearlessCode, teamCode, initializeFearless]);
-  // Handle Fearless state updates
-  // Add this before your render conditions
-  console.log("FearlessMain render state:", {
-    loading,
-    hasState: fearlessState,
-    hasTeam: team,
-    error,
-  });
-
 
   if (loading) {
     return (
