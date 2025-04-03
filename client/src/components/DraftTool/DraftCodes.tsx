@@ -17,7 +17,7 @@ function DraftCodes({
   const blueLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
   const redLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`;
   const specLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`;
-  const streamLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/stream`;
+  // const streamLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/stream`;
 
   const copyLinks = () => {
     navigator.clipboard.writeText(`Blue:
@@ -29,9 +29,7 @@ ${specLink}`);
   };
   const copySpecLinks = () => {
     navigator.clipboard.writeText(`Spectator:
-${specLink}
-Stream:
-${streamLink}`);
+${specLink}`);
   };
 
   return (
