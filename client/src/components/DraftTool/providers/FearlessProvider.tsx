@@ -21,7 +21,6 @@ export interface FearlessContextProps {
   loading: boolean;
   error: boolean;
   initializeFearless: (fearlessCode: string, teamCode: string) => void;
-  notifyDraftComplete: (fearlessCode: string, lobbyCode: string) => void;
   handleSideSelect: (side: "blue" | "red") => void;
 }
 
@@ -125,15 +124,6 @@ export const FearlessProvider: React.FC = () => {
     [fearlessSocket, fearlessState]
   );
 
-  // Notify about completed draft
-  const notifyDraftComplete = useCallback(
-    (fearlessCode: string, lobbyCode: string) => {
-      if (!fearlessSocket) return;
-      fearlessSocket.emit("draftCompleted", { fearlessCode, lobbyCode });
-    },
-    [fearlessSocket]
-  );
-
   // Clean up on unmount
   useEffect(() => {
     return () => {
@@ -156,7 +146,6 @@ export const FearlessProvider: React.FC = () => {
         error,
         initializeFearless,
         handleSideSelect,
-        notifyDraftComplete,
       }}
     >
       <Outlet />

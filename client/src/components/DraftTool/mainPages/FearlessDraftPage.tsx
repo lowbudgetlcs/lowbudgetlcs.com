@@ -5,7 +5,6 @@ import DraftDisplay from "../DraftDisplay";
 import Button from "../../Button";
 import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
-import { useFearlessContext } from "../providers/FearlessProvider";
 import championData from "../championRoles.json";
 
 function FearlessDraftPage() {
@@ -18,7 +17,6 @@ function FearlessDraftPage() {
     initializeDraft,
   } = useDraftContext();
   
-  const { fearlessSocket, notifyDraftComplete } = useFearlessContext();
   const [championRoles] = useState<Champion[]>(championData);
 
   // Set stream mode
@@ -29,7 +27,6 @@ function FearlessDraftPage() {
 
   // Grab the codes
   const params = useParams();
-  const fearlessCode = params.fearlessCode;
   const teamCode = params.teamCode;
   const lobbyCode = params.lobbyCode;
 
@@ -38,14 +35,6 @@ function FearlessDraftPage() {
     if (!lobbyCode) return;
     initializeDraft(lobbyCode, teamCode);
   }, [lobbyCode, teamCode, initializeDraft]);
-  
-  // Notify fearless provider about completed draft
-  useEffect(() => {
-    if (!draftState.draftComplete || !fearlessCode || !lobbyCode || !fearlessSocket) return;
-    
-    // Call the provider method to handle draft completion
-    notifyDraftComplete(fearlessCode, lobbyCode);
-  }, [draftState.draftComplete, fearlessCode, lobbyCode, fearlessSocket, notifyDraftComplete]);
 
 
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
