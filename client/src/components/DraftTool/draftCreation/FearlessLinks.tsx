@@ -23,7 +23,7 @@ function FearlessLinks({
 
   const team1Link = `http://localhost:3000/draft/fearless/${fearlessCode}/${team1Code}`;
   const team2Link = `http://localhost:3000/draft/fearless/${fearlessCode}/${team2Code}`;
-  const specLink = `http://localhost:3000/draft/fearless/${fearlessCode}`;
+  const specLink = `http://localhost:3000/draft/fearless/${fearlessCode}/spectator`;
 
   const removeDraftLinks = () => {
     setFearlessDraftLinks(undefined);
