@@ -82,7 +82,6 @@ export const FearlessProvider: React.FC = () => {
       };
 
       newSocket.on("connect", () => {
-        console.log("Socket connected, emitting joinFearless", fearlessCode);
         newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
       });
 

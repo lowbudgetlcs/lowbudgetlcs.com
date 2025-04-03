@@ -57,6 +57,7 @@ const fearlessSideAssignment = async (
     // Insert Standard incomplete draft to db
     await insertDraft(initializedDraft);
     fearlessLobby.currentDraft = draftInfo.lobbyCode;
+    fearlessLobby.draftLobbyCodes.push(draftInfo.lobbyCode);
   } catch (err) {
     console.error("Error inserting draft after side assignment: ", err);
     throw new Error("Internal Server Error");

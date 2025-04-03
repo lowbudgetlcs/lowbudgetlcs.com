@@ -176,6 +176,7 @@ export const DraftProvider: React.FC = () => {
     
     // Core state update handler
     const handleStateUpdate = (state: DraftProps) => {
+
       setDraftState(prevState => ({
         ...prevState,
         ...state,
@@ -200,6 +201,19 @@ export const DraftProvider: React.FC = () => {
       handleBanPhase(draftSocket, state, setDraftState);
     };
     
+    
+    const handleCurrentTurn = (state: DraftProps) => {
+      setDraftState((prevState) => {
+        const { timer, ...rest } = prevState;
+        return {
+          ...rest,
+          ...state,
+          timer: 30,
+        };
+      });
+    };
+
+
     const startPickPhase = (state: DraftProps) => {
       setDraftState(prevState => ({
         ...prevState,
@@ -208,10 +222,17 @@ export const DraftProvider: React.FC = () => {
       
       handlePickPhase(draftSocket, state, setDraftState);
     };
+    const handleTimerUpdate = (timer: number) => {
+      const fixedTimer = Math.max(timer - 4, 0)
+      setDraftState((prevState) => ({
+        ...prevState,
+        timer: fixedTimer,
+      }));
+    };
     
     // All the beautiful socket event listeners
     draftSocket.on("state", handleStateUpdate);
-    draftSocket.on("currentTurn", handleStateUpdate);
+    draftSocket.on("currentTurn", handleCurrentTurn);
     draftSocket.on("banHover", handleHover);
     draftSocket.on("pickHover", handleHover);
     draftSocket.on("banPhase", startBanPhase);
@@ -221,11 +242,12 @@ export const DraftProvider: React.FC = () => {
     draftSocket.on("redReady", handleStateUpdate);
     draftSocket.on("setPick", handleStateUpdate);
     draftSocket.on("setBan", handleStateUpdate);
+    draftSocket.on("timer", handleTimerUpdate);
     
     // Clean up every. event. listener.
     return () => {
       draftSocket.off("state", handleStateUpdate);
-      draftSocket.off("currentTurn", handleStateUpdate);
+      draftSocket.off("currentTurn", handleCurrentTurn);
       draftSocket.off("banHover", handleHover);
       draftSocket.off("pickHover", handleHover);
       draftSocket.off("banPhase", startBanPhase);
@@ -235,6 +257,7 @@ export const DraftProvider: React.FC = () => {
       draftSocket.off("redReady", handleStateUpdate);
       draftSocket.off("setPick", handleStateUpdate);
       draftSocket.off("setBan", handleStateUpdate);
+      draftSocket.off("timer", handleTimerUpdate);
     };
   }, [draftSocket]);
   

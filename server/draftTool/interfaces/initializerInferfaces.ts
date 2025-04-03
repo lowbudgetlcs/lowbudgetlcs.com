@@ -33,7 +33,7 @@ export interface FearlessStateServerProps {
   currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
-  draftLobbyCodes: string[] | null;
+  draftLobbyCodes: string[];
 }
 
 export interface FearlessStateClientProps {
@@ -48,7 +48,7 @@ export interface FearlessStateClientProps {
   currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
-  draftLobbyCodes: string[] | null;
+  draftLobbyCodes: string[];
 }
 export interface DraftInitializerProps {
   lobbyCode: string;

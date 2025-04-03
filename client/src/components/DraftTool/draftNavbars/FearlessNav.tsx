@@ -3,44 +3,42 @@ import { useFearlessContext } from "../providers/FearlessProvider";
 
 const FearlessNav = () => {
   const { fearlessState } = useFearlessContext();
-  if (!fearlessState) return;
-  const draftNavLinks = [];
-  const activeDraftLinks: { link: string; i: number }[] = [];
   const params = useParams();
   const teamCode = params.teamCode || "spectator";
-  for (let i = 0; i < fearlessState.draftCount; i++) {
-    if (fearlessState.draftLobbyCodes && fearlessState.draftLobbyCodes[i]) {
-      const link = `http://localhost:3000/draft/${fearlessState.fearlessCode}/${teamCode}/${fearlessState.draftLobbyCodes[i]}`;
-      const linkObject = { link, i };
-      activeDraftLinks.push(linkObject);
-    }
-    draftNavLinks.push(i + 1);
-  }
+  const currentLobbyCode = params.lobbyCode;
+  
+  if (!fearlessState) return null;
+  
   return (
-    <>
-      <div className="h-12 w-full flex items-center justify-center">
-        <ul className="navItems flex items-center justify-center gap-8 text-white/40">
-          {draftNavLinks.map((draft) => {
-            let findLink = null;
-            console.log(fearlessState)
-            activeDraftLinks.forEach((link) => {
-              if (link.i === draft) {
-                findLink = link.link;
-              }
-            });
-            if (findLink) {
-              return (
-                <li key={draft} className="hover:cursor-pointer text-white">
-                  <Link to={findLink}>Draft {draft} </Link>
-                </li>
-              );
-            } else {
-              return <li key={draft}>Draft {draft}</li>;
-            }
-          })}
-        </ul>
-      </div>
-    </>
+    <div className="h-12 w-full flex items-center justify-center">
+      <ul className="navItems flex items-center justify-center gap-8 text-white/40">
+        {Array.from({ length: fearlessState.draftCount }, (_, i) => i + 1).map((draftNum) => {
+          // Get the lobby code for this draft number (adjusting for zero-indexing)
+          const lobbyCode = fearlessState.draftLobbyCodes?.[draftNum - 1];
+          // Check if this is the currently active draft
+          const isCurrentDraft = lobbyCode === currentLobbyCode;
+          
+          if (lobbyCode) {
+            return (
+              <li key={draftNum} className={`hover:cursor-pointer ${isCurrentDraft ? 'text-orange font-bold' : 'text-white'}`}>
+                {isCurrentDraft ? (
+                  // Just show text for the current draft
+                  <span>Draft {draftNum}</span>
+                ) : (
+                  // Use relative path for other drafts
+                  <Link reloadDocument to={`/draft/fearless/${fearlessState.fearlessCode}/${teamCode}/${lobbyCode}`}>
+                    Draft {draftNum}
+                  </Link>
+                )}
+              </li>
+            );
+          } else {
+            // Draft hasn't been created yet
+            return <li key={draftNum}>Draft {draftNum}</li>;
+          }
+        })}
+      </ul>
+    </div>
   );
 };
 

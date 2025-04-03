@@ -44,13 +44,6 @@ export const fearlessSocket = (io: Namespace) => {
                 return;
               }
 
-              if (!series.draftLobbyCodes) {
-                series.draftLobbyCodes = [];
-              }
-              if (lobbyCode && !series.draftLobbyCodes.includes(lobbyCode)) {
-                series.draftLobbyCodes.push(lobbyCode);
-              }
-
               // Update the fearless state with the completed draft's data
               // Extract picks and bans
               series.allPicks.push(

@@ -39,7 +39,7 @@ export const fearlessLobbyInitializer = async ({
         currentRedSide: null,
         allPicks: [],
         allBans: [],
-        draftLobbyCodes: null,
+        draftLobbyCodes: [],
       };
 
       // Save Fearless Lobby to Database

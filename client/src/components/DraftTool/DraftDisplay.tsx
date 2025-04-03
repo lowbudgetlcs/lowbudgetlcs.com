@@ -18,8 +18,8 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [searchValue, setSearchValue] = useState<string>("");
   const { draftState, playerSide } = useDraftContext();
 
-  const location = useLocation()
-  const isFearless = location.pathname.includes("/fearless")
+  const location = useLocation();
+  const isFearless = location.pathname.includes("/fearless");
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
@@ -78,10 +78,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           </div>
         </div>
         <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
-          <Timer
-            timer={draftState.timer}
-            displayTurn={draftState.displayTurn}
-          />
+          <Timer timer={draftState.timer} displayTurn={draftState.displayTurn}/>
         </div>
         <div className={`redTitle flex items-center gap-4`}>
           <div
@@ -113,7 +110,6 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         </div>
         {/* Champion Pick Container */}
         <div className="championPickContainer relative w-full">
-          {isFearless && <FearlessNav/>}
           <div
             className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
               playerSide === draftState.displayTurn
@@ -125,6 +121,11 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
                 : "hidden"
             } z-0 filter blur-lg`}
           ></div>
+          {isFearless && (
+            <div className="relative z-10">
+              <FearlessNav />
+            </div>
+          )}
           <div className="relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4">
             <div className="relative champFilter flex gap-4">
               <RoleSelect
