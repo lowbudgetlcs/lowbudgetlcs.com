@@ -19,10 +19,10 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
         </p>
       </div>
       <div className="sideBtns flex gap-8">
-        <div onClick={() => handleSideSelect("blue")}>
+        <div className="cursor-pointer" onClick={() => handleSideSelect("blue")}>
           <Button>Blue Side</Button>
         </div>
-        <div onClick={() => handleSideSelect("red")}>
+        <div className="cursor-pointer" onClick={() => handleSideSelect("red")}>
           <Button>Red Side</Button>
         </div>
       </div>
