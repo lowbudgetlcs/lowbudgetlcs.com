@@ -66,7 +66,7 @@ function CreateDraft() {
           draftCount
         );
         if (!fearlessData) {
-          redirect("/error", 500)
+          redirect("/error", 500);
           return;
         }
         setFearlessDraftLinks(fearlessData);
@@ -199,6 +199,11 @@ function CreateDraft() {
               className="flex flex-col items-center gap-4 justify-center p-4"
               onSubmit={handleFormSubmission}
             >
+              <p className="text-orange text-center px-4">
+                Currently in Beta. DM{" "}
+                <span className="text-green">@thyduckylord</span> on Discord
+                with bugs
+              </p>
               <input type="hidden" name="draftType" value="Fearless"></input>
               <div className="flex flex-col">
                 <p className="text-xl font-bold">Draft Count</p>
