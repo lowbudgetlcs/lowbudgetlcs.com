@@ -33,7 +33,7 @@ function App() {
   return (
     <div className=" relative font-serif bg-black">
       <ScrollToTop />
-      <Twitch />
+      {!isDraftRoute && <Twitch />}
       {!isDraftRoute ? <Navbar /> : <DraftNavbar/>}
       <LeagueDataProvider>
         <Routes>
