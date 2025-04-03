@@ -13,7 +13,7 @@ const createFearlessDraft = async (
       draftCount: draftCount,
     };
     const response = await fetch(
-      "http://localhost:8080/draft/api/createFearlessDraft",
+      `${import.meta.env.VITE_BACKEND_URL}/draft/api/createFearlessDraft`,
       {
         method: "POST",
         headers: {
