@@ -32,6 +32,7 @@ export const setClientDraftState = (state: DraftStateProps) => {
     bluePick: state.bluePick,
     redPick: state.redPick,
     draftComplete: state.draftComplete,
+    fearlessCode: state.fearlessCode,
   };
   return clientState;
 };

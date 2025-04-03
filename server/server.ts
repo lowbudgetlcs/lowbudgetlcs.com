@@ -1,4 +1,4 @@
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import http from "http";
 import { rateLimit } from "express-rate-limit";
@@ -8,6 +8,7 @@ import { getTwitchConfig } from "./services/twitchService";
 import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./sockets/draftSocket";
+import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
 
 const app = express();
 const port = 8080;
@@ -42,7 +43,7 @@ const apiLimiter = rateLimit({
 });
 
 // const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  
+
 //   const apiKey = process.env.SERVER_API_KEY;
 
 //   const requestApiKey = req.query.api_key;
@@ -73,8 +74,13 @@ app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 
+// Set up namespaces
+const draftNamespace = io.of("/draft")
+const fearlessNamespace = io.of("/fearless")
+
 // Initialize draftSocket with the io instance
-draftSocket(io);
+draftSocket(draftNamespace);
+fearlessSocket(fearlessNamespace);
 
 server.listen(port, () => {
   console.log("Server started on port " + port);

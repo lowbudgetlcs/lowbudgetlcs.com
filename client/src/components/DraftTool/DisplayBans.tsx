@@ -1,26 +1,18 @@
 import { memo, useEffect, useState } from "react";
-import { DraftProps, DraftStateProps } from "./draftInterfaces";
 import DisplayBanImage from "./DisplayBanImage";
+import { useDraftContext } from "./providers/DraftProvider";
 
-const DisplayBans = ({
-  draftState,
-  bans,
-  enemyBans,
-  playerSide,
-  playerTurn,
-  currentPhase,
-  currentHover,
-}: {
-  draftState: DraftProps;
-  bans: string[];
-  enemyBans: string[];
-  playerSide: string;
-  playerTurn: string | null;
-  currentPhase: DraftStateProps["activePhase"];
-  currentHover: DraftProps["currentHover"];
-}) => {
+const DisplayBans = ({ playerSide }: { playerSide: string }) => {
   const [sideBan, setSideBan] = useState<number>();
   const [link, setLink] = useState<string>("#");
+  const { draftState, currentHover } = useDraftContext();
+
+  const currentPhase = draftState.activePhase;
+  const playerTurn = draftState.displayTurn;
+  const bans = playerSide === "blue" ? draftState.blueBans : draftState.redBans;
+  const enemyBans =
+    playerSide === "blue" ? draftState.redBans : draftState.blueBans;
+
   useEffect(() => {
     if (playerSide === "blue") {
       setSideBan(draftState.currentBlueBan);

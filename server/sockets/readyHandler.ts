@@ -1,4 +1,4 @@
-import { Server, Socket } from "socket.io";
+import { Namespace } from "socket.io";
 import { DraftStateProps } from "./draftState";
 import { updateClientState } from "./clientDraftState";
 
@@ -7,7 +7,7 @@ export const readyHandler = (
   sideCode: string,
   ready: boolean,
   lobbyCode: string,
-  io: Server
+  io: Namespace
 ) => {
   const { blueUser, redUser } = state;
 

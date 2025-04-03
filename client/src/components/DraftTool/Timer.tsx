@@ -1,4 +1,4 @@
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { DraftProps } from "./draftInterfaces";
 
 const Timer = ({
@@ -31,4 +31,4 @@ const Timer = ({
   );
 };
 
-export default memo(Timer)
+export default Timer

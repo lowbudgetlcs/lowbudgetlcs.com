@@ -1,25 +1,31 @@
+import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import Button from "../Button";
 import NavList from "../NavList";
 import { createDraft } from "./createDraft";
 import { checkTournamentCode, DraftCodeProps } from "./draftHandler";
 import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { DraftLinkProps } from "./draftInterfaces";
+import DraftCodes from "./DraftCodes";
+import createFearlessDraft from "./createFearlessDraft";
+import { FearlessInitializerProps } from "./interfaces/draftInterfaces";
+import FearlessLinks from "./draftCreation/FearlessLinks";
+import { redirect } from "react-router-dom";
 
-interface DraftLinkProps {
-  lobbyCode: string;
-  blueCode: string;
-  redCode: string;
-}
 function CreateDraft() {
-  const [draftLinks, setDraftLinks] = useState<DraftLinkProps>();
+  const [draftLinks, setDraftLinks] = useSessionStorageState<
+    DraftLinkProps | undefined
+  >("draftLinks", undefined);
+  const [fearlessDraftLinks, setFearlessDraftLinks] = useSessionStorageState<
+    FearlessInitializerProps | undefined
+  >("fearlessDraftLinks", undefined);
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
-
+  const [draftCount, setDraftCount] = useState<number>(3);
   // Required variables for Nav List
   const [activeLink, setActiveLink] = useState<string>("Default Draft");
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
-  const navItems = ["Default Draft", "LBLCS Tournament"];
+  const navItems = ["Default Draft", "LBLCS Tournament", "Fearless Draft"];
 
   const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +37,8 @@ function CreateDraft() {
     const tournamentID = formData.get("tournamentID") as string | null;
     let blueName = (formData.get("blueName") as string | null) || "Blue Team";
     let redName = (formData.get("redName") as string | null) || "Red Team";
-
+    let team1Name = (formData.get("team1Name") as string | null) || "Team 1";
+    let team2Name = (formData.get("team2Name") as string | null) || "Team 2";
     try {
       // Only runs if the LBLCS Tournament option is selected
       if (draftType === "Tournament") {
@@ -50,21 +57,36 @@ function CreateDraft() {
         }
       }
 
-      // Create draft. This will send to the database if their is a tournament code
-      // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
-      const draftResult: DraftCodeProps = await createDraft(
-        blueName,
-        redName,
-        tournamentID || null
-      );
+      if (draftType === "Fearless") {
+        // Create draft. This will send to the database
+        //Creates 1 - 5 drafts
+        const fearlessData = await createFearlessDraft(
+          team1Name,
+          team2Name,
+          draftCount
+        );
+        if (!fearlessData) {
+          redirect("/error", 500);
+          return;
+        }
+        setFearlessDraftLinks(fearlessData);
+      } else {
+        // Create draft. This will send to the database if their is a tournament code
+        // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
+        const draftResult: DraftCodeProps = await createDraft(
+          blueName,
+          redName,
+          tournamentID || null
+        );
 
-      // For Draft Links
-      const draftLobbyCodes = {
-        lobbyCode: draftResult.draft.lobbyCode,
-        blueCode: draftResult.draft.blueCode,
-        redCode: draftResult.draft.redCode,
-      };
-      setDraftLinks(draftLobbyCodes);
+        // For Draft Links
+        const draftLobbyCodes = {
+          lobbyCode: draftResult.draft.lobbyCode,
+          blueCode: draftResult.draft.blueCode,
+          redCode: draftResult.draft.redCode,
+        };
+        setDraftLinks(draftLobbyCodes);
+      }
     } catch (err) {
       console.error("Error during form submission:", err);
     }
@@ -77,6 +99,11 @@ function CreateDraft() {
       </div>
       {draftLinks ? (
         <DraftCodes draftLinks={draftLinks} setDraftLinks={setDraftLinks} />
+      ) : fearlessDraftLinks ? (
+        <FearlessLinks
+          fearlessDraftLinks={fearlessDraftLinks}
+          setFearlessDraftLinks={setFearlessDraftLinks}
+        />
       ) : (
         <div className="draftInput">
           <h2 className="text-center text-2xl font-bold">Create Draft</h2>
@@ -94,7 +121,7 @@ function CreateDraft() {
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col">
-                  <p>Blue Side</p>
+                  <p className="text-xl font-bold">Blue Side</p>
                   <input
                     type="text"
                     placeholder="Blue Team"
@@ -104,7 +131,7 @@ function CreateDraft() {
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p>Red Side</p>
+                  <p className="text-xl font-bold">Red Side</p>
                   <input
                     type="text"
                     placeholder="Red Team"
@@ -145,7 +172,7 @@ function CreateDraft() {
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
                 <div className="flex flex-col">
-                  <p className="text-xl">Blue Side</p>
+                  <p className="text-xl font-bold">Blue Side</p>
                   <input
                     type="text"
                     placeholder="Blue Team"
@@ -154,7 +181,7 @@ function CreateDraft() {
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl">Red Side</p>
+                  <p className="text-xl font-bold">Red Side</p>
                   <input
                     type="text"
                     placeholder="Red Team"
@@ -172,27 +199,63 @@ function CreateDraft() {
               className="flex flex-col items-center gap-4 justify-center p-4"
               onSubmit={handleFormSubmission}
             >
+              <p className="text-orange text-center px-4">
+                Currently in Beta. DM{" "}
+                <span className="text-green">@thyduckylord</span> on Discord
+                with bugs
+              </p>
               <input type="hidden" name="draftType" value="Fearless"></input>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col">
+                <p className="text-xl font-bold">Draft Count</p>
+                <select
+                  name="draftAmount"
+                  className="bg-gray/60 border-2 border-gray text-white text-sm rounded-md focus:ring-gray focus:border-orange block w-full p-2.5 cursor-pointer"
+                  onChange={(e) => setDraftCount(Number(e.target.value))}
+                  defaultValue={3}
+                >
+                  <option className={`bg-gray`} value={1}>
+                    1
+                  </option>
+                  <option className={`bg-gray`} value={2}>
+                    2
+                  </option>
+                  <option className={`bg-gray`} value={3}>
+                    3
+                  </option>
+                  <option className={`bg-gray`} value={4}>
+                    4
+                  </option>
+                  <option className={`bg-gray`} value={5}>
+                    5
+                  </option>
+                </select>
+              </div>
+              <p className="opacity-0 hover:cursor-default">
+                LaChance Licks Toes
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
                 <div className="flex flex-col">
-                  <p>Blue Side</p>
+                  <p className="text-xl font-bold">Team 1 Name</p>
                   <input
                     type="text"
-                    placeholder="Blue Team"
-                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
-                    name="blueName"
+                    placeholder="Team 1"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
+                    name="team1Name"
+                    maxLength={18}
                   ></input>
                 </div>
                 <div className="flex flex-col">
-                  <p>Red Side</p>
+                  <p className="text-xl font-bold">Team 2 Name</p>
                   <input
                     type="text"
-                    placeholder="Red Team"
-                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
-                    name="redName"
+                    placeholder="Team 2"
+                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
+                    name="team2Name"
+                    maxLength={18}
                   ></input>
                 </div>
               </div>
+
               <button type="submit" className="">
                 <Button>Create Draft</Button>
               </button>
@@ -206,76 +269,4 @@ function CreateDraft() {
   );
 }
 
-function DraftCodes({
-  draftLinks,
-  setDraftLinks,
-}: {
-  draftLinks: DraftLinkProps;
-  setDraftLinks: React.Dispatch<
-    React.SetStateAction<DraftLinkProps | undefined>
-  >;
-}) {
-  const removeDraftLinks = () => {
-    setDraftLinks(undefined);
-  };
-  const copyLinks = () => {
-    navigator.clipboard.writeText(`Blue Side Link:
-https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}
-Red Side Link:
-https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}
-Spectator Link:
-https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
-  };
-
-  return (
-    <div className="flex flex-col items-center gap-4">
-      <div onClick={removeDraftLinks} className="button hover:cursor-pointer">
-        <Button>Re-Create Draft Links</Button>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="BlueLinkDiv flex flex-col">
-          <h3 className="text-2xl font-bold">
-            <span className="text-blue">Blue Side</span> Link:
-          </h3>
-          <Link
-            target="_blank"
-            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`}
-            className="text-xl hover:text-blue transition duration-300 py-4"
-          >
-            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}/
-            {draftLinks.blueCode}
-          </Link>
-        </div>
-        <div className="RedLinkDiv flex flex-col">
-          <h3 className="text-2xl font-bold">
-            <span className="text-red">Red Side</span> Link:
-          </h3>
-          <Link
-            target="_blank"
-            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`}
-            className="text-xl hover:text-red transition duration-300 py-4"
-          >
-            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}/
-            {draftLinks.redCode}
-          </Link>
-        </div>
-        <div className="specLinkDiv flex flex-col">
-          <h3 className="text-2xl font-bold">
-            <span className="text-yellow">Spectator</span> Link:
-          </h3>
-          <Link
-            target="_blank"
-            to={`https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`}
-            className="text-xl hover:text-yellow transition duration-300 py-4"
-          >
-            https://lowbudgetlcs.com/draft/{draftLinks.lobbyCode}
-          </Link>
-        </div>
-      </div>
-      <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
-        <Button>Copy All Links</Button>
-      </div>
-    </div>
-  );
-}
 export default CreateDraft;

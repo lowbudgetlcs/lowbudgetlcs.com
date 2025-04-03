@@ -1,12 +1,15 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
 import { insertDraft } from "../db/queries/insert";
-import { checkDBForURL, getMatchingShortCode, getPastDraft } from "../db/queries/select";
+import { getMatchingShortCode, getPastDraft } from "../db/queries/select";
 import {
   DraftInitializeProps,
-  draftState,
   initializeDraftState,
 } from "../sockets/draftState";
+import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
+import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
+import ShortUniqueId from "short-unique-id";
+const { randomUUID } = new ShortUniqueId({ length: 10 });
 
 draftRoutes.get(
   "/api/checkTournamentCode/:code",
@@ -26,9 +29,6 @@ draftRoutes.get(
   }
 );
 
-// Draft Lobby Creation
-const generateRandomString = () => Math.random().toString(36).substring(2);
-
 draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
   try {
     // Pull nick names and tournament ID from request (if there is one)
@@ -40,44 +40,9 @@ draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
       req.body;
 
     // Generate unique URLs for the draft
-    let blueCode, redCode, lobbyCode;
-
-    // Sets lobbyCode to the tournament ID if Tournament Draft is used
-    // Otherwise uses only the draft state to store information
-    if (tournamentID) {
-      lobbyCode = tournamentID;
-      // Checks for all URLs to be unique
-      while (true) {
-        blueCode = generateRandomString();
-        redCode = generateRandomString();
-        const urlResponse = await checkDBForURL(blueCode, redCode);
-        if (
-          urlResponse.length === 0 &&
-          redCode !== blueCode &&
-          lobbyCode !== redCode &&
-          lobbyCode !== blueCode
-        ) {
-          break;
-        }
-        console.log("URLs not unique, retrying...");
-      }
-    } else {
-      // Checks for all URLs to be unique
-      while (true) {
-        blueCode = generateRandomString();
-        redCode = generateRandomString();
-        lobbyCode = generateRandomString();
-        if (
-          !draftState[lobbyCode] &&
-          redCode !== blueCode &&
-          lobbyCode !== redCode &&
-          lobbyCode !== blueCode
-        ) {
-          break;
-        }
-        console.log("URLs not unique, retrying...");
-      }
-    }
+    const lobbyCode = tournamentID ? tournamentID : randomUUID();
+    const blueCode = randomUUID();
+    const redCode = randomUUID();
 
     // Create the draft object
     const draft: DraftInitializeProps = {
@@ -109,25 +74,69 @@ draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
   }
 });
 
+draftRoutes.post(
+  "/api/createFearlessDraft",
+  async (req: Request, res: Response) => {
+    try {
+      // Pull nick names and tournament ID from request (if there is one)
+      const {
+        team1Name,
+        team2Name,
+        draftCount,
+      }: { team1Name: string; team2Name: string; draftCount: number } =
+        req.body;
+      // Generate unique URLs for the draft
+      const team1Code = randomUUID();
+      const team2Code = randomUUID();
+      const fearlessCode = randomUUID();
+
+      const fearlessLobby: FearlessInitializerProps = {
+        fearlessCode: fearlessCode,
+        team1Code: team1Code,
+        team2Code: team2Code,
+        team1Name: team1Name,
+        team2Name: team2Name,
+        draftCount: draftCount,
+      };
+
+      // Initialize Fearless Lobby
+      const fearlessData = await fearlessLobbyInitializer(fearlessLobby);
+
+      // Success Response
+      res.status(201).json({
+        fearlessCode: fearlessData.fearlessCode,
+        team1Code: fearlessData.team1Code,
+        team2Code: fearlessData.team2Code,
+        team1Name: fearlessData.team1Name,
+        team2Name: fearlessData.team2Name,
+        draftCount: fearlessData.draftCount,
+      });
+    } catch (err) {
+      console.error("Error in Draft Creation:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
+
 draftRoutes.get(
   "/api/pastDraft/:lobbyCode",
   async (req: Request, res: Response) => {
-    try{
-
-      const lobbyCode = req.params.lobbyCode
-      const response = await getPastDraft(lobbyCode)
+    try {
+      const lobbyCode = req.params.lobbyCode;
+      const response = await getPastDraft(lobbyCode);
 
       if (response && response.draftFinished) {
-        res.status(200).json({ isValid: true, draftState: response.clientState });
+        res
+          .status(200)
+          .json({ isValid: true, draftState: response.clientState });
       } else {
         res.status(200).json({ isValid: false });
       }
-    } catch(err) {
+    } catch (err) {
       console.error("Error in Finding Past Game:", err);
       res.status(500).json({ error: "Internal Server Error" });
     }
-
-
-   })
+  }
+);
 
 export default draftRoutes;

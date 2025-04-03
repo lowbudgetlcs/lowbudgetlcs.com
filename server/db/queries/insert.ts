@@ -4,7 +4,8 @@ import {
   DraftStateProps,
 } from "../../sockets/draftState";
 import { db } from "../index";
-import { draftLobbies } from "../schema";
+import { draftLobbies, fearlessDraftLobbies } from "../schema";
+import { FearlessFinishedProps, FearlessInitializerProps } from "../../draftTool/interfaces/initializerInferfaces";
 
 export async function insertDraft(draft: DraftInitializeProps) {
   try {
@@ -66,6 +67,53 @@ export async function insertFinishedDraft(
       .where(eq(draftLobbies.lobbyCode, lobbyCode));
 
     console.log("Draft full insert success:", lobbyCode);
+  } catch (err) {
+    console.error("Error inserting into DB: ", err);
+    throw new Error("Failed to insert draft into database.");
+  }
+}
+
+export async function insertInitialFearlessLobby(
+  draft: FearlessInitializerProps
+) {
+  try {
+    const insertFearlessLobby = await db
+      .insert(fearlessDraftLobbies)
+      .values({
+        fearlessCode: draft.fearlessCode,
+        team1Code: draft.team1Code,
+        team2Code: draft.team2Code,
+        team1Name: draft.team1Name,
+        team2Name: draft.team2Name,
+        totalDrafts: draft.draftCount
+      })
+      .returning();
+
+    console.log("Fearless initial insert success:", draft.fearlessCode);
+  } catch (err) {
+    console.error("Error inserting into DB: ", err);
+    throw new Error("Failed to insert draft into database.");
+  }
+}
+
+export async function insertFinalFearlessLobby(
+  draft: FearlessFinishedProps
+) {
+  try {
+    const insertFearlessLobby = await db
+      .insert(fearlessDraftLobbies)
+      .values({
+        fearlessCode: draft.fearlessCode,
+        fearlessComplete: true,
+        team1Code: draft.team1Code,
+        team2Code: draft.team2Code,
+        team1Name: draft.team1Name,
+        team2Name: draft.team2Name,
+        totalDrafts: draft.draftCount
+      })
+      .returning();
+
+    console.log("Fearless Final insert success:", draft.fearlessCode);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");

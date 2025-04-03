@@ -1,28 +1,24 @@
 import { memo, useEffect, useState } from "react";
-import { Champion, DraftProps, DraftStateProps } from "../draftInterfaces";
+import { Champion } from "../draftInterfaces";
 import StreamPickImage from "./StreamPickImage";
+import { useDraftContext } from "../providers/DraftProvider";
 
 const StreamPicks = ({
-  draftState,
-  picks,
-  enemyPicks,
   championRoles,
-  playerTurn,
   playerSide,
-  currentPhase,
-  currentHover,
 }: {
-  draftState: DraftProps;
-  picks: string[];
-  enemyPicks: string[];
   championRoles: Champion[];
-  playerTurn: string | null;
   playerSide: string;
-  currentPhase: DraftStateProps["activePhase"];
-  currentHover: DraftProps["currentHover"];
 }) => {
   const [sidePick, setSidePick] = useState<number>();
   const [link, setLink] = useState<string>("#");
+  const { draftState, currentHover } = useDraftContext();
+  const currentPhase = draftState.activePhase;
+  const playerTurn = draftState.currentTurn;
+  const picks =
+    playerSide === "blue" ? draftState.bluePicks : draftState.redPicks;
+  const enemyPicks =
+    playerSide === "blue" ? draftState.redPicks : draftState.bluePicks;
 
   useEffect(() => {
     if (playerSide === "blue") {

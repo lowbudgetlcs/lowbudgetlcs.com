@@ -1,72 +1,21 @@
 import DisplayBans from "../DisplayBans";
-import { DraftDisplayProps, DraftProps } from "../draftInterfaces";
+import { Champion } from "../draftInterfaces";
 import { useEffect, useState } from "react";
-import { useSocketContext } from "../DraftPage";
 import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";
 import BanBox from "./BanBox";
+import { useDraftContext } from "../providers/DraftProvider";
 
-function StreamDisplay({
-  draftState,
-  lobbyCode,
-  sideCode,
-  championRoles,
-  playerSide,
-}: DraftDisplayProps) {
-  const { socket } = useSocketContext();
-  const [chosenChamp, setChosenChamp] = useState<string>();
-  const [currentHover, setCurrentHover] = useState<string | null>(null);
+function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
+  const { draftState } = useDraftContext();
 
   const [isTimerRunning, setIsTimerRunning] = useState(false);
-  const [timeLeft, setTimeLeft] = useState( Math.max(draftState.timer - 4, 0) || 30);
+  const [timeLeft, setTimeLeft] = useState(
+    Math.max(draftState.timer - 4, 0) || 30
+  );
 
   // calculate width of timer bar
   const timerWidth = (timeLeft / 30) * 100;
-
-  // Clear the hover state when the phase changes
-  useEffect(() => {
-    setCurrentHover(null);
-  }, [draftState.activePhase, draftState.displayTurn]);
-
-  useEffect(() => {
-    if (!socket) {
-      return;
-    }
-    const handleHover = (state: DraftProps) => {
-      if (state.currentHover) {
-        setChosenChamp(state.currentHover);
-      }
-      setCurrentHover(state.currentHover);
-    };
-
-    socket.on("banHover", handleHover);
-    socket.on("pickHover", handleHover);
-    return () => {
-      socket.off("banHover", handleHover);
-      socket.off("pickHover", handleHover);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!draftState.bluePick && chosenChamp) {
-      setChosenChamp(undefined);
-    }
-    if (!draftState.redPick && chosenChamp) {
-      setChosenChamp(undefined);
-    }
-  }, [draftState.bluePick, draftState.redPick]);
-
-  useEffect(() => {
-    if (!socket) {
-      return;
-    }
-
-    if (draftState.displayTurn !== playerSide) {
-      setChosenChamp("");
-    } else {
-      socket.emit("clientHover", { chosenChamp, lobbyCode, sideCode });
-    }
-  }, [chosenChamp]);
 
   useEffect(() => {
     if (draftState.displayTurn || draftState.phaseType) {
@@ -130,28 +79,12 @@ function StreamDisplay({
         <div className="champBans flex w-full justify-between gap-8 items-center pt-4 px-4">
           {/* Blue Side Bans */}
           <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
-            <DisplayBans
-              draftState={draftState}
-              bans={draftState.blueBans}
-              enemyBans={draftState.redBans}
-              playerSide={"blue"}
-              playerTurn={draftState.displayTurn}
-              currentPhase={draftState.activePhase}
-              currentHover={currentHover}
-            />
+            <DisplayBans playerSide={"blue"} />
           </div>
 
           {/* Red Side Bans */}
           <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
-            <DisplayBans
-              draftState={draftState}
-              bans={draftState.redBans}
-              enemyBans={draftState.blueBans}
-              playerSide={"red"}
-              playerTurn={draftState.displayTurn}
-              currentPhase={draftState.activePhase}
-              currentHover={currentHover}
-            />
+            <DisplayBans playerSide={"red"} />
           </div>
         </div>
         {/* Timer Line */}
@@ -173,31 +106,13 @@ function StreamDisplay({
         <div className="relative champPicks flex justify-between flex-1">
           {/* Blue Side Picks */}
           <div className="blueSidePicks flex gap-4 px-2">
-            <StreamPicks
-              draftState={draftState}
-              picks={draftState.bluePicks}
-              enemyPicks={draftState.redPicks}
-              championRoles={championRoles}
-              playerTurn={draftState.displayTurn}
-              playerSide={"blue"}
-              currentPhase={draftState.activePhase}
-              currentHover={currentHover}
-            />
+            <StreamPicks championRoles={championRoles} playerSide={"blue"} />
           </div>
           <PickBox draftState={draftState} championRoles={championRoles} />
           <BanBox draftState={draftState} championRoles={championRoles} />
           {/* Red Side Picks */}
           <div className="redSidePicks flex flex-row-reverse gap-4 px-2 pb-4">
-            <StreamPicks
-              draftState={draftState}
-              picks={draftState.redPicks}
-              enemyPicks={draftState.bluePicks}
-              championRoles={championRoles}
-              playerTurn={draftState.displayTurn}
-              playerSide={"red"}
-              currentPhase={draftState.activePhase}
-              currentHover={currentHover}
-            />
+            <StreamPicks championRoles={championRoles} playerSide={"red"} />
           </div>
         </div>
       </div>

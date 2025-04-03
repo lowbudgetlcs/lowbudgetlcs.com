@@ -1,4 +1,4 @@
-import { Server } from "socket.io";
+import { Namespace, Server } from "socket.io";
 import { readyHandler } from "./readyHandler";
 import {
   ClientDraftStateProps,
@@ -12,6 +12,7 @@ import { banPhase2Handler } from "./banPhase2Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
 import { updateClientState } from "./clientDraftState";
 import { endDraftHandler } from "./endDraftHandler";
+import { fearlessEmitters } from "../draftTool/sockets/fearlessSocket";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -19,7 +20,7 @@ export interface DraftUsersProps {
 
 const lobbyEmitters: Map<string, EventEmitter> = new Map();
 let currentConnections: number = 0;
-export const draftSocket = (io: Server) => {
+export const draftSocket = (io: Namespace) => {
   io.on("connection", (socket) => {
     const getDraftState = (lobbyCode: string) => {
       if (!draftState[lobbyCode]) {
@@ -128,7 +129,14 @@ export const draftSocket = (io: Server) => {
 
               if (isPickPhase2Done) {
                 await endDraftHandler(handlerVars);
-                io.in(lobbyCode).disconnectSockets();
+                if (state.fearlessCode) {
+                  const draftSockets = await io.in(lobbyCode).fetchSockets();
+                  draftSockets.forEach((socket) => {
+                    socket.leave(lobbyCode);
+                  });
+                } else {
+                  io.in(lobbyCode).disconnectSockets();
+                }
               }
             }
           }
@@ -150,16 +158,16 @@ export const draftSocket = (io: Server) => {
             state.currentHover = chosenChamp;
 
             sideCode === state.blueUser
-              ? state.bluePick = chosenChamp
-              : state.redPick = chosenChamp;
-              
+              ? (state.bluePick = chosenChamp)
+              : (state.redPick = chosenChamp);
+
             io.to(lobbyCode).emit("banHover", state);
           } else if (state.phaseType === "pick") {
             state.currentHover = chosenChamp;
 
             sideCode === state.blueUser
-              ? state.bluePick = chosenChamp
-              : state.redPick = chosenChamp;
+              ? (state.bluePick = chosenChamp)
+              : (state.redPick = chosenChamp);
 
             io.to(lobbyCode).emit("pickHover", state);
           }

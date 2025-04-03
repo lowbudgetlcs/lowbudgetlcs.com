@@ -1,5 +1,5 @@
 import EventEmitter from "events";
-import { Server } from "socket.io";
+import { Namespace } from "socket.io";
 
 const twoHours = 60 * 60 * 2000; // 2 hours in milliseconds
 
@@ -14,6 +14,7 @@ export interface DraftStateProps {
     | null;
   phaseType: "pick" | "ban" | null;
   tournamentID: string | null;
+  lobbyCode: string;
   blueUser: string;
   redUser: string;
   blueDisplayName: string;
@@ -39,6 +40,7 @@ export interface DraftStateProps {
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
+  fearlessCode?: string;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -52,7 +54,7 @@ export interface DraftInitializeProps {
 }
 
 export interface HandlerVarsProps {
-  io: Server;
+  io: Namespace;
   lobbyCode: string;
   state: DraftStateProps;
   emitter: EventEmitter;
@@ -92,6 +94,7 @@ export interface ClientDraftStateProps {
   bluePick: string | null;
   redPick: string | null;
   draftComplete: boolean;
+  fearlessCode?: string;
 }
 export const initializeDraftState = ({
   lobbyCode,
@@ -107,6 +110,7 @@ export const initializeDraftState = ({
       activePhase: null,
       phaseType: null,
       tournamentID: tournamentID,
+      lobbyCode: lobbyCode,
       blueUser: blueUser,
       redUser: redUser,
       blueDisplayName: blueDisplayName,
@@ -132,6 +136,7 @@ export const initializeDraftState = ({
       bluePick: null,
       redPick: null,
       draftComplete: false,
+      fearlessCode: undefined,
     };
 
     setTimeout(() => {

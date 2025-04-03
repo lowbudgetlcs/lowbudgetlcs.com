@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
 import tempImage from "../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "./draftInterfaces";
-import { usePastDraftContext } from "./DraftPage";
+import { useDraftContext } from "./providers/DraftProvider";
 
 const DisplayPickImage = ({
   playerSide,
@@ -18,7 +18,7 @@ const DisplayPickImage = ({
 }) => {
   const [link, setLink] = useState<string>("");
 
-  const { isPastDraft } = usePastDraftContext();
+  const { isPastDraft } = useDraftContext();
 
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
@@ -31,7 +31,7 @@ const DisplayPickImage = ({
     championName === "nothing";
 
   useEffect(() => {
-    if (isChampHovered) {
+    if (isChampHovered && currentHover) {
       setLink((prevLink) => {
         const fixedName =
           currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
@@ -52,7 +52,7 @@ const DisplayPickImage = ({
         return prevLink;
       });
     }
-  }, [currentHover, championName]);
+  }, [currentHover, championName, isChampHovered]);
 
   const selectedChampion = championRoles.find((champion) =>
     currentHover && championName === "nothing"
@@ -74,15 +74,17 @@ const DisplayPickImage = ({
   } else if (championName !== "nothing" || isChampHovered) {
     return (
       <div className={`relative w-full h-full`}>
-        <img
-          src={link ? link : "#"}
-          alt={displayName || "champion image"}
-          className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
-            isChampHovered ? "grayscale-[90%]" : ""
-          } ${
-            championName !== "nothing" && !isPastDraft && "animate-scaleBounce"
-          }`}
-        />
+        {link && (
+          <img
+            src={link}
+            alt={displayName || "champion image"}
+            className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
+              isChampHovered ? "grayscale-[90%]" : ""
+            } ${
+              championName !== "nothing" && !isPastDraft && "animate-scaleBounce"
+            }`}
+          />
+        )}
         <p
           className={
             playerSide === "blue"
@@ -99,9 +101,8 @@ const DisplayPickImage = ({
         ></div>
       </div>
     );
-  } else {
-    return null;
-  }
+  } 
+  return null
 };
 
 export default memo(DisplayPickImage);

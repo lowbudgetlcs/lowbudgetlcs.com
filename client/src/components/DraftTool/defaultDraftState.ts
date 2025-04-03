@@ -1,4 +1,6 @@
-export const defaultDraftState = {
+import { DraftProps } from "./draftInterfaces";
+
+export const defaultDraftState: DraftProps = {
     draftStarted: false,
     activePhase: null,
     phaseType: null,
@@ -25,4 +27,5 @@ export const defaultDraftState = {
     bluePick: "nothing",
     redPick: "nothing",
     draftComplete: false,
+    fearlessCode: null
   }

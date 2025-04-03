@@ -1,4 +1,6 @@
 import { insertDraft, insertFinishedDraft } from "../db/queries/insert";
+import { fearlessState } from "../draftTool/initializers/fearlessLobbyInitializer";
+import { fearlessEmitters } from "../draftTool/sockets/fearlessSocket";
 import { updateClientState } from "./clientDraftState";
 import { HandlerVarsProps } from "./draftState";
 
@@ -13,6 +15,24 @@ export const endDraftHandler = async ({
   state.timer = 0;
   state.draftComplete = true;
   io.to(lobbyCode).emit("draftComplete", updateClientState(lobbyCode));
+  if (state.fearlessCode) {
+    const fearlessCode = state.fearlessCode;
+    const fearlessData = fearlessState[fearlessCode];
+
+    // Tells fearless room draft is finished (if there is one)
+    if (fearlessData) {
+      if (fearlessEmitters.has(fearlessCode)) {
+        fearlessEmitters.get(fearlessCode)!.emit("draftCompleted", {
+          fearlessCode,
+          lobbyCode,
+        });
+      } else {
+        console.error(
+          `No EventEmitter found for fearlessCode: ${fearlessCode}`
+        );
+      }
+    }
+  }
 
   await insertFinishedDraft(state, lobbyCode);
 };

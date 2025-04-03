@@ -1,33 +1,29 @@
 import { useMemo } from "react";
 import { Champion } from "./draftInterfaces";
-import { useSocketContext } from "./DraftPage";
+import { useDraftContext } from "./providers/DraftProvider";
 
 interface LoadChampIconsProps {
   championRoles: Champion[];
   searchValue: string;
   selectedRole: string;
-  pickedChampions: string[];
-  bannedChampions: string[];
-  chosenChamp?: string;
-  setChosenChamp: (championName: string) => void;
 }
 
 export function LoadChampIcons({
   championRoles,
   searchValue,
   selectedRole,
-  pickedChampions,
-  bannedChampions,
-  chosenChamp,
-  setChosenChamp,
 }: LoadChampIconsProps) {
+  const { draftState, chosenChamp, setChosenChamp, draftSocket } =
+    useDraftContext();
+  const pickedChampions = draftState.picksArray;
+  const bannedChampions = draftState.bansArray;
+
   const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
-  const { socket } = useSocketContext();
   const handlePick = (championName: string) => {
     if (
       !pickedChampions.includes(championName) &&
       !bannedChampions.includes(championName) &&
-      socket //This will stop users from selecting champions on finished drafts
+      draftSocket //This will stop users from selecting champions on finished drafts
     ) {
       setChosenChamp(championName);
     }
@@ -67,10 +63,7 @@ export function LoadChampIcons({
                   ? ""
                   : "hover:scale-105"
               } 
-              ${
-                chosenChamp === champion.name &&
-                "scale-105 border-orange"
-              }
+              ${chosenChamp === champion.name && "scale-105 border-orange"}
               `}
           >
             <img

@@ -1,6 +1,13 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import { divisions, draftLobbies, games, players, teams } from "../schema";
+import {
+  divisions,
+  draftLobbies,
+  fearlessDraftLobbies,
+  games,
+  players,
+  teams,
+} from "../schema";
 import { ClientDraftStateProps } from "../../sockets/draftState";
 
 export async function getRosterData() {
@@ -90,6 +97,19 @@ export async function checkDBForURL(blueCode: string, redCode: string) {
   return matchingURL;
 }
 
+export async function checkDBForFearlessCode(fearlessCode: string) {
+  const matchingURL = await db
+    .select({
+      fearlessCode: fearlessDraftLobbies.fearlessCode,
+    })
+    .from(fearlessDraftLobbies)
+    .where(eq(fearlessDraftLobbies.fearlessCode, fearlessCode));
+  if (matchingURL.length > 0) {
+    return false;
+  } else {
+    return true;
+  }
+}
 // Check to see if shortCode exists in game table
 export async function getMatchingShortCode(shortCode: string) {
   try {
@@ -196,6 +216,7 @@ export async function getPastDraft(lobbyCode: string) {
       bluePick: null,
       redPick: null,
       draftComplete: true,
+      fearlessCode: draft.fearlessCode || undefined,
     };
 
     return { clientState, draftFinished };
