@@ -25,6 +25,7 @@ import { FearlessProvider } from "./components/DraftTool/providers/FearlessProvi
 import FearlessDraftPage from "./components/DraftTool/mainPages/FearlessDraftPage";
 import { SocketProvider } from "./components/DraftTool/providers/SocketProvider";
 import { DraftProvider } from "./components/DraftTool/providers/DraftProvider";
+import DraftNavbar from "./components/DraftTool/draftNavbars/DraftNavbar";
 
 function App() {
   const location = useLocation();
@@ -33,7 +34,7 @@ function App() {
     <div className=" relative font-serif bg-black">
       <ScrollToTop />
       <Twitch />
-      {!isDraftRoute && <Navbar />}
+      {!isDraftRoute ? <Navbar /> : <DraftNavbar/>}
       <LeagueDataProvider>
         <Routes>
           <Route element={<SocketProvider />}>
