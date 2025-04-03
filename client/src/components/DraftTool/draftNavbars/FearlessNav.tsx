@@ -11,7 +11,7 @@ const FearlessNav = () => {
   
   return (
     <div className="h-12 w-full flex items-center justify-center">
-      <ul className="navItems flex items-center justify-center gap-8 text-white/40">
+      <ul className="navItems flex items-center justify-center gap-8 text-white/40 rounded-md bg-gray/60 border-2 border-gray px-4">
         {Array.from({ length: fearlessState.draftCount }, (_, i) => i + 1).map((draftNum) => {
           // Get the lobby code for this draft number (adjusting for zero-indexing)
           const lobbyCode = fearlessState.draftLobbyCodes?.[draftNum - 1];
@@ -20,7 +20,7 @@ const FearlessNav = () => {
           
           if (lobbyCode) {
             return (
-              <li key={draftNum} className={`hover:cursor-pointer ${isCurrentDraft ? 'text-orange font-bold' : 'text-white'}`}>
+              <li key={draftNum} className={`hover:cursor-pointer text-lg ${isCurrentDraft ? 'text-orange font-bold' : 'text-white'}`}>
                 {isCurrentDraft ? (
                   // Just show text for the current draft
                   <span>Draft {draftNum}</span>
