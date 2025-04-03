@@ -20,7 +20,6 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
 
   const location = useLocation()
   const isFearless = location.pathname.includes("/fearless")
-  console.log(isFearless)
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
