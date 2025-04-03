@@ -1,5 +1,6 @@
 import { draftState } from "../../sockets/draftState";
-import { DraftInitializerProps } from "../interfaces/initializerInferfaces";
+import { FearlessDraftInitializerProps } from "../interfaces/initializerInferfaces";
+import { fearlessState } from "./fearlessLobbyInitializer";
 const twentyFourHours = 60 * 60 * 24000; // 24 hours in milliseconds
 
 const fearlessDraftStateInitializer = ({
@@ -9,7 +10,7 @@ const fearlessDraftStateInitializer = ({
   blueDisplayName,
   redDisplayName,
   fearlessCode,
-}: DraftInitializerProps) => {
+}: FearlessDraftInitializerProps) => {
   if (!draftState[lobbyCode]) {
     draftState[lobbyCode] = {
       draftStarted: false,
@@ -25,7 +26,7 @@ const fearlessDraftStateInitializer = ({
       redReady: false,
       timer: 34,
       bansArray: [],
-      picksArray: [],
+      picksArray: [...fearlessState[fearlessCode].allPicks],
       bluePicks: [],
       redPicks: [],
       blueBans: [],
@@ -51,7 +52,7 @@ const fearlessDraftStateInitializer = ({
         console.log(`Draft state for lobby ${lobbyCode} deleted`);
       }
     }, twentyFourHours);
-  } 
+  }
   return draftState[lobbyCode];
 };
 

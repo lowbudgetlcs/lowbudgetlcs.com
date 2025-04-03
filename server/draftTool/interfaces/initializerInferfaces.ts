@@ -59,3 +59,13 @@ export interface DraftInitializerProps {
   tournamentID: string | null;
   fearlessCode?: string;
 }
+
+export interface FearlessDraftInitializerProps {
+  lobbyCode: string;
+  blueUser: string;
+  redUser: string;
+  blueDisplayName: string;
+  redDisplayName: string;
+  tournamentID: string | null;
+  fearlessCode: string;
+}
