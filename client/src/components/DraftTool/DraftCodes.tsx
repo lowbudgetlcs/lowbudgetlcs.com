@@ -104,7 +104,7 @@ ${streamLink}`);
             <Button>Copy Link</Button>
           </div>
         </div>
-        {/* Stream Link */}
+        {/* Stream Link
         <div className="steamLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
           <h3 className="text-2xl font-bold md:w-44">
             <span className="text-purple">Stream</span> Link:
@@ -123,7 +123,7 @@ ${streamLink}`);
           >
             <Button>Copy Link</Button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className="copyBtns flex gap-8">
         <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
