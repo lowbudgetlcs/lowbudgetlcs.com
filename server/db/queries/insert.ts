@@ -5,7 +5,10 @@ import {
 } from "../../sockets/draftState";
 import { db } from "../index";
 import { draftLobbies, fearlessDraftLobbies } from "../schema";
-import { FearlessFinishedProps, FearlessInitializerProps } from "../../draftTool/interfaces/initializerInferfaces";
+import {
+  FearlessFinishedProps,
+  FearlessInitializerProps,
+} from "../../draftTool/interfaces/initializerInferfaces";
 
 export async function insertDraft(draft: DraftInitializeProps) {
   try {
@@ -85,7 +88,7 @@ export async function insertInitialFearlessLobby(
         team2Code: draft.team2Code,
         team1Name: draft.team1Name,
         team2Name: draft.team2Name,
-        totalDrafts: draft.draftCount
+        totalDrafts: draft.draftCount,
       })
       .returning();
 
@@ -96,22 +99,14 @@ export async function insertInitialFearlessLobby(
   }
 }
 
-export async function insertFinalFearlessLobby(
-  draft: FearlessFinishedProps
-) {
+export async function insertFinalFearlessLobby(draft: FearlessFinishedProps) {
   try {
     const insertFearlessLobby = await db
-      .insert(fearlessDraftLobbies)
-      .values({
-        fearlessCode: draft.fearlessCode,
+      .update(fearlessDraftLobbies)
+      .set({
         fearlessComplete: true,
-        team1Code: draft.team1Code,
-        team2Code: draft.team2Code,
-        team1Name: draft.team1Name,
-        team2Name: draft.team2Name,
-        totalDrafts: draft.draftCount
       })
-      .returning();
+      .where(eq(fearlessDraftLobbies.fearlessCode, draft.fearlessCode));
 
     console.log("Fearless Final insert success:", draft.fearlessCode);
   } catch (err) {
