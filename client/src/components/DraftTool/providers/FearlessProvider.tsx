@@ -100,7 +100,6 @@ export const FearlessProvider: React.FC = () => {
   // Socket event listeners & state updater
   useEffect(() => {
     if (!fearlessSocket) return;
-    console.log("UPDATING FEARLESS");
     const updateFearlessState = (newState: FearlessStateProps) => {
       setFearlessState((prevState) => ({
         ...prevState,
