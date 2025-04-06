@@ -5,7 +5,7 @@ import { getMatchingShortCode, getPastDraft } from "../db/queries/select";
 import {
   DraftInitializeProps,
   initializeDraftState,
-} from "../sockets/draftState";
+} from "../draftTool/states/draftState";
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
 import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
 import ShortUniqueId from "short-unique-id";

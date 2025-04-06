@@ -1,4 +1,4 @@
-import { draftState } from "../../sockets/draftState";
+import { draftState } from "../states/draftState";
 import { FearlessDraftInitializerProps } from "../interfaces/initializerInferfaces";
 import { fearlessState } from "./fearlessLobbyInitializer";
 const twentyFourHours = 60 * 60 * 24000; // 24 hours in milliseconds

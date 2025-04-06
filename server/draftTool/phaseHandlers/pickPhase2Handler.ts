@@ -1,5 +1,5 @@
-import { HandlerVarsProps } from "./draftState";
-import { updateClientState } from "./clientDraftState";
+import { HandlerVarsProps } from "../states/draftState";
+import { updateClientState } from "../states/clientDraftState";
 
 export const pickPhase2Handler = async ({
   io,

@@ -8,7 +8,7 @@ import {
   players,
   teams,
 } from "../schema";
-import { ClientDraftStateProps } from "../../sockets/draftState";
+import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 
 export async function getRosterData() {
   try {

@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import {
   DraftInitializeProps,
   DraftStateProps,
-} from "../../sockets/draftState";
+} from "../../draftTool/states/draftState";
 import { db } from "../index";
 import { draftLobbies, fearlessDraftLobbies } from "../schema";
 import {

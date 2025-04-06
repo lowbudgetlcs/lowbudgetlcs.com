@@ -1,8 +1,8 @@
-import { Namespace, Server, Socket } from "socket.io";
+import { Namespace, Socket } from "socket.io";
 import { fearlessState } from "../initializers/fearlessLobbyInitializer";
 import { updateFearlessClientState } from "../states/clientFearlessState";
 import fearlessSideAssignment from "../initializers/fearlessSideAssignment";
-import { draftState } from "../../sockets/draftState";
+import { draftState } from "../states/draftState";
 import EventEmitter from "events";
 import { insertFinalFearlessLobby } from "../../db/queries/insert";
 let currentConnections = 0

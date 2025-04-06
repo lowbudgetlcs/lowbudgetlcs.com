@@ -1,18 +1,18 @@
 import { Namespace, Server } from "socket.io";
-import { readyHandler } from "./readyHandler";
+import { readyHandler } from "../phaseHandlers/readyHandler";
 import {
   ClientDraftStateProps,
   draftState,
   HandlerVarsProps,
-} from "./draftState";
-import { banPhase1Handler } from "./banPhase1Handler";
+} from "../states/draftState";
+import { banPhase1Handler } from "../phaseHandlers/banPhase1Handler";
 import EventEmitter from "events";
-import { pickPhase1Handler } from "./pickPhase1Handler";
-import { banPhase2Handler } from "./banPhase2Handler";
-import { pickPhase2Handler } from "./pickPhase2Handler";
-import { updateClientState } from "./clientDraftState";
-import { endDraftHandler } from "./endDraftHandler";
-import { fearlessEmitters } from "../draftTool/sockets/fearlessSocket";
+import { pickPhase1Handler } from "../phaseHandlers/pickPhase1Handler";
+import { banPhase2Handler } from "../phaseHandlers/banPhase2Handler";
+import { pickPhase2Handler } from "../phaseHandlers/pickPhase2Handler";
+import { updateClientState } from "../states/clientDraftState";
+import { endDraftHandler } from "../phaseHandlers/endDraftHandler";
+import { fearlessEmitters } from "./fearlessSocket";
 export interface DraftUsersProps {
   blue: string;
   red: string;
