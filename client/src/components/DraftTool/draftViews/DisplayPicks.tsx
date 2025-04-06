@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from "react";
-import { Champion } from "./draftInterfaces";
+import { Champion } from "../interfaces/draftInterfaces";
 import DisplayPickImage from "./DisplayPickImage";
-import { useDraftContext } from "./providers/DraftProvider";
+import { useDraftContext } from "../providers/DraftProvider";
 
 const DisplayPicks = ({
   championRoles,

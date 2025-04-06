@@ -1,4 +1,4 @@
-import { FearlessInitializerProps } from "./interfaces/draftInterfaces";
+import { FearlessInitializerProps } from "../interfaces/draftInterfaces";
 
 const createFearlessDraft = async (
   blueName: FormDataEntryValue,

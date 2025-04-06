@@ -1,4 +1,4 @@
-import { DraftProps } from "./draftInterfaces";
+import { DraftProps } from "./interfaces/draftInterfaces";
 
 export const defaultDraftState: DraftProps = {
     draftStarted: false,

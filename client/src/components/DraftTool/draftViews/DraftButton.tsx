@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Button from "../Button";
+import Button from "../../Button";
 import { Link } from "react-router-dom";
-import { useFearlessContext } from "./providers/FearlessProvider";
-import { useDraftContext } from "./providers/DraftProvider";
+import { useFearlessContext } from "../providers/FearlessProvider";
+import { useDraftContext } from "../providers/DraftProvider";
 
 // Checks if button is being used on a fearless draft
 // Fearless drafts are within the fearless providor, if not this will cause errors

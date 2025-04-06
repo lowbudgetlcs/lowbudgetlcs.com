@@ -1,5 +1,5 @@
-import DisplayBans from "../DisplayBans";
-import { Champion } from "../draftInterfaces";
+import DisplayBans from "../draftViews/DisplayBans";
+import { Champion } from "../interfaces/draftInterfaces";
 import { useEffect, useState } from "react";
 import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";

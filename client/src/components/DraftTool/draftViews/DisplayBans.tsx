@@ -1,6 +1,6 @@
 import { memo, useEffect, useState } from "react";
 import DisplayBanImage from "./DisplayBanImage";
-import { useDraftContext } from "./providers/DraftProvider";
+import { useDraftContext } from "../providers/DraftProvider";
 
 const DisplayBans = ({ playerSide }: { playerSide: string }) => {
   const [sideBan, setSideBan] = useState<number>();

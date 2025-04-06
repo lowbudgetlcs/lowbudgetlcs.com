@@ -1,4 +1,4 @@
-import { DraftProps } from "./draftInterfaces";
+import { DraftProps } from "../interfaces/draftInterfaces";
 
 export interface PastLobbyProps {
   isValid: boolean;

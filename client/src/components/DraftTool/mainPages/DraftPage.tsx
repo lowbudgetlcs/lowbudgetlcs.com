@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 import { Link, useLocation, useParams } from "react-router-dom";
-import { Champion } from "./draftInterfaces";
-import DraftDisplay from "./DraftDisplay";
-import Button from "../Button";
-import StreamDisplay from "./StreamView/StreamDisplay";
-import { useDraftContext } from "./providers/DraftProvider";
-import championData from "./championRoles.json";
+import { Champion } from "../interfaces/draftInterfaces";
+import DraftDisplay from "../draftViews/DraftDisplay";
+import Button from "../../Button";
+import StreamDisplay from "../StreamView/StreamDisplay";
+import { useDraftContext } from "../providers/DraftProvider";
+import championData from "../championRoles.json";
 
 function DraftPage() {
   const {

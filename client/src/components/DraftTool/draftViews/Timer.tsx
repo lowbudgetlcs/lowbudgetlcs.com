@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DraftProps } from "./draftInterfaces";
+import { DraftProps } from "../interfaces/draftInterfaces";
 
 const Timer = ({
   timer,

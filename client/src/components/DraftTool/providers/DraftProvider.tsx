@@ -1,12 +1,12 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { DraftProps } from "../draftInterfaces";
-import { defaultDraftState } from "../defaultDraftState";
-import { pastDraftHandler, PastLobbyProps } from "../pastDraftHandler";
-import { handleBanPhase, handlePickPhase } from "../clientDraftHandler";
+import { DraftProps } from "../interfaces/draftInterfaces";
+import { defaultDraftState } from "../defaultStates/defaultDraftState";
+import { handleBanPhase, handlePickPhase } from "../draftRunHandlers/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
 import { Outlet } from "react-router-dom";
+import { pastDraftHandler, PastLobbyProps } from "../draftRunHandlers/pastDraftHandler";
 
 interface DraftContextProps {
   draftState: DraftProps;

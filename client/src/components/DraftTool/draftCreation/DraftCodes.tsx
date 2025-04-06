@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import Button from "../Button";
-import { DraftLinkProps } from "./draftInterfaces";
+import Button from "../../Button";
+import { DraftLinkProps } from "../interfaces/draftInterfaces";
 
 function DraftCodes({
   draftLinks,

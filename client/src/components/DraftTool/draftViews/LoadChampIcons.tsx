@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { Champion } from "./draftInterfaces";
-import { useDraftContext } from "./providers/DraftProvider";
+import { Champion } from "../interfaces/draftInterfaces";
+import { useDraftContext } from "../providers/DraftProvider";
 
 interface LoadChampIconsProps {
   championRoles: Champion[];

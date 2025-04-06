@@ -2,16 +2,16 @@ import { IoSearch } from "react-icons/io5";
 import DisplayBans from "./DisplayBans";
 import RoleSelect from "./RoleSelect";
 import LoadChampIcons from "./LoadChampIcons";
-import { Champion } from "./draftInterfaces";
+import { Champion } from "../interfaces/draftInterfaces";
 import { ChangeEvent, useCallback, useState } from "react";
 import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import downloadFile from "../../utils/downloadFile";
-import { useDraftContext } from "./providers/DraftProvider";
+import downloadFile from "../../../utils/downloadFile";
+import { useDraftContext } from "../providers/DraftProvider";
 import { useLocation } from "react-router-dom";
-import FearlessNav from "./draftNavbars/FearlessNav";
+import FearlessNav from "../draftNavbars/FearlessNav";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");

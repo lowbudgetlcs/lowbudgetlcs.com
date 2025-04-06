@@ -1,15 +1,14 @@
-import { useSessionStorageState } from "../../hooks/useSessionStorageState";
-import Button from "../Button";
-import NavList from "../NavList";
+import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
+import Button from "../../Button";
+import NavList from "../../NavList";
 import { createDraft } from "./createDraft";
-import { checkTournamentCode, DraftCodeProps } from "./draftHandler";
+import { checkTournamentCode, DraftCodeProps } from "../connectionHandlers/draftHandler";
 import { FormEvent, useState } from "react";
-import { DraftLinkProps } from "./draftInterfaces";
 import DraftCodes from "./DraftCodes";
 import createFearlessDraft from "./createFearlessDraft";
-import { FearlessInitializerProps } from "./interfaces/draftInterfaces";
-import FearlessLinks from "./draftCreation/FearlessLinks";
+import FearlessLinks from "./FearlessLinks";
 import { redirect } from "react-router-dom";
+import { DraftLinkProps, FearlessInitializerProps } from "../interfaces/draftInterfaces";
 
 function CreateDraft() {
   const [draftLinks, setDraftLinks] = useSessionStorageState<

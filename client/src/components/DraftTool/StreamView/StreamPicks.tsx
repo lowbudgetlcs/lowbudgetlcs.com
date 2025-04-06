@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { Champion } from "../draftInterfaces";
+import { Champion } from "../interfaces/draftInterfaces";
 import StreamPickImage from "./StreamPickImage";
 import { useDraftContext } from "../providers/DraftProvider";
 
