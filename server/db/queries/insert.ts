@@ -21,6 +21,7 @@ export async function insertDraft(draft: DraftInitializeProps) {
         shortcode: draft.tournamentID,
         blueName: draft.blueDisplayName,
         redName: draft.redDisplayName,
+        fearlessCode: draft.fearlessCode || null,
       })
       .returning();
 

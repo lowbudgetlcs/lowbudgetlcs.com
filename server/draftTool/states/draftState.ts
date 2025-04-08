@@ -51,6 +51,7 @@ export interface DraftInitializeProps {
   blueDisplayName: string;
   redDisplayName: string;
   tournamentID: string | null;
+  fearlessCode?: string;
 }
 
 export interface HandlerVarsProps {

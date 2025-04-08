@@ -9,6 +9,7 @@ import {
   teams,
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
+import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
 
 export async function getRosterData() {
   try {
@@ -223,4 +224,41 @@ export async function getPastDraft(lobbyCode: string) {
   }
 
   return null;
+}
+
+// Finds valid past fearless series and returns it in the client state form
+export async function getPastFearlessSeries(fearlessCode: string) {
+  const seriesResult = await db
+    .select()
+    .from(fearlessDraftLobbies)
+    .where(eq(fearlessDraftLobbies.fearlessCode, fearlessCode))
+    .limit(1);
+
+  if (!seriesResult.length) {
+    return null;
+  }
+
+  const series = seriesResult[0];
+  const drafts = await db
+    .select()
+    .from(draftLobbies)
+    .where(eq(draftLobbies.fearlessCode, fearlessCode));
+
+  if (!series.fearlessComplete || !series.totalDrafts) return;
+  
+  const clientState: FearlessStateClientProps = {
+    fearlessCode: series.fearlessCode,
+    fearlessComplete: series.fearlessComplete,
+    team1Name: series.team1Name,
+    team2Name: series.team2Name,
+    draftCount: series.totalDrafts,
+    completedDrafts: drafts.length,
+    currentDraft: null,
+    currentBlueSide: null,
+    currentRedSide: null,
+    allPicks: [],
+    allBans: [],
+    draftLobbyCodes: drafts.map((draft) => draft.lobbyCode),
+  };
+  return clientState;
 }

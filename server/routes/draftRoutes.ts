@@ -1,7 +1,11 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
 import { insertDraft } from "../db/queries/insert";
-import { getMatchingShortCode, getPastDraft } from "../db/queries/select";
+import {
+  getMatchingShortCode,
+  getPastDraft,
+  getPastFearlessSeries,
+} from "../db/queries/select";
 import {
   DraftInitializeProps,
   initializeDraftState,
@@ -139,4 +143,22 @@ draftRoutes.get(
   }
 );
 
+draftRoutes.get(
+  "/api/pastFearless/:fearlessCode",
+  async (req: Request, res: Response) => {
+    try {
+      const fearlessCode = req.params.fearlessCode;
+      const response = await getPastFearlessSeries(fearlessCode);
+
+      if (response) {
+        res.status(200).json(response);
+      } else {
+        res.status(200).json({ isValid: false });
+      }
+    } catch (err) {
+      console.error("Error in Finding Past Game:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+);
 export default draftRoutes;
