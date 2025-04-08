@@ -26,6 +26,8 @@ import FearlessDraftPage from "./components/DraftTool/mainPages/FearlessDraftPag
 import { SocketProvider } from "./components/DraftTool/providers/SocketProvider";
 import { DraftProvider } from "./components/DraftTool/providers/DraftProvider";
 import DraftNavbar from "./components/DraftTool/draftNavbars/DraftNavbar";
+import { SettingsProvider } from "./components/DraftTool/providers/SettingsProvider";
+import DraftSettings from "./components/DraftTool/DraftSettings";
 
 function App() {
   const location = useLocation();
@@ -34,52 +36,55 @@ function App() {
     <div className=" relative font-serif bg-black">
       <ScrollToTop />
       {!isDraftRoute && <Twitch />}
-      {!isDraftRoute ? <Navbar /> : <DraftNavbar/>}
-      <LeagueDataProvider>
-        <Routes>
-          <Route element={<SocketProvider />}>
-            <Route path="/" element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="rosters" element={<Roster />} />
-            <Route path="rosters/:league" element={<LeaguePlayers />} />
-            <Route path="allstars" element={<AllStars />}>
-              <Route path="economy" element={<ASEconomy />} />
-              <Route path="commercial" element={<ASCommercial />} />
-              <Route path="financial" element={<ASFinancial />} />
-              <Route path="executive" element={<ASExecutive />} />
-            </Route>
-            <Route path="stats" element={<StatsMain />} />
-            {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
-            <Route path="stats/team/" element={<StatsSeason />} />
-            {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
-            <Route path="*" element={<ErrorPage />} />
-            <Route path="draft" element={<CreateDraft />} />
-            <Route element={<DraftProvider />}>
-              <Route path="draft/:lobbyCode" element={<DraftPage />} />
-              <Route
-                path="draft/:lobbyCode/:sideCode"
-                element={<DraftPage />}
-              />
-            </Route>
-            <Route element={<FearlessProvider />}>
-              <Route
-                path="draft/fearless/:fearlessCode"
-                element={<FearlessMain />}
-              />
-              <Route
-                path="draft/fearless/:fearlessCode/:teamCode"
-                element={<FearlessMain />}
-              />
+      <SettingsProvider>
+        <DraftSettings/>
+        {!isDraftRoute ? <Navbar /> : <DraftNavbar />}
+        <LeagueDataProvider>
+          <Routes>
+            <Route element={<SocketProvider />}>
+              <Route path="/" element={<Home />} />
+              <Route path="about" element={<About />} />
+              <Route path="rosters" element={<Roster />} />
+              <Route path="rosters/:league" element={<LeaguePlayers />} />
+              <Route path="allstars" element={<AllStars />}>
+                <Route path="economy" element={<ASEconomy />} />
+                <Route path="commercial" element={<ASCommercial />} />
+                <Route path="financial" element={<ASFinancial />} />
+                <Route path="executive" element={<ASExecutive />} />
+              </Route>
+              <Route path="stats" element={<StatsMain />} />
+              {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
+              <Route path="stats/team/" element={<StatsSeason />} />
+              {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
+              <Route path="*" element={<ErrorPage />} />
+              <Route path="draft" element={<CreateDraft />} />
               <Route element={<DraftProvider />}>
+                <Route path="draft/:lobbyCode" element={<DraftPage />} />
                 <Route
-                  path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode"
-                  element={<FearlessDraftPage />}
+                  path="draft/:lobbyCode/:sideCode"
+                  element={<DraftPage />}
                 />
               </Route>
+              <Route element={<FearlessProvider />}>
+                <Route
+                  path="draft/fearless/:fearlessCode"
+                  element={<FearlessMain />}
+                />
+                <Route
+                  path="draft/fearless/:fearlessCode/:teamCode"
+                  element={<FearlessMain />}
+                />
+                <Route element={<DraftProvider />}>
+                  <Route
+                    path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode"
+                    element={<FearlessDraftPage />}
+                  />
+                </Route>
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </LeagueDataProvider>
+          </Routes>
+        </LeagueDataProvider>
+      </SettingsProvider>
       {!isDraftRoute && <Footer />}
     </div>
   );

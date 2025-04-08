@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface FullNavProps {
 }
 
 function FullNav({ isOpen, setIsOpen }: FullNavProps) {
+  const { setSettingsVisible } = useSettingsContext();
   const toggleTop = () => {
     window.scrollTo(0, 0);
   };
@@ -22,6 +24,11 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
   const closeToTop = () => {
     close();
     toggleTop();
+  };
+
+  const openSettings = () => {
+    close();
+    setSettingsVisible(true);
   };
 
   return (
@@ -60,12 +67,11 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         </li>
         <li className="text-left animate-slide-in-500 opacity-0">
           <div
-            onClick={closeToTop}
+            onClick={openSettings}
             className="hover:text-orange transition duration-300 cursor-pointer"
           >
             <div className="flex flex-col gap-2 py-10">
               <div className="navBox pl-14 ">Settings</div>
-              <p className="text-sm pl-14 text-white/60">Coming soonTM</p>
             </div>
           </div>
         </li>

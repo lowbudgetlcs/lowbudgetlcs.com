@@ -1,7 +1,8 @@
-import { createContext, useContext, useState } from "react";
-import { Outlet } from "react-router-dom";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 interface SettingsContextProps {
+  settingsVisible: boolean;
+  setSettingsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   animationToggle: boolean;
   setAnimationToggle: React.Dispatch<React.SetStateAction<boolean>>;
   pickBanSplit: boolean;
@@ -20,16 +21,19 @@ const SettingsContext = createContext<SettingsContextProps | undefined>(
   undefined
 );
 
-export const SettingsProvider: React.FC = () => {
+export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) => {
+  const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
   const [animationToggle, setAnimationToggle] = useState<boolean>(true);
   const [pickBanSplit, setPickBanSplit] = useState<boolean>(true);
   const [teamNameVisible, setTeamNameVisible] = useState<boolean>(true);
   const [smallIcons, setSmallIcons] = useState<boolean>(false);
   const [champNamesVisible, setChampNamesVisible] = useState<boolean>(true);
-  const [volume, setVolume] = useState<number>(0);
+  const [volume, setVolume] = useState<number>(50);
   return (
     <SettingsContext.Provider
       value={{
+        settingsVisible,
+        setSettingsVisible,
         animationToggle,
         setAnimationToggle,
         pickBanSplit,
@@ -44,7 +48,7 @@ export const SettingsProvider: React.FC = () => {
         setVolume,
       }}
     >
-      <Outlet />
+      {children}
     </SettingsContext.Provider>
   );
 };
