@@ -35,7 +35,7 @@ const DraftSettings = () => {
             onClick={toggleClose}
             className="absolute bi bi-x-lg text-3xl hover:cursor-pointer right-5 md:right-10 top-4 md:top-8"
           ></i>
-          <div className="flex flex-col gap-8 items-start w-full py-8">
+          <div className="flex flex-col gap-8 items-start w-full p-10">
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={animationToggle} setFunction={setAnimationToggle}/>
               <p>Toggle Animation</p>
@@ -57,16 +57,15 @@ const DraftSettings = () => {
               <p>Display Champion Names</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around items-center">
-              {/* For volume, you might want a different input type */}
               <input 
                 type="range" 
                 min="0" 
                 max="100" 
                 value={volume} 
                 onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-24" 
+                className="slider w-26 appearance-none bg-white rounded-md h-2 opacity-85 transition duration-300" 
               />
-              <p>Set Volume: {volume}%</p>
+              <p className="w-28">Volume: {volume}%</p>
             </div>
           </div>
         </div>
