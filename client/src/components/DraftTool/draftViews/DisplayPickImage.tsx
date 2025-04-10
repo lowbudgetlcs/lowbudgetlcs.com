@@ -78,7 +78,7 @@ const DisplayPickImage = ({
           <img
             src={link}
             alt={displayName || "champion image"}
-            className={`w-full h-full object-cover object-[50%_-20%] scale-[180%] ${
+            className={`w-full h-full object-cover object-[50%_-20%] draftMd:object-[50%_4%] scale-[180%] ${
               isChampHovered ? "grayscale-[90%]" : ""
             } ${
               championName !== "nothing" && !isPastDraft && "animate-scaleBounce"

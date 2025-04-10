@@ -110,7 +110,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
       {/* Main Container */}
       <div className="relative mainDraftContainer flex flex-1">
         {/* Blue Side Picks */}
-        <div className="blueSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
+        <div className="blueSidePicks flex flex-col gap-2 px-4 pt-4">
           <DisplayPicks championRoles={championRoles} playerSide={"blue"} />
         </div>
         {/* Champion Pick Container */}
@@ -166,25 +166,25 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           </div>
         </div>
         {/* Red Side Picks */}
-        <div className="redSidePicks flex flex-col gap-4 draftMd:p-4 p-0 px-2 py-4">
+        <div className="redSidePicks flex flex-col gap-2 px-4 pt-4">
           <DisplayPicks championRoles={championRoles} playerSide={"red"} />
         </div>
       </div>
       {/* Champion Bans*/}
-      <div className="champBans flex w-full justify-between gap-8 items-center pt-8 max-[1100px]:pt-4 px-4">
+      <div className="champBans flex w-full justify-between gap-8 items-center pt-4 px-4">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
           <DisplayBans playerSide={"blue"} />
         </div>
-        <div className="flex flex-col gap-4 items-center justify-center">
+        <div className="flex flex-col gap-2 items-center justify-center">
           <DraftButton />
 
           {draftState.draftComplete && (
             <button
-              className={`downloadBtn p-4 bg-green/60 hover:bg-green hover:cursor-pointer font-bold max-h-16 flex items-center justify-center rounded-md transition duration-300`}
+              className={`downloadBtn p-2 bg-green/60 hover:bg-green hover:cursor-pointer font-bold max-h-16 flex items-center justify-center rounded-md transition duration-300`}
               onClick={downloadDraftData}
             >
-              Download Draft File (JSON Format)
+              Download Draft JSON
             </button>
           )}
         </div>

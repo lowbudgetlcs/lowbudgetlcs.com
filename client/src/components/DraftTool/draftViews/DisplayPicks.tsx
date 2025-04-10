@@ -11,7 +11,7 @@ const DisplayPicks = ({
   championRoles: Champion[];
   playerSide: string;
 }) => {
-  const { pickBanSplit } = useSettingsContext()
+  const { pickBanSplit } = useSettingsContext();
   const [sidePick, setSidePick] = useState<number>();
   const { draftState, currentHover } = useDraftContext();
 
@@ -65,7 +65,7 @@ const DisplayPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-64 h-28 overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
@@ -75,7 +75,7 @@ const DisplayPicks = ({
                 playerSide === "red" &&
                 currentPhase === "pickPhase1" &&
                 sidePick === index
-              ? "border-red transition-all"
+              ? "border-red transition-all "
               : "border-gray"
           } bg-gray/60 rounded-md`}
         >
@@ -107,23 +107,23 @@ const DisplayPicks = ({
         </div>
       ))}
 
-      <div className={`space h-4 ${pickBanSplit ? '' : 'hidden'}`}></div>
+      <div className={`space h-2 ${pickBanSplit ? "" : "hidden"}`}></div>
 
       {/* Pick Phase 2 */}
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-64 h-28 overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             sidePick === index
-              ? "border-blue transition-all delay-[20ms]"
+              ? "border-blue transition-all delay-[20ms] "
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 sidePick === index
-              ? "border-red transition-all delay-[20ms]"
+              ? "border-red transition-all delay-[20ms] "
               : "border-gray"
           } bg-gray/60 rounded-md`}
         >

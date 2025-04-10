@@ -113,7 +113,7 @@ export default {
     screens: {
       xl: '1440px',
       lg: '1024px',
-      draftMd: '900px',
+      draftMd: '1275px',
       md: '768px',
       sm: '375px',
 
