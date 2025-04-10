@@ -17,6 +17,8 @@ const DraftSettings = () => {
     setChampNamesVisible,
     volume,
     setVolume,
+    champIconsVisible,
+    setChampIconsVisible,
   } = useSettingsContext();
 
   function toggleClose() {
@@ -26,7 +28,7 @@ const DraftSettings = () => {
   if (settingsVisible) {
     return (
       <div
-        className={`popup fixed justify-center items-center z-50 inset-0 transition duration-1000 flex bg-black/85`}
+        className={`popup fixed justify-center items-center z-[99999] inset-0 transition duration-1000 flex bg-black/75`}
       >
         <div onClick={toggleClose} className="absolute w-full h-full"></div>
         <div className="relative px-8 pt-12 rounded-lg w-full md:w-fit text-white bg-light-gray border-2 border-gray z-10">
@@ -37,33 +39,50 @@ const DraftSettings = () => {
           ></i>
           <div className="flex flex-col gap-8 items-start w-full p-10">
             <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton isOn={animationToggle} setFunction={setAnimationToggle}/>
+              <ToggleButton
+                isOn={animationToggle}
+                setFunction={setAnimationToggle}
+              />
               <p>Toggle Spin Animation</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton isOn={pickBanSplit} setFunction={setPickBanSplit}/>
+              <ToggleButton isOn={pickBanSplit} setFunction={setPickBanSplit} />
               <p>Show Pick/Ban Phase Split</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton isOn={teamNameVisible} setFunction={setTeamNameVisible}/>
+              <ToggleButton
+                isOn={teamNameVisible}
+                setFunction={setTeamNameVisible}
+              />
               <p>Display Team Names</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton isOn={smallIcons} setFunction={setSmallIcons}/>
+              <ToggleButton isOn={smallIcons} setFunction={setSmallIcons} />
               <p>Display Small Icons</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton isOn={champNamesVisible} setFunction={setChampNamesVisible}/>
+              <ToggleButton
+                isOn={champIconsVisible}
+                setFunction={setChampIconsVisible}
+              />
+              <p>Display Champion Icons</p>
+            </div>
+            <div className="toggleBox flex gap-4 justify-around">
+              <ToggleButton
+                isOn={champNamesVisible}
+                setFunction={setChampNamesVisible}
+              />
               <p>Display Champion Icon Names</p>
             </div>
+
             <div className="toggleBox flex gap-4 justify-around items-center">
-              <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                value={volume} 
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={volume}
                 onChange={(e) => setVolume(Number(e.target.value))}
-                className="slider w-26 appearance-none bg-white rounded-md h-2 opacity-85 transition duration-300" 
+                className="slider w-26 appearance-none bg-white rounded-md h-2 opacity-85 transition duration-300"
               />
               <p className="w-28">Volume: {volume}%</p>
             </div>

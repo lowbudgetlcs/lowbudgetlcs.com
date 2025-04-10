@@ -19,7 +19,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
   const { draftState, playerSide } = useDraftContext();
-  const { teamNameVisible } = useSettingsContext();
+  const { teamNameVisible, champIconsVisible } = useSettingsContext();
 
   const location = useLocation();
   const isFearless = location.pathname.includes("/fearless");
@@ -84,7 +84,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             <p className="opacity-80">You</p>
           </div>
         </div>
-        <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
+        <div className="timer absolute left-0 right-0 top-2 bottom-0 text-center text-2xl font-bold">
           <Timer
             timer={draftState.timer}
             displayTurn={draftState.displayTurn}
@@ -142,7 +142,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
               <FearlessNav />
             </div>
           )}
-          <div className="relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4">
+          <div className={`relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4 ${champIconsVisible ? '' : 'hidden'}`}>
             <div className="relative champFilter flex gap-4">
               <RoleSelect
                 selectedRole={selectedRole}
@@ -164,7 +164,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             </form>
           </div>
           {/* List of Champion Images */}
-          <div className="relative overflow-y-scroll bg-transparent">
+          <div className={`relative overflow-y-scroll bg-transparent ${champIconsVisible ? '' : 'hidden'}`}>
             <div className="relative">
               <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
                 <LoadChampIcons
