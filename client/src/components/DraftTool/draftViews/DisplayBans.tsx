@@ -70,7 +70,7 @@ const DisplayBans = ({ playerSide }: { playerSide: string }) => {
         {(playerSide === "blue" ? [0, 1, 2] : [3, 4]).map((index) => (
           <div
             key={index}
-            className={`relative w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 min-[1922px]:w-40 min-[1922px]:h-40  ${
+            className={`relative w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 min-[1922px]:w-32 min-[1922px]:h-32  ${
               playerTurn === playerSide &&
               playerSide === "blue" &&
               currentPhase === "banPhase1" &&
@@ -130,7 +130,7 @@ const DisplayBans = ({ playerSide }: { playerSide: string }) => {
         {(playerSide === "blue" ? [3, 4] : [0, 1, 2]).map((index) => (
           <div
             key={index}
-            className={`relative w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 min-[1922px]:w-40 min-[1922px]:h-40 border-2 ${
+            className={`relative w-24 h-24 max-[1275px]:w-16 max-[1275px]:h-16 min-[1922px]:w-32 min-[1922px]:h-32 border-2 ${
               playerTurn === playerSide &&
               playerSide === "blue" &&
               currentPhase === "banPhase2" &&
