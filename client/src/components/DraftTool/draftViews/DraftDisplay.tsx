@@ -115,7 +115,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           <DisplayPicks championRoles={championRoles} playerSide={"blue"} />
         </div>
         {/* Champion Pick Container */}
-        <div className="championPickContainer relative min-[1922px]:max-w-[90rem] flex flex-col">
+        <div className="championPickContainer relative w-full min-[1922px]:w-[90rem] flex flex-col">
           <div
             className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
               playerSide === draftState.displayTurn
