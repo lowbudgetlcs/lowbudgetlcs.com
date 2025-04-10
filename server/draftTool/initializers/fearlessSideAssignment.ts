@@ -1,10 +1,11 @@
-import { randomUUID } from "crypto";
 import { FearlessStateServerProps } from "../interfaces/initializerInferfaces";
 import fearlessDraftStateInitializer from "./fearlessDraftStateInitializer";
 import { insertDraft } from "../../db/queries/insert";
+import ShortUniqueId from "short-unique-id";
 
 // Runs for every new fearless draft initialized in the series
 // Sets the sides according to "Host", Team 1
+const { randomUUID } = new ShortUniqueId({ length: 10 });
 const fearlessSideAssignment = async (
   teamCode: string,
   fearlessLobby: FearlessStateServerProps,
