@@ -38,7 +38,7 @@ const DraftSettings = () => {
           <div className="flex flex-col gap-8 items-start w-full p-10">
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={animationToggle} setFunction={setAnimationToggle}/>
-              <p>Toggle Animation</p>
+              <p>Toggle Spin Animation</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={pickBanSplit} setFunction={setPickBanSplit}/>
@@ -54,7 +54,7 @@ const DraftSettings = () => {
             </div>
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={champNamesVisible} setFunction={setChampNamesVisible}/>
-              <p>Display Champion Names</p>
+              <p>Display Champion Icon Names</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around items-center">
               <input 

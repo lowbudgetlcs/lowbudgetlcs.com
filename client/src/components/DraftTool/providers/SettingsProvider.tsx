@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import { useLocalStorageState } from "../../../hooks/uselocalStorageState";
 
 interface SettingsContextProps {
   settingsVisible: boolean;
@@ -23,12 +24,12 @@ const SettingsContext = createContext<SettingsContextProps | undefined>(
 
 export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) => {
   const [settingsVisible, setSettingsVisible] = useState<boolean>(false);
-  const [animationToggle, setAnimationToggle] = useState<boolean>(true);
-  const [pickBanSplit, setPickBanSplit] = useState<boolean>(true);
-  const [teamNameVisible, setTeamNameVisible] = useState<boolean>(true);
-  const [smallIcons, setSmallIcons] = useState<boolean>(false);
-  const [champNamesVisible, setChampNamesVisible] = useState<boolean>(true);
-  const [volume, setVolume] = useState<number>(50);
+  const [animationToggle, setAnimationToggle] = useLocalStorageState<boolean>("animationToggle", true);
+  const [pickBanSplit, setPickBanSplit] = useLocalStorageState<boolean>("pickBanSplit", true);
+  const [teamNameVisible, setTeamNameVisible] = useLocalStorageState<boolean>("teamNameVisible", true);
+  const [smallIcons, setSmallIcons] = useLocalStorageState<boolean>("smallIcons", true);
+  const [champNamesVisible, setChampNamesVisible] = useLocalStorageState<boolean>("champNamesVisible", true);
+  const [volume, setVolume] = useLocalStorageState<number>("volume", 50);
   return (
     <SettingsContext.Provider
       value={{
