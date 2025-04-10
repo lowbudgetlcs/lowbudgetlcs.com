@@ -39,6 +39,8 @@ export default {
 
       },
       animation: {
+        'slide-in-right': 'slide-in 0.8s forwards',
+        'slide-in-left': 'slide-in-left 0.8s forwards',
         'slide-in-300': 'slide-in 0.8s 300ms forwards',
         'slide-in-400': 'slide-in 0.8s 400ms forwards',
         'slide-in-500': 'slide-in 0.8s 500ms forwards',
@@ -55,10 +57,15 @@ export default {
         'moveToRight': 'moveToRight 0.5s linear',
         'scaleBounce': 'scaleBounce 0.5s linear',
         'smallScaleBounce': 'smallScaleBounce 0.5s linear',
+        'largeScreenScaleBounce': 'largeScreenScaleBounce 0.5s linear',
       },
       keyframes: {
         'slide-in': {
           '0%': { opacity: 0, transform: 'translateX(-40px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+        'slide-in-left': {
+          '0%': { opacity: 0, transform: 'translateX(40px)' },
           '100%': { opacity: 1, transform: 'translateX(0)' },
         },
         spin: {
@@ -101,6 +108,11 @@ export default {
           '0%': { transform: 'scale(1.05)' },
           '50%': { transform: 'scale(1.15)' },
           '100%': { transform: 'scale(1.05)' },
+        },
+        largeScreenScaleBounce: {
+          '0%': { transform: 'scale(1.4)' },
+          '50%': { transform: 'scale(1.6)' },
+          '100%': { transform: 'scale(1.4)' },
         },
       },
       fontFamily: {

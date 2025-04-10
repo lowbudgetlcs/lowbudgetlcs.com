@@ -78,22 +78,45 @@ const DisplayPickImage = ({
           <img
             src={link}
             alt={displayName || "champion image"}
-            className={`w-full h-full object-cover object-[50%_-20%] draftMd:object-[50%_4%] scale-[180%] ${
+            className={`w-full h-full object-cover object-[50%_-20%] draftMd:object-[50%_4%] scale-[180%] min-[1922px]:scale-[140%] ${
               isChampHovered ? "grayscale-[90%]" : ""
             } ${
-              championName !== "nothing" && !isPastDraft && "animate-scaleBounce"
+              championName !== "nothing" &&
+              !isPastDraft &&
+              "animate-scaleBounce min-[1922px]:animate-largeScreenScaleBounce"
             }`}
           />
         )}
-        <p
-          className={
-            playerSide === "blue"
-              ? "absolute z-50 bottom-0 right-0 font-bold bg-black px-2 rounded-tl-md"
-              : "absolute z-50 bottom-0 left-0 font-bold bg-black px-2 rounded-tr-md"
-          }
+        <div
+          className={`absolute z-50 bottom-0 w-full font-bold min-[1922px]:text-2xl`}
         >
-          {displayName}
-        </p>
+          <div
+            className={`relative  ${
+              !isChampHovered || isPastDraft ? "" : "hidden"
+            } `}
+          >
+            <div
+              className={`absolute -bottom-2 z-10 h-8 min-[1922px]:h-10 w-2/5 from-black ${
+                playerSide === "blue"
+                  ? "bg-gradient-to-l right-0"
+                  : "bg-gradient-to-r"
+              }`}
+            ></div>
+            <div
+              className={`absolute bottom-0 px-2 z-20 ${
+                playerSide === "blue" ? "right-0" : "left-0"
+              } 
+              ${
+                !isPastDraft &&
+                (playerSide === "blue"
+                  ? "opacity-0 animate-slide-in-right"
+                  : "opacity-0 animate-slide-in-left")
+              }`}
+            >
+              {displayName}
+            </div>
+          </div>
+        </div>
         <div
           className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
             championName !== "nothing" && !isPastDraft && "animate-moveToRight"
@@ -101,8 +124,8 @@ const DisplayPickImage = ({
         ></div>
       </div>
     );
-  } 
-  return null
+  }
+  return null;
 };
 
 export default memo(DisplayPickImage);
