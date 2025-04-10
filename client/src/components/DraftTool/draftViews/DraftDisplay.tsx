@@ -54,8 +54,9 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   ]);
 
   return (
-    <div className="relative text-white max-h-screen flex flex-col py-2 max-[1275px]:pt-2 max-[1275px]:py-0">
-      <div className="teamTitles relative flex justify-between px-4">
+    <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col">
+      
+      <div className="teamTitles relative flex justify-between px-4 py-2">
         <div className={`blueTitle flex items-center gap-4`}>
           <div
             className={`py-2 px-4 ${
@@ -108,13 +109,13 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         </div>
       </div>
       {/* Main Container */}
-      <div className="relative mainDraftContainer flex flex-1">
+      <div className="relative mainDraftContainer flex flex-1 h-[70vh]">
         {/* Blue Side Picks */}
-        <div className="blueSidePicks flex flex-col gap-2 px-4 pt-4">
+        <div className="blueSidePicks flex flex-col gap-2 px-4 pt-4 flex-1 items-stretch">
           <DisplayPicks championRoles={championRoles} playerSide={"blue"} />
         </div>
         {/* Champion Pick Container */}
-        <div className="championPickContainer relative w-full">
+        <div className="championPickContainer relative min-[1922px]:max-w-[60rem] flex flex-col">
           <div
             className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
               playerSide === draftState.displayTurn
@@ -153,7 +154,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             </form>
           </div>
           {/* List of Champion Images */}
-          <div className="relative h-[616px] max-[1100px]:h-[580px] overflow-y-scroll bg-transparent">
+          <div className="relative overflow-y-scroll bg-transparent">
             <div className="relative">
               <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
                 <LoadChampIcons
@@ -166,12 +167,12 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           </div>
         </div>
         {/* Red Side Picks */}
-        <div className="redSidePicks flex flex-col gap-2 px-4 pt-4">
+        <div className="redSidePicks flex flex-col flex-1 gap-2 px-4 pt-4 items-stretch">
           <DisplayPicks championRoles={championRoles} playerSide={"red"} />
         </div>
       </div>
       {/* Champion Bans*/}
-      <div className="champBans flex w-full justify-between gap-8 items-center pt-4 px-4">
+      <div className="champBans flex w-full justify-between gap-8 items-center pt-4 pb-2 px-4 mt-auto">
         {/* Blue Side Bans */}
         <div className="blueSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col max-[1275px]:items-start">
           <DisplayBans playerSide={"blue"} />

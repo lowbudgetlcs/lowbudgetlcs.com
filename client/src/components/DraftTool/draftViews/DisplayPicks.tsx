@@ -65,7 +65,7 @@ const DisplayPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] min-[1922px]:w-full min-[1922px]:h-auto overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
@@ -113,7 +113,7 @@ const DisplayPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] min-[1922px]:w-full min-[1922px]:h-auto overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&

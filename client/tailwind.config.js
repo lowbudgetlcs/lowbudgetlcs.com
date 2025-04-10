@@ -116,7 +116,7 @@ export default {
       draftMd: '1275px',
       md: '768px',
       sm: '375px',
-
+      xxl: '2000px',
     }
   },
   plugins: [],
