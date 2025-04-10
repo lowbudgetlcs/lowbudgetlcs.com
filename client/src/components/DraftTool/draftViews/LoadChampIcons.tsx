@@ -34,12 +34,18 @@ export function LoadChampIcons({
   const championList = useMemo(() => {
     return championRoles
       .filter((champion) => {
-        const matchesSearch = champion.name
-          .toLowerCase()
-          .includes(searchValue.toLowerCase());
-
+        const trimmedChamp = champion.name.toLowerCase().trim();
+        const matchesSearch = trimmedChamp.includes(searchValue.toLowerCase().trim());
+        const trimmedDisplayChamp = champion.displayName.toLowerCase().trim();
+        const matchesDisplay = trimmedDisplayChamp.includes(
+          searchValue.toLowerCase().trim()
+        );
+        const splitString = trimmedChamp.split(" ");
+        const includesInitials = splitString.some(word => 
+          word.startsWith(searchValue.toLowerCase().trim())
+        );
         if (selectedRole === "All") {
-          return matchesSearch;
+          return matchesSearch || matchesDisplay || includesInitials;
         }
 
         const selectedChampion = championRoles.find(
@@ -49,7 +55,10 @@ export function LoadChampIcons({
 
         const hasSelectedRole = champion.roles.includes(selectedRole);
 
-        return matchesSearch && hasSelectedRole;
+        return (
+          (matchesSearch || includesInitials || matchesDisplay) &&
+          hasSelectedRole
+        );
       })
       .map((champion) => {
         return (
