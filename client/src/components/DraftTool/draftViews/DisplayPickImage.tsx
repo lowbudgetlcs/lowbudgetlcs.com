@@ -96,7 +96,7 @@ const DisplayPickImage = ({
             } `}
           >
             <div
-              className={`absolute -bottom-2 z-10 h-8 min-[1922px]:h-10 w-2/5 from-black ${
+              className={`absolute -bottom-2 z-10 h-8 min-[1922px]:h-10 w-2/5 animate-fadeIn from-black ${
                 playerSide === "blue"
                   ? "bg-gradient-to-l right-0"
                   : "bg-gradient-to-r"

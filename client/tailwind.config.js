@@ -50,7 +50,7 @@ export default {
         'slide-in-900': 'slide-in 0.8s 900ms forwards',
         'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
         'spin': 'spin 6s linear infinite',
-        'fadeIn': 'fadeIn 0.3s 1000ms forwards',
+        'fadeIn': 'fadeIn 0.5s forwards',
         'selectPulse': 'selectPulse 0.5s linear',
         'line1X': 'line1X 0.8s linear',
         'line2X': 'line2X 0.8s ease-out',
