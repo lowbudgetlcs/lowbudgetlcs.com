@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useDraftContext } from "./providers/DraftProvider";
 import { useSettingsContext } from "./providers/SettingsProvider";
+import pickSound from "../../assets/sounds/pick.ogg";
+import banSound from "../../assets/sounds/ban.ogg";
 
 const DraftTurnAudio = () => {
   const { draftState, playerSide } = useDraftContext();
@@ -13,15 +15,13 @@ const DraftTurnAudio = () => {
 
       // Determine which audio to play based on phase type
       if (draftState.phaseType === "ban") {
-        audioSrc =
-          "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-champ-select/global/default/sounds/sfx-cs-draft-notif-yourban.ogg";
+        audioSrc = banSound;
       } else if (draftState.phaseType === "pick") {
-        audioSrc =
-          "https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-champ-select/global/default/sounds/sfx-cs-draft-notif-yourpick.ogg";
+        audioSrc = pickSound;
       }
 
       if (audioSrc && audioRef.current) {
-        audioRef.current.volume = (volume / 100);
+        audioRef.current.volume = volume / 100;
         audioRef.current.src = audioSrc;
         audioRef.current
           .play()
