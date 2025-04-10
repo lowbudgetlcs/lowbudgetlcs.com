@@ -1,12 +1,13 @@
 import { memo, useEffect, useState } from "react";
 import DisplayBanImage from "./DisplayBanImage";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 const DisplayBans = ({ playerSide }: { playerSide: string }) => {
   const [sideBan, setSideBan] = useState<number>();
   const [link, setLink] = useState<string>("#");
   const { draftState, currentHover } = useDraftContext();
-
+  const { pickBanSplit } = useSettingsContext();
   const currentPhase = draftState.activePhase;
   const playerTurn = draftState.displayTurn;
   const bans = playerSide === "blue" ? draftState.blueBans : draftState.redBans;
@@ -114,7 +115,11 @@ const DisplayBans = ({ playerSide }: { playerSide: string }) => {
         ))}
       </div>
 
-      <div className="space h-4 max-[1275px]:hidden" />
+      <div
+        className={`space h-4 max-[1275px]:hidden ${
+          pickBanSplit ? "" : "hidden"
+        }`}
+      />
 
       {/* Ban Phase 2 */}
       <div

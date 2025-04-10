@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Champion } from "../interfaces/draftInterfaces";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 interface LoadChampIconsProps {
   championRoles: Champion[];
@@ -17,7 +18,7 @@ export function LoadChampIcons({
     useDraftContext();
   const pickedChampions = draftState.picksArray;
   const bannedChampions = draftState.bansArray;
-
+  const { smallIcons, champNamesVisible} = useSettingsContext();
   const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
   const handlePick = (championName: string) => {
     if (
@@ -88,7 +89,7 @@ export function LoadChampIcons({
                   }`
                 : ""
             }
-            w-28 object-contain max-[1100px]:w-24 select-none rounded-md`}
+            ${smallIcons ? 'w-20' : 'w-28'} object-contain max-[1100px]:w-24 select-none rounded-md`}
               src={`${dDragonIconLink}${
                 champion.name === "Wukong" ? "monkeyking" : champion.name
               }/square`}
@@ -100,7 +101,7 @@ export function LoadChampIcons({
                 bannedChampions.includes(champion.name)
                   ? ""
                   : "hover:cursor-pointer"
-              } select-none`}
+              } select-none ${smallIcons ? 'text-xs' : 'text-sm font-bold'} ${champNamesVisible ? '' : 'hidden'}`}
             >
               {champion.displayName}
             </p>

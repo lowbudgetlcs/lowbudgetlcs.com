@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { Champion } from "../interfaces/draftInterfaces";
 import DisplayPickImage from "./DisplayPickImage";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 const DisplayPicks = ({
   championRoles,
@@ -10,6 +11,7 @@ const DisplayPicks = ({
   championRoles: Champion[];
   playerSide: string;
 }) => {
+  const { pickBanSplit } = useSettingsContext()
   const [sidePick, setSidePick] = useState<number>();
   const { draftState, currentHover } = useDraftContext();
 
@@ -105,7 +107,7 @@ const DisplayPicks = ({
         </div>
       ))}
 
-      <div className="space h-4"></div>
+      <div className={`space h-4 ${pickBanSplit ? '' : 'hidden'}`}></div>
 
       {/* Pick Phase 2 */}
       {[3, 4].map((index) => (
