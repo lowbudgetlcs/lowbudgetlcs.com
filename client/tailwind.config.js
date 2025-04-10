@@ -39,6 +39,8 @@ export default {
 
       },
       animation: {
+        'slide-in-right': 'slide-in 0.8s forwards',
+        'slide-in-left': 'slide-in-left 0.8s forwards',
         'slide-in-300': 'slide-in 0.8s 300ms forwards',
         'slide-in-400': 'slide-in 0.8s 400ms forwards',
         'slide-in-500': 'slide-in 0.8s 500ms forwards',
@@ -48,17 +50,22 @@ export default {
         'slide-in-900': 'slide-in 0.8s 900ms forwards',
         'slide-in-1000': 'slide-in 0.8s 1000ms forwards',
         'spin': 'spin 6s linear infinite',
-        'fadeIn': 'fadeIn 0.3s 1000ms forwards',
+        'fadeIn': 'fadeIn 0.5s forwards',
         'selectPulse': 'selectPulse 0.5s linear',
         'line1X': 'line1X 0.8s linear',
         'line2X': 'line2X 0.8s ease-out',
         'moveToRight': 'moveToRight 0.5s linear',
         'scaleBounce': 'scaleBounce 0.5s linear',
         'smallScaleBounce': 'smallScaleBounce 0.5s linear',
+        'largeScreenScaleBounce': 'largeScreenScaleBounce 0.5s linear',
       },
       keyframes: {
         'slide-in': {
           '0%': { opacity: 0, transform: 'translateX(-40px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' },
+        },
+        'slide-in-left': {
+          '0%': { opacity: 0, transform: 'translateX(40px)' },
           '100%': { opacity: 1, transform: 'translateX(0)' },
         },
         spin: {
@@ -102,6 +109,11 @@ export default {
           '50%': { transform: 'scale(1.15)' },
           '100%': { transform: 'scale(1.05)' },
         },
+        largeScreenScaleBounce: {
+          '0%': { transform: 'scale(1.4)' },
+          '50%': { transform: 'scale(1.6)' },
+          '100%': { transform: 'scale(1.4)' },
+        },
       },
       fontFamily: {
         'serif': ['Roboto', 'Helvetica', 'Arial', 'sans-serif']
@@ -113,10 +125,10 @@ export default {
     screens: {
       xl: '1440px',
       lg: '1024px',
-      draftMd: '900px',
+      draftMd: '1275px',
       md: '768px',
       sm: '375px',
-
+      xxl: '2000px',
     }
   },
   plugins: [],

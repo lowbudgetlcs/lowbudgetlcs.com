@@ -12,7 +12,7 @@
   {
     "name": "Akali",
     "displayName": "Akali",
-    "roles": ["Mid", "Top"]
+    "roles": ["Mid"]
   },
   {
     "name": "Akshan",
@@ -32,7 +32,7 @@
   {
     "name": "Amumu",
     "displayName": "Amumu",
-    "roles": ["Jungle", "Support"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Anivia",
@@ -62,7 +62,7 @@
   {
     "name": "Aurora",
     "displayName": "Aurora",
-    "roles": ["Mid", "Top"]
+    "roles": ["Mid"]
   },
   {
     "name": "Azir",
@@ -87,7 +87,7 @@
   {
     "name": "Brand",
     "displayName": "Brand",
-    "roles": ["Mid", "Support", "Jungle"]
+    "roles": ["Support", "Jungle"]
   },
   {
     "name": "Braum",
@@ -117,7 +117,7 @@
   {
     "name": "Chogath",
     "displayName": "Cho'Gath",
-    "roles": ["Top", "Jungle"]
+    "roles": ["Top", "Mid"]
   },
   {
     "name": "Corki",
@@ -127,7 +127,7 @@
   {
     "name": "Darius",
     "displayName": "Darius",
-    "roles": ["Top"]
+    "roles": ["Top", "Jungle"]
   },
   {
     "name": "Diana",
@@ -182,7 +182,7 @@
   {
     "name": "Galio",
     "displayName": "Galio",
-    "roles": ["Mid", "Top"]
+    "roles": ["Mid"]
   },
   {
     "name": "Gangplank",
@@ -202,7 +202,7 @@
   {
     "name": "Gragas",
     "displayName": "Gragas",
-    "roles": ["Jungle", "Top"]
+    "roles": ["Top"]
   },
   {
     "name": "Graves",
@@ -212,7 +212,7 @@
   {
     "name": "Gwen",
     "displayName": "Gwen",
-    "roles": ["Top", "Jungle", "Mid"]
+    "roles": ["Top", "Jungle"]
   },
   {
     "name": "Hecarim",
@@ -227,7 +227,7 @@
   {
     "name": "Hwei",
     "displayName": "Hwei",
-    "roles": ["Mid", "Bottom", "Support"]
+    "roles": ["Mid", "Support"]
   },
   {
     "name": "Illaoi",
@@ -242,7 +242,7 @@
   {
     "name": "Ivern",
     "displayName": "Ivern",
-    "roles": ["Jungle", "Support"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Janna",
@@ -252,7 +252,7 @@
   {
     "name": "JarvanIV",
     "displayName": "Jarvan IV",
-    "roles": ["Jungle", "Top"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Jax",
@@ -262,7 +262,7 @@
   {
     "name": "Jayce",
     "displayName": "Jayce",
-    "roles": ["Top", "Mid"]
+    "roles": ["Top"]
   },
   {
     "name": "Jhin",
@@ -287,7 +287,7 @@
   {
     "name": "Karma",
     "displayName": "Karma",
-    "roles": ["Support", "Mid"]
+    "roles": ["Support"]
   },
   {
     "name": "Karthus",
@@ -307,7 +307,7 @@
   {
     "name": "Kayle",
     "displayName": "Kayle",
-    "roles": ["Top", "Mid"]
+    "roles": ["Top"]
   },
   {
     "name": "Kayn",
@@ -317,7 +317,7 @@
   {
     "name": "Kennen",
     "displayName": "Kennen",
-    "roles": ["Top", "Mid"]
+    "roles": ["Top"]
   },
   {
     "name": "Khazix",
@@ -342,7 +342,7 @@
   {
     "name": "Ksante",
     "displayName": "K'Sante",
-    "roles": ["Top", "Mid"]
+    "roles": ["Top"]
   },
   {
     "name": "Leblanc",
@@ -362,7 +362,7 @@
   {
     "name": "Lillia",
     "displayName": "Lillia",
-    "roles": ["Jungle", "Top"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Lissandra",
@@ -377,7 +377,7 @@
   {
     "name": "Lulu",
     "displayName": "Lulu",
-    "roles": ["Support", "Mid"]
+    "roles": ["Support"]
   },
   {
     "name": "Lux",
@@ -407,7 +407,7 @@
   {
     "name": "Mel",
     "displayName": "Mel",
-    "roles": ["Mid", "Bottom"]
+    "roles": ["Mid", "Bottom", "Support"]
   },
   {
     "name": "Milio",
@@ -427,12 +427,12 @@
   {
     "name": "Morgana",
     "displayName": "Morgana",
-    "roles": ["Support", "Mid", "Jungle"]
+    "roles": ["Support"]
   },
   {
     "name": "Naafiri",
     "displayName": "Naafiri",
-    "roles": ["Mid"]
+    "roles": ["Mid", "Jungle"]
   },
   {
     "name": "Nami",
@@ -442,7 +442,7 @@
   {
     "name": "Nasus",
     "displayName": "Nasus",
-    "roles": ["Top", "Jungle"]
+    "roles": ["Top"]
   },
   {
     "name": "Nautilus",
@@ -492,12 +492,12 @@
   {
     "name": "Pantheon",
     "displayName": "Pantheon",
-    "roles": ["Top", "Mid", "Support"]
+    "roles": ["Top", "Jungle", "Support"]
   },
   {
     "name": "Poppy",
     "displayName": "Poppy",
-    "roles": ["Top", "Jungle", "Support"]
+    "roles": ["Jungle", "Support"]
   },
   {
     "name": "Pyke",
@@ -512,7 +512,7 @@
   {
     "name": "Quinn",
     "displayName": "Quinn",
-    "roles": ["Top", "Jungle"]
+    "roles": ["Top"]
   },
   {
     "name": "Rakan",
@@ -557,12 +557,12 @@
   {
     "name": "Rumble",
     "displayName": "Rumble",
-    "roles": ["Top", "Mid"]
+    "roles": ["Top"]
   },
   {
     "name": "Ryze",
     "displayName": "Ryze",
-    "roles": ["Mid", "Top"]
+    "roles": ["Mid"]
   },
   {
     "name": "Samira",
@@ -582,7 +582,7 @@
   {
     "name": "Seraphine",
     "displayName": "Seraphine",
-    "roles": ["Support", "Mid"]
+    "roles": ["Support"]
   },
   {
     "name": "Sett",
@@ -597,7 +597,7 @@
   {
     "name": "Shen",
     "displayName": "Shen",
-    "roles": ["Top", "Support"]
+    "roles": ["Top"]
   },
   {
     "name": "Shyvana",
@@ -642,12 +642,12 @@
   {
     "name": "Swain",
     "displayName": "Swain",
-    "roles": ["Mid", "Top", "Bottom"]
+    "roles": ["Mid"]
   },
   {
     "name": "Sylas",
     "displayName": "Sylas",
-    "roles": ["Mid", "Top"]
+    "roles": ["Mid"]
   },
   {
     "name": "Syndra",
@@ -662,7 +662,7 @@
   {
     "name": "Taliyah",
     "displayName": "Taliyah",
-    "roles": ["Mid", "Top", "Jungle"]
+    "roles": ["Mid"]
   },
   {
     "name": "Talon",
@@ -677,7 +677,7 @@
   {
     "name": "Teemo",
     "displayName": "Teemo",
-    "roles": ["Top", "Mid", "Jungle", "Support"]
+    "roles": ["Top", "Support"]
   },
   {
     "name": "Thresh",
@@ -697,7 +697,7 @@
   {
     "name": "Tryndamere",
     "displayName": "Tryndamere",
-    "roles": ["Top", "Mid"]
+    "roles": ["Top"]
   },
   {
     "name": "TwistedFate",
@@ -727,7 +727,7 @@
   {
     "name": "Vayne",
     "displayName": "Vayne",
-    "roles": ["Bottom", "Top"]
+    "roles": ["Bottom"]
   },
   {
     "name": "Veigar",
@@ -737,7 +737,7 @@
   {
     "name": "Velkoz",
     "displayName": "Vel'Koz",
-    "roles": ["Mid"]
+    "roles": ["Mid", "Support"]
   },
   {
     "name": "Vex",
@@ -777,7 +777,7 @@
   {
     "name": "Wukong",
     "displayName": "Wukong",
-    "roles": ["Top", "Jungle"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Xayah",
@@ -817,7 +817,7 @@
   {
     "name": "Zac",
     "displayName": "Zac",
-    "roles": ["Jungle", "Top"]
+    "roles": ["Jungle"]
   },
   {
     "name": "Zed",
@@ -837,7 +837,7 @@
   {
     "name": "Zilean",
     "displayName": "Zilean",
-    "roles": ["Support", "Mid"]
+    "roles": ["Support"]
   },
   {
     "name": "Zoe",
@@ -847,6 +847,6 @@
   {
     "name": "Zyra",
     "displayName": "Zyra",
-    "roles": ["Support", "Mid", "Jungle"]
+    "roles": ["Support", "Jungle"]
   }
 ]

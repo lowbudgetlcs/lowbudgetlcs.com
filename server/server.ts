@@ -7,7 +7,7 @@ import twitchRoutes from "./routes/twitchRoutes";
 import { getTwitchConfig } from "./services/twitchService";
 import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
-import { draftSocket } from "./sockets/draftSocket";
+import { draftSocket } from "./draftTool/sockets/draftSocket";
 import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
 
 const app = express();

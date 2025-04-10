@@ -1,0 +1,23 @@
+  .slider:hover {
+    opacity: 1;
+  }
+  
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: rgb(232 160 18);
+    cursor: pointer;
+    border-radius: 9999px;
+  }
+  
+  .slider::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: rgb(232 160 18);
+    cursor: pointer;
+    border-radius: 9999px;
+  }

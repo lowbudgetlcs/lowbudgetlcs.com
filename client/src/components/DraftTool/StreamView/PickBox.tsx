@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Champion, DraftProps } from "../draftInterfaces";
+import { Champion, DraftProps } from "../interfaces/draftInterfaces";
 
 const PickBox = ({
   draftState,

@@ -2,7 +2,7 @@ import { eq } from "drizzle-orm";
 import {
   DraftInitializeProps,
   DraftStateProps,
-} from "../../sockets/draftState";
+} from "../../draftTool/states/draftState";
 import { db } from "../index";
 import { draftLobbies, fearlessDraftLobbies } from "../schema";
 import {
@@ -21,6 +21,7 @@ export async function insertDraft(draft: DraftInitializeProps) {
         shortcode: draft.tournamentID,
         blueName: draft.blueDisplayName,
         redName: draft.redDisplayName,
+        fearlessCode: draft.fearlessCode || null,
       })
       .returning();
 

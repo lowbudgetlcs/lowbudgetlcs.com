@@ -3,18 +3,20 @@ import tempImage from "../../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "../interfaces/draftInterfaces";
 import { useDraftContext } from "../providers/DraftProvider";
 
-const StreamPickImage = ({
+const DisplayPickImage = ({
+  playerSide,
   pickIndex,
   pickedChampions,
   championRoles,
   currentHover,
 }: {
+  playerSide: string;
   pickIndex: number;
   pickedChampions: string[];
   championRoles: Champion[];
   currentHover: DraftProps["currentHover"];
 }) => {
-  const [link, setLink] = useState<string | undefined>(undefined);
+  const [link, setLink] = useState<string>("");
 
   const { isPastDraft } = useDraftContext();
 
@@ -29,12 +31,11 @@ const StreamPickImage = ({
     championName === "nothing";
 
   useEffect(() => {
-    if (isChampHovered) {
+    if (isChampHovered && currentHover) {
       setLink((prevLink) => {
-        // Fixes Wukong's name
         const fixedName =
           currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -42,17 +43,16 @@ const StreamPickImage = ({
       });
     } else {
       setLink((prevLink) => {
-        // Fixes Wukong's name
         const fixedName =
           championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`;
+        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
         return prevLink;
       });
     }
-  }, [currentHover, championName]);
+  }, [currentHover, championName, isChampHovered]);
 
   const selectedChampion = championRoles.find((champion) =>
     currentHover && championName === "nothing"
@@ -68,21 +68,55 @@ const StreamPickImage = ({
       <img
         src={tempImage}
         alt="nothing"
-        className="w-full grayscale opacity-25"
+        className=" max-w-full max-h-full grayscale scale-[180%] opacity-25 m-auto"
       />
     );
   } else if (championName !== "nothing" || isChampHovered) {
     return (
-      <div className="relative w-full h-full">
-        <img
-          src={link ? link : "#"}
-          alt={displayName || "champion image"}
-          className={`w-full h-full object-cover ${
-            isChampHovered ? "grayscale-[90%]" : ""
-          } ${
-            championName !== "nothing" && !isPastDraft && "animate-smallScaleBounce"
-          } scale-105`}
-        />
+      <div className={`relative w-full h-full`}>
+        {link && (
+          <img
+            src={link}
+            alt={displayName || "champion image"}
+            className={`w-full h-full object-cover object-[50%_-20%] draftMd:object-[50%_4%] scale-[180%] min-[1922px]:scale-[140%] ${
+              isChampHovered ? "grayscale-[90%]" : ""
+            } ${
+              championName !== "nothing" &&
+              !isPastDraft &&
+              "animate-scaleBounce min-[1922px]:animate-largeScreenScaleBounce"
+            }`}
+          />
+        )}
+        <div
+          className={`absolute z-50 bottom-0 w-full font-bold min-[1922px]:text-2xl`}
+        >
+          <div
+            className={`relative  ${
+              !isChampHovered || isPastDraft ? "" : "hidden"
+            } `}
+          >
+            <div
+              className={`absolute -bottom-2 z-10 h-8 min-[1922px]:h-10 w-2/5 animate-fadeIn from-black ${
+                playerSide === "blue"
+                  ? "bg-gradient-to-l right-0"
+                  : "bg-gradient-to-r"
+              }`}
+            ></div>
+            <div
+              className={`absolute bottom-0 px-2 z-20 ${
+                playerSide === "blue" ? "right-0" : "left-0"
+              } 
+              ${
+                !isPastDraft &&
+                (playerSide === "blue"
+                  ? "opacity-0 animate-slide-in-right"
+                  : "opacity-0 animate-slide-in-left")
+              }`}
+            >
+              {displayName}
+            </div>
+          </div>
+        </div>
         <div
           className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
             championName !== "nothing" && !isPastDraft && "animate-moveToRight"
@@ -90,9 +124,8 @@ const StreamPickImage = ({
         ></div>
       </div>
     );
-  } else {
-    return null;
   }
+  return null;
 };
 
-export default memo(StreamPickImage);
+export default memo(DisplayPickImage);

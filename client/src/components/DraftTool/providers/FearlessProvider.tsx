@@ -10,6 +10,7 @@ import { FearlessStateProps } from "../interfaces/draftInterfaces";
 import { Socket } from "socket.io-client";
 import { Outlet } from "react-router-dom";
 import { useSocketContext } from "./SocketProvider";
+import { pastFearlessHandler } from "../draftRunHandlers/pastFearlessHandler";
 
 export interface FearlessContextProps {
   fearlessState: FearlessStateProps | undefined;
@@ -22,6 +23,7 @@ export interface FearlessContextProps {
   error: boolean;
   initializeFearless: (fearlessCode: string, teamCode: string) => void;
   handleSideSelect: (side: "blue" | "red") => void;
+  isPastSeries: boolean;
 }
 
 const FearlessContext = createContext<FearlessContextProps | undefined>(
@@ -34,6 +36,7 @@ export const FearlessProvider: React.FC = () => {
     FearlessStateProps | undefined
   >(undefined);
   const [team, setTeam] = useState<string | undefined>();
+  const [isPastSeries, setIsPastSeries] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const { createSocket, disconnectSocket, clientId } = useSocketContext();
@@ -44,7 +47,7 @@ export const FearlessProvider: React.FC = () => {
 
   // Initialize fearless socket and state
   const initializeFearless = useCallback(
-    (fearlessCode: string, teamCode: string) => {
+    async (fearlessCode: string, teamCode: string) => {
       // Prevent multiple initialization attempts for the same code (NO LOOPS)
       if (
         isInitializing.current ||
@@ -57,40 +60,55 @@ export const FearlessProvider: React.FC = () => {
       currentFearlessCode.current = fearlessCode;
       setLoading(true);
       setError(false);
+      try {
+        // Check if this is a past fearless series first
+        const pastSeries: FearlessStateProps | undefined =
+          await pastFearlessHandler(fearlessCode);
 
-      // Clean up existing socket if it exists.
-      if (fearlessSocket) {
-        disconnectSocket(fearlessSocket);
-      }
+        if (pastSeries && pastSeries.fearlessComplete) {
+          // If it is a completed series, just load the state
+          setFearlessState(pastSeries);
+          setIsPastSeries(true);
+          setLoading(false);
+          return;
+        }
+        // Clean up existing socket if it exists.
+        if (fearlessSocket) {
+          disconnectSocket(fearlessSocket);
+        }
 
-      const newSocket = createSocket("/fearless");
-      setFearlessSocket(newSocket);
+        const newSocket = createSocket("/fearless");
+        setFearlessSocket(newSocket);
 
-      // Set up handlers for initial connection
-      const handleJoined = ({ teamDisplay, fearlessState }: any) => {
-        setTeam(teamDisplay);
-        setFearlessState(fearlessState);
-        setLoading(false);
-        isInitializing.current = false;
-      };
+        // Set up handlers for initial connection
+        const handleJoined = ({ teamDisplay, fearlessState }: any) => {
+          setTeam(teamDisplay);
+          setFearlessState(fearlessState);
+          setLoading(false);
+          isInitializing.current = false;
+        };
 
-      const handleError = (err: any) => {
-        console.error("Error connecting to fearless:", err);
+        const handleError = (err: any) => {
+          console.error("Error connecting to fearless:", err);
+          setError(true);
+          setLoading(false);
+          isInitializing.current = false;
+        };
+
+        newSocket.on("connect", () => {
+          newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
+        });
+
+        // Establish connection once
+        newSocket.once("joinedFearless", handleJoined);
+        newSocket.once("error", handleError);
+        if (newSocket.connected) {
+          console.log("Socket already connected, emitting joinFearless");
+          newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
+        }
+      } catch (err) {
+        console.error("Error initializing draft:", err);
         setError(true);
-        setLoading(false);
-        isInitializing.current = false;
-      };
-
-      newSocket.on("connect", () => {
-        newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
-      });
-
-      // Establish connection once
-      newSocket.once("joinedFearless", handleJoined);
-      newSocket.once("error", handleError);
-      if (newSocket.connected) {
-        console.log("Socket already connected, emitting joinFearless");
-        newSocket.emit("joinFearless", { fearlessCode, teamCode, clientId });
       }
     },
     [createSocket, disconnectSocket, clientId]
@@ -145,6 +163,7 @@ export const FearlessProvider: React.FC = () => {
         error,
         initializeFearless,
         handleSideSelect,
+        isPastSeries,
       }}
     >
       <Outlet />
