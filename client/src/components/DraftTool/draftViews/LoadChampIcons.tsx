@@ -18,8 +18,9 @@ export function LoadChampIcons({
     useDraftContext();
   const pickedChampions = draftState.picksArray;
   const bannedChampions = draftState.bansArray;
-  const { smallIcons, champNamesVisible} = useSettingsContext();
+  const { smallIcons, champNamesVisible } = useSettingsContext();
   const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
+  const { animationToggle } = useSettingsContext();
   const handlePick = (championName: string) => {
     if (
       !pickedChampions.includes(championName) &&
@@ -78,18 +79,21 @@ export function LoadChampIcons({
             ${
               chosenChamp === champion.name
                 ? `brightness-110 ${
-                    champion.name === "Katarina" ||
+                    animationToggle &&
+                    (champion.name === "Katarina" ||
                     champion.name === "Garen" ||
                     champion.name === "Samira" ||
                     champion.name === "Wukong"
                       ? "animate-spin"
                       : champion.name === "Zac"
                       ? "animate-bounce"
-                      : "animate-pulse"
+                      : "animate-pulse")
                   }`
                 : ""
             }
-            ${smallIcons ? 'w-20' : 'w-28'} object-contain max-[1100px]:w-24 select-none rounded-md`}
+            ${
+              smallIcons ? "w-20" : "w-28"
+            } object-contain max-[1100px]:w-24 select-none rounded-md`}
               src={`${dDragonIconLink}${
                 champion.name === "Wukong" ? "monkeyking" : champion.name
               }/square`}
@@ -101,7 +105,9 @@ export function LoadChampIcons({
                 bannedChampions.includes(champion.name)
                   ? ""
                   : "hover:cursor-pointer"
-              } select-none ${smallIcons ? 'text-xs' : 'text-sm font-bold'} ${champNamesVisible ? '' : 'hidden'}`}
+              } select-none ${smallIcons ? "text-xs" : "text-sm font-bold"} ${
+                champNamesVisible ? "" : "hidden"
+              }`}
             >
               {champion.displayName}
             </p>

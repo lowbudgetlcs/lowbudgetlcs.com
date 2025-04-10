@@ -12,11 +12,13 @@ import downloadFile from "../../../utils/downloadFile";
 import { useDraftContext } from "../providers/DraftProvider";
 import { useLocation } from "react-router-dom";
 import FearlessNav from "../draftNavbars/FearlessNav";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
   const { draftState, playerSide } = useDraftContext();
+  const {teamNameVisible} = useSettingsContext();
 
   const location = useLocation();
   const isFearless = location.pathname.includes("/fearless");
@@ -64,7 +66,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "blue" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className="text-right font-bold text-xl">
+            <h2 className={`text-right font-bold text-xl ${teamNameVisible ? '' : 'text-transparent'}`}>
               {draftState.blueDisplayName}
             </h2>
           </div>
@@ -78,7 +80,10 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           </div>
         </div>
         <div className="timer absolute left-0 right-0 top-1 bottom-0 text-center text-2xl font-bold">
-          <Timer timer={draftState.timer} displayTurn={draftState.displayTurn}/>
+          <Timer
+            timer={draftState.timer}
+            displayTurn={draftState.displayTurn}
+          />
         </div>
         <div className={`redTitle flex items-center gap-4`}>
           <div
@@ -98,7 +103,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "red" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
+            <h2 className={`font-bold text-xl ${teamNameVisible ? '' : 'text-transparent'}`}>{draftState.redDisplayName}</h2>
           </div>
         </div>
       </div>
