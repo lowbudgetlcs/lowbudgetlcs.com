@@ -13,12 +13,13 @@ import { useDraftContext } from "../providers/DraftProvider";
 import { useLocation } from "react-router-dom";
 import FearlessNav from "../draftNavbars/FearlessNav";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import DraftTurnAudio from "../DraftAudio";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
   const { draftState, playerSide } = useDraftContext();
-  const {teamNameVisible} = useSettingsContext();
+  const { teamNameVisible } = useSettingsContext();
 
   const location = useLocation();
   const isFearless = location.pathname.includes("/fearless");
@@ -55,7 +56,6 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
 
   return (
     <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col">
-      
       <div className="teamTitles relative flex justify-between px-4 py-2">
         <div className={`blueTitle flex items-center gap-4`}>
           <div
@@ -67,7 +67,11 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "blue" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className={`text-right font-bold text-xl ${teamNameVisible ? '' : 'text-transparent'}`}>
+            <h2
+              className={`text-right font-bold text-xl ${
+                teamNameVisible ? "" : "text-transparent"
+              }`}
+            >
               {draftState.blueDisplayName}
             </h2>
           </div>
@@ -104,7 +108,13 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "red" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className={`font-bold text-xl ${teamNameVisible ? '' : 'text-transparent'}`}>{draftState.redDisplayName}</h2>
+            <h2
+              className={`font-bold text-xl ${
+                teamNameVisible ? "" : "text-transparent"
+              }`}
+            >
+              {draftState.redDisplayName}
+            </h2>
           </div>
         </div>
       </div>
@@ -195,6 +205,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           <DisplayBans playerSide={"red"} />
         </div>
       </div>
+      <DraftTurnAudio />
     </div>
   );
 }
