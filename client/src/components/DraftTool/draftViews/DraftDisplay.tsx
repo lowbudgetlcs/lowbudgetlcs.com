@@ -3,7 +3,7 @@ import DisplayBans from "./DisplayBans";
 import RoleSelect from "./RoleSelect";
 import LoadChampIcons from "./LoadChampIcons";
 import { Champion } from "../interfaces/draftInterfaces";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import DraftButton from "./DraftButton";
 import Timer from "./Timer";
 import DisplayPicks from "./DisplayPicks";
@@ -26,6 +26,12 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+
+  useEffect(() => {
+    if (searchValue.length > 0) {
+      setSelectedRole("All")
+    }
+  },[searchValue])
   const downloadDraftData = useCallback(() => {
     if (!draftState.draftComplete) return;
 
