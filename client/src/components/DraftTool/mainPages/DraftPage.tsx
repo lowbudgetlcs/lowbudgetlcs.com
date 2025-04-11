@@ -52,6 +52,9 @@ function DraftPage() {
       preloadImage(
         `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`
       );
+      if (streamMode) {
+        preloadImage(`https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`)
+      }
     });
   }, [championRoles]);
 
