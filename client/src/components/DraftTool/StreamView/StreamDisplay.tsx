@@ -5,10 +5,11 @@ import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";
 import BanBox from "./BanBox";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const { draftState } = useDraftContext();
-
+  const { teamNameVisible } = useSettingsContext();
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(
     Math.max(draftState.timer - 4, 0) || 30
@@ -47,7 +48,7 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   }, [isTimerRunning]);
 
   return (
-    <div className="h-screen relative">
+    <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col">
       <div className="absolute w-full bottom-0 text-white flex flex-col">
         <div className="teamTitles relative flex justify-between px-4">
           <div
@@ -59,7 +60,11 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "blue" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className="text-right font-bold text-xl">
+            <h2
+              className={`text-right font-bold text-xl ${
+                teamNameVisible ? "" : "text-transparent"
+              }`}
+            >
               {draftState.blueDisplayName}
             </h2>
           </div>
@@ -72,7 +77,13 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "red" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
+            <h2
+              className={`font-bold text-xl ${
+                teamNameVisible ? "" : "text-transparent"
+              }`}
+            >
+              {draftState.redDisplayName}
+            </h2>
           </div>
         </div>
         {/* Champion Bans*/}
@@ -94,11 +105,11 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
               ? "bg-blue"
               : draftState.displayTurn === "red"
               ? "bg-red"
-              : "bg-gray"
+              : ""
           } origin-center transition-all duration-200`}
           style={{
             width: "100%",
-            transform: `scaleX(${timerWidth / 100})`,
+            transform: `scaleX(${timerWidth / 113.333})`,
             transformOrigin: "center",
           }}
         ></div>

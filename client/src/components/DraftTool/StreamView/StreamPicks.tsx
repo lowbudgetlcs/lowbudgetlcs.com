@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { Champion } from "../interfaces/draftInterfaces";
 import StreamPickImage from "./StreamPickImage";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 const StreamPicks = ({
   championRoles,
@@ -13,6 +14,7 @@ const StreamPicks = ({
   const [sidePick, setSidePick] = useState<number>();
   const [link, setLink] = useState<string>("#");
   const { draftState, currentHover } = useDraftContext();
+  const { pickBanSplit } = useSettingsContext();
   const currentPhase = draftState.activePhase;
   const playerTurn = draftState.currentTurn;
   const picks =
@@ -116,7 +118,7 @@ const StreamPicks = ({
         </div>
       ))}
 
-      <div className="space h-4"></div>
+      <div className={`space h-2 ${pickBanSplit ? "" : "hidden"}`}></div>
 
       {/* Pick Phase 2 */}
       {[3, 4].map((index) => (
