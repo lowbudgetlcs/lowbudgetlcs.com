@@ -36,6 +36,25 @@ function DraftPage() {
     initializeDraft(lobbyCode, sideCode);
   }, [lobbyCode, sideCode, initializeDraft]);
 
+  const preloadImage = (url: string) => {
+    const img = new Image();
+    img.src = url;
+  };
+
+  // Preload all champion images
+  useEffect(() => {
+    championRoles.forEach((champion) => {
+      const fixedName =
+        champion.name.toLowerCase() === "wukong" ? "monkeyking" : champion.name;
+      preloadImage(
+        `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`
+      );
+      preloadImage(
+        `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`
+      );
+    });
+  }, [championRoles]);
+
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
     return <StreamDisplay championRoles={championRoles} />;
   } else if (
