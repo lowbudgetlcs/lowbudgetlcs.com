@@ -6,6 +6,7 @@ import PickBox from "./PickBox";
 import BanBox from "./BanBox";
 import { useDraftContext } from "../providers/DraftProvider";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import LogoBox from "./LogoBox";
 
 function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const { draftState } = useDraftContext();
@@ -48,7 +49,14 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   }, [isTimerRunning]);
 
   return (
-    <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col">
+    <div className="draftContainer relative text-white h-screen max-h-screen bg-black flex flex-col">
+      {/* Logo Boxes */}
+      <div className="absolute top-52 left-48 flex justify-between">
+        <LogoBox />
+      </div>
+      <div className="absolute top-52 right-48 flex justify-between">
+        <LogoBox />
+      </div>
       <div className="absolute w-full bottom-0 text-white flex flex-col">
         <div className="teamTitles relative flex justify-between px-4">
           <div
