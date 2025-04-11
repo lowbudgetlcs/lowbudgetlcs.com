@@ -16,7 +16,7 @@ const StreamPicks = ({
   const { draftState, currentHover } = useDraftContext();
   const { pickBanSplit } = useSettingsContext();
   const currentPhase = draftState.activePhase;
-  const playerTurn = draftState.currentTurn;
+  const playerTurn = draftState.displayTurn;
   const picks =
     playerSide === "blue" ? draftState.bluePicks : draftState.redPicks;
   const enemyPicks =
