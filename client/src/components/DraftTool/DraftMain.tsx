@@ -1,10 +1,7 @@
 import Button from "../Button";
 import NavList from "../NavList";
-import {
-  checkTournamentCode,
-  createDraftDBEntry,
-  DraftCodeProps,
-} from "./draftHandler";
+import { createDraft } from "./createDraft";
+import { checkTournamentCode, DraftCodeProps } from "./draftHandler";
 import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -27,42 +24,47 @@ function DraftMain() {
   const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Team names and tournament code from /draft form
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-
     const draftType = formData.get("draftType") as string | null;
     const tournamentID = formData.get("tournamentID") as string | null;
-
     let blueName = (formData.get("blueName") as string | null) || "Blue Team";
     let redName = (formData.get("redName") as string | null) || "Red Team";
 
     try {
+      // Only runs if the LBLCS Tournament option is selected
       if (draftType === "Tournament") {
         if (!tournamentID) {
           console.error("Tournament ID is missing despite being required.");
           return;
         }
 
+        // Checks if the tournament code exists in the database (when a player generates one with the discord bot)
         const isTournamentValid = await checkTournamentCode(tournamentID);
 
+        // Should never hit this
         if (typeof isTournamentValid === "undefined") {
           console.error("Unexpected error during tournament validation.");
           return;
         }
 
+        // If there is no code or the code is not in the database, show error to user on tournament input box
         if (!isTournamentValid) {
           setHasBadCode(true);
           return;
         }
       }
 
-      // Create draft
-      const draftResult: DraftCodeProps = await createDraftDBEntry(
+      // Create draft. This will send to the database if their is a tournament code
+      // otherwise it will just create a draft state (record) on the server that will expire after a set amount of time
+      const draftResult: DraftCodeProps = await createDraft(
         blueName,
         redName,
         tournamentID || null
       );
 
+      // For Draft Links
       const draftLobbyCodes = {
         lobbyCode: draftResult.draft.lobbyCode,
         blueCode: draftResult.draft.blueCode,
@@ -213,7 +215,9 @@ function DraftCodes({
   setDraftLinks,
 }: {
   draftLinks: DraftLinkProps;
-  setDraftLinks: React.Dispatch<React.SetStateAction<DraftLinkProps | undefined>>;
+  setDraftLinks: React.Dispatch<
+    React.SetStateAction<DraftLinkProps | undefined>
+  >;
 }) {
   const removeDraftLinks = () => {
     setDraftLinks(undefined);
