@@ -1,3 +1,5 @@
+const twoHours = 60 * 60 * 2000; // 2 hours in milliseconds
+
 export interface DraftStateProps {
   draftStarted: boolean;
   activePhase:
@@ -107,5 +109,12 @@ export const initializeDraftState = ({
       draftComplete: false,
     };
     console.log(`Draft state initialized for lobby with code: ${lobbyCode}`);
+
+    setTimeout(() => {
+      if (draftState[lobbyCode]) {
+        delete draftState[lobbyCode];
+        console.log(`Draft state for lobby ${lobbyCode} deleted after 1 hour.`);
+      }
+    }, twoHours);
   }
 };
