@@ -12,7 +12,6 @@ draftRoutes.get(
   "/api/checkTournamentCode/:code",
   async (req: Request, res: Response) => {
     try {
-      console.log("checking for tourneyID");
       const shortCode = req.params.code;
       const response = await getMatchingShortCode(shortCode);
       if (response) {

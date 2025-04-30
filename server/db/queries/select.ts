@@ -79,10 +79,7 @@ export async function getPlayer(summonerName: string) {
 //   return gameStats;
 // }
 
-export async function checkDBForURL(
-  blueCode: string,
-  redCode: string,
-) {
+export async function checkDBForURL(blueCode: string, redCode: string) {
   const matchingURL = await db
     .select({
       blueCode: draftLobbies.blueCode,
@@ -97,11 +94,34 @@ export async function checkDBForURL(
 
 // Check to see if shortCode exists in game table
 export async function getMatchingShortCode(shortCode: string) {
-  const matchingCode = await db
-    .select({ shortCode: games.shortcode })
-    .from(games)
-    .where(eq(games.shortcode, shortCode));
-  return matchingCode.length > 0;
+  try {
+    const matchingCode = await db
+      .select({ shortCode: games.shortcode })
+      .from(games)
+      .where(eq(games.shortcode, shortCode));
+    const checkDupes = await checkDuplicateShortCode(shortCode);
+    if (checkDupes) {
+      return false;
+    } else {
+      return matchingCode.length > 0;
+    }
+  } catch (err) {
+    console.error("Error checking tournamentID with server: ", err);
+    throw new Error("Failed to check tournamentID");
+  }
+}
+
+export async function checkDuplicateShortCode(shortCode: string) {
+  try {
+    const matchingCode = await db
+      .select({ shortCode: draftLobbies.shortcode })
+      .from(draftLobbies)
+      .where(eq(draftLobbies.shortcode, shortCode));
+    return matchingCode.length > 0;
+  } catch (err) {
+    console.error("Error checking tournamentID with server: ", err);
+    throw new Error("Failed to check tournamentID");
+  }
 }
 
 export async function getLobbyCodes(lobbyCode: string) {
@@ -113,5 +133,5 @@ export async function getLobbyCodes(lobbyCode: string) {
     })
     .from(draftLobbies)
     .where(eq(draftLobbies.lobbyCode, lobbyCode));
-    return matchingCodes.length > 0 ? matchingCodes[0] : null;
+  return matchingCodes.length > 0 ? matchingCodes[0] : null;
 }

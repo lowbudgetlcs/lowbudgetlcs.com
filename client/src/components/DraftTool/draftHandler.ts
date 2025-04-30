@@ -93,10 +93,11 @@ export const pickHandler = (
 // Checks if input tournament code is valid
 export const checkTournamentCode = async (code: string) => {
   try {
+    const encodedCode = encodeURIComponent(code);
     const response = await fetch(
-      `http://localhost:8080/draft/api/checkTournamentCode/${code}`
+      `http://localhost:8080/draft/api/checkTournamentCode/${encodedCode}`
     );
-
+    
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
