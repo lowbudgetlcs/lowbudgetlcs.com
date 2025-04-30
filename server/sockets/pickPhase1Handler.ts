@@ -1,7 +1,4 @@
-import { Server, Socket } from "socket.io";
-import { DraftStateProps, HandlerVarsProps } from "./draftState";
-import EventEmitter from "events";
-import { draftLobbies } from "../db/schema";
+import { HandlerVarsProps } from "./draftState";
 import { updateClientState } from "./clientDraftState";
 
 export const pickPhase1Handler = async ({
