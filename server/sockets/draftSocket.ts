@@ -1,11 +1,12 @@
 import { Server } from "socket.io";
 import { readyHandler } from "./readyHandler";
-import { draftState } from "./draftState";
+import { ClientDraftStateProps, draftState } from "./draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
+import { setClientDraftState, updateClientState } from "./clientDraftState";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -65,7 +66,8 @@ export const draftSocket = (io: Server) => {
           lobbyCode,
           sideDisplay,
         });
-        socket.emit("state", state);
+
+        socket.emit("state", updateClientState(lobbyCode));
       } catch (error) {
         console.error("Error during role assignment:", error);
         socket.emit("error", { message: "Internal server error." });
@@ -89,7 +91,7 @@ export const draftSocket = (io: Server) => {
         console.log("Draft is ready in ready socket");
         state.draftStarted = true;
         state.activePhase = "banPhase1";
-        io.to(lobbyCode).emit("startBanPhase1", state);
+        io.to(lobbyCode).emit("startBanPhase1", updateClientState(lobbyCode));
 
         const emitter = lobbyEmitters.get(lobbyCode);
         if (!emitter) {
@@ -118,7 +120,10 @@ export const draftSocket = (io: Server) => {
 
           if (isPickPhase1Done) {
             state.activePhase = "banPhase2";
-            io.to(lobbyCode).emit("startBanPhase2", state);
+            io.to(lobbyCode).emit(
+              "startBanPhase2",
+              updateClientState(lobbyCode)
+            );
 
             const isBanPhase2Done = await banPhase2Handler(
               io,
@@ -146,7 +151,11 @@ export const draftSocket = (io: Server) => {
                 state.phaseType = null;
                 state.displayTurn = null;
                 state.timer = 0;
-                io.to(lobbyCode).emit("draftComplete", state);
+                state.draftComplete = true;
+                io.to(lobbyCode).emit(
+                  "draftComplete",
+                  updateClientState(lobbyCode)
+                );
                 io.in(lobbyCode).disconnectSockets();
               }
             }

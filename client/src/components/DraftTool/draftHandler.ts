@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { DraftStateProps } from "./draftInterfaces";
+import { DraftProps, DraftStateProps } from "./draftInterfaces";
 
 export interface DraftCodeProps {
   draft: {
@@ -14,18 +14,16 @@ export interface TournamentIDCheckProps {
 
 // Handles connecting to draft
 export function connectionHandler(
+  socket: Socket,
   lobbyCode: string | undefined,
   sideCode: string | undefined,
-  socket: Socket,
-  setBlueReady: React.Dispatch<React.SetStateAction<boolean>>,
-  setRedReady: React.Dispatch<React.SetStateAction<boolean>>,
+  setDraftState: React.Dispatch<React.SetStateAction<DraftProps>>,
   setPlayerSide: React.Dispatch<React.SetStateAction<string>>
 ) {
   // Error handling
   // Initial connection
   console.log("Client sent lobbyCode:", lobbyCode);
   socket.emit("joinDraft", { lobbyCode, sideCode });
-  console.log("socket.id: ", socket.id);
   socket.on("error", (err) => {
     console.error("Socket Error: ", err.message);
     alert(err.message);
@@ -34,15 +32,17 @@ export function connectionHandler(
   socket.on("joinedDraft", ({ sideCode, lobbyCode, sideDisplay }) => {
     console.log("joined Draft: ", sideCode, lobbyCode);
     if (!sideDisplay) {
-      setPlayerSide("spectator");
+      setPlayerSide(sideDisplay);
     } else {
       setPlayerSide(sideDisplay);
     }
   });
 
-  const showReady = (state: DraftStateProps) => {
-    setBlueReady(state.blueReady);
-    setRedReady(state.redReady);
+  const showReady = (state: DraftProps) => {
+    setDraftState((prevState) => ({
+      ...prevState,
+      ...state,
+    }));
   };
   socket.on("blueReady", showReady);
   socket.on("redReady", showReady);
@@ -110,4 +110,3 @@ export const checkTournamentCode = async (code: string) => {
     console.error("Error in Checking Tournament ID: ", err);
   }
 };
-

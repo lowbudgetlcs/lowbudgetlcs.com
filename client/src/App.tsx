@@ -19,7 +19,7 @@ import StatsMain from "./components/StatsPage/StatsMain";
 import StatsPlayer from "./components/StatsPage/StatsPlayer";
 import StatsSeason from "./components/StatsPage/StatsSeason";
 import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
-import DraftMain from "./components/DraftTool/DraftMain";
+import CreateDraft from "./components/DraftTool/CreateDraft";
 import DraftPage from "./components/DraftTool/DraftPage";
 
 function App() {
@@ -49,7 +49,7 @@ function App() {
             <Route path="stats/team/" element={<StatsSeason/>}/>
             <Route path="stats/team/:team" element={<StatsTeamUI/>}/>
             <Route path="*" element={<ErrorPage />} />
-            <Route path="draft" element={<DraftMain/>}/>
+            <Route path="draft" element={<CreateDraft/>}/>
             <Route path="draft/:lobbyCode" element={<DraftPage/>}/>
             <Route path="draft/:lobbyCode/:sideCode" element={<DraftPage/>}/>
           </Routes>

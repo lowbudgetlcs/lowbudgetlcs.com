@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { DraftStateProps } from "./draftState";
 import EventEmitter from "events";
+import { updateClientState } from "./clientDraftState";
 
 export const banPhase2Handler = async (
   io: Server,
@@ -23,7 +24,7 @@ export const banPhase2Handler = async (
 
     const startBanPhase = async () => {
       console.log("Ban Phase 2 Starting");
-      io.to(lobbyCode).emit("banPhase", state);
+      io.to(lobbyCode).emit("banPhase", updateClientState(lobbyCode));
       state.phaseType = "ban";
 
       for (
@@ -37,10 +38,10 @@ export const banPhase2Handler = async (
           // Display Current Turn in Client
           if (currentSide === state.blueUser) {
             state.displayTurn = "blue";
-            io.to(lobbyCode).emit("currentTurn", state);
+            io.to(lobbyCode).emit("currentTurn", updateClientState(lobbyCode));
           } else if (currentSide === state.redUser) {
             state.displayTurn = "red";
-            io.to(lobbyCode).emit("currentTurn", state);
+            io.to(lobbyCode).emit("currentTurn", updateClientState(lobbyCode));
           }
           console.log(state.banIndex);
           await handleTurn(currentSide);
@@ -76,7 +77,7 @@ export const banPhase2Handler = async (
             } else if (currentSide === state.redUser) {
               state.redBans.push("nothing");
             }
-            io.to(lobbyCode).emit("setBan", state);
+            io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
             // Shut of listener incase it still is attached
             emitter.off("bluePick", banListener);
             emitter.off("redPick", banListener);
@@ -91,7 +92,7 @@ export const banPhase2Handler = async (
               clearInterval(interval);
               console.log(`${currentSide} banned: ${state.bluePick}`);
               state.blueBans.push(state.bluePick);
-              io.to(lobbyCode).emit("setBan", state);
+              io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached
               emitter.off("bluePick", banListener);
               emitter.off("redPick", banListener);
@@ -103,7 +104,7 @@ export const banPhase2Handler = async (
               clearInterval(interval);
               console.log(`${currentSide} banned: ${state.redPick}`);
               state.redBans.push(state.redPick);
-              io.to(lobbyCode).emit("setBan", state);
+              io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached
               emitter.off("bluePick", banListener);
               emitter.off("redPick", banListener);

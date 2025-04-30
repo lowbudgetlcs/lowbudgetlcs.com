@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { DraftStateProps } from "./draftState";
 import EventEmitter from "events";
 import { draftLobbies } from "../db/schema";
+import { updateClientState } from "./clientDraftState";
 
 export const pickPhase1Handler = async (
   io: Server,
@@ -26,7 +27,7 @@ export const pickPhase1Handler = async (
 
     const startPickPhase = async () => {
       console.log("Pick Phase Starting");
-      io.to(lobbyCode).emit("pickPhase", state);
+      io.to(lobbyCode).emit("pickPhase", updateClientState(lobbyCode));
       state.phaseType = "pick";
       for (
         state.pickIndex;
@@ -39,10 +40,10 @@ export const pickPhase1Handler = async (
           // Display Current Turn in Client
           if (currentSide === state.blueUser) {
             state.displayTurn = "blue";
-            io.to(lobbyCode).emit("currentTurn", state);
+            io.to(lobbyCode).emit("currentTurn", updateClientState(lobbyCode));
           } else if (currentSide === state.redUser) {
             state.displayTurn = "red";
-            io.to(lobbyCode).emit("currentTurn", state);
+            io.to(lobbyCode).emit("currentTurn", updateClientState(lobbyCode));
           }
           await handleTurn(currentSide);
           console.log("Switching turns");
@@ -81,7 +82,7 @@ export const pickPhase1Handler = async (
               state.redPicks.push("nothing");
             }
 
-            io.to(lobbyCode).emit("setPick", state);
+            io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
 
             // Shut of listener incase it still is attached
             emitter.off("bluePick", pickListener);
@@ -97,7 +98,7 @@ export const pickPhase1Handler = async (
               clearInterval(interval);
               console.log(`${currentSide} picked: ${state.bluePick}`);
               state.bluePicks.push(state.bluePick);
-              io.to(lobbyCode).emit("setPick", state);
+              io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached
               emitter.off("bluePick", pickListener);
               emitter.off("redPick", pickListener);
@@ -109,7 +110,7 @@ export const pickPhase1Handler = async (
               clearInterval(interval);
               console.log(`${currentSide} picked: ${state.redPick}`);
               state.redPicks.push(state.redPick);
-              io.to(lobbyCode).emit("setPick", state);
+              io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
               // Shut of listener incase it still is attached
               emitter.off("bluePick", pickListener);
               emitter.off("redPick", pickListener);

@@ -10,7 +10,7 @@ interface DraftLinkProps {
   blueCode: string;
   redCode: string;
 }
-function DraftMain() {
+function CreateDraft() {
   const [draftLinks, setDraftLinks] = useState<DraftLinkProps>();
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
 
@@ -279,4 +279,4 @@ https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`);
     </div>
   );
 }
-export default DraftMain;
+export default CreateDraft;

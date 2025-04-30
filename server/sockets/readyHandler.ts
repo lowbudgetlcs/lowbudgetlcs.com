@@ -1,5 +1,6 @@
 import { Server, Socket } from "socket.io";
 import { DraftStateProps } from "./draftState";
+import { updateClientState } from "./clientDraftState";
 
 export const readyHandler = (
   state: DraftStateProps,
@@ -25,8 +26,10 @@ export const readyHandler = (
 
   if (state[readyKey] !== ready) {
     state[readyKey] = ready;
-    const side = isBlue ? "blue" : "red";
-    io.to(lobbyCode).emit(isBlue ? "blueReady" : "redReady", state);
+    io.to(lobbyCode).emit(
+      isBlue ? "blueReady" : "redReady",
+      updateClientState(lobbyCode)
+    );
     console.log(`${isBlue ? "Blue" : "Red"} ready status updated:`, ready);
   }
 

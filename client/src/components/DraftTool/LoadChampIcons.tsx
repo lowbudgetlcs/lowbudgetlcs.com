@@ -20,8 +20,8 @@ export function LoadChampIcons({
   chosenChamp,
   setChosenChamp,
 }: LoadChampIconsProps) {
-  const dDragonIconLink =
-    `https://cdn.communitydragon.org/latest/champion/`;
+  const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
+
   const handlePick = (championName: string) => {
     if (
       !pickedChampions.includes(championName) &&
