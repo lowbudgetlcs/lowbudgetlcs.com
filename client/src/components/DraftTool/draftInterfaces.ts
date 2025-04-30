@@ -15,8 +15,11 @@ export interface DraftStateProps {
     | null
     | undefined;
   phaseType: "pick" | "ban" | null;
+  tournamentID: string | null;
   blueUser: string;
   redUser: string;
+  blueDisplayName: string;
+  redDisplayName: string;
   blueReady: boolean;
   redReady: boolean;
   timer: number;
@@ -32,4 +35,5 @@ export interface DraftStateProps {
   displayTurn: "red" | "blue" | null;
   bluePick: string;
   redPick: string;
+  draftComplete: boolean;
 }
