@@ -1,12 +1,17 @@
 import { Server } from "socket.io";
 import { readyHandler } from "./readyHandler";
-import { ClientDraftStateProps, draftState, HandlerVarsProps } from "./draftState";
+import {
+  ClientDraftStateProps,
+  draftState,
+  HandlerVarsProps,
+} from "./draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
 import { setClientDraftState, updateClientState } from "./clientDraftState";
+import { endDraftHandler } from "./endDraftHandler";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -76,7 +81,6 @@ export const draftSocket = (io: Server) => {
     });
 
     socket.on("ready", async ({ lobbyCode, sideCode, ready }) => {
-
       const state = getDraftState(lobbyCode);
       // Redundant but I don't trust myself
       if (!state) {
@@ -96,14 +100,13 @@ export const draftSocket = (io: Server) => {
           console.error(`No EventEmitter found for lobby ${lobbyCode}`);
           return;
         }
-        
+
         const handlerVars: HandlerVarsProps = {
           io: io,
           lobbyCode: lobbyCode,
           state: state,
           emitter: emitter,
         };
-
 
         const isBanPhase1Done = await banPhase1Handler(handlerVars);
         if (isBanPhase1Done) {
@@ -126,16 +129,7 @@ export const draftSocket = (io: Server) => {
               const isPickPhase2Done = await pickPhase2Handler(handlerVars);
 
               if (isPickPhase2Done) {
-                state.activePhase = "finished";
-                console.log("Draft Complete!");
-                state.phaseType = null;
-                state.displayTurn = null;
-                state.timer = 0;
-                state.draftComplete = true;
-                io.to(lobbyCode).emit(
-                  "draftComplete",
-                  updateClientState(lobbyCode)
-                );
+                await endDraftHandler(handlerVars);
                 io.in(lobbyCode).disconnectSockets();
               }
             }
