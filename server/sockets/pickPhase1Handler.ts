@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { DraftStateProps } from "./draftStateInitializer";
+import { DraftStateProps } from "./draftState";
 import EventEmitter from "events";
 import { draftLobbies } from "../db/schema";
 

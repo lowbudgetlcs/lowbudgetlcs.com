@@ -1,5 +1,5 @@
 
-import { DraftInitializeProps } from "../../sockets/draftStateInitializer";
+import { DraftInitializeProps } from "../../sockets/draftState";
 import { db } from "../index";
 import { draftLobbies } from "../schema";
 

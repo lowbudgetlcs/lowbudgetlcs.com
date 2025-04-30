@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { readyHandler } from "./readyHandler";
-import { draftState } from "./draftStateInitializer";
+import { draftState } from "./draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";

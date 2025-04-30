@@ -6,7 +6,7 @@ import {
   DraftInitializeProps,
   draftState,
   initializeDraftState,
-} from "../sockets/draftStateInitializer";
+} from "../sockets/draftState";
 
 draftRoutes.get(
   "/api/checkTournamentCode/:code",
