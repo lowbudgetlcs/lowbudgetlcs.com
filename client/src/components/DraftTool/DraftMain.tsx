@@ -22,7 +22,7 @@ function DraftMain() {
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
-  const navItems = ["Default Draft", "LBLCS Tournament", "Fearless Draft"];
+  const navItems = ["Default Draft", "LBLCS Tournament"];
 
   const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
