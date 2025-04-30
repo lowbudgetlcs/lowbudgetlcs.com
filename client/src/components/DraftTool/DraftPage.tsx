@@ -209,7 +209,7 @@ function DraftPage() {
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
-
+ if (draftState) {
   return (
     <div className="relative text-white py-2  h-full flex flex-col">
       <div className="timer absolute top-[2%] left-1/2 transform -translate-x-1/2 text-center text-2xl font-bold">
@@ -233,7 +233,7 @@ function DraftPage() {
             playerTurn === "blue" ? "animate-pulse" : ""
           } transition-width duration-500`}
         >
-          <h2>Blue Team</h2>
+          <h2>{draftState.blueDisplayName}</h2>
         </div>
         <div
           className={`redTitle py-2 px-4 ${
@@ -242,7 +242,7 @@ function DraftPage() {
             playerTurn === "red" ? "animate-pulse" : ""
           } transition-width duration-500`}
         >
-          <h2>Red Team</h2>
+          <h2>{draftState.redDisplayName}</h2>
         </div>
       </div>
       {/* Main Container */}
@@ -254,7 +254,7 @@ function DraftPage() {
             championRoles={championRoles}
             playerTurn={playerTurn}
             playerSide={"blue"}
-            currentPhase={draftState?.activePhase}
+            currentPhase={draftState.activePhase}
           />
         </div>
         {/* Champion Pick Container */}
@@ -302,7 +302,7 @@ function DraftPage() {
             championRoles={championRoles}
             playerTurn={playerTurn}
             playerSide={"red"}
-            currentPhase={draftState?.activePhase}
+            currentPhase={draftState.activePhase}
           />
         </div>
       </div>
@@ -314,7 +314,7 @@ function DraftPage() {
             bans={blueBans}
             side={"blue"}
             playerTurn={playerTurn}
-            currentPhase={draftState?.activePhase}
+            currentPhase={draftState.activePhase}
           />
         </div>
         {/* Ready Button */}
@@ -365,12 +365,18 @@ function DraftPage() {
             bans={redBans}
             side={"red"}
             playerTurn={playerTurn}
-            currentPhase={draftState?.activePhase}
+            currentPhase={draftState.activePhase}
           />
         </div>
       </div>
     </div>
   );
+ }
+ else {
+  return (
+    <div className="text-white">This will be the error page if draft cannot be found</div>
+  )
+ }
 }
 
 export default DraftPage;
