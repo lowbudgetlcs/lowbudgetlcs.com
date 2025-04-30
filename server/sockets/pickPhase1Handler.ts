@@ -1,16 +1,15 @@
 import { Server, Socket } from "socket.io";
-import { DraftStateProps } from "./draftState";
+import { DraftStateProps, HandlerVarsProps } from "./draftState";
 import EventEmitter from "events";
 import { draftLobbies } from "../db/schema";
 import { updateClientState } from "./clientDraftState";
 
-export const pickPhase1Handler = async (
-  io: Server,
-  socket: Socket,
-  lobbyCode: string,
-  state: DraftStateProps,
-  emitter: EventEmitter
-): Promise<boolean> => {
+export const pickPhase1Handler = async ({
+  io,
+  lobbyCode,
+  state,
+  emitter,
+}: HandlerVarsProps): Promise<boolean> => {
   if (state.activePhase !== "pickPhase1") {
     return false;
   }

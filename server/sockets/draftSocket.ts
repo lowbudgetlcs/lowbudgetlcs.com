@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 import { readyHandler } from "./readyHandler";
-import { ClientDraftStateProps, draftState } from "./draftState";
+import { ClientDraftStateProps, draftState, HandlerVarsProps } from "./draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
@@ -76,7 +76,6 @@ export const draftSocket = (io: Server) => {
     });
 
     socket.on("ready", async ({ lobbyCode, sideCode, ready }) => {
-      console.log("ready received");
 
       const state = getDraftState(lobbyCode);
       // Redundant but I don't trust myself
@@ -88,7 +87,6 @@ export const draftSocket = (io: Server) => {
       const isDraftReady = readyHandler(state, sideCode, ready, lobbyCode, io);
 
       if (isDraftReady) {
-        console.log("Draft is ready in ready socket");
         state.draftStarted = true;
         state.activePhase = "banPhase1";
         io.to(lobbyCode).emit("startBanPhase1", updateClientState(lobbyCode));
@@ -98,25 +96,20 @@ export const draftSocket = (io: Server) => {
           console.error(`No EventEmitter found for lobby ${lobbyCode}`);
           return;
         }
+        
+        const handlerVars: HandlerVarsProps = {
+          io: io,
+          lobbyCode: lobbyCode,
+          state: state,
+          emitter: emitter,
+        };
 
-        const isBanPhase1Done = await banPhase1Handler(
-          io,
-          socket,
-          lobbyCode,
-          state,
-          emitter
-        );
+
+        const isBanPhase1Done = await banPhase1Handler(handlerVars);
         if (isBanPhase1Done) {
           state.activePhase = "pickPhase1";
-          console.log("isBanPhase1Done is true!");
 
-          const isPickPhase1Done = await pickPhase1Handler(
-            io,
-            socket,
-            lobbyCode,
-            state,
-            emitter
-          );
+          const isPickPhase1Done = await pickPhase1Handler(handlerVars);
 
           if (isPickPhase1Done) {
             state.activePhase = "banPhase2";
@@ -125,25 +118,12 @@ export const draftSocket = (io: Server) => {
               updateClientState(lobbyCode)
             );
 
-            const isBanPhase2Done = await banPhase2Handler(
-              io,
-              socket,
-              lobbyCode,
-              state,
-              emitter
-            );
+            const isBanPhase2Done = await banPhase2Handler(handlerVars);
 
             if (isBanPhase2Done) {
               state.activePhase = "pickPhase2";
-              console.log("isBanPhase2Done is true!");
 
-              const isPickPhase2Done = await pickPhase2Handler(
-                io,
-                socket,
-                lobbyCode,
-                state,
-                emitter
-              );
+              const isPickPhase2Done = await pickPhase2Handler(handlerVars);
 
               if (isPickPhase2Done) {
                 state.activePhase = "finished";

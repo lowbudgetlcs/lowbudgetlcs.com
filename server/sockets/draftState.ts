@@ -1,3 +1,6 @@
+import EventEmitter from "events";
+import { Server } from "socket.io";
+
 const twoHours = 60 * 60 * 2000; // 2 hours in milliseconds
 
 export interface DraftStateProps {
@@ -41,6 +44,13 @@ export interface DraftInitializeProps {
   blueDisplayName: string;
   redDisplayName: string;
   tournamentID: string | null;
+}
+
+export interface HandlerVarsProps {
+  io: Server,
+  lobbyCode: string,
+  state: DraftStateProps,
+  emitter: EventEmitter,
 }
 
 export interface ClientDraftStateProps {

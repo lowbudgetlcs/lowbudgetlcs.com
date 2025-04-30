@@ -1,15 +1,12 @@
-import { Server, Socket } from "socket.io";
-import { DraftStateProps } from "./draftState";
-import EventEmitter from "events";
+import { HandlerVarsProps } from "./draftState";
 import { updateClientState } from "./clientDraftState";
 
-export const banPhase2Handler = async (
-  io: Server,
-  socket: Socket,
-  lobbyCode: string,
-  state: DraftStateProps,
-  emitter: EventEmitter
-): Promise<boolean> => {
+export const banPhase2Handler = async ({
+  io,
+  lobbyCode,
+  state,
+  emitter,
+}: HandlerVarsProps): Promise<boolean> => {
   if (state.activePhase !== "banPhase2") {
     return false;
   }
