@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { DraftProps, DraftStateProps } from "./draftInterfaces";
+import { DraftProps } from "./draftInterfaces";
 
 export interface DraftCodeProps {
   draft: {
