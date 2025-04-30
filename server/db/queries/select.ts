@@ -82,17 +82,15 @@ export async function getPlayer(summonerName: string) {
 export async function checkDBForURL(
   blueCode: string,
   redCode: string,
-  lobbyCode: string
 ) {
   const matchingURL = await db
     .select({
       blueCode: draftLobbies.blueCode,
       redCode: draftLobbies.redCode,
-      specCode: draftLobbies.lobbyCode,
     })
     .from(draftLobbies)
     .where(
-      sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode} or ${draftLobbies.lobbyCode} = ${lobbyCode}`
+      sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode}`
     );
   return matchingURL;
 }

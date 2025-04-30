@@ -1,18 +1,19 @@
-import { DraftProps } from "../../routes/draftRoutes";
+
+import { DraftInitializeProps } from "../../sockets/draftStateInitializer";
 import { db } from "../index";
 import { draftLobbies } from "../schema";
 
-export async function insertDraft(draft: DraftProps) {
+export async function insertDraft(draft: DraftInitializeProps) {
   try {
     const insertDraft = await db
       .insert(draftLobbies)
       .values({
         lobbyCode: draft.lobbyCode,
-        blueCode: draft.blueCode,
-        redCode: draft.redCode,
+        blueCode: draft.blueUser,
+        redCode: draft.redUser,
         shortcode: draft.tournamentID,
-        blueName: draft.blueName,
-        redName: draft.redName,
+        blueName: draft.blueDisplayName,
+        redName: draft.redDisplayName,
       })
       .returning();
 

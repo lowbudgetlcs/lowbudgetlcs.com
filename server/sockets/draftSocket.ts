@@ -1,7 +1,6 @@
 import { Server } from "socket.io";
-import { getLobbyCodes } from "../db/queries/select";
 import { readyHandler } from "./readyHandler";
-import { draftState, initializeDraftState } from "./draftStateInitializer";
+import { draftState } from "./draftStateInitializer";
 import { banPhase1Handler } from "./banPhase1Handler";
 import EventEmitter from "events";
 import { pickPhase1Handler } from "./pickPhase1Handler";
@@ -19,6 +18,7 @@ export const draftSocket = (io: Server) => {
     const getDraftState = (lobbyCode: string) => {
       if (!draftState[lobbyCode]) {
         console.error(`State for lobby ${lobbyCode} is not initialized`);
+        socket.emit("error", { draftNotInitialized: false });
         return null;
       }
       return draftState[lobbyCode];
@@ -29,16 +29,17 @@ export const draftSocket = (io: Server) => {
 
     socket.on("joinDraft", async ({ lobbyCode, sideCode }) => {
       try {
-        const codeQuery = await getLobbyCodes(lobbyCode);
+        const state = getDraftState(lobbyCode);
 
-        if (!codeQuery) throw new Error("Invalid Draft ID");
+        // Redundant but I don't trust myself
+        if (!state) {
+          console.error("Invalid Draft ID");
+          return;
+        }
+        const redCode = state.redUser;
+        const blueCode = state.blueUser;
 
-        const { blueCode, redCode } = codeQuery;
         console.log(`The Valid lobby codes are ${blueCode} and ${redCode}`);
-
-        // Initialize Draft
-        console.log("initializing draft state");
-        initializeDraftState(lobbyCode, blueCode, redCode);
 
         // Initialize EventEmitter for this lobby if not already
         if (!lobbyEmitters.has(lobbyCode)) {
@@ -64,7 +65,6 @@ export const draftSocket = (io: Server) => {
           lobbyCode,
           sideDisplay,
         });
-        const state = getDraftState(lobbyCode);
         socket.emit("state", state);
       } catch (error) {
         console.error("Error during role assignment:", error);
@@ -75,8 +75,13 @@ export const draftSocket = (io: Server) => {
 
     socket.on("ready", async ({ lobbyCode, sideCode, ready }) => {
       console.log("ready received");
+
       const state = getDraftState(lobbyCode);
-      if (!state) return;
+      // Redundant but I don't trust myself
+      if (!state) {
+        console.error("Invalid Draft ID");
+        return;
+      }
 
       const isDraftReady = readyHandler(state, sideCode, ready, lobbyCode, io);
 
@@ -140,7 +145,7 @@ export const draftSocket = (io: Server) => {
                 console.log("Draft Complete!");
                 state.phaseType = null;
                 state.displayTurn = null;
-                state.timer = 0
+                state.timer = 0;
                 io.to(lobbyCode).emit("draftComplete", state);
                 io.in(lobbyCode).disconnectSockets();
               }
@@ -152,7 +157,11 @@ export const draftSocket = (io: Server) => {
 
     socket.on("ban", ({ lobbyCode, sideCode, chosenChamp }) => {
       const state = getDraftState(lobbyCode);
-      if (!state) return;
+      // Redundant but I don't trust myself
+      if (!state) {
+        console.error("Invalid Draft ID");
+        return;
+      }
 
       if (
         state.activePhase !== "banPhase1" &&
@@ -185,7 +194,12 @@ export const draftSocket = (io: Server) => {
 
     socket.on("pick", ({ lobbyCode, sideCode, chosenChamp }) => {
       const state = getDraftState(lobbyCode);
-      if (!state) return;
+
+      // Redundant but I don't trust myself
+      if (!state) {
+        console.error("Invalid Draft ID");
+        return;
+      }
 
       if (
         state.activePhase !== "pickPhase1" &&

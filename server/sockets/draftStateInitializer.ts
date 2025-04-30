@@ -8,8 +8,11 @@ export interface DraftStateProps {
     | "finished"
     | null;
   phaseType: "pick" | "ban" | null;
+  tournamentID: string | null;
   blueUser: string;
   redUser: string;
+  blueDisplayName: string;
+  redDisplayName: string;
   blueReady: boolean;
   redReady: boolean;
   timer: number;
@@ -29,18 +32,32 @@ export interface DraftStateProps {
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
-export const initializeDraftState = (
-  lobbyCode: string,
-  blueUser: string,
-  redUser: string
-) => {
+export interface DraftInitializeProps {
+  lobbyCode: string;
+  blueUser: string;
+  redUser: string;
+  blueDisplayName: string;
+  redDisplayName: string;
+  tournamentID: string | null;
+}
+export const initializeDraftState = ({
+  lobbyCode,
+  blueUser,
+  redUser,
+  blueDisplayName,
+  redDisplayName,
+  tournamentID,
+}: DraftInitializeProps) => {
   if (!draftState[lobbyCode]) {
     draftState[lobbyCode] = {
       draftStarted: false,
       activePhase: null,
       phaseType: null,
+      tournamentID: tournamentID,
       blueUser: blueUser,
       redUser: redUser,
+      blueDisplayName: blueDisplayName,
+      redDisplayName: redDisplayName,
       blueReady: false,
       redReady: false,
       timer: 34,
