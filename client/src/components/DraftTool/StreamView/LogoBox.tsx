@@ -6,7 +6,7 @@ const LogoBox = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [chosenLogo, setChosenLogo] = useState<string | null>();
   return (
-    <div className=" relative ">
+    <div className=" relative  z-50">
       <div
         onClick={() => setIsOpen(!isOpen)}
         className={`logoBox group w-64 h-64 cursor-pointer rounded-md flex justify-center items-center p-2`}
