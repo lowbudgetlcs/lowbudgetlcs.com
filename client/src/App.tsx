@@ -15,17 +15,19 @@ function App() {
   // Finds the subdomain (used for draft site)
   const getSubdomain = (host: string) => {
     const parts = host.split(".");
-    //! Change to > 2 on prod
-    if (parts.length > 1) {
+    if (parts.length > 2) {
       return parts[0];
+    }
+    // if develeoping, will always return draft (since no .com with localhost)
+    if (host.startsWith("draft.localhost")) {
+      return "draft";
     }
     return null;
   };
-
   const location = useLocation();
   console.log(location);
 
-  const currentHost = window.location.host; // e.g., "blog.localhost:3000" or "app.example.com"
+  const currentHost = window.location.host;
   const subdomain = getSubdomain(currentHost);
   const isDraftRoute = subdomain === "draft";
   return (
