@@ -1,12 +1,10 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
 import { LeagueDataProvider } from "./components/leagueDataContext";
-// import StatsPlayer from "./components/StatsPage/StatsPlayer";
-// import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
 import DraftNavbar from "./components/DraftTool/draftNavbars/DraftNavbar";
 import { SettingsProvider } from "./components/DraftTool/providers/SettingsProvider";
 import DraftSettings from "./components/DraftTool/DraftSettings";
@@ -23,6 +21,10 @@ function App() {
     }
     return null;
   };
+
+  const location = useLocation();
+  console.log(location);
+
   const currentHost = window.location.host; // e.g., "blog.localhost:3000" or "app.example.com"
   const subdomain = getSubdomain(currentHost);
   const isDraftRoute = subdomain === "draft";
@@ -43,7 +45,7 @@ function App() {
           </Routes>
         </LeagueDataProvider>
       </SettingsProvider>
-      {!isDraftRoute && <Footer />}
+      {!isDraftRoute || (location.pathname === "/" && <Footer />)}
     </div>
   );
 }
