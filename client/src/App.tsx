@@ -10,6 +10,7 @@ import { SettingsProvider } from "./components/DraftTool/providers/SettingsProvi
 import DraftSettings from "./components/DraftTool/DraftSettings";
 import DraftRoutes from "./routes/DraftRoutes";
 import DefaultRoutes from "./routes/DefaultRoutes";
+import { useEffect } from "react";
 
 function App() {
   // Finds the subdomain (used for draft site)
@@ -25,11 +26,32 @@ function App() {
     return null;
   };
   const location = useLocation();
-  console.log(location);
 
   const currentHost = window.location.host;
+  const pathname = window.location.pathname;
   const subdomain = getSubdomain(currentHost);
   const isDraftRoute = subdomain === "draft";
+
+  useEffect(() => {
+    if (pathname.startsWith("/draft")) {
+      const baseHost = "lowbudgetlcs.com"; 
+      const newPath = pathname.substring("/draft".length); 
+      const newUrl = `${window.location.protocol}//draft.${baseHost}${newPath}${window.location.search}${window.location.hash}`;
+
+      window.location.replace(newUrl);
+    }
+  }, [currentHost, pathname, subdomain]);
+  console.log(location.pathname)
+  // If a redirect is happening, you might want to render null or a loading spinner
+  // to prevent the rest of the app from rendering momentarily.
+  if (!subdomain && pathname.startsWith("/draft")) {
+    return (
+      <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
+        <p>Redirecting...</p>
+        <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
+      </div>
+    );
+  }
   return (
     <div className=" relative font-serif bg-black">
       <ScrollToTop />
@@ -47,7 +69,7 @@ function App() {
           </Routes>
         </LeagueDataProvider>
       </SettingsProvider>
-      {!isDraftRoute || (location.pathname === "/" && <Footer />)}
+      {(!isDraftRoute || location.pathname === "/") && <Footer />}
     </div>
   );
 }

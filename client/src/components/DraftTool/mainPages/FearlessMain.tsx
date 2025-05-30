@@ -34,7 +34,7 @@ const FearlessMain = () => {
       <>
         {/* Navigates to FearlessDraftPage */}
         <Navigate
-          to={`/draft/fearless/${fearlessCode}/${teamCode}/${fearlessState.currentDraft}`}
+          to={`/fearless/${fearlessCode}/${teamCode}/${fearlessState.currentDraft}`}
         />
       </>
     ) : (
@@ -52,7 +52,7 @@ const FearlessMain = () => {
           Some error has occured. Check your URL or click the button below!
         </p>
         <div className="cursor-pointer">
-          <Link to={"/draft"}>
+          <Link to={"/"}>
             <Button>Back to Draft Creation</Button>
           </Link>
         </div>

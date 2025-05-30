@@ -1,5 +1,5 @@
-import { NavLink } from "react-router-dom";
 import logo from "../assets/lblcsLogo.svg";
+import MainLink from "./MainLink";
 
 function Logo() {
   const toggleTop = () => {
@@ -7,7 +7,7 @@ function Logo() {
   }
   return (
     <div className="logo overflow-hidden">
-      <NavLink onClick={toggleTop} to={"/"}>
+      <MainLink onClick={toggleTop} to={"/"}>
         <img
           src={logo}
           alt="logo"
@@ -15,7 +15,7 @@ function Logo() {
           height={140}
           className="dark:bg-transparent bg-black/50 rounded-lg"
         />
-      </NavLink>
+      </MainLink>
     </div>
   );
 }

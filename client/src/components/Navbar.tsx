@@ -2,6 +2,7 @@ import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
+import DraftLink from "./DraftLink";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -83,13 +84,12 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           </NavLink>
         </li>
         <li className="animate-slide-in-800 opacity-0">
-          <NavLink
-            onClick={closeToTop}
+          <DraftLink
             className="hover:text-orange transition duration-300"
-            to="/draft"
+            to="/"
           >
             <div className="navBox pl-14 py-10">Draft Tool</div>
-          </NavLink>
+          </DraftLink>
         </li>
       </ul>
     </div>

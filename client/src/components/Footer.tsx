@@ -1,4 +1,6 @@
 import { NavLink } from "react-router-dom";
+import DraftLink from "./DraftLink";
+import MainLink from "./MainLink";
 
 function Footer() {
   return (
@@ -6,14 +8,14 @@ function Footer() {
       <div className="footerText pt-4">
         <ul className="font-semibold text-xl flex flex-wrap gap-4 justify-around">
           <li className="">
-            <NavLink className="hover:text-orange transition" to="/">
+            <MainLink className="hover:text-orange transition" to="/">
               <div className="">Home</div>
-            </NavLink>
+            </MainLink>
           </li>
           <li className="">
-            <NavLink className="hover:text-orange transition" to="/about">
+            <MainLink className="hover:text-orange transition" to="/about">
               <div className="">About</div>
-            </NavLink>
+            </MainLink>
           </li>
           <li className="">
             <NavLink
@@ -25,41 +27,57 @@ function Footer() {
             </NavLink>
           </li>
           <li className="">
-            <NavLink className="hover:text-orange transition" to="/rosters">
+            <MainLink className="hover:text-orange transition" to="/rosters">
               <div className="">Rosters</div>
-            </NavLink>
+            </MainLink>
           </li>
           <li className="">
-            <NavLink className="hover:text-orange transition" to="/draft">
+            <DraftLink className="hover:text-orange transition" to="/">
               <div className="">Draft Tool</div>
-            </NavLink>
+            </DraftLink>
           </li>
           {/* <li className="">
-            <NavLink className="hover:text-orange transition" to="/stats">
+            <MainLink className="hover:text-orange transition" to="/stats">
               <div className="">Stats</div>
-            </NavLink>
+            </MainLink>
           </li> */}
         </ul>
       </div>
 
       <ul className="flex gap-8 p-4">
         <li className="w-8 h-auto">
-          <NavLink aria-label="Instagram Profile" target="_blank" to="https://www.instagram.com/lowbudgetlcs">
+          <NavLink
+            aria-label="Instagram Profile"
+            target="_blank"
+            to="https://www.instagram.com/lowbudgetlcs"
+          >
             <i className="hover:text-orange transition duration-300 bi bi-instagram text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink aria-label="Discord Server" target="_blank" to="https://discord.com/invite/XfsEEq4aPC">
+          <NavLink
+            aria-label="Discord Server"
+            target="_blank"
+            to="https://discord.com/invite/XfsEEq4aPC"
+          >
             <i className="hover:text-orange transition duration-300 bi bi-discord text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink aria-label="Twitch Channel" target="_blank" to="https://www.twitch.tv/lowbudgetlcs">
+          <NavLink
+            aria-label="Twitch Channel"
+            target="_blank"
+            to="https://www.twitch.tv/lowbudgetlcs"
+          >
             <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink aria-label="Youtube Channel" target="_blank" to="https://www.youtube.com/@lowbudgetlcs9513">
+          <NavLink
+            aria-label="Youtube Channel"
+            target="_blank"
+            to="https://www.youtube.com/@lowbudgetlcs9513"
+          >
             <i className="hover:text-orange transition duration-300 bi bi-youtube text-4xl"></i>
           </NavLink>
         </li>

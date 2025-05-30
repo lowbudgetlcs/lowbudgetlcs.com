@@ -26,7 +26,7 @@ const FearlessNav = () => {
                   <span>Draft {draftNum}</span>
                 ) : (
                   // Use relative path for other drafts
-                  <Link reloadDocument to={`/draft/fearless/${fearlessState.fearlessCode}/${teamCode}/${lobbyCode}`}>
+                  <Link reloadDocument to={`/fearless/${fearlessState.fearlessCode}/${teamCode}/${lobbyCode}`}>
                     Draft {draftNum}
                   </Link>
                 )}
