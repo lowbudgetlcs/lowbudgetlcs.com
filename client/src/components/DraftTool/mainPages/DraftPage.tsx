@@ -7,6 +7,7 @@ import Button from "../../Button";
 import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
+import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
 
 function DraftPage() {
   const {
@@ -18,6 +19,7 @@ function DraftPage() {
     initializeDraft,
   } = useDraftContext();
   const [championRoles] = useState<Champion[]>(championData);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
   // Grab the lobby code
   const params = useParams();
@@ -58,6 +60,18 @@ function DraftPage() {
     });
   }, [championRoles]);
 
+    useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
     return <StreamDisplay championRoles={championRoles} />;
   } else if (
@@ -66,7 +80,7 @@ function DraftPage() {
     (draftSocket || isPastDraft) &&
     !error
   ) {
-    return <DraftDisplay championRoles={championRoles} />;
+    return windowWidth >= 1200 ? <DraftDisplay championRoles={championRoles} /> : <MobileDraftDisplay championRoles={championRoles} />;
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
