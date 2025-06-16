@@ -39,18 +39,18 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
 
   useEffect(() => {
     if (draftState.displayTurn === playerSide) {
-      setFooterIsOpen(true)
+      setFooterIsOpen(true);
     }
-  })
+  });
   return (
-    <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col">
+    <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col overflow-hidden">
       {/* Champion Pick Container */}
       <div
         className={`absolute transition delay-0 duration-100 top-0 bg-gray z-[51] ${
-          footerIsOpen ? "" : "translate-y-full"
+          footerIsOpen ? "translate-y-[15%]" : "translate-y-full"
         }`}
       >
-        <div className="championPickContainer relative w-full min-[1922px]:w-[90rem] flex flex-col">
+        <div className="championPickContainer relative w-screen h-[94vh] flex flex-col">
           <div
             className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
               playerSide === draftState.displayTurn
@@ -78,14 +78,14 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
                 setSelectedRole={setSelectedRole}
               />
             </div>
-            <form className="relative bg-gray flex items-center rounded-md">
+            <form className="relative bg-light-gray flex items-center rounded-md">
               <label htmlFor="championSearch" className="px-2">
                 <IoSearch className="text-3xl" />
               </label>
               <input
                 type="text"
                 id="championSearch"
-                className="champSearch p-2 bg-gray focus:border-none rounded-md focus:outline-0"
+                className="champSearch p-2 bg-light-gray focus:border-none rounded-md focus:outline-0"
                 placeholder="Search Champion"
                 value={searchValue}
                 onChange={handleSearchChange}
@@ -110,19 +110,26 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         </div>
       </div>
       {/* Champion Bans*/}
-      <div className="champBans flex w-full justify-between gap-8 items-center pt-4 pb-2 px-4 mt-auto">
+      <div className="champBans relative flex w-full justify-between gap-8 items-center pt-4 pb-2 px-1 mt-auto">
         {/* Blue Side Bans */}
-        <div className="blueSideBans flex justify-between gap-4 flex-col">
+        <div className="blueSideBans flex justify-between gap-2 flex-col">
           <DisplayMobileBans playerSide={"blue"} />
         </div>
-
+        {/* Timer */}
+        <div className="timer absolute left-0 right-0 bottom-0 text-center text-2xl font-bold">
+          <Timer
+            timer={draftState.timer}
+            displayTurn={draftState.displayTurn}
+          />
+        </div>
         {/* Red Side Bans */}
-        <div className="redSideBans flex justify-between items-center gap-4 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
+        <div className="redSideBans flex justify-between items-center gap-2 max-[1275px]:flex-col-reverse max-[1275px]:items-end">
           <DisplayMobileBans playerSide={"red"} />
         </div>
       </div>
-      <div className="teamTitles relative flex justify-between px-4 py-2">
-        <div className={`blueTitle flex items-center gap-4`}>
+      {/* Team Display Names */}
+      <div className="teamTitles relative flex justify-between py-2 px-1">
+        <div className={`blueTitle flex items-center gap-1`}>
           <div
             className={`py-2 px-4 ${
               draftState.blueReady || draftState.displayTurn === "blue"
@@ -133,7 +140,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } transition-width duration-500 rounded-md`}
           >
             <h2
-              className={`text-right font-bold text-sm ${
+              className={`text-right font-bold text-sm break-words ${
                 teamNameVisible ? "" : "text-transparent"
               }`}
             >
@@ -149,13 +156,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             <p className="opacity-80">You</p>
           </div>
         </div>
-        <div className="timer absolute left-0 right-0 top-2 bottom-0 text-center text-2xl font-bold">
-          <Timer
-            timer={draftState.timer}
-            displayTurn={draftState.displayTurn}
-          />
-        </div>
-        <div className={`redTitle flex items-center gap-4`}>
+        <div className={`redTitle flex items-center gap-1`}>
           <div
             className={`sideIndicator flex gap-1 text-sm items-center ${
               playerSide !== "red" && "hidden"
@@ -165,7 +166,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             <FaArrowRight />
           </div>
           <div
-            className={` py-2 px-4 ${
+            className={`py-2 px-4 ${
               draftState.redReady || draftState.displayTurn === "red"
                 ? "w-40"
                 : "w-32"
@@ -174,7 +175,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } transition-width duration-500 rounded-md`}
           >
             <h2
-              className={`font-bold text-xl ${
+              className={`font-bold text-sm break-words ${
                 teamNameVisible ? "" : "text-transparent"
               }`}
             >
@@ -184,9 +185,9 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         </div>
       </div>
       {/* Main Container */}
-      <div className="relative mainDraftContainer flex flex-col flex-1 h-[70vh]">
+      <div className="relative mainDraftContainer flex h-[70vh] justify-between">
         {/* Blue Side Picks */}
-        <div className="blueSidePicks flex flex-col gap-2 px-4 pt-4 flex-1 items-stretch">
+        <div className="blueSidePicks flex flex-col gap-4 px-1 pt-2">
           <DisplayPicksMobile
             championRoles={championRoles}
             playerSide={"blue"}
@@ -194,7 +195,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         </div>
 
         {/* Red Side Picks */}
-        <div className="redSidePicks flex flex-col flex-1 gap-2 px-4 pt-4 items-stretch">
+        <div className="redSidePicks flex flex-col gap-4 px-1 pt-2">
           <DisplayPicksMobile
             championRoles={championRoles}
             playerSide={"red"}

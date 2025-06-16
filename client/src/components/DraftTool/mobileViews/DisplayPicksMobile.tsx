@@ -65,7 +65,7 @@ const DisplayPicksMobile = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-full draftMd:w-96 h-20 draftMd:h-[8.5rem] min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
+          className={`relative w-36 sm:w-44 h-24 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
@@ -113,7 +113,7 @@ const DisplayPicksMobile = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-full draftMd:w-96 h-20 draftMd:h-[8.5rem] min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
+          className={`relative w-36 sm:w-44 h-24 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
