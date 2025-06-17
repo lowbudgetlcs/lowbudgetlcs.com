@@ -80,7 +80,7 @@ function DraftPage() {
     (draftSocket || isPastDraft) &&
     !error
   ) {
-    return windowWidth >= 1200 ? <DraftDisplay championRoles={championRoles} /> : <MobileDraftDisplay championRoles={championRoles} />;
+    return windowWidth >= 870 ? <DraftDisplay championRoles={championRoles} /> : <MobileDraftDisplay championRoles={championRoles} />;
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
