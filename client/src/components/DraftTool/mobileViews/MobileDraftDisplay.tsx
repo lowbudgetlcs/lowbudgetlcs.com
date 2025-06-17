@@ -35,15 +35,23 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
 
   useEffect(() => {
     if (draftState.displayTurn === playerSide) {
-      setFooterIsOpen(true);
+      setTimeout(() => {
+        setFooterIsOpen(true);
+      }, 500);
+    } else {
+      setFooterIsOpen(false);
     }
-  });
+  }, [draftState.displayTurn]);
+
+  useEffect(() => {
+    setSearchValue("");
+  }, [draftState.picksArray, draftState.bansArray]);
   return (
     <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col overflow-hidden">
       {/* Champion Pick Container */}
       <div
-        className={`absolute transition delay-0 duration-100 top-0 bg-gray z-[51] ${
-          footerIsOpen ? "translate-y-[15%]" : "translate-y-full"
+        className={`absolute transition delay-0 duration-200 top-0 bg-gray z-[51] ${
+          footerIsOpen ? "translate-y-[20%]" : "translate-y-[120%]"
         }`}
       >
         <div className="championPickContainer relative w-screen h-[94vh] flex flex-col">
@@ -89,12 +97,12 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             </form>
           </div>
           <div
-            className={`relative overflow-y-scroll bg-transparent ${
+            className={`relative overflow-y-scroll bg-transparent pb-52 ${
               champIconsVisible ? "" : "hidden"
             }`}
           >
             <div className="relative">
-              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2 max-h-screen">
+              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
                 <LoadChampIcons
                   championRoles={championRoles}
                   searchValue={searchValue}
@@ -112,7 +120,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           <DisplayMobileBans playerSide={"blue"} />
         </div>
         {/* Timer */}
-        <div className="timer absolute left-0 right-0 bottom-0 text-center text-2xl font-bold">
+        <div className="timer absolute left-0 right-0 bottom-2 text-center text-2xl font-bold">
           <Timer
             timer={draftState.timer}
             displayTurn={draftState.displayTurn}
@@ -136,7 +144,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } transition-width duration-500 rounded-md`}
           >
             <h2
-              className={`text-right font-bold text-sm break-words ${
+              className={`text-right font-bold text-sm truncate ${
                 teamNameVisible ? "" : "text-transparent"
               }`}
             >
@@ -171,7 +179,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } transition-width duration-500 rounded-md`}
           >
             <h2
-              className={`font-bold text-sm break-words ${
+              className={`font-bold text-sm truncate ${
                 teamNameVisible ? "" : "text-transparent"
               }`}
             >
