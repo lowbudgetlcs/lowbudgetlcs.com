@@ -14,10 +14,10 @@ function DraftCodes({
   const removeDraftLinks = () => {
     setDraftLinks(undefined);
   };
-  const blueLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
-  const redLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/${draftLinks.redCode}`;
-  const specLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}`;
-  // const streamLink = `https://lowbudgetlcs.com/draft/${draftLinks.lobbyCode}/stream`;
+  const blueLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
+  const redLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}/${draftLinks.redCode}`;
+  const specLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}`;
+  const streamLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}/stream`;
 
   const copyLinks = () => {
     navigator.clipboard.writeText(`Blue:
@@ -102,7 +102,7 @@ ${specLink}`);
             <Button>Copy Link</Button>
           </div>
         </div>
-        {/* Stream Link
+        {/* Stream Link */}
         <div className="steamLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
           <h3 className="text-2xl font-bold md:w-44">
             <span className="text-purple">Stream</span> Link:
@@ -121,7 +121,7 @@ ${specLink}`);
           >
             <Button>Copy Link</Button>
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="copyBtns flex gap-8">
         <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">

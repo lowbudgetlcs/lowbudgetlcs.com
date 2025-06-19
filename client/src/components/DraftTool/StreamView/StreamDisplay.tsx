@@ -5,14 +5,20 @@ import StreamPicks from "./StreamPicks";
 import PickBox from "./PickBox";
 import BanBox from "./BanBox";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
+import LogoBox from "./LogoBox";
+import { useLocation } from "react-router-dom";
+import FearlessNav from "../draftNavbars/FearlessNav";
 
 function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const { draftState } = useDraftContext();
-
+  const { teamNameVisible } = useSettingsContext();
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(
     Math.max(draftState.timer - 4, 0) || 30
   );
+  const location = useLocation();
+  const isFearless = location.pathname.includes("/fearless");
 
   // calculate width of timer bar
   const timerWidth = (timeLeft / 30) * 100;
@@ -47,7 +53,19 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   }, [isTimerRunning]);
 
   return (
-    <div className="h-screen relative">
+    <div className="draftContainer relative text-white h-screen max-h-screen bg-black flex flex-col">
+      {isFearless && (
+        <div className="relative z-10">
+          <FearlessNav />
+        </div>
+      )}
+      {/* Logo Boxes */}
+      <div className="absolute top-52 left-48 flex justify-between">
+        <LogoBox />
+      </div>
+      <div className="absolute top-52 right-48 flex justify-between">
+        <LogoBox />
+      </div>
       <div className="absolute w-full bottom-0 text-white flex flex-col">
         <div className="teamTitles relative flex justify-between px-4">
           <div
@@ -59,7 +77,11 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "blue" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className="text-right font-bold text-xl">
+            <h2
+              className={`text-right font-bold text-xl ${
+                teamNameVisible ? "" : "text-transparent"
+              }`}
+            >
               {draftState.blueDisplayName}
             </h2>
           </div>
@@ -72,7 +94,13 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
               draftState.displayTurn === "red" ? "animate-pulse" : ""
             } transition-width duration-500 rounded-md`}
           >
-            <h2 className="font-bold text-xl">{draftState.redDisplayName}</h2>
+            <h2
+              className={`font-bold text-xl ${
+                teamNameVisible ? "" : "text-transparent"
+              }`}
+            >
+              {draftState.redDisplayName}
+            </h2>
           </div>
         </div>
         {/* Champion Bans*/}
@@ -94,11 +122,11 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
               ? "bg-blue"
               : draftState.displayTurn === "red"
               ? "bg-red"
-              : "bg-gray"
+              : ""
           } origin-center transition-all duration-200`}
           style={{
             width: "100%",
-            transform: `scaleX(${timerWidth / 100})`,
+            transform: `scaleX(${timerWidth / 113.333})`,
             transformOrigin: "center",
           }}
         ></div>

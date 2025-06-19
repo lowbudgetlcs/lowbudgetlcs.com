@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import MainLink from "../../MainLink";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -51,19 +52,19 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/draft"
+            to="/"
           >
             <div className="navBox pl-14 py-10">New Draft</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
-          <NavLink
+          <MainLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/"
           >
             <div className="navBox pl-14 py-10">Home</div>
-          </NavLink>
+          </MainLink>
         </li>
         <li className="text-left animate-slide-in-500 opacity-0">
           <div

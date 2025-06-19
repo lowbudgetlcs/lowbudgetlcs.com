@@ -74,7 +74,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } transition-width duration-500 rounded-md`}
           >
             <h2
-              className={`text-right font-bold text-xl ${
+              className={`text-right font-bold text-xl truncate ${
                 teamNameVisible ? "" : "text-transparent"
               }`}
             >
@@ -115,7 +115,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } transition-width duration-500 rounded-md`}
           >
             <h2
-              className={`font-bold text-xl ${
+              className={`font-bold text-xl truncate ${
                 teamNameVisible ? "" : "text-transparent"
               }`}
             >

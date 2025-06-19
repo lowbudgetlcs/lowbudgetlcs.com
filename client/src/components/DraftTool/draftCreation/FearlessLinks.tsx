@@ -21,9 +21,9 @@ function FearlessLinks({
     draftCount,
   } = fearlessDraftLinks;
 
-  const team1Link = `https://lowbudgetlcs.com/draft/fearless/${fearlessCode}/${team1Code}`;
-  const team2Link = `https://lowbudgetlcs.com/draft/fearless/${fearlessCode}/${team2Code}`;
-  const specLink = `https://lowbudgetlcs.com/draft/fearless/${fearlessCode}/spectator`;
+  const team1Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team1Code}`;
+  const team2Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team2Code}`;
+  const specLink = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/spectator`;
 
   const removeDraftLinks = () => {
     setFearlessDraftLinks(undefined);

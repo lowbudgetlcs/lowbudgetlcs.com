@@ -84,7 +84,7 @@ function DraftButton() {
     !fearlessState.fearlessComplete) {
     return (
       <Link
-        to={`/draft/fearless/${
+        to={`/fearless/${
           fearlessState.fearlessCode
         }/${sessionStorage.getItem("activeSideCode")}`}
       >

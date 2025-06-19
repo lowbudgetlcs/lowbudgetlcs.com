@@ -191,10 +191,11 @@ export const draftSocket = (io: Namespace) => {
       }
 
       if (
-        state.blueBans.includes(chosenChamp) ||
-        state.redBans.includes(chosenChamp) ||
-        state.bluePicks.includes(chosenChamp) ||
-        state.redPicks.includes(chosenChamp)
+        (state.blueBans.includes(chosenChamp) ||
+          state.redBans.includes(chosenChamp) ||
+          state.bluePicks.includes(chosenChamp) ||
+          state.redPicks.includes(chosenChamp)) &&
+        chosenChamp !== "nothing"
       ) {
         console.error("Same champion already picked!");
         return;
@@ -231,10 +232,11 @@ export const draftSocket = (io: Namespace) => {
       }
 
       if (
-        state.blueBans.includes(chosenChamp) ||
-        state.redBans.includes(chosenChamp) ||
-        state.bluePicks.includes(chosenChamp) ||
-        state.redPicks.includes(chosenChamp)
+        (state.blueBans.includes(chosenChamp) ||
+          state.redBans.includes(chosenChamp) ||
+          state.bluePicks.includes(chosenChamp) ||
+          state.redPicks.includes(chosenChamp)) &&
+        chosenChamp !== "nothing"
       ) {
         console.error("Same champion already picked!");
         return;

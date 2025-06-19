@@ -1,20 +1,20 @@
 import { memo, useEffect, useState } from "react";
 import { Champion } from "../interfaces/draftInterfaces";
-import StreamPickImage from "./StreamPickImage";
 import { useDraftContext } from "../providers/DraftProvider";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import DisplayPickImage from "../draftViews/DisplayPickImage";
 
-const StreamPicks = ({
+const DisplayPicksMobile = ({
   championRoles,
   playerSide,
 }: {
   championRoles: Champion[];
   playerSide: string;
 }) => {
-  const [sidePick, setSidePick] = useState<number>();
-  const [link, setLink] = useState<string>("#");
-  const { draftState, currentHover } = useDraftContext();
   const { pickBanSplit } = useSettingsContext();
+  const [sidePick, setSidePick] = useState<number>();
+  const { draftState, currentHover } = useDraftContext();
+
   const currentPhase = draftState.activePhase;
   const playerTurn = draftState.displayTurn;
   const picks =
@@ -33,18 +33,6 @@ const StreamPicks = ({
     draftState.currentRedPick,
     draftState.currentBluePick,
   ]);
-
-  // Pre-renders image for pick animation
-  // Image is hidden on the page inside img tag
-  useEffect(() => {
-    if (draftState.phaseType === "pick" && currentHover) {
-      setLink(
-        `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`
-      );
-    } else {
-      setLink("#");
-    }
-  }, [currentHover, draftState.phaseType]);
 
   const shouldRender = (pickIndex: number) => {
     if (picks[pickIndex]) {
@@ -77,22 +65,23 @@ const StreamPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-32 h-64 overflow-hidden border-2 ${
+          className={`relative w-36 sm:w-44 h-24 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
             sidePick === index
-              ? "border-blue transition-all"
+              ? "border-blue transition-all "
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase1" &&
                 sidePick === index
-              ? "border-red transition-all"
+              ? "border-red transition-all "
               : "border-gray"
-          } bg-gray/60 rounded-md flex items-center`}
+          } bg-gray/60 rounded-md`}
         >
           {shouldRender(index) && (
-            <StreamPickImage
+            <DisplayPickImage
+              playerSide={playerSide}
               pickIndex={index}
               pickedChampions={picks}
               championRoles={championRoles}
@@ -124,22 +113,23 @@ const StreamPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-32 h-64 overflow-hidden border-2 ${
+          className={`relative w-36 sm:w-44 h-24 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             sidePick === index
-              ? "border-blue transition-all delay-[20ms]"
+              ? "border-blue transition-all delay-[20ms] "
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 sidePick === index
-              ? "border-red transition-all delay-[20ms]"
+              ? "border-red transition-all delay-[20ms] "
               : "border-gray"
-          } bg-gray/60 rounded-md flex items-center`}
+          } bg-gray/60 rounded-md`}
         >
           {shouldRender(index) && (
-            <StreamPickImage
+            <DisplayPickImage
+              playerSide={playerSide}
               pickIndex={index}
               pickedChampions={picks}
               championRoles={championRoles}
@@ -164,9 +154,8 @@ const StreamPicks = ({
           ></div>
         </div>
       ))}
-      <img src={link} className="absolute top-0 w-0 h-0 opacity-0" />
     </>
   );
 };
 
-export default memo(StreamPicks);
+export default memo(DisplayPicksMobile);

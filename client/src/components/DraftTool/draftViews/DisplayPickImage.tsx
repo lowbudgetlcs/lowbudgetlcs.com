@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import tempImage from "../../../assets/lblcsLogo.svg";
 import { Champion, DraftProps } from "../interfaces/draftInterfaces";
 import { useDraftContext } from "../providers/DraftProvider";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 const DisplayPickImage = ({
   playerSide,
@@ -19,7 +20,7 @@ const DisplayPickImage = ({
   const [link, setLink] = useState<string>("");
 
   const { isPastDraft } = useDraftContext();
-
+  const { pickNamesVisible } = useSettingsContext();
   const championName = pickedChampions[pickIndex]
     ? pickedChampions[pickIndex].toLowerCase()
     : "nothing";
@@ -93,7 +94,7 @@ const DisplayPickImage = ({
           <div
             className={`relative  ${
               !isChampHovered || isPastDraft ? "" : "hidden"
-            } `}
+            }  ${pickNamesVisible ? "" : "hidden"}`}
           >
             <div
               className={`absolute -bottom-2 z-10 h-8 min-[1922px]:h-10 w-2/5 animate-fadeIn from-black ${

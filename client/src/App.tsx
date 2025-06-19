@@ -1,92 +1,75 @@
 import { Route, Routes, useLocation } from "react-router-dom";
-import './App.css'
-import Home from "./components/HomePage/Home";
+import "./App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import About from "./components/AboutPage/About";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
-import Roster from "./components/RosterPage/Roster";
-import LeaguePlayers from "./components/RosterPage/LeaguePlayers";
-import ErrorPage from "./components/ErrorPage";
 import { LeagueDataProvider } from "./components/leagueDataContext";
-import AllStars from "./components/AllStarsPage/AllStars";
-import ASEconomy from "./components/AllStarsPage/ASEconomy";
-import ASCommercial from "./components/AllStarsPage/ASCommercial";
-import ASFinancial from "./components/AllStarsPage/ASFinancial";
-import ASExecutive from "./components/AllStarsPage/ASExecutive";
-import StatsMain from "./components/StatsPage/StatsMain";
-// import StatsPlayer from "./components/StatsPage/StatsPlayer";
-import StatsSeason from "./components/StatsPage/StatsSeason";
-// import StatsTeamUI from "./components/StatsPage/StatsTeamUI";
-import CreateDraft from "./components/DraftTool/draftCreation/CreateDraft";
-import DraftPage from "./components/DraftTool/mainPages/DraftPage";
-import FearlessMain from "./components/DraftTool/mainPages/FearlessMain";
-import { FearlessProvider } from "./components/DraftTool/providers/FearlessProvider";
-import FearlessDraftPage from "./components/DraftTool/mainPages/FearlessDraftPage";
-import { SocketProvider } from "./components/DraftTool/providers/SocketProvider";
-import { DraftProvider } from "./components/DraftTool/providers/DraftProvider";
 import DraftNavbar from "./components/DraftTool/draftNavbars/DraftNavbar";
 import { SettingsProvider } from "./components/DraftTool/providers/SettingsProvider";
 import DraftSettings from "./components/DraftTool/DraftSettings";
+import DraftRoutes from "./routes/DraftRoutes";
+import DefaultRoutes from "./routes/DefaultRoutes";
+import { useEffect } from "react";
 
 function App() {
+  // Finds the subdomain (used for draft site)
+  const getSubdomain = (host: string) => {
+    const parts = host.split(".");
+    if (parts.length > 2) {
+      return parts[0];
+    }
+    // if develeoping, will always return draft (since no .com with localhost)
+    if (host.startsWith("draft.localhost")) {
+      return "draft";
+    }
+    return null;
+  };
   const location = useLocation();
-  const isDraftRoute = location.pathname.startsWith("/draft/");
+
+  const currentHost = window.location.host;
+  const pathname = window.location.pathname;
+  const subdomain = getSubdomain(currentHost);
+  const isDraftRoute = subdomain === "draft";
+
+  useEffect(() => {
+    if (pathname.startsWith("/draft")) {
+      const baseHost = "lowbudgetlcs.com"; 
+      const newPath = pathname.substring("/draft".length); 
+      const newUrl = `${window.location.protocol}//draft.${baseHost}${newPath}${window.location.search}${window.location.hash}`;
+
+      window.location.replace(newUrl);
+    }
+  }, [currentHost, pathname, subdomain]);
+  console.log(location.pathname)
+  // If a redirect is happening, you might want to render null or a loading spinner
+  // to prevent the rest of the app from rendering momentarily.
+  if (!subdomain && pathname.startsWith("/draft")) {
+    return (
+      <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
+        <p>Redirecting...</p>
+        <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
+      </div>
+    );
+  }
   return (
     <div className=" relative font-serif bg-black">
       <ScrollToTop />
       {!isDraftRoute && <Twitch />}
       <SettingsProvider>
-        <DraftSettings/>
+        <DraftSettings />
         {!isDraftRoute ? <Navbar /> : <DraftNavbar />}
         <LeagueDataProvider>
           <Routes>
-            <Route element={<SocketProvider />}>
-              <Route path="/" element={<Home />} />
-              <Route path="about" element={<About />} />
-              <Route path="rosters" element={<Roster />} />
-              <Route path="rosters/:league" element={<LeaguePlayers />} />
-              <Route path="allstars" element={<AllStars />}>
-                <Route path="economy" element={<ASEconomy />} />
-                <Route path="commercial" element={<ASCommercial />} />
-                <Route path="financial" element={<ASFinancial />} />
-                <Route path="executive" element={<ASExecutive />} />
-              </Route>
-              <Route path="stats" element={<StatsMain />} />
-              {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
-              <Route path="stats/team/" element={<StatsSeason />} />
-              {/* <Route path="stats/team/:team" element={<StatsTeamUI/>}/> */}
-              <Route path="*" element={<ErrorPage />} />
-              <Route path="draft" element={<CreateDraft />} />
-              <Route element={<DraftProvider />}>
-                <Route path="draft/:lobbyCode" element={<DraftPage />} />
-                <Route
-                  path="draft/:lobbyCode/:sideCode"
-                  element={<DraftPage />}
-                />
-              </Route>
-              <Route element={<FearlessProvider />}>
-                <Route
-                  path="draft/fearless/:fearlessCode"
-                  element={<FearlessMain />}
-                />
-                <Route
-                  path="draft/fearless/:fearlessCode/:teamCode"
-                  element={<FearlessMain />}
-                />
-                <Route element={<DraftProvider />}>
-                  <Route
-                    path="draft/fearless/:fearlessCode/:teamCode/:lobbyCode"
-                    element={<FearlessDraftPage />}
-                  />
-                </Route>
-              </Route>
-            </Route>
+            {subdomain === "draft" ? (
+              <Route path="/*" element={<DraftRoutes />} />
+            ) : (
+              <Route path="/*" element={<DefaultRoutes />} />
+            )}
           </Routes>
         </LeagueDataProvider>
       </SettingsProvider>
-      {!isDraftRoute && <Footer />}
+      {(!isDraftRoute || location.pathname === "/") && <Footer />}
     </div>
   );
 }

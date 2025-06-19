@@ -14,7 +14,7 @@ const StreamPickImage = ({
   championRoles: Champion[];
   currentHover: DraftProps["currentHover"];
 }) => {
-  const [link, setLink] = useState<string | undefined>(undefined);
+  const [link, setLink] = useState<string>("");
 
   const { isPastDraft } = useDraftContext();
 
@@ -52,7 +52,7 @@ const StreamPickImage = ({
         return prevLink;
       });
     }
-  }, [currentHover, championName]);
+  }, [currentHover, championName, isChampHovered]);
 
   const selectedChampion = championRoles.find((champion) =>
     currentHover && championName === "nothing"

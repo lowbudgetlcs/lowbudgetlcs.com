@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Champion, DraftProps } from "../interfaces/draftInterfaces";
+import { useDraftContext } from "../providers/DraftProvider";
 
 const PickBox = ({
-  draftState,
   championRoles,
 }: {
   draftState: DraftProps;
   championRoles: Champion[];
 }) => {
+  const { draftState } = useDraftContext();
   const [animationState, setAnimationState] = useState("initial");
   const [champInfo, setChampInfo] = useState<Champion | undefined>(undefined);
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
@@ -31,22 +32,40 @@ const PickBox = ({
       setTimeout(() => setAnimationState("entering"), 200);
       setTimeout(() => setAnimationState("visible"), 200);
       setTimeout(() => setAnimationState("exiting"), 1500);
+      setTimeout(() => setAnimationState("exited"), 2000);
       setTimeout(() => {
         setAnimationState("completed");
       }, 2000);
     }
   }, [imageLoaded]);
 
-  const getAnimationStyles = () => {
+  const getAnimationStyles = (championName: string) => {
     switch (animationState) {
       case "initial":
-        return { opacity: 0, transform: "translateX(-50%)" };
+        if (
+          draftState.bluePicks.includes(championName) ||
+          draftState.blueBans.includes(championName)
+        ) {
+          return { opacity: 0, transform: "translateX(-50%)" };
+        } else {
+          return { opacity: 0, transform: "translateX(50%)" };
+        }
+
       case "entering":
         return { opacity: 1, transform: "translateX(0)" };
       case "visible":
         return { opacity: 1, transform: "translateX(0)" };
       case "exiting":
-        return { opacity: 0, transform: "translateX(50%)" };
+        if (
+          draftState.bluePicks.includes(championName) ||
+          draftState.blueBans.includes(championName)
+        ) {
+          return { opacity: 0, transform: "translateX(50%)" };
+        } else {
+          return { opacity: 0, transform: "translateX(-50%)" };
+        }
+      case "exited":
+        return { display: "none" };
       default:
         return { opacity: 0 };
     }
@@ -55,10 +74,10 @@ const PickBox = ({
 
   const champInfoURL = `https://cdn.communitydragon.org/latest/champion/${champInfo.name}/splash-art/centered`;
   return (
-    <div className="fixed top-[10%] inset-x-0 flex items-center justify-center z-50">
+    <div className="fixed top-[20%] inset-x-0 flex items-center justify-center">
       <div
         className="flex flex-col items-center transition-all duration-500 ease-in-out"
-        style={getAnimationStyles()}
+        style={getAnimationStyles(champInfo.name)}
       >
         <img
           src={champInfoURL}

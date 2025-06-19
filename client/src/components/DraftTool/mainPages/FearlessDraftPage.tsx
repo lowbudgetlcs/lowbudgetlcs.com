@@ -7,6 +7,8 @@ import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
 import { useFearlessContext } from "../providers/FearlessProvider";
+import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 function FearlessDraftPage() {
   const {
@@ -19,7 +21,9 @@ function FearlessDraftPage() {
   } = useDraftContext();
 
   const [championRoles] = useState<Champion[]>(championData);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const { fearlessState, initializeFearless } = useFearlessContext();
+  const { forceDesktopView } = useSettingsContext();
   // Set stream mode
   const location = useLocation();
   const streamMode = location.pathname.includes("stream");
@@ -43,6 +47,17 @@ function FearlessDraftPage() {
     }
   }, [fearlessCode, teamCode, initializeFearless]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
     return <StreamDisplay championRoles={championRoles} />;
   } else if (
@@ -51,7 +66,11 @@ function FearlessDraftPage() {
     (draftSocket || isPastDraft) &&
     !error
   ) {
-    return <DraftDisplay championRoles={championRoles} />;
+    return windowWidth >= 870 || forceDesktopView ? (
+      <DraftDisplay championRoles={championRoles} />
+    ) : (
+      <MobileDraftDisplay championRoles={championRoles} />
+    );
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
@@ -67,7 +86,7 @@ function FearlessDraftPage() {
           Some error has occured. Check your URL or click the button below!
         </p>
         <div className="cursor-pointer">
-          <Link to={"/draft"}>
+          <Link to={"/"}>
             <Button>Back to Draft Creation</Button>
           </Link>
         </div>
