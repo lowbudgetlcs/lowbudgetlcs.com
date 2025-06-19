@@ -20,14 +20,19 @@ export function LoadChampIcons({
   const bannedChampions = draftState.bansArray;
   const { smallIcons, champNamesVisible } = useSettingsContext();
   const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
+  const nothingIconLink =
+    "https://raw.communitydragon.org/10.1/plugins/rcp-fe-lol-item-sets/global/default/icon-helmet.png";
   const { animationToggle } = useSettingsContext();
   const handlePick = (championName: string) => {
     if (
-      !pickedChampions.includes(championName) &&
-      !bannedChampions.includes(championName) &&
-      draftSocket //This will stop users from selecting champions on finished drafts
+      (!pickedChampions.includes(championName) &&
+        !bannedChampions.includes(championName)) ||
+      championName === "nothing"
+      //This will stop users from selecting champions on finished drafts
     ) {
-      setChosenChamp(championName);
+      if (draftSocket) {
+        setChosenChamp(championName);
+      }
     }
   };
 
@@ -35,13 +40,15 @@ export function LoadChampIcons({
     return championRoles
       .filter((champion) => {
         const trimmedChamp = champion.name.toLowerCase().trim();
-        const matchesSearch = trimmedChamp.includes(searchValue.toLowerCase().trim());
+        const matchesSearch = trimmedChamp.includes(
+          searchValue.toLowerCase().trim()
+        );
         const trimmedDisplayChamp = champion.displayName.toLowerCase().trim();
         const matchesDisplay = trimmedDisplayChamp.includes(
           searchValue.toLowerCase().trim()
         );
         const splitString = trimmedChamp.split(" ");
-        const includesInitials = splitString.some(word => 
+        const includesInitials = splitString.some((word) =>
           word.startsWith(searchValue.toLowerCase().trim())
         );
         if (selectedRole === "All") {
@@ -69,8 +76,9 @@ export function LoadChampIcons({
             }}
             className={`border-2 border-gray rounded-md transition duration-75 ease-linear bg-black group
               ${
-                pickedChampions.includes(champion.name) ||
-                bannedChampions.includes(champion.name)
+                (pickedChampions.includes(champion.name) ||
+                  bannedChampions.includes(champion.name)) &&
+                champion.name !== "nothing"
                   ? ""
                   : "hover:scale-105"
               } 
@@ -80,8 +88,9 @@ export function LoadChampIcons({
             <img
               className={`
             ${
-              pickedChampions.includes(champion.name) ||
-              bannedChampions.includes(champion.name)
+              (pickedChampions.includes(champion.name) ||
+                bannedChampions.includes(champion.name)) &&
+              champion.name !== "nothing"
                 ? "grayscale"
                 : "hover:cursor-pointer group-hover:brightness-110"
             } 
@@ -102,16 +111,21 @@ export function LoadChampIcons({
             }
             ${
               smallIcons ? "w-20" : "w-28"
-            } object-contain max-[1100px]:w-24 select-none rounded-md`}
-              src={`${dDragonIconLink}${
-                champion.name === "Wukong" ? "monkeyking" : champion.name
-              }/square`}
+            } object-contain max-[1100px]:w-24 select-none rounded-md ${champion.name === "nothing" && 'border-4 border-black'}`}
+              src={
+                champion.name === "nothing"
+                  ? nothingIconLink
+                  : `${dDragonIconLink}${
+                      champion.name === "Wukong" ? "monkeyking" : champion.name
+                    }/square`
+              }
               alt={champion.name}
             />
             <p
               className={`text-center ${
-                pickedChampions.includes(champion.name) ||
-                bannedChampions.includes(champion.name)
+                (pickedChampions.includes(champion.name) ||
+                  bannedChampions.includes(champion.name)) &&
+                champion.name !== "nothing"
                   ? ""
                   : "hover:cursor-pointer"
               } select-none ${smallIcons ? "text-xs" : "text-sm font-bold"} ${

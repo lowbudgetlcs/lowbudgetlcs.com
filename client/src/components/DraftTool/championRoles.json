@@ -1,5 +1,10 @@
 [
   {
+    "name": "nothing",
+    "displayName": "None",
+    "roles": ["Top", "Mid", "Support", "Bottom", "Jungle"]
+  },
+  {
     "name": "Aatrox",
     "displayName": "Aatrox",
     "roles": ["Top"]
