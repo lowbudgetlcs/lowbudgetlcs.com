@@ -6,22 +6,18 @@ import { useFearlessContext } from "../providers/FearlessProvider";
 
 const FearlessMain = () => {
   const { fearlessCode, teamCode } = useParams();
-  const { 
-    fearlessState, 
-    team, 
-    loading, 
-    error,
-    initializeFearless
-  } = useFearlessContext();
-
+  const { fearlessState, team, loading, error, initializeFearless } =
+    useFearlessContext();
 
   // Initialize fearless connection
   useEffect(() => {
-    if (!fearlessCode || !teamCode) return;
-    
-    initializeFearless(fearlessCode, teamCode);
+    if (!fearlessCode) return;
+    if (teamCode) {
+      initializeFearless(fearlessCode, teamCode);
+    } else {
+      initializeFearless(fearlessCode, "spectator");
+    }
   }, [fearlessCode, teamCode, initializeFearless]);
-
   if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
@@ -39,9 +35,7 @@ const FearlessMain = () => {
       </>
     ) : (
       <>
-        <FearlessSidePick
-          teamDisplay={team}
-        />
+        <FearlessSidePick teamDisplay={team} />
       </>
     );
   } else if (error) {
@@ -57,6 +51,21 @@ const FearlessMain = () => {
           </Link>
         </div>
       </div>
+    );
+  } else if (
+    fearlessState &&
+    fearlessState.draftLobbyCodes &&
+    fearlessState.fearlessComplete
+  ) {
+    return (
+      <>
+        {/* Navigates to first fearless draft if the fearless is complete */}
+        <Navigate
+          to={`/fearless/${fearlessCode}/${teamCode || "spectator"}/${
+            fearlessState.draftLobbyCodes[0]
+          }`}
+        />
+      </>
     );
   } else {
     // Add a default return for any other state
