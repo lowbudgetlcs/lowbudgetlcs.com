@@ -20,6 +20,8 @@ interface SettingsContextProps {
   setChampIconsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   pickNamesVisible: boolean;
   setPickNamesVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  forceDesktopView: boolean;
+  setForceDesktopView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SettingsContext = createContext<SettingsContextProps | undefined>(
@@ -33,9 +35,10 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) 
   const [teamNameVisible, setTeamNameVisible] = useLocalStorageState<boolean>("teamNameVisible", true);
   const [smallIcons, setSmallIcons] = useLocalStorageState<boolean>("smallIcons", true);
   const [champNamesVisible, setChampNamesVisible] = useLocalStorageState<boolean>("champNamesVisible", true);
-  const [volume, setVolume] = useLocalStorageState<number>("volume", 50);
+  const [volume, setVolume] = useLocalStorageState<number>("volume", 30);
   const [champIconsVisible, setChampIconsVisible] = useLocalStorageState<boolean>("champIconsVisible", true);
   const [pickNamesVisible, setPickNamesVisible] = useLocalStorageState<boolean>("pickNamesVisible", true);
+  const [forceDesktopView, setForceDesktopView] = useLocalStorageState<boolean>("forceDesktopView", false);
   return (
     <SettingsContext.Provider
       value={{
@@ -57,6 +60,8 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) 
         setChampIconsVisible,
         pickNamesVisible,
         setPickNamesVisible,
+        forceDesktopView,
+        setForceDesktopView
       }}
     >
       {children}

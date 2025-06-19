@@ -8,6 +8,7 @@ import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
 import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 function DraftPage() {
   const {
@@ -20,7 +21,7 @@ function DraftPage() {
   } = useDraftContext();
   const [championRoles] = useState<Champion[]>(championData);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-
+  const { forceDesktopView } = useSettingsContext();
   // Grab the lobby code
   const params = useParams();
   const lobbyCode: string | undefined = params.lobbyCode;
@@ -80,7 +81,7 @@ function DraftPage() {
     (draftSocket || isPastDraft) &&
     !error
   ) {
-    return windowWidth >= 870 ? <DraftDisplay championRoles={championRoles} /> : <MobileDraftDisplay championRoles={championRoles} />;
+    return windowWidth >= 870 || forceDesktopView ? <DraftDisplay championRoles={championRoles} /> : <MobileDraftDisplay championRoles={championRoles} />;
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">

@@ -8,6 +8,7 @@ import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
 import { useFearlessContext } from "../providers/FearlessProvider";
 import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
+import { useSettingsContext } from "../providers/SettingsProvider";
 
 function FearlessDraftPage() {
   const {
@@ -22,6 +23,7 @@ function FearlessDraftPage() {
   const [championRoles] = useState<Champion[]>(championData);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const { fearlessState, initializeFearless } = useFearlessContext();
+  const { forceDesktopView } = useSettingsContext();
   // Set stream mode
   const location = useLocation();
   const streamMode = location.pathname.includes("stream");
@@ -64,7 +66,7 @@ function FearlessDraftPage() {
     (draftSocket || isPastDraft) &&
     !error
   ) {
-    return windowWidth >= 870 ? (
+    return windowWidth >= 870 || forceDesktopView ? (
       <DraftDisplay championRoles={championRoles} />
     ) : (
       <MobileDraftDisplay championRoles={championRoles} />

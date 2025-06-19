@@ -21,6 +21,8 @@ const DraftSettings = () => {
     setChampIconsVisible,
     pickNamesVisible,
     setPickNamesVisible,
+    forceDesktopView,
+    setForceDesktopView,
   } = useSettingsContext();
 
   function toggleClose() {
@@ -41,24 +43,6 @@ const DraftSettings = () => {
           ></i>
           <div className="flex flex-col gap-4 items-start w-full p-6 md:p-10">
             <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton
-                isOn={animationToggle}
-                setFunction={setAnimationToggle}
-              />
-              <p>Spin Animation</p>
-            </div>
-            <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton isOn={pickBanSplit} setFunction={setPickBanSplit} />
-              <p>Show Pick/Ban Phase Split</p>
-            </div>
-            <div className="toggleBox flex gap-4 justify-around">
-              <ToggleButton
-                isOn={teamNameVisible}
-                setFunction={setTeamNameVisible}
-              />
-              <p>Team Names</p>
-            </div>
-            <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={smallIcons} setFunction={setSmallIcons} />
               <p>Small Icons</p>
             </div>
@@ -76,13 +60,37 @@ const DraftSettings = () => {
               />
               <p>Champion Icon Names</p>
             </div>
-
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton
                 isOn={pickNamesVisible}
                 setFunction={setPickNamesVisible}
               />
               <p>Champion Pick Box Names</p>
+            </div>
+            <div className="toggleBox flex gap-4 justify-around">
+              <ToggleButton isOn={pickBanSplit} setFunction={setPickBanSplit} />
+              <p>Show Pick/Ban Phase Split</p>
+            </div>
+            <div className="toggleBox flex gap-4 justify-around">
+              <ToggleButton
+                isOn={teamNameVisible}
+                setFunction={setTeamNameVisible}
+              />
+              <p>Team Names</p>
+            </div>
+            <div className="toggleBox flex gap-4 justify-around">
+              <ToggleButton
+                isOn={forceDesktopView}
+                setFunction={setForceDesktopView}
+              />
+              <p>Force Desktop View</p>
+            </div>
+            <div className="toggleBox flex gap-4 justify-around">
+              <ToggleButton
+                isOn={animationToggle}
+                setFunction={setAnimationToggle}
+              />
+              <p>Spin Animation</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around items-center">
               <input
