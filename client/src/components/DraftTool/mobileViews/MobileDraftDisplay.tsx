@@ -67,7 +67,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             } z-0 filter blur-lg`}
           ></div>
           {isFearless && (
-            <div className="relative z-10">
+            <div className="relative bg-light-gray">
               <FearlessNav />
             </div>
           )}

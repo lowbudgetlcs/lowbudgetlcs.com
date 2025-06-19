@@ -7,6 +7,8 @@ import BanBox from "./BanBox";
 import { useDraftContext } from "../providers/DraftProvider";
 import { useSettingsContext } from "../providers/SettingsProvider";
 import LogoBox from "./LogoBox";
+import { useLocation } from "react-router-dom";
+import FearlessNav from "../draftNavbars/FearlessNav";
 
 function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const { draftState } = useDraftContext();
@@ -15,6 +17,8 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [timeLeft, setTimeLeft] = useState(
     Math.max(draftState.timer - 4, 0) || 30
   );
+  const location = useLocation();
+  const isFearless = location.pathname.includes("/fearless");
 
   // calculate width of timer bar
   const timerWidth = (timeLeft / 30) * 100;
@@ -50,6 +54,11 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
 
   return (
     <div className="draftContainer relative text-white h-screen max-h-screen bg-black flex flex-col">
+      {isFearless && (
+        <div className="relative z-10">
+          <FearlessNav />
+        </div>
+      )}
       {/* Logo Boxes */}
       <div className="absolute top-52 left-48 flex justify-between">
         <LogoBox />
