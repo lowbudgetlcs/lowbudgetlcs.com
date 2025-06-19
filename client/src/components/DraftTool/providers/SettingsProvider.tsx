@@ -18,6 +18,8 @@ interface SettingsContextProps {
   setVolume: React.Dispatch<React.SetStateAction<number>>;
   champIconsVisible: boolean;
   setChampIconsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  pickNamesVisible: boolean;
+  setPickNamesVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SettingsContext = createContext<SettingsContextProps | undefined>(
@@ -33,6 +35,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) 
   const [champNamesVisible, setChampNamesVisible] = useLocalStorageState<boolean>("champNamesVisible", true);
   const [volume, setVolume] = useLocalStorageState<number>("volume", 50);
   const [champIconsVisible, setChampIconsVisible] = useLocalStorageState<boolean>("champIconsVisible", true);
+  const [pickNamesVisible, setPickNamesVisible] = useLocalStorageState<boolean>("pickNamesVisible", true);
   return (
     <SettingsContext.Provider
       value={{
@@ -52,6 +55,8 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) 
         setVolume,
         champIconsVisible,
         setChampIconsVisible,
+        pickNamesVisible,
+        setPickNamesVisible,
       }}
     >
       {children}

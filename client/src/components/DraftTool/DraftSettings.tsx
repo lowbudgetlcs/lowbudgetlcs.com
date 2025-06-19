@@ -19,6 +19,8 @@ const DraftSettings = () => {
     setVolume,
     champIconsVisible,
     setChampIconsVisible,
+    pickNamesVisible,
+    setPickNamesVisible,
   } = useSettingsContext();
 
   function toggleClose() {
@@ -37,13 +39,13 @@ const DraftSettings = () => {
             onClick={toggleClose}
             className="absolute bi bi-x-lg text-3xl hover:cursor-pointer right-5 md:right-10 top-4 md:top-8"
           ></i>
-          <div className="flex flex-col gap-8 items-start w-full p-10">
+          <div className="flex flex-col gap-4 items-start w-full p-6 md:p-10">
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton
                 isOn={animationToggle}
                 setFunction={setAnimationToggle}
               />
-              <p>Toggle Spin Animation</p>
+              <p>Spin Animation</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={pickBanSplit} setFunction={setPickBanSplit} />
@@ -54,27 +56,34 @@ const DraftSettings = () => {
                 isOn={teamNameVisible}
                 setFunction={setTeamNameVisible}
               />
-              <p>Display Team Names</p>
+              <p>Team Names</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton isOn={smallIcons} setFunction={setSmallIcons} />
-              <p>Display Small Icons</p>
+              <p>Small Icons</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton
                 isOn={champIconsVisible}
                 setFunction={setChampIconsVisible}
               />
-              <p>Display Champion Icons</p>
+              <p>Champion Icons</p>
             </div>
             <div className="toggleBox flex gap-4 justify-around">
               <ToggleButton
                 isOn={champNamesVisible}
                 setFunction={setChampNamesVisible}
               />
-              <p>Display Champion Icon Names</p>
+              <p>Champion Icon Names</p>
             </div>
 
+            <div className="toggleBox flex gap-4 justify-around">
+              <ToggleButton
+                isOn={pickNamesVisible}
+                setFunction={setPickNamesVisible}
+              />
+              <p>Champion Pick Box Names</p>
+            </div>
             <div className="toggleBox flex gap-4 justify-around items-center">
               <input
                 type="range"
