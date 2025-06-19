@@ -17,7 +17,9 @@ const isProduction = process.env.PRODUCTION === "production";
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: isProduction ? "https://lowbudgetlcs.com" : "*",
+    origin: isProduction
+      ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"]
+      : "*",
   },
 });
 
@@ -32,7 +34,7 @@ try {
 // Middleware
 // Cors options. will always be in production on live server
 const corsOptions = {
-  origin: isProduction ? "https://lowbudgetlcs.com" : "*",
+  origin: isProduction ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"] : "*",
   methods: "GET",
 };
 
@@ -75,8 +77,8 @@ app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 
 // Set up namespaces
-const draftNamespace = io.of("/draft")
-const fearlessNamespace = io.of("/fearless")
+const draftNamespace = io.of("/draft");
+const fearlessNamespace = io.of("/fearless");
 
 // Initialize draftSocket with the io instance
 draftSocket(draftNamespace);
