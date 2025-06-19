@@ -7,6 +7,7 @@ import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
 import { useFearlessContext } from "../providers/FearlessProvider";
+import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
 
 function FearlessDraftPage() {
   const {
@@ -19,6 +20,7 @@ function FearlessDraftPage() {
   } = useDraftContext();
 
   const [championRoles] = useState<Champion[]>(championData);
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const { fearlessState, initializeFearless } = useFearlessContext();
   // Set stream mode
   const location = useLocation();
@@ -43,6 +45,17 @@ function FearlessDraftPage() {
     }
   }, [fearlessCode, teamCode, initializeFearless]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
     return <StreamDisplay championRoles={championRoles} />;
   } else if (
@@ -51,7 +64,11 @@ function FearlessDraftPage() {
     (draftSocket || isPastDraft) &&
     !error
   ) {
-    return <DraftDisplay championRoles={championRoles} />;
+    return windowWidth >= 870 ? (
+      <DraftDisplay championRoles={championRoles} />
+    ) : (
+      <MobileDraftDisplay championRoles={championRoles} />
+    );
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
