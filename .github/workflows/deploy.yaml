@@ -43,7 +43,7 @@ jobs:
         with:
           context: client/
           secret-envs: VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           push: true
           tags: lblcs/${{ env.APP }}:latest-client
 
@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: server
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           push: true
           tags: lblcs/${{ env.APP }}:latest-server
 
