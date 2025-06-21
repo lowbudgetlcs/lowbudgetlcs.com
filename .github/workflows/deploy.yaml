@@ -42,6 +42,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           path: client/Dockerfile
+          secret_envs: VITE_BACKEND_URL="${{ vars.VITE_BACKEND_URL }}"
           platforms: linux/amd64,linux/arm64
           push: true
           tags: lblcs/${{ env.APP }}:latest-client
@@ -52,24 +53,7 @@ jobs:
           path: server/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: lblcs/${{ env.APP }}:latest-client
-
-      - name: Build and push Docker image
-        run: |
-          # Build client
-          touch client/.env
-          echo VITE_BACKEND_URL="${{ vars.VITE_BACKEND_URL }}" >> client/.env
-          docker build -t lblcs/${{ env.APP }}:latest-client -f client/Dockerfile client/
-          docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:latest-client
-          docker tag lblcs/${{ env.APP }}:latest-client lblcs/${{ env.APP }}:${{ env.VERSION }}-client
-          docker push lblcs/${{ env.APP }}:latest-client
-          docker push lblcs/${{ env.APP}}:${{ env.VERSION }}-client
-          # Build server
-          docker build -t lblcs/${{ env.APP }}:latest-server -f server/Dockerfile server/
-          docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:latest-server
-          docker tag lblcs/${{ env.APP }}:latest-server lblcs/${{ env.APP }}:${{ env.VERSION }}-server
-          docker push lblcs/${{ env.APP }}:latest-server
-          docker push lblcs/${{ env.APP}}:${{ env.VERSION }}-server
+          tags: lblcs/${{ env.APP }}:latest-server
 
   deploy:
     needs: build
