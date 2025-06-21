@@ -80,6 +80,6 @@ jobs:
             echo CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" >> .env
             echo PRODUCTION="${{ vars.PRODUCTION }}" >> .env
             echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d
+            docker compose down
+            docker compose pull
+            docker compose up -d
