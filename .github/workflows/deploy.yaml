@@ -38,11 +38,14 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Create VITE_BACKEND_URL env variable
+        run: |
+          echo VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: client/
-          secret-envs: VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
           platforms: linux/arm64
           push: true
           tags: lblcs/${{ env.APP }}:latest-client
