@@ -40,7 +40,7 @@ jobs:
 
       - name: Create VITE_BACKEND_URL env variable
         run: |
-          echo VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}
+          echo "VITE_BACKEND_URL=${{ vars.VITE_BACKEND_URL }}" > .env
 
       - name: Build and push
         uses: docker/build-push-action@v6
