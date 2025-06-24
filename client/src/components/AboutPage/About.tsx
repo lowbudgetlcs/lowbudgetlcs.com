@@ -66,7 +66,7 @@ function About() {
           className="max-w-full md:max-w-[560px] p-4"
         ></iframe>
         <p className="text-lg md:text-xl w-full md:w-2/3 px-8 pt-4 text-center">
-          The Low Budget LCS has four separate divisions defined by both max
+          The Low Budget LCS has five separate divisions defined by both max
           rank and a points system.
         </p>
         <p className="text-white/60 text-lg px-8 pt-2 pb-8 text-center">
