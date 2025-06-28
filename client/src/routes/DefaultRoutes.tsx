@@ -3,7 +3,7 @@ import Home from "../components/HomePage/Home";
 import About from "../components/AboutPage/About";
 import Roster from "../components/RosterPage/Roster";
 import LeaguePlayers from "../components/RosterPage/LeaguePlayers";
-import AllStars from "../components/AllStarsPage/AllStars";
+import ASMain from "../components/AllStarsPage/ASMain";
 import ASEconomy from "../components/AllStarsPage/ASEconomy";
 import ASCommercial from "../components/AllStarsPage/ASCommercial";
 import ASFinancial from "../components/AllStarsPage/ASFinancial";
@@ -19,7 +19,7 @@ const DefaultRoutes = () => {
       <Route path="about" element={<About />} />
       <Route path="rosters" element={<Roster />} />
       <Route path="rosters/:league" element={<LeaguePlayers />} />
-      <Route path="allstars" element={<AllStars />}>
+      <Route path="allstars" element={<ASMain />}>
         <Route path="economy" element={<ASEconomy />} />
         <Route path="commercial" element={<ASCommercial />} />
         <Route path="financial" element={<ASFinancial />} />
