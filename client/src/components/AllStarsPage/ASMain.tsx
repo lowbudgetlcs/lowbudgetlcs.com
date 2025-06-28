@@ -1,17 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
+import Button from "../Button";
 
 function ASMain() {
   const [activeLink, setActiveLink] = useState<string>();
-
+  const [popupOpen, setPopupOpen] = useState<boolean>(true);
+  const [isClosing, setIsClosing] = useState<boolean>(false);
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
+
+  useEffect(() => {
+    let timer: number;
+    if (isClosing) {
+      timer = setTimeout(() => {
+        setPopupOpen(false);
+        setIsClosing(false);
+      }, 500);
+    }
+
+    return () => clearTimeout(timer);
+  }, [isClosing]);
+
   return (
     <div className="allstars gap-2 bg-white text-black dark:bg-black dark:text-white font-serif">
-      <div className="popup absolute w-screen h-screen bg-black/60 flex flex-col md:flex-row justify-around items-center p-12 gap-12">
-        <h1 className="text-6xl text-nowrap text-center">All Stars</h1>
-        <div className="flex flex-col items-center md:w-1/2">
+      <div
+        className={`popup absolute w-screen h-screen bg-black/80 flex flex-col md:flex-row justify-around items-center p-2 sm:p-12 md:gap-12 transition duration-500 ${
+          popupOpen ? "" : "hidden"
+        } ${isClosing ? "opacity-0" : ""}`}
+      >
+        <h1 className="text-6xl lg:text-7xl text-nowrap text-center font-bold">
+          All Stars
+        </h1>
+        <div className="flex flex-col items-center md:w-1/2 xl:w-1/3">
           <p className="summary text-lg md:text-xl">
             After every LBLCS season, each team votes for players on who is the
             best in their role. We then take those results and smash all these
@@ -25,6 +46,12 @@ function ASMain() {
             The 1st all-star teams play in the event. If people are not
             available, 2nd and 3rd team members are asked to fill in.
           </p>
+          <button
+            onClick={() => setIsClosing(true)}
+            className="py-4 px-8 m-4 bg-blue rounded-md hover:bg-orange transition duration-300 font-bold text-lg"
+          >
+            Take a look
+          </button>
         </div>
       </div>
     </div>
