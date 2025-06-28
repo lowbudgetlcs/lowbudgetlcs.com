@@ -41,7 +41,6 @@ function App() {
       window.location.replace(newUrl);
     }
   }, [currentHost, pathname, subdomain]);
-  console.log(location.pathname)
   // If a redirect is happening, you might want to render null or a loading spinner
   // to prevent the rest of the app from rendering momentarily.
   if (!subdomain && pathname.startsWith("/draft")) {
