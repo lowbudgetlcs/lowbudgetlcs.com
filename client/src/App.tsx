@@ -68,7 +68,6 @@ function App() {
           </Routes>
         </LeagueDataProvider>
       </SettingsProvider>
-      {(!isDraftRoute || location.pathname === "/") && <Footer />}
     </div>
   );
 }

@@ -23,7 +23,8 @@ function ASMain() {
   }, [isClosing]);
 
   return (
-    <div className="allstars gap-2 bg-white text-black dark:bg-black dark:text-white font-serif">
+    <div className="allstars gap-2 bg-white text-black dark:bg-black dark:text-white font-serif flex-col items-center justify-center">
+      {/* Title Popup */}
       <div
         className={`popup absolute w-screen h-screen bg-black/80 flex flex-col md:flex-row justify-around items-center p-2 sm:p-12 md:gap-12 transition duration-500 ${
           popupOpen ? "" : "hidden"
@@ -51,6 +52,24 @@ function ASMain() {
             className="py-4 px-8 m-4 bg-blue rounded-md hover:bg-orange transition duration-300 font-bold text-lg"
           >
             Take a look
+          </button>
+        </div>
+      </div>
+      {/* Navigation */}
+      <div className="ASNav flex flex-col items-center gap-4 p-4">
+        <div className="title text-6xl">
+          <h2>Select a Season</h2>
+        </div>
+        <div className="seasonSelect flex-col md:grid grid-cols-2 gap-8">
+          <button
+            className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}
+          >
+            Season 14
+          </button>
+                    <button
+            className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}
+          >
+            Season 13
           </button>
         </div>
       </div>
