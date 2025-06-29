@@ -7,7 +7,7 @@ interface NavListProps {
 const ASSidebar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems }) => {
   let currentAnimationNum = 200;
   return (
-    <div className="sidebar text-white pt-20 bg-light-gray transition duration-500 opacity-0 animate-slide-in-right">
+    <div className="sidebar text-white pt-20 bg-light-gray transition duration-500 opacity-0 animate-slide-in-right text-nowrap">
       <ul className="flex flex-col justify-center px-8 gap-8 text-2xl font-bold">
         {navItems.map((navItem) => {
           currentAnimationNum = currentAnimationNum + 100;
