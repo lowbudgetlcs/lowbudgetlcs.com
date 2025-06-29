@@ -68,6 +68,7 @@ function ASMain() {
       {sidebarShown && (
         <>
           <ASSidebar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
+          <ASContent />
         </>
       )}
     </div>
