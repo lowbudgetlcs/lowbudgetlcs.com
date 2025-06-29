@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import ASTitlePopup from "./ASTitlePopup";
 import { useLocalStorageState } from "../../hooks/uselocalStorageState";
+import ASSidebar from "./ASSidebar";
+import ASContent from "./ASContent";
 
 function ASMain() {
   const [activeLink, setActiveLink] = useState<number>();
@@ -11,6 +13,8 @@ function ASMain() {
   const toggleActive = (navItem: number) => {
     setActiveLink(navItem);
   };
+
+  const navItems = [14, 13, 12, 11];
 
   useEffect(() => {
     let timer: number;
@@ -26,7 +30,7 @@ function ASMain() {
   }, [activeLink]);
 
   return (
-    <>
+    <div className={`grow flex ${sidebarShown ? "flex-col md:flex-row" : "flex-col"}`}>
       <ASTitlePopup />
       <div
         className={`allstars flex gap-2 bg-white text-black dark:bg-black dark:text-white flex-col items-center justify-center grow pt-20 transition duration-500 ${
@@ -61,7 +65,12 @@ function ASMain() {
           </div>
         </div>
       </div>
-    </>
+      {sidebarShown && (
+        <>
+          <ASSidebar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
+        </>
+      )}
+    </div>
   );
 }
 
