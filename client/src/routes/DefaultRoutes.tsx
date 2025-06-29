@@ -16,7 +16,7 @@ import Footer from "../components/Footer";
 const DefaultRoutes = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="grow">
+      <div className="grow flex flex-col">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />
