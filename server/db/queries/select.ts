@@ -1,13 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import {
-  divisions,
-  draftLobbies,
-  fearlessDraftLobbies,
-  games,
-  players,
-  teams,
-} from "../schema";
+import { asTeams, divisions, draftLobbies, fearlessDraftLobbies, games, players, teams } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
 
@@ -92,9 +85,7 @@ export async function checkDBForURL(blueCode: string, redCode: string) {
       redCode: draftLobbies.redCode,
     })
     .from(draftLobbies)
-    .where(
-      sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode}`
-    );
+    .where(sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode}`);
   return matchingURL;
 }
 
@@ -157,10 +148,7 @@ export async function getLobbyCodes(lobbyCode: string) {
 
 // Finds valid past draft and returns it in the client state form
 export async function getPastDraft(lobbyCode: string) {
-  const result = await db
-    .select()
-    .from(draftLobbies)
-    .where(eq(draftLobbies.lobbyCode, lobbyCode));
+  const result = await db.select().from(draftLobbies).where(eq(draftLobbies.lobbyCode, lobbyCode));
 
   const draft = result[0];
 
@@ -245,7 +233,7 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     .where(eq(draftLobbies.fearlessCode, fearlessCode));
 
   if (!series.fearlessComplete || !series.totalDrafts) return;
-  
+
   const clientState: FearlessStateClientProps = {
     fearlessCode: series.fearlessCode,
     fearlessComplete: series.fearlessComplete,
@@ -261,4 +249,14 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     draftLobbyCodes: drafts.map((draft) => draft.lobbyCode),
   };
   return clientState;
+}
+
+export async function getAllStarsPosts(seasonId: number) {
+  try {
+    const posts = await db.select().from(asTeams).where(eq(asTeams.seasonId, seasonId));
+    return posts;
+  } catch (err) {
+    console.error("Error fetching roster data: ", err);
+    throw new Error("Failed to fetch roster data");
+  }
 }
