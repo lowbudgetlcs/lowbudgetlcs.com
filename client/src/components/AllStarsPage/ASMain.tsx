@@ -14,7 +14,7 @@ function ASMain() {
     setActiveLink(navItem);
   };
 
-  const navItems = [14, 13, 12, 11];
+  const navItems = [14, 13, 12, 11, 10];
 
   useEffect(() => {
     let timer: number;
@@ -23,7 +23,6 @@ function ASMain() {
         setButtonsShown(false);
         setSidebarShown(true);
       }, 500);
-      timer = setTimeout(() => {}, 1000);
     }
 
     return () => clearTimeout(timer);
