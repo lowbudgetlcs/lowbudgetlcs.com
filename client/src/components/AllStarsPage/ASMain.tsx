@@ -65,10 +65,10 @@ function ASMain() {
         </div>
       </div>
       {sidebarShown && (
-        <>
+        <div className="flex flex-col md:flex-row grow">
           <ASSidebar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
           <ASContent activeSeason={activeLink ? activeLink : 14} />
-        </>
+        </div>
       )}
     </div>
   );

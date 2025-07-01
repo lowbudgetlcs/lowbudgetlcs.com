@@ -56,26 +56,26 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
   };
 
   return (
-    <div className="ascontent pt-20 flex flex-col items-center grow text-white">
-      <div className="navContainer">
+    <div className="ascontent md:pt-20 flex flex-col items-center grow text-white animate-fadeIn opacity-0 [animation-delay:600ms]">
+      <div className="navContainer flex">
         <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
       </div>
-      <div className="flex grow">
+      <div className="flex grow flex-col-reverse md:flex-row">
         <div className={`contentContainer w-full flex flex-col gap-4 py-4`}>
           {selectedPosts.map((post) => (
             <div
               key={post.id}
-              className={`contentItem flex flex-col-reverse lg:flex-row justify-center px-8 gap-4 items-center opacity-0 grow ${
+              className={`contentItem flex flex-col-reverse xl:flex-row justify-center px-8 gap-4 items-center opacity-0 grow ${
                 activePost === post.id ? "animate-fadeIn" : "hidden"
               }`}>
               <img
-                className="flex-none lg:w-[34rem] h-auto"
+                className="flex-none lg:w-[34rem] xxl:w-[48rem] h-auto"
                 src={post.image}
                 alt={`the ${post.name}`}
               />
               <div className="text text-lg grow flex flex-col items-center">
                 <h3 className="title text-2xl font-bold text-orange">{post.name}</h3>
-                <div className="paragraphs text-sm xl:text-base flex flex-col gap-2 text-white/80 px-12">
+                <div className="paragraphs text-sm md:text-xs lg:text-sm xxl:text-base flex flex-col gap-2 text-white/80 xl:px-12">
                   <p>{post.player1Text}</p>
                   <p>{post.player2Text}</p>
                   <p>{post.player3Text}</p>
@@ -87,9 +87,9 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
           ))}
         </div>
         {selectedPosts.length > 0 && (
-          <div className={`gallerybtns p-4 flex flex-col items-center justify-center gap-2`}>
+          <div className={`gallerybtns p-4 flex md:flex-col items-center justify-center gap-2`}>
             <IoIosArrowUp
-              className="text-4xl hover:text-orange hover:scale-125 hover:cursor-pointer transition duration-300"
+              className="text-4xl hover:text-orange hover:scale-125 hover:cursor-pointer transition duration-300 -rotate-90 md:rotate-0"
               onClick={showPreviousPost}
             />
             {selectedPosts.map((post) => (
@@ -101,7 +101,7 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
                 }`}></div>
             ))}
             <IoIosArrowDown
-              className="text-4xl hover:text-orange hover:scale-125 hover:cursor-pointer transition duration-300"
+              className="text-4xl hover:text-orange hover:scale-125 hover:cursor-pointer transition duration-300 -rotate-90 md:rotate-0"
               onClick={showNextPost}
             />
           </div>
