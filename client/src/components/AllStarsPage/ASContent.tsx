@@ -5,8 +5,9 @@ import allStarsData, { PostProps } from "./provider/allStarsData";
 
 const ASContent = ({ activeSeason }: { activeSeason: number }) => {
   const [activeLink, setActiveLink] = useState<string>("Economy");
-  const [activePost, setActivePost] = useState<number>(0);
+  const [activePost, setActivePost] = useState<number | undefined>();
   const [posts, setPosts] = useState<PostProps[]>([]);
+  const [selectedPosts, setSelectedPosts] = useState<PostProps[]>([]);
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
@@ -19,21 +20,40 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
   ];
   useEffect(() => {
     const fetchData = async () => {
-      // Show loading state if desired
-      setPosts([]); 
-
       const response = await allStarsData(activeSeason);
       if (response) {
+        response.sort((a, b) => a.id - b.id);
         setPosts(response);
-        // When new data loads, reset the active post to the first one
-        if (response.length > 0) {
-          setActivePost(response[0].id);
-        }
       }
     };
 
     fetchData();
   }, [activeSeason]);
+
+  useEffect(() => {
+    const divisionPosts: PostProps[] = posts.filter((post) => post.division === activeLink);
+    setSelectedPosts(divisionPosts);
+
+    if (divisionPosts.length > 0) {
+      setActivePost(divisionPosts[0].id);
+    } else {
+      setActivePost(undefined);
+    }
+  }, [activeLink, posts]);
+
+  const activePostIndex = selectedPosts.findIndex((post) => post.id === activePost);
+
+  const showPreviousPost = () => {
+    if (selectedPosts.length < 2) return;
+    const prevIndex = activePostIndex === 0 ? selectedPosts.length - 1 : activePostIndex - 1;
+    setActivePost(selectedPosts[prevIndex].id);
+  };
+
+  const showNextPost = () => {
+    if (selectedPosts.length < 2) return;
+    const nextIndex = activePostIndex === selectedPosts.length - 1 ? 0 : activePostIndex + 1;
+    setActivePost(selectedPosts[nextIndex].id);
+  };
 
   return (
     <div className="ascontent pt-20 flex flex-col items-center grow text-white">
@@ -42,13 +62,14 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
       </div>
       <div className="flex grow">
         <div className={`contentContainer w-full flex flex-col gap-4 py-4`}>
-          {posts.map((post) => (
+          {selectedPosts.map((post) => (
             <div
+              key={post.id}
               className={`contentItem flex flex-col-reverse lg:flex-row justify-center px-8 gap-4 items-center opacity-0 grow ${
                 activePost === post.id ? "animate-fadeIn" : "hidden"
               }`}>
               <img
-                className="flex-none lg:w-[30rem] h-auto"
+                className="flex-none lg:w-[34rem] h-auto"
                 src={post.image}
                 alt={`the ${post.name}`}
               />
@@ -65,24 +86,26 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
             </div>
           ))}
         </div>
-        <div className={`gallerybtns p-4 flex flex-col items-center justify-center gap-2`}>
-          <IoIosArrowUp
-            className="text-4xl hover:scale-125 hover:cursor-pointer transition duration-300"
-            onClick={() => setActivePost(activePost === 1 ? posts.length : activePost - 1)}
-          />
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              onClick={() => setActivePost(post.id)}
-              className={`w-4 h-4 bg-gray rounded-full hover:bg-white/80 hover:cursor-pointer transition duration-300 ${
-                activePost === post.id ? "bg-white/80" : ""
-              }`}></div>
-          ))}
-          <IoIosArrowDown
-            className="text-4xl hover:scale-125 hover:cursor-pointer transition duration-300"
-            onClick={() => setActivePost(activePost === posts.length ? 1 : activePost + 1)}
-          />
-        </div>
+        {selectedPosts.length > 0 && (
+          <div className={`gallerybtns p-4 flex flex-col items-center justify-center gap-2`}>
+            <IoIosArrowUp
+              className="text-4xl hover:text-orange hover:scale-125 hover:cursor-pointer transition duration-300"
+              onClick={showPreviousPost}
+            />
+            {selectedPosts.map((post) => (
+              <div
+                key={post.id}
+                onClick={() => setActivePost(post.id)}
+                className={`w-3 h-3 md:w-4 md:h-4 bg-gray rounded-full hover:bg-white/80 hover:cursor-pointer transition-all duration-300 ${
+                  activePost === post.id ? "bg-white/80 scale-125" : ""
+                }`}></div>
+            ))}
+            <IoIosArrowDown
+              className="text-4xl hover:text-orange hover:scale-125 hover:cursor-pointer transition duration-300"
+              onClick={showNextPost}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
