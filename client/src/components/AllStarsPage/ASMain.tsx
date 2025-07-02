@@ -6,10 +6,9 @@ import ASContent from "./ASContent";
 
 function ASMain() {
   const [activeLink, setActiveLink] = useState<number>();
-  // const [sidebarShown, setSidebarShown] = useLocalStorageState<boolean>("ASsidebarShown", false);
-  // const [buttonsShown, setButtonsShown] = useLocalStorageState<boolean>("ASbuttonsShown", true);
   const [sidebarShown, setSidebarShown] = useState<boolean>(false);
   const [buttonsShown, setButtonsShown] = useState<boolean>(true);
+  const [popupShown, setPopupShown] = useLocalStorageState<boolean>("popupShown", false)
   const toggleActive = (navItem: number) => {
     setActiveLink(navItem);
   };
@@ -22,6 +21,7 @@ function ASMain() {
       timer = setTimeout(() => {
         setButtonsShown(false);
         setSidebarShown(true);
+        setPopupShown(true)
       }, 500);
     }
 
@@ -30,7 +30,9 @@ function ASMain() {
 
   return (
     <div className={`grow flex ${sidebarShown ? "flex-col md:flex-row" : "flex-col"}`}>
-      <ASTitlePopup />
+      <div className={`${popupShown ? "hidden" : ""}`}>
+        <ASTitlePopup />
+      </div>
       <div
         className={`allstars flex gap-2 bg-white text-black dark:bg-black dark:text-white flex-col items-center justify-center grow pt-20 transition duration-500 ${
           buttonsShown ? "" : "hidden"
