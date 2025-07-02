@@ -35,12 +35,12 @@ function ASMain() {
         className={`allstars flex gap-2 bg-white text-black dark:bg-black dark:text-white flex-col items-center justify-center grow pt-20 transition duration-500 ${
           buttonsShown ? "" : "hidden"
         } ${activeLink ? "opacity-0" : ""}`}>
-        <div className="title text-6xl">
+        <div className="title text-6xl text-center">
           <h2>All Stars: Select a Season</h2>
         </div>
         {/* Navigation */}
-        <div className={`ASNav flex flex-col items-center gap-4 px-4 justify-center grow `}>
-          <div className="seasonSelect flex-col md:grid grid-cols-2 gap-8">
+        <div className={`ASNav flex flex-col items-center gap-4 px-4 justify-center grow py-4`}>
+          <div className="seasonSelect flex justify-center flex-wrap gap-8">
             <button
               onClick={() => toggleActive(14)}
               className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
@@ -60,6 +60,11 @@ function ASMain() {
               onClick={() => toggleActive(11)}
               className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
               Season 11
+            </button>
+            <button
+              onClick={() => toggleActive(10)}
+              className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
+              Season 10
             </button>
           </div>
         </div>
