@@ -56,7 +56,7 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
   };
 
   return (
-    <div className="ascontent md:pt-20 flex flex-col items-center grow text-white animate-fadeIn opacity-0 [animation-delay:600ms]">
+    <div className="ascontent md:pt-20 flex flex-col items-center grow text-white animate-fadeIn opacity-0 [animation-delay:800ms]">
       <div className="navContainer flex">
         <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
       </div>
