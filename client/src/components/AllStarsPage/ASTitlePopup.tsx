@@ -19,7 +19,7 @@ const ASTitlePopup = () => {
     <>
       {/* Title Popup */}
       <div
-        className={`popup absolute w-screen h-screen bg-black/90 flex flex-col md:flex-row justify-around items-center p-2 sm:p-12 md:gap-12 transition duration-500 text-white ${
+        className={`popup absolute w-screen h-screen bg-black bg-opacity-95 flex flex-col md:flex-row justify-around items-center p-2 sm:p-12 md:gap-12 transition duration-500 text-white ${
           popupOpen ? "" : "hidden"
         } ${isClosing ? "opacity-0" : ""}`}>
         <h1 className="text-6xl lg:text-7xl text-nowrap text-center font-bold opacity-0 [animation-delay:100ms] animate-slide-in-right">
