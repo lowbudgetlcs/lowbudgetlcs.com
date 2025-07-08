@@ -9,6 +9,7 @@ import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./draftTool/sockets/draftSocket";
 import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
+import allStarsRoutes from "./routes/allStarsRoutes";
 
 const app = express();
 const port = 8080;
@@ -75,6 +76,7 @@ if (isProduction) {
 app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
+app.use("/allstars", allStarsRoutes);
 
 // Set up namespaces
 const draftNamespace = io.of("/draft");

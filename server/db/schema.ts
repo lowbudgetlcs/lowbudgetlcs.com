@@ -1,7 +1,18 @@
 import { pgTable, integer, text, unique, serial, varchar, type AnyPgColumn, index, foreignKey, char, jsonb, timestamp, boolean, bigint, smallint } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
-
+export const asTeams = pgTable("as_teams", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "as_teams_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	seasonId: integer("season_id").notNull(),
+	division: text().notNull(),
+	image: text().notNull(),
+	name: text().notNull(),
+	player1Text: text("player1_text"),
+	player2Text: text("player2_text"),
+	player3Text: text("player3_text"),
+	player4Text: text("player4_text"),
+	player5Text: text("player5_text"),
+});
 
 export const meta = pgTable("meta", {
 	id: integer().primaryKey().notNull(),

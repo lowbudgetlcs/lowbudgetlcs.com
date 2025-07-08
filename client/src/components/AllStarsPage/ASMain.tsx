@@ -1,0 +1,84 @@
+import { useEffect, useState } from "react";
+import ASTitlePopup from "./ASTitlePopup";
+import { useLocalStorageState } from "../../hooks/uselocalStorageState";
+import ASSidebar from "./ASSidebar";
+import ASContent from "./ASContent";
+
+function ASMain() {
+  const [activeLink, setActiveLink] = useState<number>();
+  const [sidebarShown, setSidebarShown] = useState<boolean>(false);
+  const [buttonsShown, setButtonsShown] = useState<boolean>(true);
+  const [popupShown, setPopupShown] = useLocalStorageState<boolean>("popupShown", false)
+  const toggleActive = (navItem: number) => {
+    setActiveLink(navItem);
+  };
+
+  const navItems = [14, 13, 12, 11, 10];
+
+  useEffect(() => {
+    let timer: number;
+    if (activeLink) {
+      timer = setTimeout(() => {
+        setButtonsShown(false);
+        setSidebarShown(true);
+        setPopupShown(true)
+      }, 500);
+    }
+
+    return () => clearTimeout(timer);
+  }, [activeLink]);
+
+  return (
+    <div className={`grow flex ${sidebarShown ? "flex-col md:flex-row" : "flex-col"}`}>
+      <div className={`${popupShown ? "hidden" : ""}`}>
+        <ASTitlePopup />
+      </div>
+      <div
+        className={`allstars flex gap-2 bg-white text-black dark:bg-black dark:text-white flex-col items-center justify-center grow pt-20 transition duration-500 ${
+          buttonsShown ? "" : "hidden"
+        } ${activeLink ? "opacity-0" : ""}`}>
+        <div className="title text-6xl text-center">
+          <h2>All Stars: Select a Season</h2>
+        </div>
+        {/* Navigation */}
+        <div className={`ASNav flex flex-col items-center gap-4 px-4 justify-center grow py-4`}>
+          <div className="seasonSelect flex justify-center flex-wrap gap-8">
+            <button
+              onClick={() => toggleActive(14)}
+              className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
+              Season 14
+            </button>
+            <button
+              onClick={() => toggleActive(13)}
+              className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
+              Season 13
+            </button>
+            <button
+              onClick={() => toggleActive(12)}
+              className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
+              Season 12
+            </button>
+            <button
+              onClick={() => toggleActive(11)}
+              className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
+              Season 11
+            </button>
+            <button
+              onClick={() => toggleActive(10)}
+              className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
+              Season 10
+            </button>
+          </div>
+        </div>
+      </div>
+      {sidebarShown && (
+        <div className="flex flex-col md:flex-row grow">
+          <ASSidebar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
+          <ASContent activeSeason={activeLink ? activeLink : 14} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default ASMain;
