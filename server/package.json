@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@fightmegg/riot-api": "^0.0.20",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "drizzle-orm": "^0.38.3",
