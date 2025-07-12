@@ -78,7 +78,7 @@ app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 app.use("/mh", matchRoutes);
 app.use("/allstars", allStarsRoutes);
-app.use("/match", matchRoutes);
+app.use("/mh", matchRoutes);
 
 // Set up namespaces
 const draftNamespace = io.of("/draft");
