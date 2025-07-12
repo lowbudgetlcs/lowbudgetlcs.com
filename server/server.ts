@@ -74,7 +74,7 @@ if (isProduction) {
 app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
-app.use("/match", matchRoutes);
+app.use("/mh", matchRoutes);
 
 // Set up namespaces
 const draftNamespace = io.of("/draft");
