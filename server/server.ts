@@ -9,6 +9,7 @@ import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./draftTool/sockets/draftSocket";
 import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
+import matchRoutes from "./routes/matchRoutes";
 
 const app = express();
 const port = 8080;
@@ -17,9 +18,7 @@ const isProduction = process.env.PRODUCTION === "production";
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: isProduction
-      ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"]
-      : "*",
+    origin: isProduction ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"] : "*",
   },
 });
 
@@ -75,6 +74,7 @@ if (isProduction) {
 app.use("/twitch", twitchRoutes);
 app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
+app.use("/match", matchRoutes);
 
 // Set up namespaces
 const draftNamespace = io.of("/draft");
