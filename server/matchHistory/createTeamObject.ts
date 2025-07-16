@@ -1,7 +1,11 @@
 import { MatchV5DTOs } from "twisted/dist/models-dto";
 import TeamStats from "./interfaces/TeamStats";
+import createPlayerObject from "./createPlayerObject";
 
-const createTeamObject = (teamData: MatchV5DTOs.TeamDto) => {
+const createTeamObject = (
+  teamData: MatchV5DTOs.TeamDto,
+  matchData: MatchV5DTOs.MatchDto
+) => {
   const bans: number[] = [];
   teamData.bans.forEach((ban) => {
     bans.push(ban.championId);
@@ -10,7 +14,7 @@ const createTeamObject = (teamData: MatchV5DTOs.TeamDto) => {
     teamId: teamData.teamId,
     win: teamData.win,
     bans: bans,
-    players: [],
+    players: createPlayerObject(teamData.teamId, matchData),
     feats: {
       EPIC_MONSTER_KILL: teamData.feats.EPIC_MONSTER_KILL.featState,
       FIRST_BLOOD: teamData.feats.FIRST_BLOOD.featState,

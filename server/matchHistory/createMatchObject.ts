@@ -15,8 +15,8 @@ const createMatchObject = (matchData: MatchV5DTOs.MatchDto) => {
     gameDuration: info.gameDuration,
     gameStartTimestamp: info.gameStartTimestamp,
     gameEndTimestamp: info.gameEndTimestamp,
-    blueTeam: createTeamObject(teams[0]),
-    redTeam: createTeamObject(teams[1]),
+    blueTeam: createTeamObject(teams[0], matchData),
+    redTeam: createTeamObject(teams[1], matchData),
     tournamentCode: tournamentCode,
   };
   return matchObject;

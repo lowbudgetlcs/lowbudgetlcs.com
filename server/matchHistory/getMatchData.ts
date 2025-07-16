@@ -16,7 +16,7 @@ const getMatchData = async (matchId: string) => {
 
     return response;
   } catch (error) {
-    console.error("EERROR");
+    console.error("Error getting match data within getMatchData: ", error);
   }
 };
 
