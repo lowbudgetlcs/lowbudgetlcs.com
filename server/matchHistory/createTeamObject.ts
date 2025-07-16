@@ -1,7 +1,6 @@
-import { RiotAPITypes } from "@fightmegg/riot-api";
-import { TeamStats } from "./interfaces/MatchStats";
+import { MatchV5DTOs } from "twisted/dist/models-dto";
 
-const createTeamObject = (teamData: RiotAPITypes.MatchV5.TeamDTO) => {
+const createTeamObject = (teamData: MatchV5DTOs.TeamDto) => {
   const bans: number[] = [];
   teamData.bans.forEach((ban) => {
     bans.push(ban.championId);

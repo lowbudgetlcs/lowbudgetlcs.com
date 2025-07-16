@@ -12,7 +12,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@fightmegg/riot-api": "^0.0.20",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "drizzle-orm": "^0.38.3",
@@ -20,7 +19,8 @@
     "express-rate-limit": "^7.5.0",
     "postgres": "^3.4.5",
     "short-unique-id": "^5.2.2",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "twisted": "^1.67.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

@@ -7,12 +7,10 @@ matchRoutes.get("/api/match/:riotMatchId", async (req: Request, res: Response) =
   try {
     const riotMatchId = req.params.riotMatchId;
     const response = await getMatchData("NA1_" + riotMatchId);
-    console.log(response);
     if (response) {
-      console.log(response);
       res.status(200).json(response);
     } else {
-      res.status(200).json(response);
+      res.status(404).json(response);
     }
   } catch (err: any) {
     console.error("Error while checking tournament code:", err);
