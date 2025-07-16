@@ -1,7 +1,10 @@
-interface TeamStats {
+import PlayerStats from "./PlayerStats";
+
+export default interface TeamStats {
   teamId: number;
   win: boolean;
   bans: number[];
+  players: PlayerStats[];
   feats: {
     EPIC_MONSTER_KILL: number;
     FIRST_BLOOD: number;

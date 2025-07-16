@@ -1,3 +1,5 @@
+import TeamStats from "./TeamStats";
+
 export default interface MatchStats {
   matchId: string;
   participants: string[];
