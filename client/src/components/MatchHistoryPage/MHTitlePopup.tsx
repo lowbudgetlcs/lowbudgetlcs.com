@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import getMatch from "./getMatch";
 
 const MHTitlePopup = () => {
   const [popupOpen, setPopupOpen] = useState<boolean>(true);
@@ -16,9 +17,19 @@ const MHTitlePopup = () => {
     return () => clearTimeout(timer);
   }, [isClosing]);
 
-  const handleFormSubmission = (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("hello")
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const matchID = formData.get("matchID") as string | null;
+    if (Number.isInteger(matchID)) {
+      const matchData = await getMatch(Number(matchID));
+      console.log(matchData);
+    } else if (!Number.isInteger(matchID) && matchID !== null) {
+      console.error("Not a number", matchID);
+    } else {
+      console.error("Match ID is null");
+    }
   };
 
   return (
@@ -46,6 +57,7 @@ const MHTitlePopup = () => {
           <form onSubmit={handleFormSubmission}>
             <input
               type="text"
+              name="matchID"
               placeholder="Match ID"
               className="px-2 py-2 text-2xl bg-gray text-white rounded-md mt-2"
             ></input>
