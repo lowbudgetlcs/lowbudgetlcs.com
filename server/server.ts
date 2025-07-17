@@ -11,8 +11,6 @@ import { draftSocket } from "./draftTool/sockets/draftSocket";
 import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
 import matchRoutes from "./routes/matchRoutes";
 import allStarsRoutes from "./routes/allStarsRoutes";
-import matchRoutes from "./routes/matchRoutes";
-
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
