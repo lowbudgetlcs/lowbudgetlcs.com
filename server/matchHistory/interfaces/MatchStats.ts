@@ -2,7 +2,6 @@ import TeamStats from "./TeamStats";
 
 export default interface MatchStats {
   matchId: string;
-  participants: string[];
   gameId: number;
   gameMode: string;
   gameName: string;

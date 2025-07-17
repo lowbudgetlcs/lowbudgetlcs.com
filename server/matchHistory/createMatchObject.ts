@@ -7,7 +7,6 @@ const createMatchObject = (matchData: MatchV5DTOs.MatchDto) => {
   const { teams, participants, tournamentCode } = info;
   const matchObject: MatchStats = {
     matchId: metadata.matchId,
-    participants: metadata.participants,
     gameId: info.gameId,
     gameMode: info.gameMode,
     gameName: info.gameName,
