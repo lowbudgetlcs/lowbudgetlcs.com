@@ -54,7 +54,7 @@ const MHTitlePopup = () => {
             You can find the match ID on the top right in the post-game screen
             in the client.
           </p>
-          <form onSubmit={handleFormSubmission}>
+          <form className="text-center" onSubmit={handleFormSubmission}>
             <input
               type="text"
               name="matchID"
