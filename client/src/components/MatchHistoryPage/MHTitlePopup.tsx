@@ -22,10 +22,10 @@ const MHTitlePopup = () => {
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const matchID = formData.get("matchID") as string | null;
-    if (Number.isInteger(matchID)) {
+    if (Number.isInteger(Number(matchID))) {
       const matchData = await getMatch(Number(matchID));
       console.log(matchData);
-    } else if (!Number.isInteger(matchID) && matchID !== null) {
+    } else if (matchID !== null) {
       console.error("Not a number", matchID);
     } else {
       console.error("Match ID is null");

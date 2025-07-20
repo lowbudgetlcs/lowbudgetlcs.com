@@ -1,7 +1,7 @@
 const getMatch = async (matchId: number) => {
   const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/mh/api/${matchId}`,
+    `${import.meta.env.VITE_BACKEND_URL}/mh/api/match/${matchId}`,
     {
       headers: {
         "x-api-key": apiKey,
