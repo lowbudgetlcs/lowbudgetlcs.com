@@ -117,7 +117,7 @@ function About() {
           <NavLink
             target="_blank"
             to={
-              "https://docs.google.com/document/d/16uYlGmADc1x1v3MXQhRgUqICNabnjxqiirJmw7W-tQI/edit?usp=sharing"
+              "https://docs.google.com/document/d/1gwZpciwnRG8nao42zNZCKxwXf7fgdFXQm-tDAaQ6T1I/edit?usp=sharing"
             }
           >
             <Button>Rules Document</Button>
