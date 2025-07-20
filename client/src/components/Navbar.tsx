@@ -59,7 +59,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         <li className="text-left animate-slide-in-500 opacity-0">
           <NavLink
             className="hover:text-orange transition duration-300"
-            to="https://docs.google.com/document/d/16uYlGmADc1x1v3MXQhRgUqICNabnjxqiirJmw7W-tQI/edit?usp=sharing"
+            to="https://docs.google.com/document/d/1gwZpciwnRG8nao42zNZCKxwXf7fgdFXQm-tDAaQ6T1I/edit?usp=sharing"
             target="_blank"
           >
             <div className="navBox pl-14 py-10">Rules</div>
