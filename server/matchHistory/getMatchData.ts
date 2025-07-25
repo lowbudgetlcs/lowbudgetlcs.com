@@ -1,5 +1,4 @@
 import { Constants, LolApi } from "twisted";
-import createMatchObject from "./createMatchObject";
 
 const getMatchData = async (matchId: string) => {
   try {
@@ -8,12 +7,6 @@ const getMatchData = async (matchId: string) => {
       matchId,
       Constants.RegionGroups.AMERICAS
     );
-    if (response) {
-      const rawMatchData = response.response;
-      const matchObject = createMatchObject(rawMatchData);
-      return matchObject;
-    }
-
     return response;
   } catch (error) {
     console.error("Error getting match data within getMatchData: ", error);
