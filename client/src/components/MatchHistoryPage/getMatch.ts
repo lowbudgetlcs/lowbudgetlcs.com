@@ -1,3 +1,5 @@
+import { MatchDto } from "./interfaces/MatchV5";
+
 const getMatch = async (matchId: number) => {
   const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
   const response = await fetch(
@@ -13,7 +15,7 @@ const getMatch = async (matchId: number) => {
     throw new Error("Failed to fetch data");
   }
 
-  const matchData = await response.json();
+  const matchData: MatchDto = await response.json();
   console.log(matchData)
 };
 
