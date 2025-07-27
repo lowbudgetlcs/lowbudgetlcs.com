@@ -12,11 +12,18 @@ const getMatch = async (matchId: number) => {
   );
 
   if (!response.ok) {
+    if (response.status === 404) {
+      return 404;
+    } else if (response.status === 500) {
+      return 500;
+    }
     throw new Error("Failed to fetch data");
   }
 
-  const matchData: MatchDto = await response.json();
-  console.log(matchData)
+  const matchData: MatchDto | number = await response.json();
+  console.log(matchData);
+
+  return matchData;
 };
 
 export default getMatch;

@@ -4,7 +4,9 @@ import getMatch from "./getMatch";
 const MHTitlePopup = () => {
   const [popupOpen, setPopupOpen] = useState<boolean>(true);
   const [isClosing, setIsClosing] = useState<boolean>(false);
-
+  const [fetchErr, setFetchErr] = useState<boolean>(false);
+  const [errMessage, setErrMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     let timer: number;
     if (isClosing) {
@@ -19,17 +21,34 @@ const MHTitlePopup = () => {
 
   const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setFetchErr(false);
+    setErrMessage("");
+    setLoading(true);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const matchID = formData.get("matchID") as string | null;
-    if (Number.isInteger(Number(matchID))) {
+    if (matchID && Number.isInteger(Number(matchID))) {
       const matchData = await getMatch(Number(matchID));
+      if (matchData === 404) {
+        setFetchErr(true);
+        setLoading(false);
+        setErrMessage("Match not found");
+      } else if (matchData === 500) {
+        setFetchErr(true);
+        setLoading(false);
+        setErrMessage("Internal Server error. Try reloading the page.");
+      }
       console.log(matchData);
-    } else if (matchID !== null) {
-      console.error("Not a number", matchID);
+    } else if (matchID && matchID.length !== 0) {
+      setFetchErr(true);
+      setLoading(false);
+      setErrMessage("Match ID must be a number");
     } else {
-      console.error("Match ID is null");
+      setFetchErr(true);
+      setLoading(false);
+      setErrMessage("Match ID is required");
     }
+    setLoading(false)
   };
 
   return (
@@ -50,21 +69,31 @@ const MHTitlePopup = () => {
           <p className="text-orange text-lg md:text-xl pt-4 pb-4">
             Just enter in your Match ID below to search
           </p>
-          <p className="text-white/60 text-lg md:text-xl">
+          <p className="text-white/60 text-lg md:text-xl text-center">
             You can find the match ID on the top right in the post-game screen
             in the client.
           </p>
-          <form className="text-center" onSubmit={handleFormSubmission}>
-            <input
-              type="text"
-              name="matchID"
-              placeholder="Match ID"
-              className="px-2 py-2 text-2xl bg-gray text-white rounded-md mt-2"
-            ></input>
-            <button className="py-4 px-8 m-4 bg-blue rounded-md hover:bg-orange transition duration-300 font-bold text-lg">
-              Take a look
-            </button>
-          </form>
+          <div className="flex flex-col">
+            <form className="text-center" onSubmit={handleFormSubmission}>
+              <input
+                type="text"
+                name="matchID"
+                placeholder="Match ID"
+                className="px-2 py-2 text-2xl bg-gray text-white rounded-md mt-2"
+              ></input>
+              <button
+                className={`py-4 px-8 m-4 ${loading ? "bg-gray hover:bg-gray" : "bg-blue hover:bg-orange"} rounded-md transition duration-300 font-bold text-lg`}
+                disabled={loading}
+              >
+                {loading ? "Loading..." : "Take a look"}
+              </button>
+            </form>
+            <p
+              className={`text-red text-center ${fetchErr ? "" : "opacity-0"}`}
+            >
+              Error: {errMessage}
+            </p>
+          </div>
         </div>
       </div>
     </>
