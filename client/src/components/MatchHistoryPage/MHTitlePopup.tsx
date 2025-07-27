@@ -1,14 +1,20 @@
-import { FormEvent, useEffect, useState } from "react";
-import getMatch from "./getMatch";
+import { useEffect, useState } from "react";
+import handleMatchSearch from "./handleMatchSearch";
 import { useSessionStorageState } from "../../hooks/useSessionStorageState";
-
+import { useNavigate } from "react-router-dom";
 const MHTitlePopup = () => {
   const [popupOpen, setPopupOpen] = useState<boolean>(true);
   const [isClosing, setIsClosing] = useState<boolean>(false);
   const [fetchErr, setFetchErr] = useState<boolean>(false);
   const [errMessage, setErrMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-  const [sessionMatchData, setSessionMatchData] = useSessionStorageState("matchData", {});
+  const [sessionMatchData, setSessionMatchData] = useSessionStorageState(
+    "matchData",
+    {}
+  );
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     let timer: number;
     if (isClosing) {
@@ -21,37 +27,20 @@ const MHTitlePopup = () => {
     return () => clearTimeout(timer);
   }, [isClosing]);
 
-  const handleFormSubmission = async (e: FormEvent<HTMLFormElement>) => {
+  const handleFormSubmission = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFetchErr(false);
-    setErrMessage("");
-    setLoading(true);
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const matchID = formData.get("matchID") as string | null;
-    if (matchID && Number.isInteger(Number(matchID))) {
-      const matchData = await getMatch(Number(matchID));
-      if (matchData === 404) {
-        setFetchErr(true);
-        setLoading(false);
-        setErrMessage("Match not found");
-      } else if (matchData === 500) {
-        setFetchErr(true);
-        setLoading(false);
-        setErrMessage("Internal Server error. Try reloading the page.");
-      }
-      // Successful
-      console.log(matchData);
+    const matchData = await handleMatchSearch(
+      matchID,
+      setLoading,
+      setFetchErr,
+      setErrMessage
+    );
+    if (matchData) {
       setSessionMatchData(matchData);
-      setLoading(false);
-    } else if (matchID && matchID.length !== 0) {
-      setFetchErr(true);
-      setLoading(false);
-      setErrMessage("Match ID must be a number");
-    } else {
-      setFetchErr(true);
-      setLoading(false);
-      setErrMessage("Match ID is required");
+      navigate(`/mh/${matchID}`);
     }
   };
 
