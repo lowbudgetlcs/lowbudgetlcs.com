@@ -815,6 +815,11 @@
     "roles": ["Top"]
   },
   {
+    "name": "Yunara",
+    "displayName": "Yunara",
+    "roles": ["Bottom"] 
+  },
+  {
     "name": "Yuumi",
     "displayName": "Yuumi",
     "roles": ["Support"]
