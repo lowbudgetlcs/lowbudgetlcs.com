@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import getMatch from "./getMatch";
+import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 
 const MHTitlePopup = () => {
   const [popupOpen, setPopupOpen] = useState<boolean>(true);
@@ -7,6 +8,7 @@ const MHTitlePopup = () => {
   const [fetchErr, setFetchErr] = useState<boolean>(false);
   const [errMessage, setErrMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [sessionMatchData, setSessionMatchData] = useSessionStorageState("matchData", {});
   useEffect(() => {
     let timer: number;
     if (isClosing) {
@@ -38,7 +40,10 @@ const MHTitlePopup = () => {
         setLoading(false);
         setErrMessage("Internal Server error. Try reloading the page.");
       }
+      // Successful
       console.log(matchData);
+      setSessionMatchData(matchData);
+      setLoading(false);
     } else if (matchID && matchID.length !== 0) {
       setFetchErr(true);
       setLoading(false);
@@ -48,7 +53,6 @@ const MHTitlePopup = () => {
       setLoading(false);
       setErrMessage("Match ID is required");
     }
-    setLoading(false)
   };
 
   return (
@@ -82,7 +86,9 @@ const MHTitlePopup = () => {
                 className="px-2 py-2 text-2xl bg-gray text-white rounded-md mt-2"
               ></input>
               <button
-                className={`py-4 px-8 m-4 ${loading ? "bg-gray hover:bg-gray" : "bg-blue hover:bg-orange"} rounded-md transition duration-300 font-bold text-lg`}
+                className={`py-4 px-8 m-4 ${
+                  loading ? "bg-gray hover:bg-gray" : "bg-blue hover:bg-orange"
+                } rounded-md transition duration-300 font-bold text-lg`}
                 disabled={loading}
               >
                 {loading ? "Loading..." : "Take a look"}
