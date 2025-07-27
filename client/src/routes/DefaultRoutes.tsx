@@ -21,6 +21,7 @@ const DefaultRoutes = () => {
           <Route path="rosters/:league" element={<LeaguePlayers />} />
           <Route path="allstars" element={<ASMain />} />
           <Route path="mh" element={<MHHome />} />
+          <Route path="mh/:matchID" element={<MHHome />} />
           <Route path="stats" element={<StatsMain />} />
           {/* <Route path="stats/player/:player" element={<StatsPlayer/>}/> */}
           <Route path="stats/team/" element={<StatsSeason />} />
