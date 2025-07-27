@@ -21,8 +21,6 @@ const getMatch = async (matchId: number) => {
   }
 
   const matchData: MatchDto | number = await response.json();
-  console.log(matchData);
-
   return matchData;
 };
 
