@@ -17,8 +17,19 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
   const summoner2Link = `https://raw.communitydragon.org${correctedSummoner2}`;
 
   //   Find image links for runes
-  const primaryRuneLink = DisplayRuneImage(playerData, 0);
+  const primaryRuneLink = DisplayRuneImage(playerData, 0, "primaryStyle");
   const secondaryRuneSetLink = DisplayRuneSetImage(playerData);
+
+  const ShowAllRuneImages = (styleType: string, initialInt: number) => {
+    const links: string[] = [];
+    for (let i = initialInt; i < 4; i++) {
+      if (playerData.perks.styles[i] !== undefined) {
+        links.push(DisplayRuneImage(playerData, i, styleType));
+      }
+    }
+    console.log(links)
+    return links;
+  };
 
   return (
     <div className="playerContainer flex gap-2 items-center">
@@ -47,7 +58,7 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
               className="relative">
               <img src={primaryRuneLink} className="w-6 h-6"></img>
               <div
-                className={`absolute ${
+                className={`absolute -top-14 bg-black ${
                   primaryRumesShown ? "" : "hidden"
                 } grid grid-cols-2 gap-2`}></div>
             </div>
@@ -56,7 +67,14 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
               onMouseLeave={() => setSecondaryRumeShown(false)}
               className="relative">
               <img src={secondaryRuneSetLink} className="w-6 h-6"></img>
-              <div className={`absolute ${secondaryRumesShown ? "" : "hidden"}`}></div>
+              <div className={`absolute -top-14 bg-black ${secondaryRumesShown ? "" : "hidden"}`}>
+                {ShowAllRuneImages("primaryStyle", 1).map((link) => {
+                  return <img src={link} key={link} className="w-6 h-6"></img>;
+                })}
+                {ShowAllRuneImages("subStyle", 0).map((link) => {
+                  return <img src={link} key={link} className="w-6 h-6"></img>;
+                })}
+              </div>
             </div>
           </div>
         </div>
