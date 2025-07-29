@@ -65,7 +65,7 @@ export interface ObjectivesDto {
   riftHerald: ObjectiveDto;
   tower: ObjectiveDto;
   atakhan: ObjectiveDto;
-  grubs: ObjectiveDto;
+  horde: ObjectiveDto;
 }
 
 // Represents a single type of objective (e.g., Baron, Dragon).
@@ -140,7 +140,7 @@ export interface ParticipantDto {
   profileIcon: number;
   puuid: string;
   quadraKills: number;
-  riotIdName: string;
+  riotIdGameName: string;
   riotIdTagline: string;
   role: string;
   sightWardsBoughtInGame: number;
