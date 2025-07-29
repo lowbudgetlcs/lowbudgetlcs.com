@@ -1,8 +1,8 @@
 import { ParticipantDto } from "../interfaces/MatchV5";
-import runes from "../json/perks.json";
 import summonerSpells from "../json/summoner-spells.json";
-import runeSets from "../json/perkstyles.json";
 import { useState } from "react";
+import DisplayRuneImage from "./DisplayRuneImage";
+import DisplayRuneSetImage from "./DisplayRuneSetImage";
 const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
   const [primaryRumesShown, setPrimaryRumeShown] = useState<boolean>(false);
   const [secondaryRumesShown, setSecondaryRumeShown] = useState<boolean>(false);
@@ -15,19 +15,10 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
   const correctedSummoner2 = summoner2?.iconPath.replace(" ", "_").toLowerCase();
   const summoner1Link = `https://raw.communitydragon.org${correctedSummoner1}`;
   const summoner2Link = `https://raw.communitydragon.org${correctedSummoner2}`;
+
   //   Find image links for runes
-  const rawPrimaryRune = playerData.perks.styles.find(
-    (style) => style.description === "primaryStyle"
-  );
-  const rawSecondaryRune = playerData.perks.styles.find(
-    (style) => style.description === "subStyle"
-  );
-  const primaryRune = runes.find((rune) => rune.id === rawPrimaryRune?.selections[0].perk);
-  const secondaryRuneSet = runeSets.styles.find((rune) => rune.id === rawSecondaryRune?.style);
-  const correctedPrimaryRune = primaryRune?.iconPath.replace(" ", "_").toLowerCase();
-  const correctedSecondaryRuneSet = secondaryRuneSet?.iconPath.replace(" ", "_").toLowerCase();
-  const primaryRuneLink = `https://raw.communitydragon.org${correctedPrimaryRune}`;
-  const secondaryRuneSetLink = `https://raw.communitydragon.org${correctedSecondaryRuneSet}`;
+  const primaryRuneLink = DisplayRuneImage(playerData, 0);
+  const secondaryRuneSetLink = DisplayRuneSetImage(playerData);
 
   return (
     <div className="playerContainer flex gap-2 items-center">
@@ -50,20 +41,21 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
             <img src={summoner2Link} className="w-6 h-6"></img>
           </div>
           <div className="runes flex flex-col items-center gap-2">
-            <div className="relative">
-              <img
-                onMouseEnter={() => setPrimaryRumeShown(true)}
-                onMouseLeave={() => setPrimaryRumeShown(false)}
-                src={primaryRuneLink}
-                className="w-6 h-6"></img>
-              <div className={`absolute ${primaryRumesShown ? "" : "hidden"}`}></div>
+            <div
+              onMouseEnter={() => setPrimaryRumeShown(true)}
+              onMouseLeave={() => setPrimaryRumeShown(false)}
+              className="relative">
+              <img src={primaryRuneLink} className="w-6 h-6"></img>
+              <div
+                className={`absolute ${
+                  primaryRumesShown ? "" : "hidden"
+                } grid grid-cols-2 gap-2`}></div>
             </div>
-            <div className="relative">
-              <img
-                onMouseEnter={() => setSecondaryRumeShown(true)}
-                onMouseLeave={() => setSecondaryRumeShown(false)}
-                src={secondaryRuneSetLink}
-                className="w-6 h-6"></img>
+            <div
+              onMouseEnter={() => setSecondaryRumeShown(true)}
+              onMouseLeave={() => setSecondaryRumeShown(false)}
+              className="relative">
+              <img src={secondaryRuneSetLink} className="w-6 h-6"></img>
               <div className={`absolute ${secondaryRumesShown ? "" : "hidden"}`}></div>
             </div>
           </div>
