@@ -22,15 +22,23 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
 
   const ShowAllRuneImages = (styleType: string, initialInt: number) => {
     const links: string[] = [];
-    for (let i = initialInt; i < 4; i++) {
-      if (playerData.perks.styles[i] !== undefined) {
-        links.push(DisplayRuneImage(playerData, i, styleType));
+    if (styleType === "primaryStyle") {
+      for (let i = initialInt; i < 4; i++) {
+        const runeToPush = DisplayRuneImage(playerData, i, "primaryStyle");
+        if (runeToPush) {
+          links.push(runeToPush);
+        }
+      }
+    } else {
+      for (let i = initialInt; i < 2; i++) {
+        const runeToPush = DisplayRuneImage(playerData, i, "subStyle");
+        if (runeToPush) {
+          links.push(runeToPush);
+        }
       }
     }
-    console.log(links)
     return links;
   };
-
   return (
     <div className="playerContainer flex gap-2 items-center">
       <div className="champPlayerInfo flex gap-2 items-center justify-around">
