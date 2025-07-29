@@ -31,7 +31,7 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
       }
     } else {
       for (let i = initialInt; i < 2; i++) {
-        const runeToPush = DisplayRuneImage(playerData, i, "subStyle");
+        const runeToPush = DisplayRuneImage(playerData, i, styleType);
         if (runeToPush) {
           links.push(runeToPush);
         }
@@ -75,13 +75,21 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
               onMouseLeave={() => setSecondaryRumeShown(false)}
               className="relative">
               <img src={secondaryRuneSetLink} className="w-6 h-6"></img>
-              <div className={`absolute -top-14 bg-black ${secondaryRumesShown ? "" : "hidden"}`}>
-                {ShowAllRuneImages("primaryStyle", 1).map((link) => {
-                  return <img src={link} key={link} className="w-6 h-6"></img>;
-                })}
-                {ShowAllRuneImages("subStyle", 0).map((link) => {
-                  return <img src={link} key={link} className="w-6 h-6"></img>;
-                })}
+              <div
+                className={`absolute -top-14 bg-black ${
+                  secondaryRumesShown ? "" : "hidden"
+                } flex flex-col gap-2 min-w-24 items-center justify-center text-center p-2 rounded-md border-2 border-gray/40`}>
+                <img src={primaryRuneLink} className="w-6 h-6"></img>
+                <div className="flex">
+                  {ShowAllRuneImages("primaryStyle", 1).map((link) => {
+                    return <img src={link} key={link} className="w-6 h-6"></img>;
+                  })}
+                </div>
+                <div className="flex">
+                  {ShowAllRuneImages("subStyle", 0).map((link) => {
+                    return <img src={link} key={link} className="w-6 h-6"></img>;
+                  })}
+                </div>
               </div>
             </div>
           </div>
