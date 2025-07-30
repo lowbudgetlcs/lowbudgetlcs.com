@@ -4,9 +4,9 @@ import { useState } from "react";
 import DisplayRuneImage from "./RuneDisplay/DisplayRuneImage";
 import DisplayRuneSetImage from "./RuneDisplay/DisplayRuneSetImage";
 import ShowAllRuneImages from "./RuneDisplay/ShowAllRuneImages";
+import DisplayAllStatMods from "./RuneDisplay/DisplayStatMods";
 const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
-  const [primaryRumesShown, setPrimaryRumeShown] = useState<boolean>(false);
-  const [secondaryRumesShown, setSecondaryRumeShown] = useState<boolean>(false);
+  const [runesShown, setRunesShown] = useState<boolean>(false);
 
   const championLink = `https://cdn.communitydragon.org/latest/champion/${playerData.championId}/square`;
   // Find image links for summoner spells
@@ -41,27 +41,20 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
             <img src={summoner1Link} className="w-6 h-6"></img>
             <img src={summoner2Link} className="w-6 h-6"></img>
           </div>
-          <div className="runes flex flex-col items-center gap-2">
-            <div
-              onMouseEnter={() => setPrimaryRumeShown(true)}
-              onMouseLeave={() => setPrimaryRumeShown(false)}
-              className="relative">
+          <div
+            className="runes flex flex-col items-center gap-2"
+            onMouseEnter={() => setRunesShown(true)}
+            onMouseLeave={() => setRunesShown(false)}>
+            <div className="relative">
               <img src={primaryRuneLink} className="w-6 h-6"></img>
-              <div
-                className={`absolute -top-14 bg-black ${
-                  primaryRumesShown ? "" : "hidden"
-                } grid grid-cols-2 gap-2`}></div>
             </div>
-            <div
-              onMouseEnter={() => setSecondaryRumeShown(true)}
-              onMouseLeave={() => setSecondaryRumeShown(false)}
-              className="relative">
+            <div className="relative">
               <img src={secondaryRuneSetLink} className="w-6 h-6"></img>
               <div
-                className={`absolute -top-14 bg-black ${
-                  secondaryRumesShown ? "" : "hidden"
+                className={`absolute w-fit top-6 -left-9 z-10 bg-black ${
+                  runesShown ? "animate-fadeIn" : "hidden"
                 } flex flex-col gap-2 min-w-24 items-center justify-center text-center p-2 rounded-md border-2 border-gray/40`}>
-                <img src={primaryRuneLink} className="w-6 h-6"></img>
+                <img src={primaryRuneLink} className="w-8 h-8"></img>
                 <div className="flex">
                   {ShowAllRuneImages(playerData, "primaryStyle", 1).map((link) => {
                     return <img src={link} key={link} className="w-6 h-6"></img>;
@@ -72,9 +65,14 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
                     return <img src={link} key={link} className="w-6 h-6"></img>;
                   })}
                 </div>
-                <div className="flex">
-                  {ShowAllRuneImages(playerData, "subStyle", 0).map((link) => {
-                    return <img src={link} key={link} className="w-6 h-6"></img>;
+                <div className="flex gap-0.5">
+                  {DisplayAllStatMods(playerData).map((link, index) => {
+                    return (
+                      <img
+                        src={link}
+                        key={index}
+                        className="w-6 h-6 border-2 rounded-full border-gray"></img>
+                    );
                   })}
                 </div>
               </div>
