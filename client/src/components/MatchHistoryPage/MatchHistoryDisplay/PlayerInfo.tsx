@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../interfaces/MatchV5";
 
 const PlayerInfo = ({ playerData }: { playerData: ParticipantDto }) => {
   const championLink = `https://cdn.communitydragon.org/latest/champion/${playerData.championId}/square`;
