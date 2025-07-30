@@ -3,6 +3,7 @@ import summonerSpells from "../json/summoner-spells.json";
 import { useState } from "react";
 import DisplayRuneImage from "./DisplayRuneImage";
 import DisplayRuneSetImage from "./DisplayRuneSetImage";
+import ShowAllRuneImages from "./ShowAllRuneImages";
 const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
   const [primaryRumesShown, setPrimaryRumeShown] = useState<boolean>(false);
   const [secondaryRumesShown, setSecondaryRumeShown] = useState<boolean>(false);
@@ -20,25 +21,6 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
   const primaryRuneLink = DisplayRuneImage(playerData, 0, "primaryStyle");
   const secondaryRuneSetLink = DisplayRuneSetImage(playerData);
 
-  const ShowAllRuneImages = (styleType: string, initialInt: number) => {
-    const links: string[] = [];
-    if (styleType === "primaryStyle") {
-      for (let i = initialInt; i < 4; i++) {
-        const runeToPush = DisplayRuneImage(playerData, i, "primaryStyle");
-        if (runeToPush) {
-          links.push(runeToPush);
-        }
-      }
-    } else {
-      for (let i = initialInt; i < 2; i++) {
-        const runeToPush = DisplayRuneImage(playerData, i, styleType);
-        if (runeToPush) {
-          links.push(runeToPush);
-        }
-      }
-    }
-    return links;
-  };
   return (
     <div className="playerContainer flex gap-2 items-center">
       <div className="champPlayerInfo flex gap-2 items-center justify-around">
@@ -81,12 +63,17 @@ const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
                 } flex flex-col gap-2 min-w-24 items-center justify-center text-center p-2 rounded-md border-2 border-gray/40`}>
                 <img src={primaryRuneLink} className="w-6 h-6"></img>
                 <div className="flex">
-                  {ShowAllRuneImages("primaryStyle", 1).map((link) => {
+                  {ShowAllRuneImages(playerData, "primaryStyle", 1).map((link) => {
                     return <img src={link} key={link} className="w-6 h-6"></img>;
                   })}
                 </div>
                 <div className="flex">
-                  {ShowAllRuneImages("subStyle", 0).map((link) => {
+                  {ShowAllRuneImages(playerData, "subStyle", 0).map((link) => {
+                    return <img src={link} key={link} className="w-6 h-6"></img>;
+                  })}
+                </div>
+                <div className="flex">
+                  {ShowAllRuneImages(playerData, "subStyle", 0).map((link) => {
                     return <img src={link} key={link} className="w-6 h-6"></img>;
                   })}
                 </div>
