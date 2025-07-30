@@ -1,9 +1,9 @@
 import { ParticipantDto } from "../interfaces/MatchV5";
 import summonerSpells from "../json/summoner-spells.json";
 import { useState } from "react";
-import DisplayRuneImage from "./DisplayRuneImage";
-import DisplayRuneSetImage from "./DisplayRuneSetImage";
-import ShowAllRuneImages from "./ShowAllRuneImages";
+import DisplayRuneImage from "./RuneDisplay/DisplayRuneImage";
+import DisplayRuneSetImage from "./RuneDisplay/DisplayRuneSetImage";
+import ShowAllRuneImages from "./RuneDisplay/ShowAllRuneImages";
 const PlayerContainer = ({ playerData }: { playerData: ParticipantDto }) => {
   const [primaryRumesShown, setPrimaryRumeShown] = useState<boolean>(false);
   const [secondaryRumesShown, setSecondaryRumeShown] = useState<boolean>(false);
