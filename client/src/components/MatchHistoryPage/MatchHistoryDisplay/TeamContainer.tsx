@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { ParticipantDto, TeamDto } from "../interfaces/MatchV5";
 import PlayerContainer from "./PlayerContainer";
+import NavList from "../../NavList";
 
 const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantDto[] }) => {
+  const [activeLink, setActiveLink] = useState<string>("[Default Link]");
+
   const dragonIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon.png`;
   const baronIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/baron.png`;
   const towerIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/icon_ui_tower_minimap.png`;
@@ -9,6 +13,13 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
   const inhibitorIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/inhibitor.png`;
   const atakhanIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/atakhan_r.png`;
   const heraldIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/riftherald.png`;
+
+  const toggleActive = (navItem: string) => {
+    setActiveLink(navItem);
+  };
+
+  const navItems = ["Loadout/KDA", "Damage", "Defense", "Economy"];
+
   return (
     <div className="teamContainer flex flex-col bg-gray rounded-md p-4">
       <div className="teamTitle flex gap-2 items-center">
@@ -48,7 +59,8 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
           <p>{team.objectives.inhibitor.kills}</p>
         </div>
       </div>
-      <div className="playerContainer flex flex-col gap-2">
+      <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} grow={true} />
+      <div className="playerContainer flex flex-col gap-2 grow">
         <PlayerContainer playerData={players[0]} allPlayers={players} />
         <PlayerContainer playerData={players[1]} allPlayers={players} />
         <PlayerContainer playerData={players[2]} allPlayers={players} />
