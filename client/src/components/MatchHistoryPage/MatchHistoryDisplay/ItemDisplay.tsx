@@ -34,7 +34,9 @@ const ItemDisplay = ({ playerData }: { playerData: ParticipantDto }) => {
           return <img src={itemLink} key={index} className="w-8 h-8 border-2 border-gray"></img>;
         })}
       </div>
-      {showWardItem()}
+      <div className="relative w-8 h-8">{showWardItem()}
+        <p className="absolute -bottom-0 left-2 text-xs rounded-md bg-black px-0.5">{playerData.visionScore}</p>
+      </div>
     </div>
   );
 };

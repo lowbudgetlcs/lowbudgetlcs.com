@@ -49,11 +49,11 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
         </div>
       </div>
       <div className="playerContainer flex flex-col gap-2">
-        <PlayerContainer playerData={players[0]} />
-        <PlayerContainer playerData={players[1]} />
-        <PlayerContainer playerData={players[2]} />
-        <PlayerContainer playerData={players[3]} />
-        <PlayerContainer playerData={players[4]} />
+        <PlayerContainer playerData={players[0]} allPlayers={players} />
+        <PlayerContainer playerData={players[1]} allPlayers={players} />
+        <PlayerContainer playerData={players[2]} allPlayers={players} />
+        <PlayerContainer playerData={players[3]} allPlayers={players} />
+        <PlayerContainer playerData={players[4]} allPlayers={players} />
       </div>
     </div>
   );
