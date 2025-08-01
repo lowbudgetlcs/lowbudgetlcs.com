@@ -4,7 +4,7 @@ import PlayerContainer from "./PlayerContainer";
 import NavList from "../../NavList";
 
 const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantDto[] }) => {
-  const [activeLink, setActiveLink] = useState<string>("[Default Link]");
+  const [activeLink, setActiveLink] = useState<string>("Loadout/KDA");
 
   const dragonIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon.png`;
   const baronIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/baron.png`;
