@@ -12,16 +12,16 @@ const Runes = ({ playerData }: { playerData: ParticipantDto }) => {
   const secondaryRuneSetLink = DisplayRuneSetImage(playerData);
   return (
     <div
-      className="runes flex flex-col items-center gap-2"
+      className="runes flex flex-col items-center gap-2 relative"
       onMouseEnter={() => setRunesShown(true)}
       onMouseLeave={() => setRunesShown(false)}>
       <div className="relative">
         <img src={primaryRuneLink} className="w-6 h-6"></img>
       </div>
-      <div className="relative">
+      <div className="relative z-10">
         <img src={secondaryRuneSetLink} className="w-6 h-6"></img>
         <div
-          className={`absolute w-fit top-6 -left-9 z-10 bg-black ${
+          className={`absolute w-fit top-6 -left-9 z-[20] bg-black ${
             runesShown ? "animate-fadeIn" : "hidden"
           } flex flex-col gap-2 min-w-24 items-center justify-center text-center p-2 rounded-md border-2 border-gray/40`}>
           <img src={primaryRuneLink} className="w-8 h-8"></img>

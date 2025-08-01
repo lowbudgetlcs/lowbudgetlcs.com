@@ -60,12 +60,12 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
         </div>
       </div>
       <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} grow={true} />
-      <div className="playerContainer flex flex-col gap-2 grow">
-        <PlayerContainer playerData={players[0]} allPlayers={players} />
-        <PlayerContainer playerData={players[1]} allPlayers={players} />
-        <PlayerContainer playerData={players[2]} allPlayers={players} />
-        <PlayerContainer playerData={players[3]} allPlayers={players} />
-        <PlayerContainer playerData={players[4]} allPlayers={players} />
+      <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
+        <PlayerContainer playerData={players[0]} allPlayers={players} activeLink={activeLink} />
+        <PlayerContainer playerData={players[1]} allPlayers={players} activeLink={activeLink} />
+        <PlayerContainer playerData={players[2]} allPlayers={players} activeLink={activeLink} />
+        <PlayerContainer playerData={players[3]} allPlayers={players} activeLink={activeLink} />
+        <PlayerContainer playerData={players[4]} allPlayers={players} activeLink={activeLink} />
       </div>
     </div>
   );

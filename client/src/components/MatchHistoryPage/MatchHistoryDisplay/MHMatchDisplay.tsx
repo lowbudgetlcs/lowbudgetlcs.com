@@ -23,7 +23,7 @@ const MHMatchDisplay = ({ matchData }: { matchData: MatchDto }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 mt-20 p-4">
+      <div className="flex flex-col gap-2 mt-20 mdp-4">
         <div className="topContainer flex flex-row gap-2 py-4 px-6 bg-gray rounded-md justify-between">
           <div className="title flex flex-col">
             <h1 className="text-2xl font-bold">Match Details</h1>
