@@ -1,8 +1,8 @@
-import { ParticipantDto } from "../interfaces/MatchV5";
-import ItemDisplay from "./ItemDisplay";
-import PlayerInfo from "./PlayerInfo";
-import Runes from "./RuneDisplay/Runes";
-import SummonerSpellsDisplay from "./SummonerSpellsDisplay";
+import { ParticipantDto } from "../../interfaces/MatchV5";
+import ItemDisplay from "../ItemDisplay";
+import PlayerInfo from "../PlayerInfo";
+import Runes from "../RuneDisplay/Runes";
+import SummonerSpellsDisplay from "../SummonerSpellsDisplay";
 
 interface PlayerContainerProps {
   playerData: ParticipantDto;

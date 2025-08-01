@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ParticipantDto, TeamDto } from "../interfaces/MatchV5";
-import PlayerContainer from "./PlayerContainer";
+import PlayerContainer from "./PlayerContainers/PlayerContainer";
 import NavList from "../../NavList";
+import DamageContainer from "./PlayerContainers/DamageContainer";
 
 const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantDto[] }) => {
   const [activeLink, setActiveLink] = useState<string>("Loadout/KDA");
@@ -59,14 +60,31 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
           <p>{team.objectives.inhibitor.kills}</p>
         </div>
       </div>
-      <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} grow={true} />
-      <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
-        <PlayerContainer playerData={players[0]} allPlayers={players} activeLink={activeLink} />
-        <PlayerContainer playerData={players[1]} allPlayers={players} activeLink={activeLink} />
-        <PlayerContainer playerData={players[2]} allPlayers={players} activeLink={activeLink} />
-        <PlayerContainer playerData={players[3]} allPlayers={players} activeLink={activeLink} />
-        <PlayerContainer playerData={players[4]} allPlayers={players} activeLink={activeLink} />
-      </div>
+      <NavList
+        activeLink={activeLink}
+        toggleActive={toggleActive}
+        navItems={navItems}
+        grow={true}
+      />
+      {activeLink === "Loadout/KDA" ? (
+        <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
+          <PlayerContainer playerData={players[0]} allPlayers={players} activeLink={activeLink} />
+          <PlayerContainer playerData={players[1]} allPlayers={players} activeLink={activeLink} />
+          <PlayerContainer playerData={players[2]} allPlayers={players} activeLink={activeLink} />
+          <PlayerContainer playerData={players[3]} allPlayers={players} activeLink={activeLink} />
+          <PlayerContainer playerData={players[4]} allPlayers={players} activeLink={activeLink} />
+        </div>
+      ) : activeLink === "Damage" ? (
+        <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
+          <DamageContainer playerData={players[0]} />
+          <DamageContainer playerData={players[1]} />
+          <DamageContainer playerData={players[2]} />
+          <DamageContainer playerData={players[3]} />
+          <DamageContainer playerData={players[4]} />
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
