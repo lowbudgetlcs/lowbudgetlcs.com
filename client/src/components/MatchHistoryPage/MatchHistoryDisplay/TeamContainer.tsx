@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ParticipantDto, TeamDto } from "../interfaces/MatchV5";
 import PlayerContainer from "./PlayerContainers/PlayerContainer";
 import NavList from "../../NavList";
+import { Bar } from "react-chartjs-2";
 import DamageContainer from "./PlayerContainers/DamageContainer";
 
 const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantDto[] }) => {
@@ -76,11 +77,7 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
         </div>
       ) : activeLink === "Damage" ? (
         <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
-          <DamageContainer playerData={players[0]} />
-          <DamageContainer playerData={players[1]} />
-          <DamageContainer playerData={players[2]} />
-          <DamageContainer playerData={players[3]} />
-          <DamageContainer playerData={players[4]} />
+          <DamageContainer players={players} />
         </div>
       ) : (
         ""
