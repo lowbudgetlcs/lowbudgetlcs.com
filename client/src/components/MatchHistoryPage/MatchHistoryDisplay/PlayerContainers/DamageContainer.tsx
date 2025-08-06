@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useState, useMemo } from "react";
-import { DamageCheckbox, MasterDamageCheckbox } from "./checkBoxes/DamageCheckbox";
+import { Checkbox, MasterCheckbox } from "./checkBoxes/Checkbox";
 import { champDamage, DamageTypeProps, totalDamage } from "./checkBoxes/configTypes";
 import graphOptions from "./graphOptions";
 
@@ -97,12 +97,10 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
   return (
     <div className="damageContainer flex max-w-[879.82px] min-h-[50vh] flex-col-reverse md:flex-row gap-2">
       <div className="optionsBar">
-        <form
-          className="flex flex-col gap-3 text-nowrap"
-          onSubmit={(e) => e.preventDefault()}>
+        <form className="flex flex-col gap-3 text-nowrap" onSubmit={(e) => e.preventDefault()}>
           <h3 className="text-white font-bold text-lg mb-2">Damage Types</h3>
           {/* Select All Checkbox */}
-          <MasterDamageCheckbox
+          <MasterCheckbox
             label="Damage to Champions"
             checked={allChampDamageChecked}
             onChange={() =>
@@ -115,7 +113,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
           />
           {/* Individual Damage Type Checkboxes */}
           {champDamage.map((type) => (
-            <DamageCheckbox
+            <Checkbox
               key={type.id}
               label={type.label}
               checked={champDamageCheckedState[type.id]}
@@ -123,7 +121,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
             />
           ))}
           {/* Select All Checkbox */}
-          <MasterDamageCheckbox
+          <MasterCheckbox
             label="Total Damage Dealt"
             checked={allTotalDamageChecked}
             onChange={() =>
@@ -136,7 +134,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
           />
           {/* Individual Damage Type Checkboxes */}
           {totalDamage.map((type) => (
-            <DamageCheckbox
+            <Checkbox
               key={type.id}
               label={type.label}
               checked={totalDamageCheckedState[type.id]}

@@ -1,6 +1,6 @@
 import { useId } from "react";
 
-export const DamageCheckbox = ({
+export const Checkbox = ({
   label,
   checked,
   onChange,
@@ -20,7 +20,7 @@ export const DamageCheckbox = ({
   );
 };
 
-export const MasterDamageCheckbox = ({
+export const MasterCheckbox = ({
   label,
   checked,
   onChange,
