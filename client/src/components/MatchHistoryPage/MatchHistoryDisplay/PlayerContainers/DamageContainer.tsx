@@ -13,6 +13,7 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useState, useMemo } from "react";
 import { DamageCheckbox, MasterDamageCheckbox } from "./checkBoxes/DamageCheckbox";
 import { champDamage, DamageTypeProps, totalDamage } from "./checkBoxes/configTypes";
+import graphOptions from "./graphOptions";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
@@ -88,59 +89,6 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
     ];
   }, [players, champDamageCheckedState, totalDamageCheckedState]);
 
-  const options = {
-    indexAxis: "y" as const,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: false,
-      },
-      tooltip: {
-        backgroundColor: "#252525",
-        bodyFont: {
-          size: 14,
-        } as const,
-        titleFont: {
-          weight: "bold",
-          size: 18,
-        } as const,
-      },
-      datalabels: {
-        display: true as const,
-        color: "white" as const,
-        anchor: "end" as const,
-        align: "end" as const,
-        font: {
-          size: 12,
-        } as const,
-        formatter: (value: any) => value,
-      },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        ticks: {
-          display: false,
-        },
-        grace: "15%",
-      },
-      y: {
-        ticks: {
-          color: "#F5F5F5",
-          font: {
-            size: 14,
-          },
-        },
-        grid: {
-          display: false,
-        },
-      },
-    },
-  };
-
   const data = {
     labels: labels,
     datasets: activeDatasets,
@@ -196,7 +144,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
         </form>
       </div>
       <div className="grow">
-        <Bar options={options} data={data} />
+        <Bar options={graphOptions} data={data} />
       </div>
     </div>
   );
