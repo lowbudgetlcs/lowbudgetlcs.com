@@ -95,7 +95,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
   };
 
   return (
-    <div className="damageContainer flex max-w-[879.82px] min-h-[50vh]">
+    <div className="damageContainer flex max-w-[879.82px] min-h-[50vh] flex-col-reverse md:flex-row gap-2">
       <div className="optionsBar">
         <form
           className="flex flex-col gap-3 text-nowrap"
