@@ -77,7 +77,7 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
         </div>
       ) : activeLink === "Damage" ? (
         <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
-          <DamageContainer players={players} />
+          <DamageContainer players={players} team={team.teamId === 100 ? "Blue" : "Red"} />
         </div>
       ) : (
         ""
