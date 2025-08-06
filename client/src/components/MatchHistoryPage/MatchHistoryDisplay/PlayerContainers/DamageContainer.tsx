@@ -10,43 +10,19 @@ import {
   Legend,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { useEffect, useState } from "react";
-import { FaSliders } from "react-icons/fa6";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ChartDataLabels
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
 
 const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
-
-  useEffect(() => {
-    const images = players.map((player) => {
-      const image = new Image(12, 12);
-      image.src = `https://cdn.communitydragon.org/latest/champion/${player.championId}/square`;
-      return image;
-    });
-    setImages(images);
-  }, [players]);
-
   const labels = players.map((player) => {
-    const image = new Image();
-    image.src = `https://cdn.communitydragon.org/latest/champion/${player.championId}/square`;
+    return player.riotIdGameName;
   });
   const maxDamage = players.reduce(
     (max, player) => Math.max(max, player.totalDamageDealtToChampions),
     0
   );
 
-  const damageList = players.map(
-    (player) => player.totalDamageDealtToChampions
-  );
+  const damageList = players.map((player) => player.totalDamageDealtToChampions);
   console.log(damageList);
   const options = {
     indexAxis: "y" as const,
@@ -68,15 +44,15 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
         } as const,
       },
       datalabels: {
-        // Position the image at the start of the bar
+        display: true as const,
+        color: "white" as const,
         anchor: "end" as const,
-        align: "end" as const,
-        // The formatter determines what to display. We return the pre-loaded image.
-        formatter: (value: any, context: any) => {
-          return images[context.dataIndex];
-        },
-        // Add some padding between the image and the start of the axis
-        offset: 8,
+        align: "start" as const,
+        font: {
+          size: 16,
+          weight: "bold",
+        } as const,
+        formatter: (value: any) => value,
       },
     },
     responsive: true,
