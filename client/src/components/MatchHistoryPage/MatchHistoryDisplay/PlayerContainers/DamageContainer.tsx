@@ -75,7 +75,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
           data: players.map((p) => p[type.dataKey as keyof ParticipantDto]),
           backgroundColor: type.color,
           borderColor: type.color,
-          minBarLength: 5,
+          minBarLength: 8,
         })),
       ...totalDamage
         .filter((type) => totalDamageCheckedState[type.id])
@@ -84,7 +84,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
           data: players.map((p) => p[type.dataKey as keyof ParticipantDto]),
           backgroundColor: type.color,
           borderColor: type.color,
-          minBarLength: 5,
+          minBarLength: 8,
         })),
     ];
   }, [players, champDamageCheckedState, totalDamageCheckedState]);
@@ -95,10 +95,10 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
   };
 
   return (
-    <div className="damageContainer flex max-w-[879.82px] min-h-[45vh]">
+    <div className="damageContainer flex max-w-[879.82px] min-h-[50vh]">
       <div className="optionsBar">
         <form
-          className="flex flex-col gap-3 text-nowrap overflow-y-scroll"
+          className="flex flex-col gap-3 text-nowrap"
           onSubmit={(e) => e.preventDefault()}>
           <h3 className="text-white font-bold text-lg mb-2">Damage Types</h3>
           {/* Select All Checkbox */}
@@ -122,6 +122,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
               onChange={() => handleCheckboxChange(type.id, setChampDamageCheckedState)}
             />
           ))}
+          {/* Select All Checkbox */}
           <MasterDamageCheckbox
             label="Total Damage Dealt"
             checked={allTotalDamageChecked}
@@ -133,6 +134,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
               )
             }
           />
+          {/* Individual Damage Type Checkboxes */}
           {totalDamage.map((type) => (
             <DamageCheckbox
               key={type.id}

@@ -71,14 +71,14 @@ export const totalDamage = [
     id: "turrets-total",
     label: "Damage To Turrets",
     dataKey: "damageDealtToTurrets",
-    color: "#f5f5f5",
+    color: "#28a745",
     defaultChecked: false,
   },
   {
     id: "objectives-total",
     label: "Damage To Objectives",
     dataKey: "damageDealtToObjectives",
-    color: "#f5f5f5",
+    color: "#8a2be2",
     defaultChecked: false,
   },
 ]
