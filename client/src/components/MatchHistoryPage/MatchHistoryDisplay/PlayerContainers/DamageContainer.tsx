@@ -12,7 +12,15 @@ import {
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useState, useMemo } from "react";
 import { Checkbox, MasterCheckbox } from "./checkBoxes/Checkbox";
-import { champDamage, DamageTypeProps, totalDamage } from "./checkBoxes/configTypes";
+import {
+  champDamage,
+  damageTakenAndHealed,
+  DamageTypeProps,
+  farming,
+  income,
+  totalDamage,
+  vision,
+} from "./checkBoxes/configTypes";
 import graphOptions from "./graphOptions";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartDataLabels);
@@ -31,6 +39,12 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
   const [totalDamageCheckedState, setTotalDamageCheckedState] = useState(
     getInitialState(totalDamage)
   );
+  const [defenseCheckedState, setDefenseCheckedState] = useState(
+    getInitialState(damageTakenAndHealed)
+  );
+  const [incomeCheckedState, setIncomeCheckedState] = useState(getInitialState(income));
+  const [visionCheckedState, setVisionCheckedState] = useState(getInitialState(vision));
+  const [farmingCheckedState, setFarmingCheckedState] = useState(getInitialState(farming));
 
   const allChampDamageChecked = useMemo(
     () => Object.values(champDamageCheckedState).every(Boolean),
@@ -40,6 +54,22 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
   const allTotalDamageChecked = useMemo(
     () => Object.values(totalDamageCheckedState).every(Boolean),
     [totalDamageCheckedState]
+  );
+  const allDefenseChecked = useMemo(
+    () => Object.values(defenseCheckedState).every(Boolean),
+    [defenseCheckedState]
+  );
+  const allIncomeChecked = useMemo(
+    () => Object.values(incomeCheckedState).every(Boolean),
+    [incomeCheckedState]
+  );
+  const allVisionChecked = useMemo(
+    () => Object.values(visionCheckedState).every(Boolean),
+    [visionCheckedState]
+  );
+  const allFarmingChecked = useMemo(
+    () => Object.values(farmingCheckedState).every(Boolean),
+    [farmingCheckedState]
   );
 
   const handleCheckboxChange = (
@@ -86,8 +116,52 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
           borderColor: type.color,
           minBarLength: 8,
         })),
+      ...damageTakenAndHealed
+        .filter((type) => defenseCheckedState[type.id])
+        .map((type) => ({
+          label: type.label,
+          data: players.map((p) => p[type.dataKey as keyof ParticipantDto]),
+          backgroundColor: type.color,
+          borderColor: type.color,
+          minBarLength: 8,
+        })),
+      ...income
+        .filter((type) => incomeCheckedState[type.id])
+        .map((type) => ({
+          label: type.label,
+          data: players.map((p) => p[type.dataKey as keyof ParticipantDto]),
+          backgroundColor: type.color,
+          borderColor: type.color,
+          minBarLength: 8,
+        })),
+      ...vision
+        .filter((type) => visionCheckedState[type.id])
+        .map((type) => ({
+          label: type.label,
+          data: players.map((p) => p[type.dataKey as keyof ParticipantDto]),
+          backgroundColor: type.color,
+          borderColor: type.color,
+          minBarLength: 8,
+        })),
+      ...farming
+        .filter((type) => farmingCheckedState[type.id])
+        .map((type) => ({
+          label: type.label,
+          data: players.map((p) => p[type.dataKey as keyof ParticipantDto]),
+          backgroundColor: type.color,
+          borderColor: type.color,
+          minBarLength: 8,
+        })),
     ];
-  }, [players, champDamageCheckedState, totalDamageCheckedState]);
+  }, [
+    players,
+    champDamageCheckedState,
+    totalDamageCheckedState,
+    defenseCheckedState,
+    incomeCheckedState,
+    visionCheckedState,
+    farmingCheckedState,
+  ]);
 
   const data = {
     labels: labels,
@@ -95,10 +169,9 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
   };
 
   return (
-    <div className="damageContainer flex max-w-[879.82px] min-h-[50vh] flex-col-reverse md:flex-row gap-2">
-      <div className="optionsBar">
+    <div className="damageContainer flex max-w-[879.82px] max-h-[50vh] flex-col-reverse md:flex-row gap-2">
+      <div className="optionsBar overflow-y-scroll">
         <form className="flex flex-col gap-3 text-nowrap" onSubmit={(e) => e.preventDefault()}>
-          <h3 className="text-white font-bold text-lg mb-2">Damage Types</h3>
           {/* Select All Checkbox */}
           <MasterCheckbox
             label="Damage to Champions"
@@ -139,6 +212,74 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
               label={type.label}
               checked={totalDamageCheckedState[type.id]}
               onChange={() => handleCheckboxChange(type.id, setTotalDamageCheckedState)}
+            />
+          ))}
+          {/* Select All Checkbox */}
+          <MasterCheckbox
+            label="Defense"
+            checked={allDefenseChecked}
+            onChange={() =>
+              handleSelectAllChange(allDefenseChecked, defenseCheckedState, setDefenseCheckedState)
+            }
+          />
+          {/* Individual Damage Type Checkboxes */}
+          {damageTakenAndHealed.map((type) => (
+            <Checkbox
+              key={type.id}
+              label={type.label}
+              checked={defenseCheckedState[type.id]}
+              onChange={() => handleCheckboxChange(type.id, setDefenseCheckedState)}
+            />
+          ))}
+          {/* Select All Checkbox */}
+          <MasterCheckbox
+            label="Income"
+            checked={allIncomeChecked}
+            onChange={() =>
+              handleSelectAllChange(allIncomeChecked, incomeCheckedState, setIncomeCheckedState)
+            }
+          />
+          {/* Individual Damage Type Checkboxes */}
+          {income.map((type) => (
+            <Checkbox
+              key={type.id}
+              label={type.label}
+              checked={incomeCheckedState[type.id]}
+              onChange={() => handleCheckboxChange(type.id, setIncomeCheckedState)}
+            />
+          ))}
+          {/* Select All Checkbox */}
+          <MasterCheckbox
+            label="Vision"
+            checked={allVisionChecked}
+            onChange={() =>
+              handleSelectAllChange(allVisionChecked, visionCheckedState, setVisionCheckedState)
+            }
+          />
+          {/* Individual Damage Type Checkboxes */}
+          {vision.map((type) => (
+            <Checkbox
+              key={type.id}
+              label={type.label}
+              checked={visionCheckedState[type.id]}
+              onChange={() => handleCheckboxChange(type.id, setVisionCheckedState)}
+            />
+          ))}
+          {/* Select All Checkbox */}
+          <MasterCheckbox
+            label="Farming"
+            checked={allFarmingChecked}
+            onChange={() =>
+              handleSelectAllChange(allFarmingChecked, farmingCheckedState, setFarmingCheckedState)
+            }
+          />
+          {/* Individual Damage Type Checkboxes */}
+          {farming.map((type) => (
+            <Checkbox
+              key={type.id}
+              label={type.label}
+              checked={farmingCheckedState[type.id]}
+              onChange={() => handleCheckboxChange(type.id, setFarmingCheckedState)}
             />
           ))}
         </form>
