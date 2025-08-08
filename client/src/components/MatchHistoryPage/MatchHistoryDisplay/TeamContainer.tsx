@@ -4,7 +4,13 @@ import PlayerContainer from "./PlayerContainers/PlayerContainer";
 import NavList from "../../NavList";
 import DamageContainer from "./PlayerContainers/DamageContainer";
 
-const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantDto[] }) => {
+const TeamContainer = ({
+  team,
+  players,
+}: {
+  team: TeamDto;
+  players: ParticipantDto[];
+}) => {
   const [activeLink, setActiveLink] = useState<string>("Loadout/KDA");
 
   const dragonIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/dragon.png`;
@@ -22,14 +28,20 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
   const navItems = ["Loadout/KDA", "Damage", "Defense", "Economy"];
 
   return (
-    <div className="teamContainer flex flex-col bg-gray rounded-md p-4">
-      <div className="teamTitle flex gap-2 items-center">
-        <h3 className={`${team.win ? "text-green brightness-125" : "text-red"} font-bold text-2xl`}>
+    <div className="teamContainer flex flex-col bg-gray rounded-md md:p-4">
+      <div className="teamTitle flex gap-2 items-center p-4 md:p-0">
+        <h3
+          className={`${
+            team.win ? "text-green brightness-125" : "text-red"
+          } font-bold text-2xl`}
+        >
           {team.win ? "Victory" : "Defeat"}
         </h3>
-        <p className="text-white/60">{team.teamId === 100 ? "Blue" : "Red"} Team</p>
+        <p className="text-white/60">
+          {team.teamId === 100 ? "Blue" : "Red"} Team
+        </p>
       </div>
-      <div className="objectives flex gap-4 items-center">
+      <div className="objectives grid grid-cols-4 md:flex gap-4 items-center px-4 md:px-0">
         <h3>Objectives:</h3>
         <div className="dragon flex items-center">
           <img src={dragonIcon} className="h-8"></img>
@@ -60,23 +72,46 @@ const TeamContainer = ({ team, players }: { team: TeamDto; players: ParticipantD
           <p>{team.objectives.inhibitor.kills}</p>
         </div>
       </div>
-      <NavList
-        activeLink={activeLink}
-        toggleActive={toggleActive}
-        navItems={navItems}
-        grow={true}
-      />
+      <div>
+        <NavList
+          activeLink={activeLink}
+          toggleActive={toggleActive}
+          navItems={navItems}
+          grow={true}
+        />
+      </div>
+
       {activeLink === "Loadout/KDA" ? (
         <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
-          <PlayerContainer playerData={players[0]} allPlayers={players} activeLink={activeLink} />
-          <PlayerContainer playerData={players[1]} allPlayers={players} activeLink={activeLink} />
-          <PlayerContainer playerData={players[2]} allPlayers={players} activeLink={activeLink} />
-          <PlayerContainer playerData={players[3]} allPlayers={players} activeLink={activeLink} />
-          <PlayerContainer playerData={players[4]} allPlayers={players} activeLink={activeLink} />
+          <PlayerContainer
+            playerData={players[0]}
+            allPlayers={players}
+            activeLink={activeLink}
+          />
+          <PlayerContainer
+            playerData={players[1]}
+            allPlayers={players}
+            activeLink={activeLink}
+          />
+          <PlayerContainer
+            playerData={players[2]}
+            allPlayers={players}
+            activeLink={activeLink}
+          />
+          <PlayerContainer
+            playerData={players[3]}
+            allPlayers={players}
+            activeLink={activeLink}
+          />
+          <PlayerContainer
+            playerData={players[4]}
+            allPlayers={players}
+            activeLink={activeLink}
+          />
         </div>
       ) : activeLink === "Damage" ? (
         <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
-          <DamageContainer players={players}/>
+          <DamageContainer players={players} />
         </div>
       ) : (
         ""

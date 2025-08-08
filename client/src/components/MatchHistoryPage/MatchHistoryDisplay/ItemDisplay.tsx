@@ -35,7 +35,7 @@ const ItemDisplay = ({ playerData }: { playerData: ParticipantDto }) => {
         })}
       </div>
       <div className="relative w-8 h-8">{showWardItem()}
-        <p className="absolute -bottom-0 left-2 text-xs rounded-md bg-black px-0.5">{playerData.visionScore}</p>
+        <p className="absolute bottom-0.5 right-0.5 text-xs bg-black px-0.5">{playerData.visionScore}</p>
       </div>
     </div>
   );

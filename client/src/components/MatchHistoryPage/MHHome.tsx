@@ -27,7 +27,7 @@ const MHHome = () => {
         <div
           className={`matchContainer grow flex flex-col ${
             popupShown ? "hidden" : ""
-          } text-white w-full md:w-4/5 items-center`}>
+          } text-white items-center`}>
           <MHMatchDisplay matchData={matchData} />
         </div>
       )}

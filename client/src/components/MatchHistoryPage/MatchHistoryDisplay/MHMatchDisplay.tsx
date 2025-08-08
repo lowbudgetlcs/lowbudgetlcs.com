@@ -23,8 +23,8 @@ const MHMatchDisplay = ({ matchData }: { matchData: MatchDto }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 mt-20 mdp-4">
-        <div className="topContainer flex flex-row gap-2 py-4 px-6 bg-gray rounded-md justify-between">
+      <div className="flex flex-col gap-2 mt-20 md:p-4">
+        <div className="topContainer flex flex-col md:flex-row gap-2 py-4 px-6 bg-gray rounded-md items-center md:items-start md:justify-between">
           <div className="title flex flex-col">
             <h1 className="text-2xl font-bold">Match Details</h1>
             <h2>{matchData.info.gameMode}</h2>
