@@ -163,6 +163,8 @@ export interface ParticipantDto {
   totalDamageDealt: number;
   totalDamageDealtToChampions: number;
   totalDamageShieldedOnTeammates: number;
+  totalAllyJungleMinionsKilled: number;
+  totalEnemyJungleMinionsKilled: number;
   totalDamageTaken: number;
   totalHeal: number;
   totalHealsOnTeammates: number;
