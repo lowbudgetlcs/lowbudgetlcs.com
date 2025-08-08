@@ -3,6 +3,7 @@ import { ParticipantDto, TeamDto } from "../interfaces/MatchV5";
 import PlayerContainer from "./PlayerContainers/PlayerContainer";
 import NavList from "../../NavList";
 import DamageContainer from "./PlayerContainers/DamageContainer";
+import StatList from "./PlayerContainers/StatList";
 
 const TeamContainer = ({
   team,
@@ -25,7 +26,7 @@ const TeamContainer = ({
     setActiveLink(navItem);
   };
 
-  const navItems = ["Loadout/KDA", "Damage", "Defense", "Economy"];
+  const navItems = ["Loadout/KDA", "Graphs", "Stat List"];
 
   return (
     <div className="teamContainer flex flex-col bg-gray rounded-md md:p-4">
@@ -109,12 +110,14 @@ const TeamContainer = ({
             activeLink={activeLink}
           />
         </div>
-      ) : activeLink === "Damage" ? (
+      ) : activeLink === "Graphs" ? (
         <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
           <DamageContainer players={players} />
         </div>
       ) : (
-        ""
+        <div className="statList flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
+          <StatList players={players} />
+        </div>
       )}
     </div>
   );
