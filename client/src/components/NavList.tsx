@@ -10,12 +10,13 @@ interface NavListProps {
   activeLink: string;
   toggleActive: (navItem: string) => void;
   navItems: Array<string>;
+  grow?: boolean;
 }
 
-const NavList: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems }) => {
+const NavList: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, grow }) => {
   return (
     <div className="navList">
-      <ul className="relative flex gap-4 text-sm sm:text-base md:text-2xl font-semibold justify-center p-4">
+      <ul className={`relative flex gap-4 text-sm sm:text-base md:text-2xl font-semibold p-4 ${grow ? 'grow justify-around' : 'justify-center'}`}>
         {navItems.map((navItem) => (
           <li
             key={navItem}

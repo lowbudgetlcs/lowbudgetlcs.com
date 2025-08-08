@@ -17,9 +17,11 @@
     "drizzle-orm": "^0.38.3",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
+    "form-data": "^4.0.4",
     "postgres": "^3.4.5",
     "short-unique-id": "^5.2.2",
-    "socket.io": "^4.8.1"
+    "socket.io": "^4.8.1",
+    "twisted": "^1.67.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
