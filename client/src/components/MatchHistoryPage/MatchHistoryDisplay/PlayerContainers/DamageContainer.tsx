@@ -216,7 +216,7 @@ const DamageContainer = ({ players }: { players: ParticipantDto[] }) => {
           ))}
           {/* Select All Checkbox */}
           <MasterCheckbox
-            label="Defense"
+            label="Damage Taken and Healed"
             checked={allDefenseChecked}
             onChange={() =>
               handleSelectAllChange(allDefenseChecked, defenseCheckedState, setDefenseCheckedState)
