@@ -1,13 +1,12 @@
 import { randomUUID } from "crypto";
 import {
-  insertDraft,
+  insertFinalFearlessLobby,
   insertInitialFearlessLobby,
 } from "../../db/queries/insert";
 import {
   FearlessInitializerProps,
   FearlessStateServerProps,
 } from "../interfaces/initializerInferfaces";
-import fearlessDraftStateInitializer from "./fearlessDraftStateInitializer";
 const twentyFourHours = 60 * 60 * 24000; // 24 hours in milliseconds
 
 // Holds EVERY active fearless lobby (for 24 hours)
@@ -22,7 +21,6 @@ export const fearlessLobbyInitializer = async ({
   draftCount,
 }: FearlessInitializerProps) => {
   try {
-
     // Verify fearless state is not already existing
     if (!fearlessState[fearlessCode]) {
       fearlessState[fearlessCode] = {
@@ -52,9 +50,19 @@ export const fearlessLobbyInitializer = async ({
         draftCount,
       });
 
+      const insertFinalFearlessHandler = async (
+        fearlessLobby: FearlessStateServerProps
+      ) => {
+        await insertFinalFearlessLobby(fearlessLobby);
+      };
+
       // Sets expiration in server record (Currently 24 hours)
       setTimeout(() => {
         if (fearlessState[fearlessCode]) {
+          if (fearlessState[fearlessCode].completedDrafts > 0) {
+            fearlessState[fearlessCode].fearlessComplete = true;
+            insertFinalFearlessHandler(fearlessState[fearlessCode]);
+          }
           delete fearlessState[fearlessCode];
           console.log(`Fearless lobby ${fearlessCode} deleted`);
         }
