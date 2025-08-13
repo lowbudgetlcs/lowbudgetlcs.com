@@ -19,7 +19,6 @@ export interface DraftUsersProps {
 }
 
 const lobbyEmitters: Map<string, EventEmitter> = new Map();
-let currentConnections: number = 0;
 export const draftSocket = (io: Namespace) => {
   io.on("connection", (socket) => {
     const getDraftState = (lobbyCode: string) => {
@@ -30,8 +29,7 @@ export const draftSocket = (io: Namespace) => {
       return draftState[lobbyCode];
     };
 
-    currentConnections++;
-    console.log("Connected. Current connections: ", currentConnections);
+    console.log("Draft Connections (joined): ", io.sockets.size);
 
     socket.on("joinDraft", async ({ lobbyCode, sideCode }) => {
       try {
@@ -254,8 +252,7 @@ export const draftSocket = (io: Namespace) => {
     });
 
     socket.on("disconnect", () => {
-      currentConnections--;
-      console.log("Disconnected. Current Users: ", currentConnections);
+      console.log("Draft Connections (left): ", io.sockets.size);
     });
   });
 };

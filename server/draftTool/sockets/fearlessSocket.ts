@@ -5,17 +5,14 @@ import fearlessSideAssignment from "../initializers/fearlessSideAssignment";
 import { draftState } from "../states/draftState";
 import EventEmitter from "events";
 import { insertFinalFearlessLobby } from "../../db/queries/insert";
-let currentConnections = 0
+
 export const fearlessEmitters: Map<string, EventEmitter> = new Map();
 export const fearlessSocket = (io: Namespace) => {
   io.on("connection", (socket: Socket) => {
-    console.log("New connection to fearless socket");
-
+    console.log(`Fearless Connections (joined): ${io.sockets.size}`);
     // Join a fearless series
     socket.on("joinFearless", ({ fearlessCode, teamCode }) => {
       try {
-        currentConnections++
-        console.log("currrent ConnectionS: ", currentConnections)
         const series = fearlessState[fearlessCode];
         if (!series) {
           socket.emit("error", { message: "Invalid fearless series code" });
@@ -46,14 +43,8 @@ export const fearlessSocket = (io: Namespace) => {
 
               // Update the fearless state with the completed draft's data
               // Extract picks and bans
-              series.allPicks.push(
-                ...completedDraft.bluePicks,
-                ...completedDraft.redPicks
-              );
-              series.allBans.push(
-                ...completedDraft.blueBans,
-                ...completedDraft.redBans
-              );
+              series.allPicks.push(...completedDraft.bluePicks, ...completedDraft.redPicks);
+              series.allBans.push(...completedDraft.blueBans, ...completedDraft.redBans);
 
               // Increment completed drafts counter
               series.completedDrafts++;
@@ -77,12 +68,9 @@ export const fearlessSocket = (io: Namespace) => {
                   updateFearlessClientState(fearlessCode)
                 );
               } else {
-                console.log("Moving to next draft")
+                console.log("Moving to next draft");
                 // Notify clients to move to the next draft
-                io.to(fearlessCode).emit(
-                  "nextDraft",
-                  updateFearlessClientState(fearlessCode)
-                );
+                io.to(fearlessCode).emit("nextDraft", updateFearlessClientState(fearlessCode));
               }
               io.to(fearlessCode).emit("fearlessState", updateFearlessClientState(fearlessCode));
               console.log(
@@ -120,9 +108,7 @@ export const fearlessSocket = (io: Namespace) => {
         // Send current state to client
         socket.emit("fearlessState", updateFearlessClientState(fearlessCode));
 
-        console.log(
-          `User joined fearless series ${fearlessCode} as ${teamDisplay}`
-        );
+        console.log(`User joined fearless series ${fearlessCode} as ${teamDisplay}`);
       } catch (error) {
         console.error("Error joining fearless series:", error);
         socket.emit("error", { message: "Internal server error" });
@@ -146,25 +132,16 @@ export const fearlessSocket = (io: Namespace) => {
         }
 
         // sets sides according to user input
-        await fearlessSideAssignment(
-          socket.data.teamCode,
-          series,
-          selectedSide
-        );
+        await fearlessSideAssignment(socket.data.teamCode, series, selectedSide);
 
         // The current draft should now be set
         if (series.currentDraft) {
           // Notify all clients in the series
-          io.to(fearlessCode).emit(
-            "sideSelected",
-            updateFearlessClientState(fearlessCode)
-          );
+          io.to(fearlessCode).emit("sideSelected", updateFearlessClientState(fearlessCode));
         }
         socket.emit("newFearlessState", updateFearlessClientState(fearlessCode));
 
-        console.log(
-          `Side selected for fearless series ${fearlessCode}: ${selectedSide}`
-        );
+        console.log(`Side selected for fearless series ${fearlessCode}: ${selectedSide}`);
       } catch (error) {
         console.error("Error in side selection:", error);
         socket.emit("error", { message: "Internal server error" });
@@ -175,10 +152,8 @@ export const fearlessSocket = (io: Namespace) => {
       socket.emit("newFearlessState", updateFearlessClientState(fearlessCode));
     });
 
-    // Clean up on disconnect
     socket.on("disconnect", () => {
-      currentConnections--
-      console.log("currrent ConnectionS (left): ", currentConnections)
+      console.log(`Fearless Connections (left): ${io.sockets.size}`);
     });
   });
 };
