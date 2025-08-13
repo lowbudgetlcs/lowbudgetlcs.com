@@ -19,7 +19,7 @@ const ErrorPopup = () => {
     }
   }, [showErrorPopup]);
 
-  if (hidden) {
+  if (hidden || !showErrorPopup) {
     return null;
   }
 

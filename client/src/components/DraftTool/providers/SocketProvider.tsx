@@ -52,7 +52,7 @@ export const SocketProvider: React.FC = () => {
           reason === "ping timeout"
         ) {
           setShowReconnectPopup(true);
-        } else {
+        } else if (reason !== "io client disconnect") {
           setShowReconnectPopup(false);
           setShowErrorPopup(true);
         }
