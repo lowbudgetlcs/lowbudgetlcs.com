@@ -43,7 +43,7 @@ const FearlessBansBar = () => {
         </div>
         {barIsOpen && (
           <div className="absolute bottom-8 min-w-[64vw] lg:min-w-[50vw] xl:min-w-64 min-h-24 pb-4 pt-2 z-20
-          bg-light-gray rounded-md shadow-2xl flex flex-col gap-2 items-center justify-center animate-fadeIn-300ms">
+          bg-black border-2 border-gray rounded-md shadow-2xl flex flex-col gap-2 items-center justify-center animate-fadeIn-300ms">
             <p className="font-bold text-lg">Previous Bans</p>
             <div className="bansBox grid grid-cols-10 gap-2">
               {fearlessState.allBans.map((ban, index) => {
