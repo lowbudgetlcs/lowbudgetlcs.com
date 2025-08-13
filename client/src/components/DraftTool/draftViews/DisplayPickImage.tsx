@@ -89,7 +89,7 @@ const DisplayPickImage = ({
           />
         )}
         <div
-          className={`absolute z-50 bottom-0 w-full font-bold min-[1922px]:text-2xl`}
+          className={`absolute bottom-0 w-full font-bold min-[1922px]:text-2xl`}
         >
           <div
             className={`relative  ${
@@ -97,14 +97,14 @@ const DisplayPickImage = ({
             }  ${pickNamesVisible ? "" : "hidden"}`}
           >
             <div
-              className={`absolute -bottom-2 z-10 h-8 min-[1922px]:h-10 w-2/5 animate-fadeIn from-black ${
+              className={`absolute -bottom-2 h-8 min-[1922px]:h-10 w-2/5 animate-fadeIn from-black ${
                 playerSide === "blue"
                   ? "bg-gradient-to-l right-0"
                   : "bg-gradient-to-r"
               }`}
             ></div>
             <div
-              className={`absolute bottom-0 px-2 z-20 ${
+              className={`absolute bottom-0 px-2 ${
                 playerSide === "blue" ? "right-0" : "left-0"
               } 
               ${
