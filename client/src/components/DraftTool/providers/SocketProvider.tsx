@@ -36,21 +36,51 @@ export const SocketProvider: React.FC = () => {
         reconnectionDelay: 1000,
       });
 
-      const connected = () => {
+      const onConnect = () => {
         console.log(`Socket connected to ${namespace}`);
         setShowConnectedPopup(true);
+        setShowReconnectPopup(false);
+        setShowErrorPopup(false);
       };
-      newSocket.on("connect", connected);
-      newSocket.on("disconnect", () => {
-        console.log(`Socket disconnected from ${namespace}`);
+      const onDisconnect = (reason: Socket.DisconnectReason) => {
+        console.log(`Socket disconnected from ${namespace}. Reason: ${reason}`);
         setShowConnectedPopup(false);
+
+        if (
+          reason === "io server disconnect" ||
+          reason === "transport close" ||
+          reason === "ping timeout"
+        ) {
+          setShowReconnectPopup(true);
+        } else {
+          setShowReconnectPopup(false);
+          setShowErrorPopup(true);
+        }
+      };
+
+      const onReconnectAttempt = () => {
+        console.log("Reconnection attempt in progress...");
+        setShowReconnectPopup(true);
+      };
+      const onReconnectError = (error: Error) => {
+        console.error("Reconnection error:", error);
+      };
+      const onReconnectFailed = () => {
+        console.log("All reconnection attempts failed. Please restart the application.");
+        setShowReconnectPopup(false);
+        setShowErrorPopup(true);
+      };
+      newSocket.on("connect", onConnect);
+      newSocket.on("disconnect", onDisconnect);
+      newSocket.on("reconnect_attempt", onReconnectAttempt);
+      newSocket.on("reconnect_error", onReconnectError);
+      newSocket.on("reconnect_failed", onReconnectFailed);
+      newSocket.on("connect_error", onReconnectFailed);
+
+      newSocket.on("reconnect_attempt", () => {
+        console.log(`Socket reconnecting to ${namespace}`);
         setShowReconnectPopup(true);
       });
-      newSocket.on("connect_error", () => {
-        console.log(`Socket connection error to ${namespace}`);
-        setShowErrorPopup(true);
-      });
-
       activeSocketMap.set(newSocket, namespace);
       return newSocket;
     },

@@ -9,6 +9,9 @@ import championData from "../championRoles.json";
 import { useFearlessContext } from "../providers/FearlessProvider";
 import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import ConnectPopup from "../popups/ConnectPopup";
+import ReconnectPopup from "../popups/ReconnectPopup";
+import ErrorPopup from "../popups/ErrorPopup";
 
 function FearlessDraftPage() {
   const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft } =
@@ -63,12 +66,29 @@ function FearlessDraftPage() {
   }, []);
 
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
-    return <StreamDisplay championRoles={championRoles} />;
+    return (
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <StreamDisplay championRoles={championRoles} />
+      </>
+    );
   } else if (draftState && lobbyCode && (draftSocket || isPastDraft) && !error) {
     return windowWidth >= 870 || forceDesktopView ? (
-      <DraftDisplay championRoles={championRoles} />
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <DraftDisplay championRoles={championRoles} />
+      </>
     ) : (
-      <MobileDraftDisplay championRoles={championRoles} />
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <MobileDraftDisplay championRoles={championRoles} />
+      </>
     );
   } else if (loading) {
     return (

@@ -9,6 +9,9 @@ import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
 import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import ReconnectPopup from "../popups/ReconnectPopup";
+import ConnectPopup from "../popups/ConnectPopup";
+import ErrorPopup from "../popups/ErrorPopup";
 
 function DraftPage() {
   const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft } =
@@ -74,12 +77,29 @@ function DraftPage() {
   }, []);
 
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
-    return <StreamDisplay championRoles={championRoles} />;
+    return (
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <StreamDisplay championRoles={championRoles} />
+      </>
+    );
   } else if (draftState && lobbyCode && (draftSocket || isPastDraft) && !error) {
     return windowWidth >= 870 || forceDesktopView ? (
-      <DraftDisplay championRoles={championRoles} />
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <DraftDisplay championRoles={championRoles} />
+      </>
     ) : (
-      <MobileDraftDisplay championRoles={championRoles} />
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <MobileDraftDisplay championRoles={championRoles} />
+      </>
     );
   } else if (loading) {
     return (
