@@ -5,13 +5,7 @@ const twoHours = 60 * 60 * 2000; // 2 hours in milliseconds
 
 export interface DraftStateProps {
   draftStarted: boolean;
-  activePhase:
-    | "banPhase1"
-    | "pickPhase1"
-    | "banPhase2"
-    | "pickPhase2"
-    | "finished"
-    | null;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | "fix" | null;
   phaseType: "pick" | "ban" | null;
   tournamentID: string | null;
   lobbyCode: string;
@@ -41,6 +35,7 @@ export interface DraftStateProps {
   redPick: string | null;
   draftComplete: boolean;
   fearlessCode?: string;
+  addedPhases: string[];
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -69,6 +64,7 @@ export interface ClientDraftStateProps {
     | "banPhase2"
     | "pickPhase2"
     | "finished"
+    | "fix"
     | null
     | undefined;
   phaseType: "pick" | "ban" | null;
@@ -138,6 +134,7 @@ export const initializeDraftState = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: undefined,
+      addedPhases: [],
     };
 
     setTimeout(() => {

@@ -36,7 +36,29 @@ const readySocketHandler = async ({
 
   // Phases can be interchangable or added to
   // Add them in phaseTransition.ts function first
-  const draftPhases: string[] = ["banPhase1", "pickPhase1", "banPhase2", "pickPhase2", "finished"];
+  const availablePhases: string[] = [
+    "banPhase1",
+    "pickPhase1",
+    "banPhase2",
+    "pickPhase2",
+    "fix",
+    "finished",
+  ];
+
+  const draftPhases = () => {
+    const defaultPhases = ["banPhase1", "pickPhase1", "banPhase2", "pickPhase2", "finished"];
+    if (state.addedPhases.length > 0) {
+      return [
+        "banPhase1",
+        "pickPhase1",
+        "banPhase2",
+        "pickPhase2",
+        ...state.addedPhases,
+        "finished",
+      ];
+    }
+    return defaultPhases;
+  };
 
   if (isDraftReady) {
     state.draftStarted = true;
@@ -58,7 +80,7 @@ const readySocketHandler = async ({
     };
 
     // Handles all draft phases in order
-    for (const phase of draftPhases) {
+    for (const phase of draftPhases()) {
       state.activePhase = phase as DraftStateProps["activePhase"];
       await phaseTransition(handlerVars, phase);
     }

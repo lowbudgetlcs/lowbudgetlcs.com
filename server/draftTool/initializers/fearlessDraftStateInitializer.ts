@@ -44,6 +44,7 @@ const fearlessDraftStateInitializer = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: fearlessCode,
+      addedPhases: [],
     };
 
     setTimeout(() => {
