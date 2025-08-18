@@ -1,24 +1,22 @@
-import { HandlerVarsProps } from "../states/draftState";
-import { updateClientState } from "../states/clientDraftState";
+import { HandlerVarsProps } from "../../states/draftState";
+import { updateClientState } from "../../states/clientDraftState";
 
-export const banPhase1Handler = async ({
+export const banPhase2Handler = async ({
   io,
   lobbyCode,
   state,
   emitter,
 }: HandlerVarsProps): Promise<boolean> => {
-  if (state.activePhase !== "banPhase1") {
+  if (state.activePhase !== "banPhase2") {
     return false;
   }
 
   return new Promise((resolve, reject) => {
-    const bansPhase1 = [
-      state.blueUser,
+    const bansPhase2 = [
       state.redUser,
       state.blueUser,
       state.redUser,
       state.blueUser,
-      state.redUser,
     ];
 
     const startBanPhase = async () => {
@@ -27,10 +25,10 @@ export const banPhase1Handler = async ({
 
       for (
         state.banIndex;
-        state.banIndex < bansPhase1.length;
+        state.banIndex < bansPhase2.length;
         state.banIndex++
       ) {
-        const currentSide = bansPhase1[state.banIndex];
+        const currentSide = bansPhase2[state.banIndex];
         state.currentTurn = currentSide;
         try {
           // Display Current Turn in Client
@@ -62,6 +60,7 @@ export const banPhase1Handler = async ({
           timer--;
           state.timer = timer;
           io.to(lobbyCode).emit("timer", timer);
+
           if (timer <= 0) {
             clearInterval(interval);
             if (currentSide === state.blueUser) {
@@ -105,7 +104,7 @@ export const banPhase1Handler = async ({
               state.bansArray.push(state.bluePick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               state.bluePick = null;
-              state.currentBlueBan++;
+              state.currentBlueBan++
               // Shut of listener incase it still is attached
               emitter.off("bluePick", banListener);
               emitter.off("redPick", banListener);
@@ -118,7 +117,7 @@ export const banPhase1Handler = async ({
               state.bansArray.push(state.redPick);
               io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
               state.redPick = null;
-              state.currentRedBan++;
+              state.currentRedBan++
               // Shut of listener incase it still is attached
               emitter.off("bluePick", banListener);
               emitter.off("redPick", banListener);

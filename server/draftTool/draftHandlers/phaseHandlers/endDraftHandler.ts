@@ -1,8 +1,8 @@
-import { insertDraft, insertFinishedDraft } from "../../db/queries/insert";
-import { fearlessState } from "../initializers/fearlessLobbyInitializer";
-import { fearlessEmitters } from "../sockets/fearlessSocket";
-import { updateClientState } from "../states/clientDraftState";
-import { HandlerVarsProps } from "../states/draftState";
+import { insertDraft, insertFinishedDraft } from "../../../db/queries/insert";
+import { fearlessState } from "../../initializers/fearlessLobbyInitializer";
+import { fearlessEmitters } from "../../sockets/fearlessSocket";
+import { updateClientState } from "../../states/clientDraftState";
+import { HandlerVarsProps } from "../../states/draftState";
 
 export const endDraftHandler = async ({
   io,

@@ -1,6 +1,6 @@
 import { Namespace } from "socket.io";
-import { DraftStateProps } from "../states/draftState";
-import { updateClientState } from "../states/clientDraftState";
+import { DraftStateProps } from "../../states/draftState";
+import { updateClientState } from "../../states/clientDraftState";
 
 export const readyHandler = (
   state: DraftStateProps,
