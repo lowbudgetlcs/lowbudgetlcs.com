@@ -1,20 +1,6 @@
-import { Namespace, Server } from "socket.io";
-import { readyHandler } from "../draftHandlers/phaseHandlers/readyHandler";
-import {
-  ClientDraftStateProps,
-  draftState,
-  DraftStateProps,
-  HandlerVarsProps,
-} from "../states/draftState";
-import { banPhase1Handler } from "../draftHandlers/phaseHandlers/banPhase1Handler";
+import { Namespace } from "socket.io";
+import { draftState } from "../states/draftState";
 import EventEmitter from "events";
-import { pickPhase1Handler } from "../draftHandlers/phaseHandlers/pickPhase1Handler";
-import { banPhase2Handler } from "../draftHandlers/phaseHandlers/banPhase2Handler";
-import { pickPhase2Handler } from "../draftHandlers/phaseHandlers/pickPhase2Handler";
-import { updateClientState } from "../states/clientDraftState";
-import { endDraftHandler } from "../draftHandlers/phaseHandlers/endDraftHandler";
-import { fearlessEmitters } from "./fearlessSocket";
-import phaseTransition from "../draftHandlers/phaseHandlers/phaseTransition";
 import banHandler from "../draftHandlers/pickBanHandlers/banHandler";
 import pickHandler from "../draftHandlers/pickBanHandlers/pickHandler";
 import clientHoverHandler from "../draftHandlers/pickBanHandlers/clientHoverHandler";
@@ -87,6 +73,7 @@ export const draftSocket = (io: Namespace) => {
       pickHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket })
     );
 
+    // Listens for disconnections for logging
     socket.on("disconnect", () => {
       console.log("Draft Connections (left): ", io.sockets.size);
     });
