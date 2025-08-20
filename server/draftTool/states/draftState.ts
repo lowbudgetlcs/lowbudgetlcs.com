@@ -36,6 +36,10 @@ export interface DraftStateProps {
   draftComplete: boolean;
   fearlessCode?: string;
   addedPhases: string[];
+  blueFixPick?: string;
+  redFixPick?: string;
+  blueAcceptPick?: string;
+  redAcceptPick?: string;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -134,7 +138,7 @@ export const initializeDraftState = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: undefined,
-      addedPhases: [],
+      addedPhases: ["fix"],
     };
 
     setTimeout(() => {

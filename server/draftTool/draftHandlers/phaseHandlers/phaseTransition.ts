@@ -3,6 +3,7 @@ import { HandlerVarsProps } from "../../states/draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
 import { endDraftHandler } from "./endDraftHandler";
+import fixPhaseHandler from "./fixPhaseHandler";
 import { pickPhase1Handler } from "./pickPhase1Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
 
@@ -34,6 +35,12 @@ const phaseTransition = async (handlerVars: HandlerVarsProps, activePhase: strin
       state.activePhase = "pickPhase2";
       io.to(lobbyCode).emit("startPickPhase2", updateClientState(lobbyCode));
       await pickPhase2Handler(handlerVars);
+      break;
+    case "fix":
+      state.currentHover = null;
+      state.activePhase = "fix";
+      io.to(lobbyCode).emit("startFixPhase", updateClientState(lobbyCode));
+      await fixPhaseHandler(handlerVars)
       break;
     case "finished":
       await endDraftHandler(handlerVars);
