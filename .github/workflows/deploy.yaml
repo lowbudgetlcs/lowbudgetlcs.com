@@ -75,7 +75,7 @@ jobs:
             echo CLIENT_SECRET="${{ secrets.CLIENT_SECRET }}" >> .env
             echo PRODUCTION="${{ vars.PRODUCTION }}" >> .env
             echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
-            echo RIOT_API_KEY="${{ secrets.RIOT_API_TOKEN }}" >> .env
+            echo RIOTAPI="${{ secrets.RIOT_API_TOKEN }}" >> .env
             docker compose down
             docker compose pull
             docker compose up -d
