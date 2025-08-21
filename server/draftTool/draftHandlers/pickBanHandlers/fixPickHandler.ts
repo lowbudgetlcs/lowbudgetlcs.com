@@ -5,6 +5,7 @@ import { Socket } from "socket.io";
 interface pickHandlerProps {
   lobbyCode: string;
   sideCode: string;
+  oldChamp: string;
   chosenChamp: string;
   getDraftState: (lobbyCode: string) => DraftStateProps | null;
   lobbyEmitters: Map<string, EventEmitter>;
@@ -14,6 +15,7 @@ interface pickHandlerProps {
 const fixPickHandler = ({
   lobbyCode,
   sideCode,
+  oldChamp,
   chosenChamp,
   getDraftState,
   lobbyEmitters,
@@ -44,13 +46,11 @@ const fixPickHandler = ({
   }
 
   if (sideCode === state.blueUser) {
-    state.blueFixPick = chosenChamp;
+    state.blueFixPick = [oldChamp, chosenChamp];
     lobbyEmitters.get(lobbyCode)?.emit("blueFixPick", chosenChamp);
-    state.blueFixPick = undefined;
-  } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
-    state.redFixPick = chosenChamp;
+  } else if (sideCode === state.redUser) {
+    state.redFixPick = [oldChamp, chosenChamp];
     lobbyEmitters.get(lobbyCode)?.emit("redFixPick", chosenChamp);
-    state.redFixPick = undefined;
   }
 };
 export default fixPickHandler;

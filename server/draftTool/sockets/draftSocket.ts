@@ -7,6 +7,7 @@ import clientHoverHandler from "../draftHandlers/pickBanHandlers/clientHoverHand
 import readySocketHandler from "../draftHandlers/startHandlers/readyHandler";
 import joinDraftHandler from "../draftHandlers/startHandlers/joinDraftHandler";
 import fixPickHandler from "../draftHandlers/pickBanHandlers/fixPickHandler";
+import acceptFixPickHandler from "../draftHandlers/pickBanHandlers/acceptFixPickHandler";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -52,7 +53,7 @@ export const draftSocket = (io: Namespace) => {
     );
 
     // Socket listeners for client input
-    
+
     // Client Champion Hover listener 
     // Used in pick and ban phases
     socket.on("clientHover", ({ lobbyCode, sideCode, chosenChamp }) =>
@@ -77,8 +78,13 @@ export const draftSocket = (io: Namespace) => {
     );
 
     // Fix Phase listener
-    socket.on("fixPick", ({ lobbyCode, sideCode, chosenChamp }) =>
-      fixPickHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket })
+    socket.on("fixPick", ({ lobbyCode, sideCode, oldChamp, chosenChamp }) =>
+      fixPickHandler({ lobbyCode, sideCode, oldChamp, chosenChamp, getDraftState, lobbyEmitters, socket })
+    );
+
+    // Accept/Deny Fix listener
+    socket.on("acceptFixPick", ({ lobbyCode, sideCode, accepted }) =>
+      acceptFixPickHandler({ lobbyCode, sideCode, accepted, getDraftState, lobbyEmitters, socket })
     );
 
     // Listens for disconnections for logging
