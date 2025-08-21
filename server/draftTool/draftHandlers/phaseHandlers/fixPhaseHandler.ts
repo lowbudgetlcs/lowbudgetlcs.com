@@ -58,16 +58,22 @@ const fixPhaseHandler = async ({
             state.picksArray[foundChampFullPicks] = state.blueFixPick[1];
             state.bluePicks[foundChampPicks] = state.blueFixPick[1];
             console.log("Replaced champion pick.");
+            io.to(lobbyCode).emit("blueFixAccepted", updateClientState(lobbyCode));
           } else if (foundChampFullBans !== -1 && foundChampBans !== -1) {
             // The champion was a ban. Replaces it in both ban arrays.
             state.bansArray[foundChampFullBans] = state.blueFixPick[1];
             state.blueBans[foundChampBans] = state.blueFixPick[1];
             console.log("Replaced champion ban.");
+            io.to(lobbyCode).emit("blueFixAccepted", updateClientState(lobbyCode));
           } else {
             console.error("Old pick not found in any array in blue accept: ", lobbyCode);
+            io.to(lobbyCode).emit("blueFixDenied", updateClientState(lobbyCode));
           }
+          state.blueFixPick = undefined;
+          state.redAcceptPick = undefined;
         } else {
           state.blueFixPick = undefined;
+          io.to(lobbyCode).emit("blueFixDenied", updateClientState(lobbyCode));
         }
       };
 
@@ -88,16 +94,22 @@ const fixPhaseHandler = async ({
             state.picksArray[foundChampFullPicks] = state.redFixPick[1];
             state.redPicks[foundChampPicks] = state.redFixPick[1];
             console.log("Replaced champion pick.");
+            io.to(lobbyCode).emit("redFixAccepted", updateClientState(lobbyCode));
           } else if (foundChampFullBans !== -1 && foundChampBans !== -1) {
             // The champion was a ban. Replaces it in both ban arrays.
             state.bansArray[foundChampFullBans] = state.redFixPick[1];
             state.redBans[foundChampBans] = state.redFixPick[1];
             console.log("Replaced champion ban.");
+            io.to(lobbyCode).emit("redFixAccepted", updateClientState(lobbyCode));
           } else {
             console.error("Old pick not found in any array in red accept: ", lobbyCode);
+            io.to(lobbyCode).emit("redFixDenied", updateClientState(lobbyCode));
           }
+          state.redFixPick = undefined;
+          state.blueAcceptPick = undefined;
         } else {
           state.redFixPick = undefined;
+          io.to(lobbyCode).emit("redFixDenied", updateClientState(lobbyCode));
         }
       };
 
