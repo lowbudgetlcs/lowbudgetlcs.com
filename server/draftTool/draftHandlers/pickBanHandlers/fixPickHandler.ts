@@ -34,6 +34,11 @@ const fixPickHandler = ({
     return;
   }
 
+  if (state.blueFixPick || state.redFixPick) {
+    console.error("A fix is already in progress in lobby: ", lobbyCode);
+    return;
+  }
+
   if (
     (state.blueBans.includes(chosenChamp) ||
       state.redBans.includes(chosenChamp) ||
@@ -41,7 +46,12 @@ const fixPickHandler = ({
       state.redPicks.includes(chosenChamp)) &&
     chosenChamp !== "nothing"
   ) {
-    console.error("Same champion already picked!");
+    console.error(
+      "Same champion already picked! In: ",
+      lobbyCode,
+      " ",
+      chosenChamp
+    );
     return;
   }
 
