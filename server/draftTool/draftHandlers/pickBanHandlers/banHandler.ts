@@ -43,15 +43,9 @@ const banHandler = ({
   }
 
   if (sideCode === state.blueUser && sideCode === state.currentTurn) {
-    state.bluePick = chosenChamp;
     lobbyEmitters.get(lobbyCode)!.emit("bluePick", chosenChamp);
-    state.bluePick = null;
-    state.currentHover = null;
   } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
-    state.redPick = chosenChamp;
     lobbyEmitters.get(lobbyCode)!.emit("redPick", chosenChamp);
-    state.redPick = null;
-    state.currentHover = null;
   }
 };
 

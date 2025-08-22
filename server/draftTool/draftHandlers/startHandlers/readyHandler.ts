@@ -84,6 +84,8 @@ const readySocketHandler = async ({
       state.activePhase = phase as DraftStateProps["activePhase"];
       await phaseTransition(handlerVars, phase);
     }
+    lobbyEmitters.delete(lobbyCode);
+    console.log("current emitters:", lobbyEmitters)
   }
 };
 

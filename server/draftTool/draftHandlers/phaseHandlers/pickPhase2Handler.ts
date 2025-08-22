@@ -59,76 +59,64 @@ export const pickPhase2Handler = async ({
           timer--;
           state.timer = timer;
           io.to(lobbyCode).emit("timer", timer);
-
           if (timer <= 0) {
             clearInterval(interval);
+            emitter.off("bluePick", bluePickListener);
+            emitter.off("redPick", redPickListener);
+
+            const pick =
+              currentSide === state.blueUser ? state.bluePick : state.redPick;
+            const finalPick = pick || "nothing";
 
             // Add nothing pick to side array
             if (currentSide === state.blueUser) {
-              if (state.bluePick) {
-                state.bluePicks.push(state.bluePick);
-                state.picksArray.push(state.bluePick);
-                state.bluePick = null;
-                state.currentBluePick++;
-              } else {
-                state.bluePicks.push("nothing");
-                state.picksArray.push("nothing");
-                state.bluePick = null;
-                state.currentBluePick++;
-              }
+              state.bluePicks.push(finalPick);
+              state.picksArray.push(finalPick);
+              state.currentBluePick++;
             } else if (currentSide === state.redUser) {
-              if (state.redPick) {
-                state.redPicks.push(state.redPick);
-                state.picksArray.push(state.redPick);
-                state.redPick = null;
-                state.currentRedPick++;
-              } else {
-                state.redPicks.push("nothing");
-                state.picksArray.push("nothing");
-                state.redPick = null;
-                state.currentRedPick++;
-              }
+              state.redPicks.push(finalPick);
+              state.picksArray.push(finalPick);
+              state.currentRedPick++;
             }
-
+            state.bluePick = null;
+            state.redPick = null;
+            state.currentHover = null;
             io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
-            // Shut of listener incase it still is attached
-            emitter.off("bluePick", pickListener);
-            emitter.off("redPick", pickListener);
             resolve();
           }
         }, 1000);
 
-        const pickListener = () => {
-          if (state.bluePick) {
-            if (currentSide === state.blueUser) {
-              clearInterval(interval);
-              state.bluePicks.push(state.bluePick);
-              state.picksArray.push(state.bluePick);
-              io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
-              state.bluePick = null;
-              state.currentBluePick++;
-              // Shut of listener incase it still is attached
-              emitter.off("bluePick", pickListener);
-              emitter.off("redPick", pickListener);
-              resolve();
-            }
-          } else if (state.redPick) {
-            if (currentSide === state.redUser) {
-              clearInterval(interval);
-              state.redPicks.push(state.redPick);
-              state.picksArray.push(state.redPick);
-              io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
-              state.redPick = null;
-              state.currentRedPick++;
-              // Shut of listener incase it still is attached
-              emitter.off("bluePick", pickListener);
-              emitter.off("redPick", pickListener);
-              resolve();
-            }
+        const bluePickListener = (pickedChamp: string) => {
+          if (currentSide === state.blueUser) {
+            clearInterval(interval);
+            state.bluePicks.push(pickedChamp);
+            state.picksArray.push(pickedChamp);
+            state.currentBluePick++;
+            state.bluePick = null;
+            state.redPick = null;
+            state.currentHover = null;
+            io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
+            emitter.off("redPick", redPickListener);
+            resolve();
           }
         };
-        emitter.once("bluePick", pickListener);
-        emitter.once("redPick", pickListener);
+
+        const redPickListener = (pickedChamp: string) => {
+          if (currentSide === state.redUser) {
+            clearInterval(interval);
+            state.redPicks.push(pickedChamp);
+            state.picksArray.push(pickedChamp);
+            state.currentRedPick++;
+            state.bluePick = null;
+            state.redPick = null;
+            state.currentHover = null;
+            io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
+            emitter.off("bluePick", bluePickListener);
+            resolve();
+          }
+        };
+        emitter.once("bluePick", bluePickListener);
+        emitter.once("redPick", redPickListener);
       });
     };
 

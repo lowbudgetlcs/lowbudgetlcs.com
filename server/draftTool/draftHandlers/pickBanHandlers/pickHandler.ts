@@ -33,10 +33,7 @@ const pickHandler = ({
   }
 
   if (
-    (state.blueBans.includes(chosenChamp) ||
-      state.redBans.includes(chosenChamp) ||
-      state.bluePicks.includes(chosenChamp) ||
-      state.redPicks.includes(chosenChamp)) &&
+    (state.bansArray.includes(chosenChamp) || state.picksArray.includes(chosenChamp)) &&
     chosenChamp !== "nothing"
   ) {
     console.error("Same champion already picked!");
@@ -44,13 +41,9 @@ const pickHandler = ({
   }
 
   if (sideCode === state.blueUser && sideCode === state.currentTurn) {
-    state.bluePick = chosenChamp;
     lobbyEmitters.get(lobbyCode)?.emit("bluePick", chosenChamp);
-    state.bluePick = null;
   } else if (sideCode === state.redUser && sideCode === state.currentTurn) {
-    state.redPick = chosenChamp;
     lobbyEmitters.get(lobbyCode)?.emit("redPick", chosenChamp);
-    state.redPick = null;
   }
 };
 export default pickHandler;
