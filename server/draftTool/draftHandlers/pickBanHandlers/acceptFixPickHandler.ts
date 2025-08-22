@@ -34,10 +34,10 @@ const acceptFixPickHandler = ({
 
   if (sideCode === state.blueUser && state.redFixPick) {
     state.blueAcceptPick = accepted;
-    lobbyEmitters.get(lobbyCode)?.emit("redAccept", accepted);
+    lobbyEmitters.get(lobbyCode)?.emit("blueAccept", accepted);
   } else if (sideCode === state.redUser && state.blueFixPick) {
     state.redAcceptPick = accepted;
-    lobbyEmitters.get(lobbyCode)?.emit("blueAccept", accepted);
+    lobbyEmitters.get(lobbyCode)?.emit("redAccept", accepted);
   }
 };
 export default acceptFixPickHandler;
