@@ -34,7 +34,7 @@ try {
 // Cors options. will always be in production on live server
 const corsOptions = {
   origin: isProduction ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"] : "*",
-  methods: "GET",
+  methods: ["GET", "POST"],
 };
 
 //Rate limiting
