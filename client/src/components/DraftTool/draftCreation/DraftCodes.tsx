@@ -14,10 +14,10 @@ function DraftCodes({
   const removeDraftLinks = () => {
     setDraftLinks(undefined);
   };
-  const blueLink = `http://draft.localhost:3000/${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
-  const redLink = `http://draft.localhost:3000/${draftLinks.lobbyCode}/${draftLinks.redCode}`;
-  const specLink = `http://draft.localhost:3000/${draftLinks.lobbyCode}`;
-  const streamLink = `http://draft.localhost:3000/${draftLinks.lobbyCode}/stream`;
+  const blueLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
+  const redLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}/${draftLinks.redCode}`;
+  const specLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}`;
+  const streamLink = `https://draft.lowbudgetlcs.com/${draftLinks.lobbyCode}/stream`;
 
   const copyLinks = () => {
     navigator.clipboard.writeText(`Blue:
