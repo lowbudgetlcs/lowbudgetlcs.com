@@ -46,11 +46,7 @@ export const SocketProvider: React.FC = () => {
         console.log(`Socket disconnected from ${namespace}. Reason: ${reason}`);
         setShowConnectedPopup(false);
 
-        if (
-          reason === "io server disconnect" ||
-          reason === "transport close" ||
-          reason === "ping timeout"
-        ) {
+        if (reason === "transport close" || reason === "ping timeout") {
           setShowReconnectPopup(true);
         } else if (reason !== "io client disconnect") {
           setShowReconnectPopup(false);
