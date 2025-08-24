@@ -21,9 +21,10 @@ function FearlessLinks({
     draftCount,
   } = fearlessDraftLinks;
 
-  const team1Link = `http://draft.localhost:3000/fearless/${fearlessCode}/${team1Code}`;
-  const team2Link = `http://draft.localhost:3000/fearless/${fearlessCode}/${team2Code}`;
+  const team1Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team1Code}`;
+  const team2Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team2Code}`;
   const specLink = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/spectator`;
+  const streamLink = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/stream`;
 
   const removeDraftLinks = () => {
     setFearlessDraftLinks(undefined);
@@ -110,13 +111,13 @@ ${specLink}`);
           </div>
         </div>
         {/* Stream Link */}
-        {/* <div className="steamLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
+        <div className="steamLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
           <h3 className="text-2xl font-bold md:w-44">
             <span className="text-purple">Stream</span> Link:
           </h3>
           <Link
             target="_blank"
-            to={"#"}
+            to={streamLink}
             className="text-xl hover:text-purple transition duration-300 flex-1 underline underline-offset-2"
           >
             Click Here (opens new tab)
@@ -128,7 +129,7 @@ ${specLink}`);
           >
             <Button>Copy Link</Button>
           </div>
-        </div> */}
+        </div>
       </div>
       <div className="copyBtns flex gap-8">
         <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
