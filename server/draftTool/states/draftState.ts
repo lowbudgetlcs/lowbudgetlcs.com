@@ -142,7 +142,7 @@ export const initializeDraftState = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: undefined,
-      addedPhases: ["fix"],
+      addedPhases: [],
     };
 
     setTimeout(() => {
