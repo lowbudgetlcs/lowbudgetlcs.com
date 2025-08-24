@@ -14,9 +14,11 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
   }
 
   const isSubsequentDraft = fearlessState.completedDrafts > 0;
+  const needsTournamentCode =
+    isSubsequentDraft && !!fearlessState.initialTournamentCode;
 
   useEffect(() => {
-    if (!isSubsequentDraft) {
+    if (!needsTournamentCode) {
       setIsCodeValid(true);
       return;
     }
@@ -30,10 +32,13 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
         }
         setIsCodeValid(isValid);
         setHasBadCode(!isValid);
+      } else {
+        setIsCodeValid(false);
+        setHasBadCode(false);
       }
     };
     checkCode();
-  }, [tournamentCode, isSubsequentDraft]);
+  }, [tournamentCode, needsTournamentCode]);
 
   // If user is host, will show team choices, otherwise is a blank loading div
   return teamDisplay === "team1" ? (
@@ -44,7 +49,7 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
           Draft {fearlessState.completedDrafts + 1} of {fearlessState.draftCount}
         </p>
       </div>
-      {isSubsequentDraft && (
+      {needsTournamentCode && (
         <div className="flex flex-col">
           <p className="text-xl font-bold">
             <span className="text-red">*</span> Tournament Code

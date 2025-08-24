@@ -87,4 +87,5 @@ currentRedSide: string | null;
 allPicks: string[];
 allBans: string[];
 draftLobbyCodes: string[] | null;
+initialTournamentCode?: string;
 }
