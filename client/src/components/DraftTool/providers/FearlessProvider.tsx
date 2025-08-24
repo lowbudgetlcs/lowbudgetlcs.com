@@ -22,7 +22,7 @@ export interface FearlessContextProps {
   loading: boolean;
   error: boolean;
   initializeFearless: (fearlessCode: string, teamCode: string) => void;
-  handleSideSelect: (side: "blue" | "red") => void;
+  handleSideSelect: (side: "blue" | "red", tournamentID?: string) => void;
   isPastSeries: boolean;
 }
 
@@ -141,12 +141,13 @@ export const FearlessProvider: React.FC = () => {
 
   // Select a side for the draft
   const handleSideSelect = useCallback(
-    (side: "blue" | "red") => {
+    (side: "blue" | "red", tournamentID?: string) => {
       if (!fearlessSocket || !fearlessState) return;
 
       fearlessSocket.emit("selectSide", {
         fearlessCode: fearlessState.fearlessCode,
         selectedSide: side,
+        tournamentID: tournamentID,
       });
     },
     [fearlessSocket, fearlessState]

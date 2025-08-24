@@ -9,12 +9,19 @@ const { randomUUID } = new ShortUniqueId({ length: 10 });
 const fearlessSideAssignment = async (
   teamCode: string,
   fearlessLobby: FearlessStateServerProps,
-  chosenSide: string
+  chosenSide: string,
+  tournamentID?: string
 ) => {
   try {
-    const { team1Code, team2Code, team1Name, team2Name, fearlessCode } =
-      fearlessLobby;
-    let { currentBlueSide, currentRedSide } = fearlessLobby;
+    const {
+      team1Code,
+      team2Code,
+      team1Name,
+      team2Name,
+      fearlessCode,
+      completedDrafts,
+      initialTournamentCode,
+    } = fearlessLobby;
 
     // Just in case, should never happen
     if (teamCode !== team1Code) {
@@ -23,30 +30,32 @@ const fearlessSideAssignment = async (
 
     // Assumes team 1 is setting the sides
     if (chosenSide === "blue") {
-      currentBlueSide = team1Name;
-      currentRedSide = team2Name;
+      fearlessLobby.currentBlueSide = team1Name;
+      fearlessLobby.currentRedSide = team2Name;
     } else {
-      currentRedSide = team1Name;
-      currentBlueSide = team2Name;
+      fearlessLobby.currentRedSide = team1Name;
+      fearlessLobby.currentBlueSide = team2Name;
     }
 
     // Display names depending on side set
-    const blueDisplayName = currentBlueSide;
-    const redDisplayName = currentRedSide;
+    const blueDisplayName = fearlessLobby.currentBlueSide;
+    const redDisplayName = fearlessLobby.currentRedSide;
 
     // Make the Typescript happy
-    if (!currentBlueSide || !currentRedSide) {
+    if (!fearlessLobby.currentBlueSide || !fearlessLobby.currentRedSide) {
       return;
     }
 
+    const isFirstDraft = completedDrafts === 0;
     const lobbyCode = randomUUID();
+    const shortCode = (isFirstDraft && initialTournamentCode) || tournamentID;
     const draftInfo = {
       lobbyCode: lobbyCode,
-      blueUser: currentBlueSide === team1Name ? team1Code : team2Code, //Blue Code
-      redUser: currentRedSide === team1Name ? team1Code : team2Code, //Red Code
+      blueUser: fearlessLobby.currentBlueSide === team1Name ? team1Code : team2Code, //Blue Code
+      redUser: fearlessLobby.currentRedSide === team1Name ? team1Code : team2Code, //Red Code
       blueDisplayName: blueDisplayName,
       redDisplayName: redDisplayName,
-      tournamentID: null, //Can change later to track fearless for LBLCS
+      tournamentID: shortCode || null,
       fearlessCode: fearlessCode,
     };
 

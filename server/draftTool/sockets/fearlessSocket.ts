@@ -131,7 +131,7 @@ export const fearlessSocket = (io: Namespace) => {
     });
 
     // Handle side selection (only team1 can select sides)
-    socket.on("selectSide", async ({ fearlessCode, selectedSide }) => {
+    socket.on("selectSide", async ({ fearlessCode, selectedSide, tournamentID }) => {
       try {
         const series = fearlessState[fearlessCode];
 
@@ -150,7 +150,8 @@ export const fearlessSocket = (io: Namespace) => {
         await fearlessSideAssignment(
           socket.data.teamCode,
           series,
-          selectedSide
+          selectedSide,
+          tournamentID
         );
 
         // The current draft should now be set

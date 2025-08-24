@@ -19,6 +19,7 @@ export const fearlessLobbyInitializer = async ({
   team1Name,
   team2Name,
   draftCount,
+  initialTournamentCode,
 }: FearlessInitializerProps) => {
   try {
     // Verify fearless state is not already existing
@@ -38,6 +39,7 @@ export const fearlessLobbyInitializer = async ({
         allPicks: [],
         allBans: [],
         draftLobbyCodes: [],
+        initialTournamentCode: initialTournamentCode,
       };
 
       // Save Fearless Lobby to Database
