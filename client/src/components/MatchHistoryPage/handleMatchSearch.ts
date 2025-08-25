@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import getMatch from "./getMatch";
+import { isNumber } from "chart.js/helpers";
 
 const handleMatchSearch = async (
   matchID: string | null,
@@ -23,8 +24,14 @@ const handleMatchSearch = async (
       setErrMessage("Internal Server error. Try reloading the page.");
       return null;
     }
+
+    if (isNumber(matchData)) {
+      setFetchErr(true);
+      setLoading(false);
+      setErrMessage("Internal Server error. Try reloading the page.");
+      return null;
+    }
     // Successful
-    console.log(matchData);
     setLoading(false);
     return matchData;
   } else if (matchID && matchID.length !== 0) {
