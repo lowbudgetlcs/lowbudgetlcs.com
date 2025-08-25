@@ -83,32 +83,15 @@ const TeamContainer = ({
       </div>
 
       {activeLink === "Loadout/KDA" ? (
-        <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
-          <PlayerContainer
-            playerData={players[0]}
-            allPlayers={players}
-            activeLink={activeLink}
-          />
-          <PlayerContainer
-            playerData={players[1]}
-            allPlayers={players}
-            activeLink={activeLink}
-          />
-          <PlayerContainer
-            playerData={players[2]}
-            allPlayers={players}
-            activeLink={activeLink}
-          />
-          <PlayerContainer
-            playerData={players[3]}
-            allPlayers={players}
-            activeLink={activeLink}
-          />
-          <PlayerContainer
-            playerData={players[4]}
-            allPlayers={players}
-            activeLink={activeLink}
-          />
+        <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar"> {/* BUG: Repeated PlayerContainer rendering */}
+          {players.map((player) => (
+            <PlayerContainer
+              key={player.puuid} 
+              playerData={player}
+              allPlayers={players}
+              activeLink={activeLink}
+            />
+          ))}
         </div>
       ) : activeLink === "Graphs" ? (
         <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
