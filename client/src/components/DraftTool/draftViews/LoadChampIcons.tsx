@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Champion } from "../interfaces/draftInterfaces";
 import { useDraftContext } from "../providers/DraftProvider";
 import { useSettingsContext } from "../providers/SettingsProvider";
@@ -23,18 +23,21 @@ export function LoadChampIcons({
   const nothingIconLink =
     "https://raw.communitydragon.org/10.1/plugins/rcp-fe-lol-item-sets/global/default/icon-helmet.png";
   const { animationToggle } = useSettingsContext();
-  const handlePick = (championName: string) => {
-    if (
-      (!pickedChampions.includes(championName) &&
-        !bannedChampions.includes(championName)) ||
-      championName === "nothing"
-      //This will stop users from selecting champions on finished drafts
-    ) {
-      if (draftSocket) {
-        setChosenChamp(championName);
+  const handlePick = useCallback(
+    (championName: string) => {
+      if (
+        (!pickedChampions.includes(championName) &&
+          !bannedChampions.includes(championName)) ||
+        championName === "nothing"
+        //This will stop users from selecting champions on finished drafts
+      ) {
+        if (draftSocket) {
+          setChosenChamp(championName);
+        }
       }
-    }
-  };
+    },
+    [bannedChampions, draftSocket, pickedChampions, setChosenChamp]
+  );
 
   const championList = useMemo(() => {
     return championRoles
@@ -145,7 +148,7 @@ export function LoadChampIcons({
     bannedChampions,
     dDragonIconLink,
     chosenChamp,
-    handlePick,
+    handlePick
   ]);
 
   return <>{championList}</>;

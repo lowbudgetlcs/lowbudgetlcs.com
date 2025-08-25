@@ -5,17 +5,14 @@ import fearlessSideAssignment from "../initializers/fearlessSideAssignment";
 import { draftState } from "../states/draftState";
 import EventEmitter from "events";
 import { insertFinalFearlessLobby } from "../../db/queries/insert";
-let currentConnections = 0
+
 export const fearlessEmitters: Map<string, EventEmitter> = new Map();
 export const fearlessSocket = (io: Namespace) => {
   io.on("connection", (socket: Socket) => {
-    console.log("New connection to fearless socket");
-
+    console.log(`Fearless Connections (joined): ${io.sockets.size}`);
     // Join a fearless series
     socket.on("joinFearless", ({ fearlessCode, teamCode }) => {
       try {
-        currentConnections++
-        console.log("currrent ConnectionS: ", currentConnections)
         const series = fearlessState[fearlessCode];
         if (!series) {
           socket.emit("error", { message: "Invalid fearless series code" });
@@ -76,15 +73,19 @@ export const fearlessSocket = (io: Namespace) => {
                   "fearlessCompleted",
                   updateFearlessClientState(fearlessCode)
                 );
+                fearlessEmitters.delete(fearlessCode);
               } else {
-                console.log("Moving to next draft")
+                console.log("Moving to next draft");
                 // Notify clients to move to the next draft
                 io.to(fearlessCode).emit(
                   "nextDraft",
                   updateFearlessClientState(fearlessCode)
                 );
               }
-              io.to(fearlessCode).emit("fearlessState", updateFearlessClientState(fearlessCode));
+              io.to(fearlessCode).emit(
+                "fearlessState",
+                updateFearlessClientState(fearlessCode)
+              );
               console.log(
                 `Draft completed for fearless series ${fearlessCode}: ${series.completedDrafts}/${series.draftCount}`
               );
@@ -130,7 +131,7 @@ export const fearlessSocket = (io: Namespace) => {
     });
 
     // Handle side selection (only team1 can select sides)
-    socket.on("selectSide", async ({ fearlessCode, selectedSide }) => {
+    socket.on("selectSide", async ({ fearlessCode, selectedSide, tournamentID }) => {
       try {
         const series = fearlessState[fearlessCode];
 
@@ -149,7 +150,8 @@ export const fearlessSocket = (io: Namespace) => {
         await fearlessSideAssignment(
           socket.data.teamCode,
           series,
-          selectedSide
+          selectedSide,
+          tournamentID
         );
 
         // The current draft should now be set
@@ -160,7 +162,10 @@ export const fearlessSocket = (io: Namespace) => {
             updateFearlessClientState(fearlessCode)
           );
         }
-        socket.emit("newFearlessState", updateFearlessClientState(fearlessCode));
+        socket.emit(
+          "newFearlessState",
+          updateFearlessClientState(fearlessCode)
+        );
 
         console.log(
           `Side selected for fearless series ${fearlessCode}: ${selectedSide}`
@@ -175,10 +180,18 @@ export const fearlessSocket = (io: Namespace) => {
       socket.emit("newFearlessState", updateFearlessClientState(fearlessCode));
     });
 
-    // Clean up on disconnect
     socket.on("disconnect", () => {
-      currentConnections--
-      console.log("currrent ConnectionS (left): ", currentConnections)
+      const { fearlessCode } = socket.data;
+      // Deletes emitter for room if no players are connected for 4 hours
+      if (fearlessCode) {
+        setTimeout(() => {
+          const room = io.adapter.rooms.get(fearlessCode);
+          if (!room || room.size === 0) {
+            fearlessEmitters.delete(fearlessCode);
+          }
+        }, 14400000); // 4 hour delay
+      }
+      console.log(`Fearless Connections (left): ${io.sockets.size}`);
     });
   });
 };

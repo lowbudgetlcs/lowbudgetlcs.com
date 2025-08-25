@@ -18,7 +18,13 @@ const isProduction = process.env.PRODUCTION === "production";
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: isProduction ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"] : "*",
+    origin: isProduction
+      ? [
+          "https://lowbudgetlcs.com",
+          "https://draft.lowbudgetlcs.com",
+          "https://dennys.lowbudgetlcs.com",
+        ]
+      : "*",
   },
 });
 
@@ -34,7 +40,7 @@ try {
 // Cors options. will always be in production on live server
 const corsOptions = {
   origin: isProduction ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com"] : "*",
-  methods: "GET",
+  methods: ["GET", "POST"],
 };
 
 //Rate limiting

@@ -9,18 +9,16 @@ import { useDraftContext } from "../providers/DraftProvider";
 import championData from "../championRoles.json";
 import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
 import { useSettingsContext } from "../providers/SettingsProvider";
+import ReconnectPopup from "../popups/ReconnectPopup";
+import ConnectPopup from "../popups/ConnectPopup";
+import ErrorPopup from "../popups/ErrorPopup";
 
 function DraftPage() {
-  const {
-    draftState,
-    draftSocket,
-    isPastDraft,
-    loading,
-    error,
-    initializeDraft,
-  } = useDraftContext();
+  const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft } =
+    useDraftContext();
   const [championRoles] = useState<Champion[]>(championData);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [reloadPage, setReloadPage] = useState<boolean>(false);
   const { forceDesktopView } = useSettingsContext();
   // Grab the lobby code
   const params = useParams();
@@ -30,6 +28,15 @@ function DraftPage() {
   // Check if "stream" is found in the browser to enable stream mode
   const location = useLocation();
   const streamMode = location.pathname.includes("stream");
+
+  // Shows reload button after time has passed loading
+  useEffect(() => {
+    if (loading) {
+      setTimeout(() => {
+        setReloadPage(true);
+      }, 4000);
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (!lobbyCode) {
@@ -47,21 +54,18 @@ function DraftPage() {
   // Preload all champion images
   useEffect(() => {
     championRoles.forEach((champion) => {
-      const fixedName =
-        champion.name.toLowerCase() === "wukong" ? "monkeyking" : champion.name;
-      preloadImage(
-        `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`
-      );
+      const fixedName = champion.name.toLowerCase() === "wukong" ? "monkeyking" : champion.name;
+      preloadImage(`https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`);
       preloadImage(
         `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`
       );
       if (streamMode) {
-        preloadImage(`https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`)
+        preloadImage(`https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`);
       }
     });
   }, [championRoles]);
 
-    useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -72,21 +76,42 @@ function DraftPage() {
     };
   }, []);
 
-
   if (lobbyCode && streamMode && (draftSocket || isPastDraft) && !error) {
-    return <StreamDisplay championRoles={championRoles} />;
-  } else if (
-    draftState &&
-    lobbyCode &&
-    (draftSocket || isPastDraft) &&
-    !error
-  ) {
-    return windowWidth >= 870 || forceDesktopView ? <DraftDisplay championRoles={championRoles} /> : <MobileDraftDisplay championRoles={championRoles} />;
+    return (
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <StreamDisplay championRoles={championRoles} />
+      </>
+    );
+  } else if (draftState && lobbyCode && (draftSocket || isPastDraft) && !error) {
+    return windowWidth >= 870 || forceDesktopView ? (
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <DraftDisplay championRoles={championRoles} />
+      </>
+    ) : (
+      <>
+        <ErrorPopup />
+        <ConnectPopup />
+        <ReconnectPopup />
+        <MobileDraftDisplay championRoles={championRoles} />
+      </>
+    );
   } else if (loading) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
         <p>Loading Draft</p>
         <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
+        <div className={`${reloadPage ? "" : "hidden"} text-xl`}>
+          <p className="text-orange">Draft taking a long time to load?</p>
+          <div onClick={() => window.location.reload()}>
+            <Button>Reload Page</Button>
+          </div>
+        </div>
       </div>
     );
   } else if (error) {

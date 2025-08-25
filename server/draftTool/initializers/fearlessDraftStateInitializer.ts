@@ -10,13 +10,14 @@ const fearlessDraftStateInitializer = ({
   blueDisplayName,
   redDisplayName,
   fearlessCode,
+  tournamentID,
 }: FearlessDraftInitializerProps) => {
   if (!draftState[lobbyCode]) {
     draftState[lobbyCode] = {
       draftStarted: false,
       activePhase: null,
       phaseType: null,
-      tournamentID: null,
+      tournamentID: tournamentID,
       lobbyCode: lobbyCode,
       blueUser: blueUser,
       redUser: redUser,
@@ -44,8 +45,9 @@ const fearlessDraftStateInitializer = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: fearlessCode,
+      addedPhases: [],
     };
-
+    console.log(draftState[lobbyCode])
     setTimeout(() => {
       if (draftState[lobbyCode]) {
         delete draftState[lobbyCode];

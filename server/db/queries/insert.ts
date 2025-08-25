@@ -19,8 +19,8 @@ export async function insertDraft(draft: DraftInitializeProps) {
         blueCode: draft.blueUser,
         redCode: draft.redUser,
         shortcode: draft.tournamentID,
-        blueName: draft.blueDisplayName,
-        redName: draft.redDisplayName,
+        blueName: draft.blueUser,
+        redName: draft.redUser,
         fearlessCode: draft.fearlessCode || null,
       })
       .returning();

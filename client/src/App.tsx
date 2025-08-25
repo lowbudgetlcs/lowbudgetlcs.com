@@ -1,7 +1,6 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import Twitch from "./components/Twitch";
 import { LeagueDataProvider } from "./components/leagueDataContext";
@@ -25,7 +24,6 @@ function App() {
     }
     return null;
   };
-  const location = useLocation();
 
   const currentHost = window.location.host;
   const pathname = window.location.pathname;

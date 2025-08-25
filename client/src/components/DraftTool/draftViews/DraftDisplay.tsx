@@ -14,10 +14,12 @@ import { useLocation } from "react-router-dom";
 import FearlessNav from "../draftNavbars/FearlessNav";
 import { useSettingsContext } from "../providers/SettingsProvider";
 import DraftTurnAudio from "../DraftAudio";
+import FearlessBansBar from "../draftNavbars/FearlessBansBar";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
+
   const { draftState, playerSide } = useDraftContext();
   const { teamNameVisible, champIconsVisible } = useSettingsContext();
 
@@ -29,9 +31,9 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
 
   useEffect(() => {
     if (searchValue.length > 0) {
-      setSelectedRole("All")
+      setSelectedRole("All");
     }
-  },[searchValue])
+  }, [searchValue]);
   const downloadDraftData = useCallback(() => {
     if (!draftState.draftComplete) return;
 
@@ -45,11 +47,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
     };
 
     const lobbyCode = sessionStorage.getItem("activeLobbyCode");
-    downloadFile(
-      JSON.stringify(draftObject),
-      `Draft-${lobbyCode}.json`,
-      "application/json"
-    );
+    downloadFile(JSON.stringify(draftObject), `Draft-${lobbyCode}.json`, "application/json");
   }, [
     draftState.draftComplete,
     draftState.blueDisplayName,
@@ -66,59 +64,44 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
         <div className={`blueTitle flex items-center gap-4`}>
           <div
             className={`py-2 px-4 ${
-              draftState.blueReady || draftState.displayTurn === "blue"
-                ? "w-96"
-                : "w-52"
+              draftState.blueReady || draftState.displayTurn === "blue" ? "w-96" : "w-52"
             } bg-blue/60 ${
               draftState.displayTurn === "blue" ? "animate-pulse" : ""
-            } transition-width duration-500 rounded-md`}
-          >
+            } transition-width duration-500 rounded-md`}>
             <h2
               className={`text-right font-bold text-xl truncate ${
                 teamNameVisible ? "" : "text-transparent"
-              }`}
-            >
+              }`}>
               {draftState.blueDisplayName}
             </h2>
           </div>
           <div
             className={`sideIndicator flex gap-1 text-2xl items-center ${
               playerSide !== "blue" && "hidden"
-            }`}
-          >
+            }`}>
             <FaArrowLeft />
             <p className="opacity-80">You</p>
           </div>
         </div>
         <div className="timer absolute left-0 right-0 top-2 bottom-0 text-center text-2xl font-bold">
-          <Timer
-            timer={draftState.timer}
-            displayTurn={draftState.displayTurn}
-          />
+          <Timer timer={draftState.timer} displayTurn={draftState.displayTurn} />
         </div>
         <div className={`redTitle flex items-center gap-4`}>
           <div
             className={`sideIndicator flex gap-1 text-2xl items-center ${
               playerSide !== "red" && "hidden"
-            }`}
-          >
+            }`}>
             <p className="opacity-80">You</p>
             <FaArrowRight />
           </div>
           <div
             className={`py-2 px-4 ${
-              draftState.redReady || draftState.displayTurn === "red"
-                ? "w-96"
-                : "w-52"
+              draftState.redReady || draftState.displayTurn === "red" ? "w-96" : "w-52"
             } bg-red/60 ${
               draftState.displayTurn === "red" ? "animate-pulse" : ""
-            } transition-width duration-500 rounded-md`}
-          >
+            } transition-width duration-500 rounded-md`}>
             <h2
-              className={`font-bold text-xl truncate ${
-                teamNameVisible ? "" : "text-transparent"
-              }`}
-            >
+              className={`font-bold text-xl truncate ${teamNameVisible ? "" : "text-transparent"}`}>
               {draftState.redDisplayName}
             </h2>
           </div>
@@ -141,19 +124,18 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
                   ? "bg-blue/25"
                   : "hidden"
                 : "hidden"
-            } z-0 filter blur-lg`}
-          ></div>
+            } z-0 filter blur-lg`}></div>
           {isFearless && (
             <div className="relative z-10">
               <FearlessNav />
             </div>
           )}
-          <div className={`relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4 ${champIconsVisible ? '' : 'hidden'}`}>
+          <div
+            className={`relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4 ${
+              champIconsVisible ? "" : "hidden"
+            }`}>
             <div className="relative champFilter flex gap-4">
-              <RoleSelect
-                selectedRole={selectedRole}
-                setSelectedRole={setSelectedRole}
-              />
+              <RoleSelect selectedRole={selectedRole} setSelectedRole={setSelectedRole} />
             </div>
             <form className="relative bg-gray flex items-center rounded-md">
               <label htmlFor="championSearch" className="px-2">
@@ -165,12 +147,14 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
                 className="champSearch p-2 bg-gray focus:border-none rounded-md focus:outline-0"
                 placeholder="Search Champion"
                 value={searchValue}
-                onChange={handleSearchChange}
-              ></input>
+                onChange={handleSearchChange}></input>
             </form>
           </div>
           {/* List of Champion Images */}
-          <div className={`relative overflow-y-scroll bg-transparent ${champIconsVisible ? '' : 'hidden'}`}>
+          <div
+            className={`relative overflow-y-scroll bg-transparent ${
+              champIconsVisible ? "" : "hidden"
+            }`}>
             <div className="relative">
               <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
                 <LoadChampIcons
@@ -181,12 +165,18 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
               </ul>
             </div>
           </div>
+          {isFearless && (
+            <div className="absolute bottom-0 left-0 right-0 z-10">
+              <FearlessBansBar />
+            </div>
+          )}
         </div>
         {/* Red Side Picks */}
         <div className="redSidePicks flex flex-col flex-1 gap-2 px-4 pt-4 items-stretch">
           <DisplayPicks championRoles={championRoles} playerSide={"red"} />
         </div>
       </div>
+
       {/* Champion Bans*/}
       <div className="champBans flex w-full justify-between gap-8 items-center pt-4 pb-2 px-4 mt-auto">
         {/* Blue Side Bans */}
@@ -199,8 +189,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           {draftState.draftComplete && (
             <button
               className={`downloadBtn p-2 bg-green/60 hover:bg-green hover:cursor-pointer font-bold max-h-16 flex items-center justify-center rounded-md transition duration-300`}
-              onClick={downloadDraftData}
-            >
+              onClick={downloadDraftData}>
               Download Draft JSON
             </button>
           )}

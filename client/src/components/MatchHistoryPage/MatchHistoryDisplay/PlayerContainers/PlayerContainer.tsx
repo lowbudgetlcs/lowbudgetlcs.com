@@ -12,9 +12,11 @@ interface PlayerContainerProps {
 
 const PlayerContainer = ({ playerData, allPlayers, activeLink }: PlayerContainerProps) => {
   const totalKills = allPlayers.reduce((total, player) => total + player.kills, 0);
-  const killParticipation: number = Number(
-    ((playerData.kills + playerData.assists) / (totalKills / 100)).toFixed(0)
-  );
+  let killParticipation = 0;
+  if (totalKills > 0) {
+    const rawKP = ((playerData.kills + playerData.assists) / totalKills) * 100;
+    killParticipation = Number(rawKP.toFixed(0));
+  }
   return (
     <div className="playerContainer bg-light-gray p-2 h-[90px] w-max grow rounded-md">
       <div className="champPlayerInfo flex gap-2 items-center h-full">

@@ -5,14 +5,8 @@ const twoHours = 60 * 60 * 2000; // 2 hours in milliseconds
 
 export interface DraftStateProps {
   draftStarted: boolean;
-  activePhase:
-    | "banPhase1"
-    | "pickPhase1"
-    | "banPhase2"
-    | "pickPhase2"
-    | "finished"
-    | null;
-  phaseType: "pick" | "ban" | null;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | "fix" | null;
+  phaseType: "pick" | "ban" | "fix" | null;
   tournamentID: string | null;
   lobbyCode: string;
   blueUser: string;
@@ -41,6 +35,11 @@ export interface DraftStateProps {
   redPick: string | null;
   draftComplete: boolean;
   fearlessCode?: string;
+  addedPhases: string[];
+  blueFixPick?: string[];
+  redFixPick?: string[];
+  blueAcceptPick?: boolean;
+  redAcceptPick?: boolean;
 }
 export const draftState: Record<string, DraftStateProps> = {};
 
@@ -69,9 +68,10 @@ export interface ClientDraftStateProps {
     | "banPhase2"
     | "pickPhase2"
     | "finished"
+    | "fix"
     | null
     | undefined;
-  phaseType: "pick" | "ban" | null;
+  phaseType: "pick" | "ban" | "fix" | null;
   blueDisplayName: string;
   redDisplayName: string;
   blueReady: boolean;
@@ -96,6 +96,10 @@ export interface ClientDraftStateProps {
   redPick: string | null;
   draftComplete: boolean;
   fearlessCode?: string;
+  blueFixPick?: string[];
+  redFixPick?: string[];
+  blueAcceptPick?: boolean;
+  redAcceptPick?: boolean;
 }
 export const initializeDraftState = ({
   lobbyCode,
@@ -138,6 +142,7 @@ export const initializeDraftState = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: undefined,
+      addedPhases: [],
     };
 
     setTimeout(() => {

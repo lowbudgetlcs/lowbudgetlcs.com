@@ -5,6 +5,7 @@ export interface FearlessInitializerProps {
   team1Name: string;
   team2Name: string;
   draftCount: number;
+  initialTournamentCode?: string;
 }
 
 export interface FearlessFinishedProps {
@@ -34,6 +35,7 @@ export interface FearlessStateServerProps {
   allPicks: string[];
   allBans: string[];
   draftLobbyCodes: string[];
+  initialTournamentCode?: string;
 }
 
 export interface FearlessStateClientProps {

@@ -1,16 +1,18 @@
 import { FearlessInitializerProps } from "../interfaces/draftInterfaces";
 
 const createFearlessDraft = async (
-  blueName: FormDataEntryValue,
-  redName: FormDataEntryValue,
-  draftCount: number
+  team1Name: FormDataEntryValue,
+  team2Name: FormDataEntryValue,
+  draftCount: number,
+  tournamentID: FormDataEntryValue | null
 ) => {
   try {
     const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
     const data = {
-      team1Name: blueName,
-      team2Name: redName,
+      team1Name: team1Name,
+      team2Name: team2Name,
       draftCount: draftCount,
+      tournamentID: tournamentID,
     };
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/draft/api/createFearlessDraft`,
