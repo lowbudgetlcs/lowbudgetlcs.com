@@ -1,23 +1,23 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFearlessContext } from "../providers/FearlessProvider";
 
 const FearlessBansBar = () => {
   const { fearlessState } = useFearlessContext();
-  if (!fearlessState) {
-    return null;
-  }
   const [barIsOpen, setBarIsOpen] = useState<boolean>(false);
   const FearlessBarRef = useRef<any>(null)
-  const handleClickOutside = (e: MouseEvent) => {
+  const handleClickOutside = useCallback((e: MouseEvent) => {
     if (FearlessBarRef.current && !FearlessBarRef.current.contains(e.target)) {
       setBarIsOpen(false);
     }
-  }
-
+  }, []);
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside, true);
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  },[])
+    return () => document.removeEventListener('mousedown', handleClickOutside, true)
+  },[handleClickOutside])
+  
+  if (!fearlessState) {
+    return null;
+  }
   return (
     <>
       <div ref={FearlessBarRef} className="fearlessBans group relative flex flex-col items-center justify-center">
