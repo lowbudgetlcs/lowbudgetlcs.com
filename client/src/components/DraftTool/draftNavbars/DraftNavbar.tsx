@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSettingsContext } from "../providers/SettingsProvider";
 import MainLink from "../../MainLink";
 
@@ -88,13 +88,13 @@ function DraftNavbar() {
     setIsOpen(!isOpen);
   }
 
-  document.addEventListener("scroll", () => {
-    if (window.scrollY > 20) {
-      setIsTop(false);
-    } else {
-      setIsTop(true);
-    }
-  });
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsTop(window.scrollY <= 20);
+    };
+    document.addEventListener("scroll", handleScroll);
+    return () => document.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <header
