@@ -39,14 +39,14 @@ const FearlessBansBar = () => {
         <div
           className={`absolute hidden group-hover:animate-fadeIn-300ms group-hover:flex -top-14 w-28 text-center items-center justify-center rounded-md border-2 border-gray font-bold h-6 bg-light-gray`}
         >
-          <p className="text-sm">Previous Bans</p>
+          <p className="text-sm">Previous Picks</p>
         </div>
         {barIsOpen && (
-          <div className="absolute bottom-8 min-w-[64vw] lg:min-w-[50vw] xl:min-w-64 min-h-24 pb-4 pt-2 z-20
+          <div className="absolute bottom-8 min-w-[64vw] lg:min-w-[50vw] xl:min-w-64 min-h-24 pb-4 pt-2 px-2 z-20
           bg-black border-2 border-gray rounded-md shadow-2xl flex flex-col gap-2 items-center justify-center animate-fadeIn-300ms">
-            <p className="font-bold text-lg">Previous Bans</p>
+            <p className="font-bold text-lg">Previous Picks</p>
             <div className="bansBox grid grid-cols-10 gap-2">
-              {fearlessState.allBans.map((ban, index) => {
+              {fearlessState.allPicks.map((ban, index) => {
                 const fixedName =
                   ban.toLowerCase() === "wukong" ? "monkeyKing" : ban;
                 const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/square`;
