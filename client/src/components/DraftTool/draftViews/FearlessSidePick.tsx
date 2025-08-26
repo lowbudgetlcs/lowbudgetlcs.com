@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Button from "../../Button";
 import { useFearlessContext } from "../providers/FearlessProvider";
 import { checkTournamentCode } from "../connectionHandlers/draftHandler";
@@ -6,7 +6,6 @@ import { checkTournamentCode } from "../connectionHandlers/draftHandler";
 const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
   const { fearlessState, handleSideSelect } = useFearlessContext();
   const [tournamentCode, setTournamentCode] = useState<string>("");
-  const [isCodeValid, setIsCodeValid] = useState<boolean>(false);
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
 
   if (!fearlessState) {
@@ -17,30 +16,21 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
   const needsTournamentCode =
     isSubsequentDraft && !!fearlessState.initialTournamentCode;
 
-  useEffect(() => {
-    if (!needsTournamentCode) {
-      setIsCodeValid(true);
-      return;
-    }
-    const checkCode = async () => {
-      if (tournamentCode) {
-        const isValid = await checkTournamentCode(tournamentCode);
-        if (isValid === undefined) {
-          setIsCodeValid(false);
-          setHasBadCode(true);
-          return;
-        }
-        setIsCodeValid(isValid);
-        setHasBadCode(!isValid);
-      } else {
-        setIsCodeValid(false);
-        setHasBadCode(false);
-      }
-    };
-    checkCode();
-  }, [tournamentCode, needsTournamentCode]);
+  const handleValidationAndSideSelect = async (side: "blue" | "red") => {
+    if (needsTournamentCode) {
+      const isValid = await checkTournamentCode(tournamentCode);
 
-  // If user is host, will show team choices, otherwise is a blank loading div
+      if (!isValid) {
+        setHasBadCode(true);
+        return;
+      }
+      
+      setHasBadCode(false);
+    }
+    
+    handleSideSelect(side, tournamentCode);
+  };
+
   return teamDisplay === "team1" ? (
     <div className="flex flex-col items-center justify-center h-screen gap-8 text-white">
       <div className="sidePickContainer text-center">
@@ -70,18 +60,12 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
       )}
       <div className="sideBtns flex gap-8">
         <div className="cursor-pointer">
-          <button
-            onClick={() => handleSideSelect("blue", tournamentCode)}
-            disabled={!isCodeValid}
-            className="disabled:cursor-not-allowed disabled:opacity-50">
+          <button onClick={() => handleValidationAndSideSelect("blue")}>
             <Button>Blue Side</Button>
           </button>
         </div>
         <div className="cursor-pointer">
-          <button
-            onClick={() => handleSideSelect("red", tournamentCode)}
-            disabled={!isCodeValid}
-            className="disabled:cursor-not-allowed disabled:opacity-50">
+          <button onClick={() => handleValidationAndSideSelect("red")}>
             <Button>Red Side</Button>
           </button>
         </div>
