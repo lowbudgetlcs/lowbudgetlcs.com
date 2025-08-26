@@ -1,25 +1,37 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
 import { insertDraft } from "../db/queries/insert";
-import { getMatchingShortCode, getPastDraft, getPastFearlessSeries } from "../db/queries/select";
+import { checkDuplicateShortCode, getPastDraft, getPastFearlessSeries } from "../db/queries/select";
 import { DraftInitializeProps, initializeDraftState } from "../draftTool/states/draftState";
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
 import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
 import ShortUniqueId from "short-unique-id";
+import { LolApi } from "twisted";
+import { RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
 const { randomUUID } = new ShortUniqueId({ length: 10 });
 
 draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Response) => {
   try {
     const shortCode = req.params.code;
-    const response = await getMatchingShortCode(shortCode);
+    if (!process.env.RIOTAPI) {
+      throw new Error("No API KEY");
+    }
+
+    const checkDBForTourneyCode = await checkDuplicateShortCode(shortCode);
+    console.log(checkDBForTourneyCode)
+    if (checkDBForTourneyCode) {
+      res.status(200).json({ valid: false });
+      return;
+    }
+    const rAPI = new RiotAPI(process.env.RIOTAPI);
+    const response = await rAPI.tournamentV5.getByTournamentCode({ tournamentCode: shortCode });
     if (response) {
       res.status(200).json({ valid: true });
     } else {
       res.status(200).json({ valid: false });
     }
   } catch (err: any) {
-    console.error("Error while checking tournament code:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(404).json({ valid: false });
   }
 });
 
@@ -30,7 +42,7 @@ draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
       redName,
       blueName,
       tournamentID,
-    }: { redName: string; blueName: string; tournamentID?: string} = req.body;
+    }: { redName: string; blueName: string; tournamentID?: string } = req.body;
 
     // Generate unique URLs for the draft
     const lobbyCode = tournamentID ? tournamentID : randomUUID();

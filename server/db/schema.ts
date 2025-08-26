@@ -11,11 +11,14 @@ import {
   varchar,
   boolean,
   bigint,
+  pgSchema,
   smallint,
   type AnyPgColumn,
   char,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
+
+export const website = pgSchema("website");
 
 export const games = pgTable(
   "games",
@@ -291,6 +294,30 @@ export const teamPerformances = pgTable(
   ]
 );
 
+export const fearlessDraftLobbiesInWebsite = website.table(
+  "fearless_draft_lobbies",
+  {
+    id: integer()
+      .primaryKey()
+      .generatedByDefaultAsIdentity({
+        name: "website.fearless_draft_lobbies_id_seq",
+        startWith: 1,
+        increment: 1,
+        minValue: 1,
+        maxValue: 2147483647,
+        cache: 1,
+      }),
+    fearlessCode: text("fearless_code").notNull(),
+    team1Code: text("team1_code").notNull(),
+    team2Code: text("team2_code").notNull(),
+    team1Name: text("team1_name").notNull(),
+    team2Name: text("team2_name").notNull(),
+    totalDrafts: integer("total_drafts").notNull(),
+    fearlessComplete: boolean("fearless_complete").default(false),
+  },
+  (table) => [unique("fearless_draft_lobbies_fearless_code_key").on(table.fearlessCode)]
+);
+
 export const playerGameData = pgTable(
   "player_game_data",
   {
@@ -493,12 +520,6 @@ export const players = pgTable(
       "btree",
       table.summonerName.asc().nullsLast().op("text_ops")
     ),
-    foreignKey({
-      columns: [table.teamId],
-      foreignColumns: [teams.id],
-      name: "fk_team_id",
-    }).onDelete("set null"),
-    unique("players_riot_puuid_key").on(table.riotPuuid),
   ]
 );
 
@@ -511,5 +532,68 @@ export const teams = pgTable(
     captainId: integer("captain_id"),
     divisionId: integer("division_id"),
   },
-  (table) => [index("teams_name_idx").using("btree", table.name.asc().nullsLast().op("text_ops"))]
+  (table) => [
+    index("teams_name_idx").using("btree", table.name.asc().nullsLast().op("text_ops")),
+    foreignKey({
+      columns: [table.captainId],
+      foreignColumns: [players.id],
+      name: "fk_captain_id",
+    }).onDelete("set null"),
+    foreignKey({
+      columns: [table.divisionId],
+      foreignColumns: [divisions.id],
+      name: "fk_division_id",
+    }),
+  ]
+);
+
+export const draftLobbiesInWebsite = website.table(
+  "draft_lobbies",
+  {
+    id: integer()
+      .primaryKey()
+      .generatedByDefaultAsIdentity({
+        name: "website.draft_lobbies_id_seq",
+        startWith: 1,
+        increment: 1,
+        minValue: 1,
+        maxValue: 2147483647,
+        cache: 1,
+      }),
+    shortcode: varchar(),
+    blueCode: text("blue_code").notNull(),
+    redCode: text("red_code").notNull(),
+    lobbyCode: text("lobby_code").notNull(),
+    redName: text("red_name").notNull(),
+    blueName: text("blue_name").notNull(),
+    bPick1: text("b_pick_1"),
+    bPick2: text("b_pick_2"),
+    bPick3: text("b_pick_3"),
+    bPick4: text("b_pick_4"),
+    bPick5: text("b_pick_5"),
+    rPick1: text("r_pick_1"),
+    rPick2: text("r_pick_2"),
+    rPick3: text("r_pick_3"),
+    rPick4: text("r_pick_4"),
+    rPick5: text("r_pick_5"),
+    bBan1: text("b_ban_1"),
+    bBan2: text("b_ban_2"),
+    bBan3: text("b_ban_3"),
+    bBan4: text("b_ban_4"),
+    bBan5: text("b_ban_5"),
+    rBan1: text("r_ban_1"),
+    rBan2: text("r_ban_2"),
+    rBan3: text("r_ban_3"),
+    rBan4: text("r_ban_4"),
+    rBan5: text("r_ban_5"),
+    draftFinished: boolean("draft_finished").default(false).notNull(),
+    fearlessCode: text("fearless_code"),
+  },
+  (table) => [
+    index("draft_lobbies_lobby_code_idx").using(
+      "btree",
+      table.lobbyCode.asc().nullsLast().op("text_ops")
+    ),
+    unique("draft_lobbies_shortcode_key").on(table.shortcode),
+  ]
 );

@@ -1,10 +1,7 @@
 import { eq } from "drizzle-orm";
-import {
-  DraftInitializeProps,
-  DraftStateProps,
-} from "../../draftTool/states/draftState";
+import { DraftInitializeProps, DraftStateProps } from "../../draftTool/states/draftState";
 import { db } from "../index";
-import { draftLobbies, fearlessDraftLobbies } from "../schema";
+import { draftLobbiesInWebsite, fearlessDraftLobbiesInWebsite } from "../schema";
 import {
   FearlessFinishedProps,
   FearlessInitializerProps,
@@ -13,14 +10,14 @@ import {
 export async function insertDraft(draft: DraftInitializeProps) {
   try {
     const insertDraft = await db
-      .insert(draftLobbies)
+      .insert(draftLobbiesInWebsite)
       .values({
         lobbyCode: draft.lobbyCode,
         blueCode: draft.blueUser,
         redCode: draft.redUser,
         shortcode: draft.tournamentID,
-        blueName: draft.blueUser,
-        redName: draft.redUser,
+        blueName: draft.blueDisplayName,
+        redName: draft.redDisplayName,
         fearlessCode: draft.fearlessCode || null,
       })
       .returning();
@@ -32,13 +29,10 @@ export async function insertDraft(draft: DraftInitializeProps) {
   }
 }
 
-export async function insertFinishedDraft(
-  draft: DraftStateProps,
-  lobbyCode: string
-) {
+export async function insertFinishedDraft(draft: DraftStateProps, lobbyCode: string) {
   try {
     const insertDraft = await db
-      .update(draftLobbies)
+      .update(draftLobbiesInWebsite)
       .set({
         shortcode: draft.tournamentID,
         blueCode: draft.blueUser,
@@ -68,7 +62,7 @@ export async function insertFinishedDraft(
         rBan5: draft.redBans[4],
         draftFinished: true,
       })
-      .where(eq(draftLobbies.lobbyCode, lobbyCode));
+      .where(eq(draftLobbiesInWebsite.lobbyCode, lobbyCode));
 
     console.log("Draft full insert success:", lobbyCode);
   } catch (err) {
@@ -77,23 +71,28 @@ export async function insertFinishedDraft(
   }
 }
 
-export async function insertInitialFearlessLobby(
-  draft: FearlessInitializerProps
-) {
+export async function insertInitialFearlessLobby({
+  fearlessCode,
+  team1Code,
+  team2Code,
+  team1Name,
+  team2Name,
+  draftCount,
+}: FearlessInitializerProps) {
   try {
     const insertFearlessLobby = await db
-      .insert(fearlessDraftLobbies)
+      .insert(fearlessDraftLobbiesInWebsite)
       .values({
-        fearlessCode: draft.fearlessCode,
-        team1Code: draft.team1Code,
-        team2Code: draft.team2Code,
-        team1Name: draft.team1Name,
-        team2Name: draft.team2Name,
-        totalDrafts: draft.draftCount,
+        fearlessCode: fearlessCode,
+        team1Code: team1Code,
+        team2Code: team2Code,
+        team1Name: team1Name,
+        team2Name: team2Name,
+        totalDrafts: draftCount,
       })
       .returning();
 
-    console.log("Fearless initial insert success:", draft.fearlessCode);
+    console.log("Fearless initial insert success:", fearlessCode);
   } catch (err) {
     console.error("Error inserting into DB: ", err);
     throw new Error("Failed to insert draft into database.");
@@ -103,11 +102,11 @@ export async function insertInitialFearlessLobby(
 export async function insertFinalFearlessLobby(draft: FearlessFinishedProps) {
   try {
     const insertFearlessLobby = await db
-      .update(fearlessDraftLobbies)
+      .update(fearlessDraftLobbiesInWebsite)
       .set({
         fearlessComplete: true,
       })
-      .where(eq(fearlessDraftLobbies.fearlessCode, draft.fearlessCode));
+      .where(eq(fearlessDraftLobbiesInWebsite.fearlessCode, draft.fearlessCode));
 
     console.log("Fearless Final insert success:", draft.fearlessCode);
   } catch (err) {

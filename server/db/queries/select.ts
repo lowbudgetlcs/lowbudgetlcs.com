@@ -1,6 +1,6 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import { asTeams, divisions, draftLobbies, fearlessDraftLobbies, games, players, teams } from "../schema";
+import { asTeams, divisions, draftLobbiesInWebsite, fearlessDraftLobbiesInWebsite, games, players, teams } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
 
@@ -81,21 +81,21 @@ export async function getPlayer(summonerName: string) {
 export async function checkDBForURL(blueCode: string, redCode: string) {
   const matchingURL = await db
     .select({
-      blueCode: draftLobbies.blueCode,
-      redCode: draftLobbies.redCode,
+      blueCode: draftLobbiesInWebsite.blueCode,
+      redCode: draftLobbiesInWebsite.redCode,
     })
-    .from(draftLobbies)
-    .where(sql`${draftLobbies.blueCode} = ${blueCode} or ${draftLobbies.redCode} = ${redCode}`);
+    .from(draftLobbiesInWebsite)
+    .where(sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`);
   return matchingURL;
 }
 
 export async function checkDBForFearlessCode(fearlessCode: string) {
   const matchingURL = await db
     .select({
-      fearlessCode: fearlessDraftLobbies.fearlessCode,
+      fearlessCode: fearlessDraftLobbiesInWebsite.fearlessCode,
     })
-    .from(fearlessDraftLobbies)
-    .where(eq(fearlessDraftLobbies.fearlessCode, fearlessCode));
+    .from(fearlessDraftLobbiesInWebsite)
+    .where(eq(fearlessDraftLobbiesInWebsite.fearlessCode, fearlessCode));
   if (matchingURL.length > 0) {
     return false;
   } else {
@@ -124,9 +124,9 @@ export async function getMatchingShortCode(shortCode: string) {
 export async function checkDuplicateShortCode(shortCode: string) {
   try {
     const matchingCode = await db
-      .select({ shortCode: draftLobbies.shortcode })
-      .from(draftLobbies)
-      .where(eq(draftLobbies.shortcode, shortCode));
+      .select({ shortCode: draftLobbiesInWebsite.shortcode })
+      .from(draftLobbiesInWebsite)
+      .where(eq(draftLobbiesInWebsite.shortcode, shortCode));
     return matchingCode.length > 0;
   } catch (err) {
     console.error("Error checking tournamentID with server: ", err);
@@ -137,18 +137,18 @@ export async function checkDuplicateShortCode(shortCode: string) {
 export async function getLobbyCodes(lobbyCode: string) {
   const matchingCodes = await db
     .select({
-      lobbyCode: draftLobbies.lobbyCode,
-      redCode: draftLobbies.redCode,
-      blueCode: draftLobbies.blueCode,
+      lobbyCode: draftLobbiesInWebsite.lobbyCode,
+      redCode: draftLobbiesInWebsite.redCode,
+      blueCode: draftLobbiesInWebsite.blueCode,
     })
-    .from(draftLobbies)
-    .where(eq(draftLobbies.lobbyCode, lobbyCode));
+    .from(draftLobbiesInWebsite)
+    .where(eq(draftLobbiesInWebsite.lobbyCode, lobbyCode));
   return matchingCodes.length > 0 ? matchingCodes[0] : null;
 }
 
 // Finds valid past draft and returns it in the client state form
 export async function getPastDraft(lobbyCode: string) {
-  const result = await db.select().from(draftLobbies).where(eq(draftLobbies.lobbyCode, lobbyCode));
+  const result = await db.select().from(draftLobbiesInWebsite).where(eq(draftLobbiesInWebsite.lobbyCode, lobbyCode));
 
   const draft = result[0];
 
@@ -218,8 +218,8 @@ export async function getPastDraft(lobbyCode: string) {
 export async function getPastFearlessSeries(fearlessCode: string) {
   const seriesResult = await db
     .select()
-    .from(fearlessDraftLobbies)
-    .where(eq(fearlessDraftLobbies.fearlessCode, fearlessCode))
+    .from(fearlessDraftLobbiesInWebsite)
+    .where(eq(fearlessDraftLobbiesInWebsite.fearlessCode, fearlessCode))
     .limit(1);
 
   if (!seriesResult.length) {
@@ -229,8 +229,8 @@ export async function getPastFearlessSeries(fearlessCode: string) {
   const series = seriesResult[0];
   const drafts = await db
     .select()
-    .from(draftLobbies)
-    .where(eq(draftLobbies.fearlessCode, fearlessCode));
+    .from(draftLobbiesInWebsite)
+    .where(eq(draftLobbiesInWebsite.fearlessCode, fearlessCode));
 
   if (!series.fearlessComplete || !series.totalDrafts) return;
 
