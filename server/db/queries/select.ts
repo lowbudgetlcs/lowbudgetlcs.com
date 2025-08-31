@@ -1,21 +1,22 @@
 import { eq, sql } from "drizzle-orm";
 import { db } from "../index";
-import { asTeams, divisions, draftLobbiesInWebsite, fearlessDraftLobbiesInWebsite, games, players, teams } from "../schema";
+import {
+  asTeams,
+  currentSeasonDivisionsInWebsite,
+  divisions,
+  draftLobbiesInWebsite,
+  fearlessDraftLobbiesInWebsite,
+  games,
+  players,
+  teams,
+} from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
 
-export async function getRosterData() {
-  try {
-    const divisionData = await db.select().from(divisions);
-    const teamData = await db.select().from(teams);
-    const playerData = await db.select().from(players);
-
-    return { divisionData, teamData, playerData };
-  } catch (err) {
-    console.error("Error fetching roster data: ", err);
-    throw new Error("Failed to fetch roster data");
-  }
-}
+export const getDivisionsForSeason = async () => {
+  const divisionsData = await db.select().from(currentSeasonDivisionsInWebsite);
+  return divisionsData;
+};
 
 export async function getTournamentCodes() {
   const tournamentCodes = await db.select().from(games);
@@ -85,7 +86,9 @@ export async function checkDBForURL(blueCode: string, redCode: string) {
       redCode: draftLobbiesInWebsite.redCode,
     })
     .from(draftLobbiesInWebsite)
-    .where(sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`);
+    .where(
+      sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`
+    );
   return matchingURL;
 }
 
@@ -148,7 +151,10 @@ export async function getLobbyCodes(lobbyCode: string) {
 
 // Finds valid past draft and returns it in the client state form
 export async function getPastDraft(lobbyCode: string) {
-  const result = await db.select().from(draftLobbiesInWebsite).where(eq(draftLobbiesInWebsite.lobbyCode, lobbyCode));
+  const result = await db
+    .select()
+    .from(draftLobbiesInWebsite)
+    .where(eq(draftLobbiesInWebsite.lobbyCode, lobbyCode));
 
   const draft = result[0];
 
