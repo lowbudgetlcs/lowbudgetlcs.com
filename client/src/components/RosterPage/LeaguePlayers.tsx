@@ -1,15 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { useState } from "react";
 import ErrorPage from "../ErrorPage";
 import { useLeagueData } from "../leagueDataContext";
 
-type LeaguePlayersProps = { league: string; division: string };
-
 function LeaguePlayers() {
-  const { league }: LeaguePlayersProps = useLocation().state;
-  const { players, teams, error, loading } = useLeagueData();
-  const [openCardId, setOpenCardId] = useState<number | null>(null);
+  const { teams, error, loading } = useLeagueData();
+  const params = useParams();
+  const league = params.league;
+  const [openCardId, setOpenCardId] = useState<string | null>(null);
   if (loading)
     return (
       <div className="relative accounts bg-white text-black dark:bg-black dark:text-white min-h-screen">
@@ -22,8 +21,8 @@ function LeaguePlayers() {
     );
   if (error) return <ErrorPage />;
 
-  const handleCardToggle = (teamId: number) => {
-    setOpenCardId(openCardId === teamId ? null : teamId);
+  const handleCardToggle = (teamName: string) => {
+    setOpenCardId(openCardId === teamName ? null : teamName);
   };
 
   let leagueId: number;
@@ -47,12 +46,9 @@ function LeaguePlayers() {
   //Adds player names to each team under the playerList key
   teams.forEach((team) => {
     const playerList: string[] = [];
-    players.forEach((player) => {
-      if (player.teamId === team.id) {
-        playerList.push(player.summonerName);
-      }
+    team.players.forEach((player) => {
+      playerList.push(player.name);
     });
-    team.playerList = playerList;
   });
 
   return (
@@ -60,15 +56,12 @@ function LeaguePlayers() {
       <Link
         state={{ league: league }}
         to={`/rosters`}
-        className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group"
-      >
+        className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group">
         <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
           <div
-            className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
-          ></div>
+            className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}></div>
           <div
-            className={`absolute rotate-45 top-7 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
-          ></div>
+            className={`absolute rotate-45 top-7 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}></div>
         </div>
         <p className="group-hover:text-orange underline underline-offset-2 transition duration-300 ">
           Rosters
@@ -84,20 +77,18 @@ function LeaguePlayers() {
         <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8"></div>
         <div className="teamContainer grid grid-cols-1 lg:grid-cols-2 gap-8 md:w-3/5 lg:w-11/12 justify-center py-8 pb-[30rem]">
           {teams.map((team) => {
-            if (team.divisionId === leagueId) {
+            if (team.division === league)
               return (
                 <TeamCard
-                  key={team.id}
+                  key={team.name}
                   teamName={team.name}
-                  groupId={team.groupId}
-                  divisionId={team.divisionId}
-                  logo={team.logo}
-                  playerList={team.playerList}
-                  isOpen={openCardId === team.id}
-                  onToggle={() => handleCardToggle(team.id)}
+                  division={team.division}
+                  logo={team.logo || null}
+                  playerList={team.players}
+                  isOpen={openCardId === team.name}
+                  onToggle={() => handleCardToggle(team.name)}
                 />
               );
-            }
           })}
         </div>
       </div>
