@@ -111,10 +111,9 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
       divisions: divisionNames,
       teams: allTeams,
     };
-    // Store the new data in the cache before returning it.
+    // Stores the new data in the cache before returning it.
     cache.set(cacheKey, { timestamp: Date.now(), data: responseData });
 
-    console.log(responseData);
     res.status(200).json(responseData);
   } catch (err: any) {
     console.error("ERROR:", err.message);
