@@ -11,7 +11,7 @@ interface Player {
 
 interface Team {
   name: string;
-  logo?: string;
+  logo?: string | null;
   players: Player[];
   division: string;
 }
@@ -28,7 +28,10 @@ const credentialsPath = path.join(__dirname, "../credentials.json");
 
 const auth = new google.auth.GoogleAuth({
   keyFile: credentialsPath,
-  scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
+  scopes: [
+    "https://www.googleapis.com/auth/spreadsheets.readonly",
+    "https://www.googleapis.com/auth/drive.readonly",
+  ],
 });
 
 rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
@@ -36,20 +39,21 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
     const cacheKey = "roster_data";
     const cachedData = cache.get(cacheKey);
 
-    // Check if cached data exists and is still valid.
+    // Check if cached data exists and is still valid
     if (cachedData && Date.now() - cachedData.timestamp < CACHE_TTL) {
       return res.status(200).json(cachedData.data);
     }
 
     const sheets = google.sheets({ version: "v4", auth });
+    const drive = google.drive({ version: "v3", auth });
     const allTeams: Team[] = [];
     const divisionsData = await getDivisionsForSeason();
     const divisionNames = divisionsData.map((d) => d.name);
 
     for (const division of divisionsData) {
-      const { name: divisionName, spreadSheetId: spreadsheetId } = division;
+      const { name: divisionName, spreadSheetId: spreadsheetId, folderId } = division;
 
-      // Gets the named ranges from the spreadsheet metadata for the current division.
+      // Gets the named ranges from the spreadsheet metadata for the current division
       const response = await sheets.spreadsheets.get({
         spreadsheetId: spreadsheetId,
         ranges: [],
@@ -58,13 +62,12 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
 
       const namedRanges = response.data.namedRanges;
 
-      // Skips to the next division if no named ranges exist.
+      // Skips to the next division if no named ranges exist
       if (!namedRanges) {
         console.warn(`No named ranges found for division: ${divisionName}`);
         continue;
       }
 
-      // Since the named ranges will ONLY be the ones you want, we collect all of them.
       const rangeNames = namedRanges.map((range) => range.name as string).filter((name) => name);
       if (rangeNames.length === 0) {
         console.warn(`No valid named ranges found for division: ${divisionName}`);
@@ -78,14 +81,31 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
 
       const valueRanges = batchResponse.data.valueRanges || [];
 
-      // Iterates through the named ranges and fetch data for each team.
+      // Iterates through the named ranges and fetches data for each team
       for (const valueResponse of valueRanges) {
         const rows = valueResponse.values;
 
         if (rows && rows.length > 0) {
+          const teamName = rows[0][1] || "Team Name Don't Work";
+          let teamLogo = null;
+
+          try {
+            // Searches for the team's PNG logo file inside the division folder
+            const logoResponse = await drive.files.list({
+              q: `'${folderId}' in parents and name = '${teamName}.png'`,
+              fields: "files(id, webViewLink)",
+            });
+            if (logoResponse.data.files && logoResponse.data.files.length > 0) {
+              const fileId = logoResponse.data.files[0].id;
+              teamLogo = `https://drive.google.com/uc?export=view&id=${fileId}`;
+            }
+          } catch (logoErr: any) {
+            console.warn(`No logo for ${teamName}`);
+          }
+
           const team: Team = {
-            logo: rows[0][0] || null,
-            name: rows[0][1] || "Team Name Don't Work",
+            logo: teamLogo,
+            name: teamName,
             division: divisionName,
             players: [],
           };
@@ -111,7 +131,7 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
       divisions: divisionNames,
       teams: allTeams,
     };
-    // Stores the new data in the cache before returning it.
+    // Stores the new data in the cache before returning it
     cache.set(cacheKey, { timestamp: Date.now(), data: responseData });
 
     res.status(200).json(responseData);
