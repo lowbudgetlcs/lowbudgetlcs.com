@@ -1,34 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { useLeagueData } from "../leagueDataContext";
 import ErrorPage from "../ErrorPage";
-export interface PlayerProps {
-  id: number;
-  primaryRiotId: string;
-  teamId?: number;
-  summonerName: string;
-}
-
-export interface TeamProps {
-  id: number;
-  name: string;
-  divisionId: number;
-  groupId: string;
-  captainId: number | null;
-  logo: string | null;
-  playerList: string[];
-}
-
-export interface DivisionProps {
-  id: number;
-  name: string;
-  description: string | null;
-  providerId: number;
-  tournamentId: number;
-  groups: number;
-}
 
 function Roster() {
-  const { players, teams, divisions, error, loading } = useLeagueData();
+  const { divisions, error, loading } = useLeagueData();
 
   if (loading)
     return (
@@ -49,92 +24,17 @@ function Roster() {
       </div>
       <div className="flex flex-col items-center">
         <p className="summary text-lg md:text-xl px-16 py-8 text-center">
-          Click below to navigate leagues, groups, and teams
+          Check out all the teams in each division, look at the player's or custom team op.ggs!
         </p>
-        <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8">
-          <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
+        <div className="cardContainer flex flex-col md:grid grid-cols-4 w-full px-4 gap-8">
+          {divisions.map((division) => (
             <NavLink
-              state={{
-                league: "Economy",
-                teams: teams,
-                divisions: divisions,
-                error: error,
-                loading: loading,
-              }}
-              to={"/rosters/economy"}
-              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
-            >
-              <h2 className="z-10 text-3xl text-white text-center font-semibold">
-                Economy
-              </h2>
+              key={division}
+              to={`/rosters/${division}`}
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}>
+              <h2 className="z-10 text-3xl text-white text-center font-semibold">{division}</h2>
             </NavLink>
-            <NavLink
-              state={{
-                league: "Commercial",
-                teams: teams,
-                players: players,
-                divisions: divisions,
-                error: error,
-                loading: loading,
-              }}
-              to={"/rosters/commercial"}
-              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
-            >
-              <h2 className="text-3xl text-white text-center font-semibold z-10">
-                Commercial
-              </h2>
-            </NavLink>
-          </div>
-          <div className="cardContainer flex flex-col md:flex-row justify-center items-center gap-8 z-10 w-4/5 overflow-hidden">
-            <NavLink
-              state={{
-                league: "Financial",
-                teams: teams,
-                players: players,
-                divisions: divisions,
-                error: error,
-                loading: loading,
-              }}
-              to={"/rosters/financial"}
-              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
-            >
-              <h2 className="text-3xl text-white text-center font-semibold z-10">
-                Financial
-              </h2>
-            </NavLink>
-            <NavLink
-              state={{
-                league: "Executive",
-                teams: teams,
-                players: players,
-                divisions: divisions,
-                error: error,
-                loading: loading,
-              }}
-              to={"/rosters/executive"}
-              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
-            >
-              <h2 className="text-3xl text-white text-center font-semibold z-10">
-                Executive
-              </h2>
-            </NavLink>
-            <NavLink
-              state={{
-                league: "CEO",
-                teams: teams,
-                players: players,
-                divisions: divisions,
-                error: error,
-                loading: loading,
-              }}
-              to={"/rosters/ceo"}
-              className={`relative card cursor-pointer bg-orange flex items-center justify-center w-4/5 md:w-2/3 lg:w-1/2 min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
-            >
-              <h2 className="text-3xl text-white text-center font-semibold z-10">
-                CEO
-              </h2>
-            </NavLink>
-          </div>
+          ))}
         </div>
       </div>
     </div>

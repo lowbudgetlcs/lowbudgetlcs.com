@@ -1,23 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../Button";
-
-// const commercialGradient =
-//   "bg-gradient-to-r md:bg-gradient-to-b from-platinum-light to-platinum-dark";
-// const financialGradient =
-//   "bg-gradient-to-r md:bg-gradient-to-b from-emerald-light to-emerald-dark";
-// const economyGradient =
-//   "bg-gradient-to-r md:bg-gradient-to-b from-gold-light to-gold-dark";
-// const executiveGradient =
-//   "bg-gradient-to-r md:bg-gradient-to-b from-challenger-blue to-challenger-gold";
+import { PlayerProps } from "../../leagueData";
 
 interface TeamProps {
   teamName: string;
-  groupId: string;
-  // captainId: number | null;
+  division: string;
   logo: string | null;
-  playerList: string[];
-  divisionId: number;
+  playerList: PlayerProps[];
   isOpen: boolean;
   onToggle: () => void;
 }
@@ -104,22 +94,6 @@ function TeamCard({
       return prevArray.filter((_, i) => i !== index);
     });
   };
-
-  // let gradient;
-  // switch (divisionId) {
-  //   case 1:
-  //     gradient = economyGradient;
-  //     break;
-  //   case 2:
-  //     gradient = commercialGradient;
-  //     break;
-  //   case 3:
-  //     gradient = financialGradient;
-  //     break;
-  //   case 4:
-  //     gradient = executiveGradient;
-  //     break;
-  // }
 
   const displayLogo = () => {
     if (logo) {
@@ -222,12 +196,12 @@ function TeamCard({
 
             <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
               {playerList.map((player) => {
-                const summonerName = player.split("#");
+                const summonerName = player.name.split("#");
                 return (
                   <Link
                     target="_blank"
                     to={`https://www.op.gg/summoners/na/${summonerName[0]}-${summonerName[1]}`}
-                    key={player}
+                    key={player.name}
                     className="text-center hover:underline underline-offset-4"
                   >
                     {summonerName[0]}{" "}
@@ -301,7 +275,7 @@ function TeamCard({
             </div>
             <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
               {playerList.map((player) => {
-                const summonerName = player.split("#");
+                const summonerName = player.name.split("#");
                 return (
                   <div
                     onClick={() => {
@@ -312,12 +286,16 @@ function TeamCard({
                       const unChangedPlayer = `${summonerName[0]} #${summonerName[1]}`;
                       // Cut all whitespace from string
                       player = player.replace(/\s+/g, "");
-                      if (multi.length < 5) {
+                      if (multi.includes(player)) {
+                        removeFromMulti(multi.indexOf(player));
+                        return;
+                      }
+                      if (multi.length < 10) {
                         addToMulti(player);
                         addToDisplayMulti(unChangedPlayer);
                       }
                     }}
-                    key={player}
+                    key={player.name}
                     className="text-center hover:underline underline-offset-4 cursor-pointer"
                   >
                     {summonerName[0]}{" "}

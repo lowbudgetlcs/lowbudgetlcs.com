@@ -1,11 +1,9 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { useFetchData } from '../leagueData';
-import { PlayerProps, TeamProps, DivisionProps } from './RosterPage/Roster';
+import { TeamProps, useFetchData } from '../leagueData';
 
 interface LeagueDataContextType {
-  players: PlayerProps[];
+  divisions: string[];
   teams: TeamProps[];
-  divisions: DivisionProps[];
   error: string | null;
   loading: boolean;
 }
@@ -13,10 +11,10 @@ interface LeagueDataContextType {
 const LeagueDataContext = createContext<LeagueDataContextType | undefined>(undefined);
 
 export const LeagueDataProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { players, teams, divisions, error, loading } = useFetchData();
+  const { divisions, teams, error, loading } = useFetchData();
 
   return (
-    <LeagueDataContext.Provider value={{ players, teams, divisions, error, loading }}>
+    <LeagueDataContext.Provider value={{ divisions, teams, error, loading }}>
       {children}
     </LeagueDataContext.Provider>
   );
