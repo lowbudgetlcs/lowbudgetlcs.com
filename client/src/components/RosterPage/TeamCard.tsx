@@ -286,7 +286,11 @@ function TeamCard({
                       const unChangedPlayer = `${summonerName[0]} #${summonerName[1]}`;
                       // Cut all whitespace from string
                       player = player.replace(/\s+/g, "");
-                      if (multi.length < 5) {
+                      if (multi.includes(player)) {
+                        removeFromMulti(multi.indexOf(player));
+                        return;
+                      }
+                      if (multi.length < 10) {
                         addToMulti(player);
                         addToDisplayMulti(unChangedPlayer);
                       }
