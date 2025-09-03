@@ -25,24 +25,6 @@ function LeaguePlayers() {
     setOpenCardId(openCardId === teamName ? null : teamName);
   };
 
-  let leagueId: number;
-  switch (league) {
-    case "Economy":
-      leagueId = 7;
-      break;
-    case "Commercial":
-      leagueId = 6;
-      break;
-    case "Financial":
-      leagueId = 5;
-      break;
-    case "Executive":
-      leagueId = 4;
-      break;
-    case "CEO":
-      leagueId = 2;
-      break;
-  }
   //Adds player names to each team under the playerList key
   teams.forEach((team) => {
     const playerList: string[] = [];
