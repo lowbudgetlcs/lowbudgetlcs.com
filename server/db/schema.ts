@@ -300,6 +300,7 @@ export const gameDumps = pgTable("game_dumps", {
 export const currentSeasonDivisionsInWebsite = website.table("current_season_divisions", {
 	name: text().primaryKey().notNull(),
 	spreadSheetId: text("spread_sheet_id").notNull(),
+	folderId: text("folder_id"),
 });
 
 export const draftLobbies = pgTable("draft_lobbies", {
