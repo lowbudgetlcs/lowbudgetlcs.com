@@ -9,7 +9,7 @@ export interface RosterProps {
 
 export interface TeamProps {
   name: string;
-  logo?: string;
+  logo?: string | null;
   players: PlayerProps[];
   division: string;
 }
