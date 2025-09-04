@@ -16,9 +16,21 @@ interface Team {
   division: string;
 }
 
-interface Division {
+interface TeamDto {
+  id: number;
   name: string;
-  spreadsheetId: string;
+  logoName: string;
+  eventId: number;
+}
+interface EventWithTeamsDto {
+  id: number;
+  name: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  tournamentId: number;
+  status: string;
+  teams: TeamDto[];
 }
 
 const cache = new Map();
@@ -88,6 +100,20 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
         spreadsheetId: spreadsheetId,
         ranges: rangeNames,
       });
+      const teamsFromDennys = []
+      try {
+        const idForSeason = division.eventId;
+        const dennysApiResponse = await fetch(
+          `https://dennys.lowbudgetlcs.com/api/v1/event/${idForSeason}/teams`
+        );
+        if (dennysApiResponse) {
+          const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
+          teamsFromDennys.push(...dennysApiEventData.teams);
+
+        }
+      } catch (logoErr: any) {
+        console.warn(`Error getting logos: `, logoErr.message);
+      }
 
       const valueRanges = batchResponse.data.valueRanges || [];
 
@@ -99,20 +125,13 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
           const teamName = rows[0][1] || "Team Name Don't Work";
           let teamLogo = null;
 
-          const sanitizedTeamName = sanitizeFileName(teamName);
-
-          try {
-            // Searches for the team's PNG logo file inside the division folder
-            const logoResponse = await drive.files.list({
-              q: `'${folderId}' in parents and (name = '${sanitizedTeamName}.png' or name = '${sanitizedTeamName}.jpg')`,
-              fields: "files(id, webViewLink)",
-            });
-            if (logoResponse.data.files && logoResponse.data.files.length > 0) {
-              const fileId = logoResponse.data.files[0].id;
-              teamLogo = `https://drive.google.com/uc?export=view&id=${fileId}`;
+          if (teamsFromDennys.length > 0) {
+            const teamFromDennys = teamsFromDennys.find(
+              (team) => team.name.toLowerCase() === teamName.toLowerCase()
+            );
+            if (teamFromDennys?.logoName) {
+              teamLogo = teamFromDennys.logoName;
             }
-          } catch (logoErr: any) {
-            console.warn(`No logo for ${teamName}`);
           }
 
           const team: Team = {

@@ -301,6 +301,7 @@ export const currentSeasonDivisionsInWebsite = website.table("current_season_div
 	name: text().primaryKey().notNull(),
 	spreadSheetId: text("spread_sheet_id").notNull(),
 	folderId: text("folder_id"),
+	eventId: integer("event_id"),
 });
 
 export const draftLobbies = pgTable("draft_lobbies", {
