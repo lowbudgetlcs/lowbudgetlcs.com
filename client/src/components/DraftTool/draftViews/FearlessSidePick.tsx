@@ -2,19 +2,20 @@ import { useState } from "react";
 import Button from "../../Button";
 import { useFearlessContext } from "../providers/FearlessProvider";
 import { checkTournamentCode } from "../connectionHandlers/draftHandler";
+import { Link, useParams } from "react-router-dom";
 
 const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
   const { fearlessState, handleSideSelect } = useFearlessContext();
   const [tournamentCode, setTournamentCode] = useState<string>("");
   const [hasBadCode, setHasBadCode] = useState<boolean>(false);
+  const { teamCode } = useParams();
 
   if (!fearlessState) {
     return null;
   }
 
   const isSubsequentDraft = fearlessState.completedDrafts > 0;
-  const needsTournamentCode =
-    isSubsequentDraft && !!fearlessState.initialTournamentCode;
+  const needsTournamentCode = isSubsequentDraft && !!fearlessState.initialTournamentCode;
 
   const handleValidationAndSideSelect = async (side: "blue" | "red") => {
     if (needsTournamentCode) {
@@ -24,10 +25,10 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
         setHasBadCode(true);
         return;
       }
-      
+
       setHasBadCode(false);
     }
-    
+
     handleSideSelect(side, tournamentCode);
   };
 
@@ -70,6 +71,22 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
           </button>
         </div>
       </div>
+      {fearlessState.draftLobbyCodes && fearlessState.draftLobbyCodes.length > 0 && (
+        <div className="pastDrafts text-center text-xl pt-2">
+          <p>Previous Drafts:</p>
+          <div className="flex gap-2 justify-center mt-2">
+            {fearlessState.draftLobbyCodes.map((code, index) => (
+              <Link
+                to={`/fearless/${fearlessState.fearlessCode}/${
+                  teamCode ? teamCode : "spectator"
+                }/${code}`}
+                key={index}>
+                <Button>Draft {index + 1}</Button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   ) : (
     <div className="flex items-center justify-center h-screen text-white">
@@ -78,6 +95,23 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
         <p className="text-xl">
           The host is choosing sides for Draft {fearlessState.completedDrafts + 1}...
         </p>
+        {fearlessState.draftLobbyCodes && fearlessState.draftLobbyCodes.length > 0 && (
+          <div className="pastDrafts text-center pt-2 text-xl">
+            <p>Previous Drafts:</p>
+            <div className="flex gap-2 justify-center mt-2">
+              {fearlessState.draftLobbyCodes.map((code, index) => (
+                <Link
+                  to={`/fearless/${fearlessState.fearlessCode}/${
+                    teamCode ? teamCode : "spectator"
+                  }/${code}`}
+                  key={index}>
+                  <Button>Draft {index + 1}</Button>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="animate-pulse mt-8 text-orange">Please wait</div>
       </div>
     </div>
