@@ -1,4 +1,4 @@
-import { eq, sql } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   asTeams,
@@ -8,6 +8,7 @@ import {
   fearlessDraftLobbiesInWebsite,
   games,
   players,
+  playersInWebsite,
   teams,
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
@@ -23,17 +24,15 @@ export async function getTournamentCodes() {
   return tournamentCodes;
 }
 
-export async function getPlayer(summonerName: string) {
-  const player = await db
-    .select({ summonerName: players.summonerName, id: players.id })
-    .from(players)
-    .where(eq(sql`LOWER(${players.summonerName})`, summonerName.toLowerCase()));
-
-  if (player.length < 1) {
-    throw new Error("No Player Found");
+export async function getPlayersByPuuid(puuids: string[]) {
+  if (puuids.length === 0) {
+    return [];
   }
-
-  return player;
+  const players = await db
+    .select()
+    .from(playersInWebsite)
+    .where(inArray(playersInWebsite.puuid, puuids));
+  return players;
 }
 
 export async function checkDBForURL(blueCode: string, redCode: string) {
