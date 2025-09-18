@@ -684,7 +684,7 @@ export const matchParticipantsInWebsite = website.table("match_participants", {
 
 export const currentSeasonDivisionsInWebsite = website.table("current_season_divisions", {
 	name: text().primaryKey().notNull(),
-	spreadSheetId: text("spread_sheet_id"),
+	spreadSheetId: text("spread_sheet_id").notNull(),
 	folderId: text("folder_id"),
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	eventId: bigint("event_id", { mode: "number" }),
