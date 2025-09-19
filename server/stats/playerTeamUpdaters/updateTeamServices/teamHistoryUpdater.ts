@@ -7,7 +7,6 @@ import {
 } from "../../../db/queries/select";
 import { closeHistoryRecord } from "../../../db/queries/update";
 import { DbPlayer } from "../updatePlayersServices/playerDbNameUpdater";
-import parseSimpleDateString from "../../utils/parseSimpleDateString";
 
 export interface DbTeamData {
   teamName: string;

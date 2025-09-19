@@ -10,7 +10,7 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-const credentialsPath = path.join(__dirname, "../../credentials.json");
+const credentialsPath = path.join(__dirname, "../../../credentials.json");
 
 const auth = new google.auth.GoogleAuth({
   keyFile: credentialsPath,
