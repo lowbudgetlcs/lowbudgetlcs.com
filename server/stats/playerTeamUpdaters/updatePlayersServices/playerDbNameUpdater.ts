@@ -12,9 +12,8 @@ export interface DbPlayer {
   divisionId: number | null;
 }
 
-const playerDbNameUpdater = async () => {
+const playerDbNameUpdater = async (playersFromSheet: DbPlayer[]) => {
   try {
-    const playersFromSheet = await playerSheetUpdaterService();
 
     if (!playersFromSheet || playersFromSheet.length === 0) {
       console.log("[DB Player Updater] No players from sheet to process.");

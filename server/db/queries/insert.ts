@@ -143,6 +143,5 @@ export const insertPlayerTeamHistory = async (puuid: string, teamId: number, dat
     });
   } catch (err) {
     console.error("Error inserting into DB: ", err);
-    throw new Error("Failed to insert draft into database.");
   }
 };

@@ -68,13 +68,11 @@ const teamHistoryUpdate = async (players: DbPlayer[]) => {
         }
         // Inserts new team history
         await insertPlayerTeamHistory(player.puuid, team.id, playerDate);
-        console.log(`[DB Team History Updater] Added ${player.summonerName} to ${player.teamName}`);
       }
     } else if (player.teamState.toLowerCase() === "remove") {
       const openHistory = await findOpenHistoryForPlayer(player.puuid);
       if (openHistory) {
         await closeHistoryRecord(openHistory.id, playerDate);
-        console.log(`[DB Team History Updater] Removed ${player.summonerName} from their team.`);
       }
     }
   }

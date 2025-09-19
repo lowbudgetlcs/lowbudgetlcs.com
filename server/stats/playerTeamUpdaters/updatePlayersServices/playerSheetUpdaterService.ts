@@ -98,15 +98,13 @@ export const playerSheetUpdaterService = async () => {
           console.warn(`[Sheet Player Reader] Summoner format incorrect: "${fullSummonerName}"`);
         }
       }
-
-      if (players.length === 0) {
-        console.log("[Sheet Player Reader] No players found in any Roster Log.");
-        return [];
-      }
     }
-    // Update teams and team history
-    await teamHistoryUpdate(players);
 
+    if (players.length === 0) {
+      console.log("[Sheet Player Reader] No players found in any Roster Log.");
+      return null;
+    }
+    
     console.log(
       `[Sheet Player Reader] Found ${players.length} total log entries. Deduplicating...`
     );
@@ -120,9 +118,12 @@ export const playerSheetUpdaterService = async () => {
       `[Sheet Player Reader] Deduplication complete. ${uniquePlayers.length} unique players found.`
     );
 
-    return uniquePlayers;
+    return {
+      players,
+      uniquePlayers,
+    };
   } catch (err: any) {
     console.error("❌ [Sheet Player Reader] ERROR during daily player update:", err.message);
-    return [];
+    return null;
   }
 };
