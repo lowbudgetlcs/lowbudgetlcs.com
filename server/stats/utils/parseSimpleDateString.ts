@@ -1,25 +1,40 @@
-const parseSimpleDateString = (dateString: string) => {
-  const parts = dateString.split(" ");
-  const datePart = parts[0];
+const parseSimpleDateString = (dateString: string | null | undefined) => {
+  //! Date needs changing every season
+  const tempDate = new Date("2025-07-01");
 
-  let hour = 0;
-  let minute = 0;
+  if (!dateString) {
+    return tempDate;
+  }
 
-  if (parts.length > 1) {
-    const timePart = parts[1];
-    const normalizedTime = timePart.replace(":", "");
-    if (normalizedTime.length === 4) {
-      hour = parseInt(normalizedTime.substring(0, 2), 10);
-      minute = parseInt(normalizedTime.substring(2, 4), 10);
+  const datePart = dateString.split(" ")[0];
+  let month: number;
+  let day: number;
+  const year = new Date().getFullYear(); //Assumes Current Year
+
+  if (datePart.includes("/")) {
+    const dateComponents = datePart.split("/");
+    if (dateComponents.length < 2) return tempDate;
+    month = parseInt(dateComponents[0], 10) - 1;
+    day = parseInt(dateComponents[1], 10);
+  } else {
+    if (datePart.length === 4) {
+      // MMDD
+      month = parseInt(datePart.substring(0, 2), 10) - 1;
+      day = parseInt(datePart.substring(2, 4), 10);
+    } else if (datePart.length === 3) {
+      // MDD
+      month = parseInt(datePart.substring(0, 1), 10) - 1;
+      day = parseInt(datePart.substring(1, 3), 10);
+    } else {
+      return tempDate;
     }
   }
 
-  const dateComponents = datePart.split("/");
-  const year = new Date().getFullYear(); // Assumes the current year
-  const month = parseInt(dateComponents[0], 10) - 1;
-  const day = parseInt(dateComponents[1], 10);
+  if (isNaN(month) || isNaN(day) || month < 0 || month > 11 || day < 1 || day > 31) {
+    return tempDate;
+  }
 
-  return new Date(year, month, day, hour, minute);
-}
+  return new Date(year, month, day);
+};
 
 export default parseSimpleDateString;

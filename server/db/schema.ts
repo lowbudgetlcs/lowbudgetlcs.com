@@ -80,7 +80,7 @@ export const teamsInWebsite = website.table(
     id: serial().primaryKey().notNull(),
     divisionId: integer("division_id"),
     teamName: text("team_name").notNull(),
-    teamTag: text("team_tag").notNull(),
+    teamTag: text("team_tag"),
     active: boolean().default(true).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
       sql`CURRENT_TIMESTAMP`

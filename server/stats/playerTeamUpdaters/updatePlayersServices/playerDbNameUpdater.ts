@@ -1,5 +1,5 @@
-import { getPlayersByPuuid } from "../../db/queries/select";
-import { updateSummonerNames } from "../../db/queries/update";
+import { getPlayersByPuuid } from "../../../db/queries/select";
+import { updateSummonerNames } from "../../../db/queries/update";
 import { playerSheetUpdaterService } from "./playerSheetUpdaterService";
 
 export interface DbPlayer {
@@ -8,7 +8,8 @@ export interface DbPlayer {
   puuid: string;
   teamState: "Add" | "Remove";
   teamName: string;
-  date: Date | null;
+  date: Date;
+  divisionId: number | null;
 }
 
 const playerDbNameUpdater = async () => {

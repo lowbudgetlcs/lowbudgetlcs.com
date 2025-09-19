@@ -1,5 +1,5 @@
 import nodeCron from "node-cron";
-import playerDbNameUpdater from "../stats/updatePlayersServices/playerDbNameUpdater";
+import playerDbNameUpdater from "../stats/playerTeamUpdaters/updatePlayersServices/playerDbNameUpdater";
 
 const schedulePlayerDbUpdate = () => {
   nodeCron.schedule(

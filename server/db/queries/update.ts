@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "..";
-import { DbPlayer } from "../../stats/updatePlayersServices/playerDbNameUpdater";
-import { playersInWebsite } from "../schema";
+import { DbPlayer } from "../../stats/playerTeamUpdaters/updatePlayersServices/playerDbNameUpdater";
+import { playersInWebsite, playerTeamHistoryInWebsite } from "../schema";
+import formatDate from "../../stats/utils/formatDate";
 
 export const updateSummonerNames = async (
   playersToUpdate: DbPlayer[],
@@ -36,6 +37,19 @@ export const updateSummonerNames = async (
     });
   } catch (err) {
     console.error("[DB Player Updater] Error in database update transaction: ", err);
+    throw new Error("Failed to update database");
+  }
+};
+
+export const closeHistoryRecord = async (id: number, date: Date) => {
+  try {
+    const formattedDate = date.toISOString().split("T")[0];
+    await db
+      .update(playerTeamHistoryInWebsite)
+      .set({ endDate: formattedDate })
+      .where(eq(playerTeamHistoryInWebsite.id, id));
+  } catch (err) {
+    console.error("[DB History Updater] Error in record closing: ", err);
     throw new Error("Failed to update database");
   }
 };

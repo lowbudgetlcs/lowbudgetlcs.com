@@ -1,11 +1,18 @@
 import { eq } from "drizzle-orm";
 import { DraftInitializeProps, DraftStateProps } from "../../draftTool/states/draftState";
 import { db } from "../index";
-import { draftLobbiesInWebsite, fearlessDraftLobbiesInWebsite } from "../schema";
+import {
+  draftLobbiesInWebsite,
+  fearlessDraftLobbiesInWebsite,
+  playerTeamHistoryInWebsite,
+  teamsInWebsite,
+} from "../schema";
 import {
   FearlessFinishedProps,
   FearlessInitializerProps,
 } from "../../draftTool/interfaces/initializerInferfaces";
+import { DbTeamData } from "../../stats/playerTeamUpdaters/updateTeamServices/teamHistoryUpdater";
+import formatDate from "../../stats/utils/formatDate";
 
 export async function insertDraft(draft: DraftInitializeProps) {
   try {
@@ -114,3 +121,28 @@ export async function insertFinalFearlessLobby(draft: FearlessFinishedProps) {
     throw new Error("Failed to insert draft into database.");
   }
 }
+
+export const insertTeams = async (teams: DbTeamData[]) => {
+  try {
+    const insertTeams = db.transaction(async (t) => {
+      await t.insert(teamsInWebsite).values(teams);
+    });
+  } catch (err) {
+    console.error("Error inserting into DB: ", err);
+    throw new Error("Failed to insert draft into database.");
+  }
+};
+
+export const insertPlayerTeamHistory = async (puuid: string, teamId: number, date: Date) => {
+  try {
+    const formattedDate = date.toISOString().split("T")[0];
+    await db.insert(playerTeamHistoryInWebsite).values({
+      playerPuuid: puuid,
+      teamId: teamId,
+      startDate: formattedDate,
+    });
+  } catch (err) {
+    console.error("Error inserting into DB: ", err);
+    throw new Error("Failed to insert draft into database.");
+  }
+};

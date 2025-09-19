@@ -1,4 +1,4 @@
-import { eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   asTeams,
@@ -9,7 +9,9 @@ import {
   games,
   players,
   playersInWebsite,
+  playerTeamHistoryInWebsite,
   teams,
+  teamsInWebsite,
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
@@ -221,4 +223,91 @@ export async function getAllStarsPosts(seasonId: number) {
     console.error("Error fetching roster data: ", err);
     throw new Error("Failed to fetch roster data");
   }
+}
+
+export const getSelectTeams = async (teamNamesFromSheet: string[]) => {
+  try {
+    const teams = await db
+      .select()
+      .from(teamsInWebsite)
+      .where(inArray(teamsInWebsite.teamName, teamNamesFromSheet));
+    return teams;
+  } catch (err) {
+    console.error("Error fetching all teams in select: ", err);
+    throw new Error("Failed to fetch all SELECTED teams");
+  }
+};
+
+export const getAllTeams = async () => {
+  try {
+    const teams = await db.select().from(teamsInWebsite);
+    return teams;
+  } catch (err) {
+    console.error("Error fetching all teams in select: ", err);
+    throw new Error("Failed to fetch all teams");
+  }
+};
+
+export const findOpenHistoryForPlayer = async (puuid: string) => {
+  try {
+    const history = await db
+      .select()
+      .from(playerTeamHistoryInWebsite)
+      .where(
+        and(
+          eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
+          isNull(playerTeamHistoryInWebsite.endDate)
+        )
+      )
+      .orderBy(desc(playerTeamHistoryInWebsite.startDate))
+      .limit(1);
+    return history.length > 0 ? history[0] : null;
+  } catch (err) {
+    console.error("Error finding open history for player: ", err);
+    throw new Error("Failed to find open history for player");
+  }
+};
+
+export const getAllPlayers = async () => {
+  try {
+    const players = await db.select().from(playersInWebsite);
+    return players;
+  } catch (err) {
+    console.error("Error fetching all players: ", err);
+    throw new Error("Failed to fetch all players");
+  }
+};
+
+export const getPlayerByName = async (summonerName: string, tagLine: string) => {
+  try {
+    const players = await db
+      .select({
+        puuid: playersInWebsite.puuid,
+      })
+      .from(playersInWebsite)
+      .where(
+        and(eq(playersInWebsite.summonerName, summonerName), eq(playersInWebsite.tagLine, tagLine))
+      );
+    if (players.length === 0 || !players[0].puuid) {
+      return null;
+    }
+    return players[0].puuid;
+  } catch (err) {
+    console.error("Error fetching all playersOneFind: ", err);
+    throw new Error("Failed to fetch all players");
+  }
+};
+
+export async function doesHistoryExist(puuid: string, teamId: number, startDate: Date): Promise<boolean> {
+  const formattedStartDate = startDate.toISOString().split('T')[0];
+
+  const result = await db.select({ id: playerTeamHistoryInWebsite.id })
+    .from(playerTeamHistoryInWebsite)
+    .where(and(
+      eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
+      eq(playerTeamHistoryInWebsite.teamId, teamId),
+      eq(playerTeamHistoryInWebsite.startDate, formattedStartDate)
+    ))
+    .limit(1);
+  return result.length > 0;
 }

@@ -1,19 +1,10 @@
 import { google } from "googleapis";
 import path from "path";
-import { getDivisionsForSeason } from "../../db/queries/select";
-import getPlayerPuuid from "../getPlayerPuuid";
-import { get } from "http";
-import nodeCron from "node-cron";
-import parseSimpleDateString from "../utils/parseSimpleDateString";
-
-interface Player {
-  summonerName: string;
-  tagLine: string;
-  puuid: string;
-  teamState: "Add" | "Remove";
-  teamName: string;
-  date: Date | null;
-}
+import { getDivisionsForSeason } from "../../../db/queries/select";
+import getPlayerPuuid from "../../getPlayerPuuid";
+import parseSimpleDateString from "../../utils/parseSimpleDateString";
+import teamHistoryUpdate from "../updateTeamServices/teamHistoryUpdater";
+import { DbPlayer } from "./playerDbNameUpdater";
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -31,13 +22,13 @@ export const playerSheetUpdaterService = async () => {
     console.log("🚀 [Sheet Player Reader] Starting daily player update from Google Sheets...");
 
     let requestCount = 0;
-    const rateLimit = 80;
+    const rateLimit = 95;
     const timeToWait = 120000; // 2 minutes in milliseconds
 
     const sheets = google.sheets({ version: "v4", auth });
     const divisionsData = await getDivisionsForSeason();
 
-    const players: Player[] = [];
+    const players: DbPlayer[] = [];
 
     for (const division of divisionsData) {
       const { name: divisionName, spreadSheetId: spreadsheetId } = division;
@@ -56,7 +47,6 @@ export const playerSheetUpdaterService = async () => {
       }
 
       for (const row of rows) {
-        console.log(row)
         if (requestCount >= rateLimit) {
           console.log(`⏱️ Rate limit of ${rateLimit} reached. Pausing for 2 minutes...`);
           await delay(timeToWait);
@@ -86,14 +76,22 @@ export const playerSheetUpdaterService = async () => {
               continue;
             }
             const puuid = getAccount.puuid;
-
+            if (!puuid) {
+              console.warn(
+                "[Sheet Player Reader] No Account found for summoner: ",
+                fullSummonerName
+              );
+              continue;
+            }
             players.push({
               summonerName,
               tagLine,
               puuid,
-              teamState: teamState as "Add" | "Remove",
+              teamState: teamState === "R" ? "Remove" : "Add",
               teamName,
-              date: date ? parseSimpleDateString(date) : null,
+              //! Needs Changing Every Season
+              date: date ? parseSimpleDateString(date) : parseSimpleDateString("7/01"),
+              divisionId: division.divisionId,
             });
           }
         } else {
@@ -106,11 +104,13 @@ export const playerSheetUpdaterService = async () => {
         return [];
       }
     }
+    // Update teams and team history
+    await teamHistoryUpdate(players);
 
     console.log(
       `[Sheet Player Reader] Found ${players.length} total log entries. Deduplicating...`
     );
-    const playerMap = new Map<string, Player>();
+    const playerMap = new Map<string, DbPlayer>();
     for (const player of players) {
       playerMap.set(player.puuid, player);
     }
