@@ -5,10 +5,7 @@ import getPlayerPuuid from "../../getPlayerPuuid";
 import parseSimpleDateString from "../../utils/parseSimpleDateString";
 import teamHistoryUpdate from "../updateTeamServices/teamHistoryUpdater";
 import { DbPlayer } from "./playerDbNameUpdater";
-
-function delay(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import delay from "../../utils/delay";
 
 const credentialsPath = path.join(__dirname, "../../../credentials.json");
 
@@ -48,11 +45,11 @@ export const playerSheetUpdaterService = async () => {
 
       for (const row of rows) {
         if (requestCount >= rateLimit) {
-          console.log(`⏱️ Rate limit of ${rateLimit} reached. Pausing for 2 minutes...`);
+          console.log(`⏱️ Rate limit of ${rateLimit} reached for Riot. Pausing for 2 minutes...`);
           await delay(timeToWait);
           // Reset the counter after waiting
           requestCount = 0;
-          console.log("✅ Resuming API calls.");
+          console.log("✅ Resuming API calls for Riot.");
         }
 
         const date: string | undefined = row[0];
