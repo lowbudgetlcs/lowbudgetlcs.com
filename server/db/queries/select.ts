@@ -7,6 +7,7 @@ import {
   draftLobbiesInWebsite,
   fearlessDraftLobbiesInWebsite,
   games,
+  matchesInWebsite,
   players,
   playersInWebsite,
   playerTeamHistoryInWebsite,
@@ -311,3 +312,15 @@ export async function doesHistoryExist(puuid: string, teamId: number, startDate:
     .limit(1);
   return result.length > 0;
 }
+
+export const checkForGameId = async (matchId: string) => {
+  try {
+    const game = await db
+      .select()
+      .from(matchesInWebsite)
+      .where(eq(matchesInWebsite.matchId, matchId));
+    return game.length > 0;
+  } catch (err) {
+    console.error("[Game ID Grabber] Error checking for gameId in DB: ", err);
+  }
+};
