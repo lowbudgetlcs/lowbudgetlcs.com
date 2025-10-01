@@ -45,13 +45,11 @@ const teamHistoryUpdate = async (players: DbPlayer[]) => {
   const allTeams = await getAllTeams();
   const allTeamMap = new Map(allTeams.map((t) => [t.teamName, t]));
 
-  const sortedPlayersByDate = players.sort(
-    (a, b) => a.date!.getTime() - b.date!.getTime()
-  );
+  const sortedPlayersByDate = players.sort((a, b) => a.date!.getTime() - b.date!.getTime());
 
   for (const player of sortedPlayersByDate) {
     const team = allTeamMap.get(player.teamName);
-    if (!team || !player.puuid) continue;
+    if (!team || !player.puuid || !player.date) continue;
 
     const playerDate = player.date;
 
