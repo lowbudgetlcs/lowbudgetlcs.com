@@ -329,6 +329,7 @@ export const checkForGameId = async (matchId: string) => {
     return game.length > 0;
   } catch (err) {
     console.error("[Game ID Grabber] Error checking for gameId in DB: ", err);
+    return false;
   }
 };
 
@@ -364,7 +365,7 @@ export const getTeamIdByName = async (name: string) => {
         id: teams.id,
       })
       .from(teams)
-      .where(eq(teamsInWebsite.teamName, name) && eq(teamsInWebsite.active, true))
+      .where(and(eq(teamsInWebsite.teamName, name), eq(teamsInWebsite.active, true)))
       .limit(1);
 
     return result.length > 0 ? result[0].id : null;
@@ -373,11 +374,14 @@ export const getTeamIdByName = async (name: string) => {
     return null;
   }
 };
-
 export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]> => {
   const historicalIds: number[] = [];
+  const visitedIds = new Set<number>();
   let currentTeamName: string | null = name;
   let nextFormerTeamId: number | null = null;
+
+  const maxIterations = 100; // Safety limit
+  let iterations = 0;
 
   try {
     // First, find the starting team by its name
@@ -395,10 +399,18 @@ export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]
     }
 
     historicalIds.push(initialTeam[0].id);
+    visitedIds.add(initialTeam[0].id);
     nextFormerTeamId = initialTeam[0].formerTeamId;
 
     // Iteratively walk down the 'former_team' chain
-    while (nextFormerTeamId) {
+    while (nextFormerTeamId && iterations < maxIterations) {
+      // Cycle detection
+      if (visitedIds.has(nextFormerTeamId)) {
+        console.warn("[Game Stats Updater] Cycle detected in former_team chain");
+        break;
+      }
+      iterations++;
+
       const formerTeam = await db
         .select({
           id: teamsInWebsite.id,
@@ -410,6 +422,7 @@ export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]
 
       if (formerTeam.length > 0) {
         historicalIds.push(formerTeam[0].id);
+        visitedIds.add(formerTeam[0].id);
         nextFormerTeamId = formerTeam[0].formerTeamId;
       } else {
         // No more former teams in the chain
