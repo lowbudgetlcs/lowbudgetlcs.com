@@ -55,6 +55,14 @@ const getGameDataFromSheets = async () => {
         }
       });
 
+      // Validates headers exist
+      if (headers.draftLink === -1 || headers.winningTeam === -1 || headers.losingTeam === -1) {
+        throw new Error(`Missing required column headers in ${divisionName} division sheet`);
+      }
+      if (headers.gameIdIndices.length === 0) {
+        throw new Error(`No "Game ID (shown above)" columns found in ${divisionName} division sheet`);
+      }
+
       // --- Process each row to extract game data ---
       for (const row of dataRows) {
         const draftLink = row[headers.draftLink];
@@ -84,7 +92,7 @@ const getGameDataFromSheets = async () => {
     console.log(`[Game ID Grabber] Found ${allGamesData.length} total game IDs.`);
     return allGamesData;
   } catch (err: any) {
-    console.error("❌ [Game ID Grabber] ERROR during daily stats update:", err.message);
+    console.error("❌ [Game ID Grabber] ERROR fetching game data from sheets:", err.message);
     return null;
   }
 };
