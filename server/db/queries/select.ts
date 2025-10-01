@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   asTeams,
@@ -299,16 +299,23 @@ export const getPlayerByName = async (summonerName: string, tagLine: string) => 
   }
 };
 
-export async function doesHistoryExist(puuid: string, teamId: number, startDate: Date): Promise<boolean> {
-  const formattedStartDate = startDate.toISOString().split('T')[0];
+export async function doesHistoryExist(
+  puuid: string,
+  teamId: number,
+  startDate: Date
+): Promise<boolean> {
+  const formattedStartDate = startDate.toISOString().split("T")[0];
 
-  const result = await db.select({ id: playerTeamHistoryInWebsite.id })
+  const result = await db
+    .select({ id: playerTeamHistoryInWebsite.id })
     .from(playerTeamHistoryInWebsite)
-    .where(and(
-      eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
-      eq(playerTeamHistoryInWebsite.teamId, teamId),
-      eq(playerTeamHistoryInWebsite.startDate, formattedStartDate)
-    ))
+    .where(
+      and(
+        eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
+        eq(playerTeamHistoryInWebsite.teamId, teamId),
+        eq(playerTeamHistoryInWebsite.startDate, formattedStartDate)
+      )
+    )
     .limit(1);
   return result.length > 0;
 }
@@ -322,5 +329,97 @@ export const checkForGameId = async (matchId: string) => {
     return game.length > 0;
   } catch (err) {
     console.error("[Game ID Grabber] Error checking for gameId in DB: ", err);
+  }
+};
+
+export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[]) => {
+  if (!puuids || puuids.length < 3 || !possibleTeamIds || possibleTeamIds.length === 0) {
+    return null;
+  }
+  try {
+    const result = await db
+      .select({ teamId: playerTeamHistoryInWebsite.teamId })
+      .from(playerTeamHistoryInWebsite)
+      .where(
+        and(
+          inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
+          inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds)
+        )
+      )
+      .groupBy(playerTeamHistoryInWebsite.teamId)
+      .orderBy(desc(sql`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`))
+      .limit(1);
+
+    return result.length > 0 ? result[0].teamId : null;
+  } catch (error) {
+    console.error("[Game Stats Updater] Error in findTeamIdByPlayers:", error);
+    return null;
+  }
+};
+
+export const getTeamIdByName = async (name: string) => {
+  try {
+    const result = await db
+      .select({
+        id: teams.id,
+      })
+      .from(teams)
+      .where(eq(teamsInWebsite.teamName, name) && eq(teamsInWebsite.active, true))
+      .limit(1);
+
+    return result.length > 0 ? result[0].id : null;
+  } catch (error) {
+    console.error("[Game Stats Updater] Error in getTeamIdByName:", error);
+    return null;
+  }
+};
+
+export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]> => {
+  const historicalIds: number[] = [];
+  let currentTeamName: string | null = name;
+  let nextFormerTeamId: number | null = null;
+
+  try {
+    // First, find the starting team by its name
+    const initialTeam = await db
+      .select({
+        id: teamsInWebsite.id,
+        formerTeamId: teamsInWebsite.formerTeam,
+      })
+      .from(teamsInWebsite)
+      .where(eq(teamsInWebsite.teamName, currentTeamName))
+      .limit(1);
+
+    if (initialTeam.length === 0) {
+      return []; // No team found with that name
+    }
+
+    historicalIds.push(initialTeam[0].id);
+    nextFormerTeamId = initialTeam[0].formerTeamId;
+
+    // Iteratively walk down the 'former_team' chain
+    while (nextFormerTeamId) {
+      const formerTeam = await db
+        .select({
+          id: teamsInWebsite.id,
+          formerTeamId: teamsInWebsite.formerTeam,
+        })
+        .from(teamsInWebsite)
+        .where(eq(teamsInWebsite.id, nextFormerTeamId))
+        .limit(1);
+
+      if (formerTeam.length > 0) {
+        historicalIds.push(formerTeam[0].id);
+        nextFormerTeamId = formerTeam[0].formerTeamId;
+      } else {
+        // No more former teams in the chain
+        nextFormerTeamId = null;
+      }
+    }
+
+    return historicalIds;
+  } catch (error) {
+    console.error("[Game Stats Updater] Error in getHistoricalTeamIdsByName:", error);
+    return [];
   }
 };

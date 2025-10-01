@@ -1,24 +1,37 @@
 import { PlatformId, RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
 import { checkForGameId } from "../../db/queries/select";
-import { GameIdProps } from "./getGameIdsFromSheets";
-
-const getGameDataFromApi = async (gameIds: GameIdProps[]) => {
+import { SheetGameData } from "./getGameDataFromSheets";
+import delay from "../utils/delay";
+import getIndividualApiMatchData from "./getIndividualApiData";
+export interface ApiMatchData {
+  divisionId: number;
+  gameId: string;
+  draftLink: string;
+  team1Name: string;
+  team2Name: string;
+  matchData: RiotAPITypes.MatchV5.MatchDTO;
+}
+const getGameDataFromApi = async (sheetGames: SheetGameData[]) => {
   try {
-    const rAPI = new RiotAPI(process.env.RIOTAPI || "");
-    const allMatchData: RiotAPITypes.MatchV5.MatchDTO[] = [];
-    for (const gameId of gameIds) {
-      const matchId = `NA1_${gameId.gameId}`;
-      const dbGameCheck = await checkForGameId(matchId);
-      if (dbGameCheck) continue;
+    let requestCount = 0;
+    const rateLimit = 95;
+    const timeToWait = 120000; // 2 minutes in milliseconds
 
-      const apiResponse = await rAPI.matchV5.getMatchById({
-        cluster: PlatformId.AMERICAS,
-        matchId: matchId,
-      });
-      if (apiResponse.info.tournamentCode) {
-        allMatchData.push(apiResponse);
+    const allMatchData: ApiMatchData[] = [];
+    for (const game of sheetGames) {
+      if (requestCount >= rateLimit) {
+        console.log(`⏱️ Rate limit of ${rateLimit} reached for Riot. Pausing for 2 minutes...`);
+        await delay(timeToWait);
+        // Reset the counter after waiting
+        requestCount = 0;
+        console.log("✅ Resuming API calls for Riot.");
       }
+      const checkGameId = await getIndividualApiMatchData(game);
+      if (!checkGameId) continue;
+      allMatchData.push(checkGameId);
+      requestCount++;
     }
+    return allMatchData;
   } catch (err) {
     console.error("[Game ID Grabber]Error getting Game Ids From Api: ", err);
   }
