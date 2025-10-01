@@ -12,8 +12,6 @@ export interface ProcessedGameData {
 }
 
 const processApiGameData = async (apiMatches: ApiMatchData[]) => {
-  if (!apiMatches) return null;
-
   const processedGames: ProcessedGameData[] = [];
 
   for (const match of apiMatches) {
@@ -64,7 +62,7 @@ const processApiGameData = async (apiMatches: ApiMatchData[]) => {
       console.warn(`[Game Stats Updater] Could not resolve team IDs for match ${match.gameId}.`);
     }
   }
-  console.log("[Game Stats Updater] ✅ Completed processing API data.")
+  console.log("[Game Stats Updater] ✅ Completed processing API data.");
   return processedGames;
 };
 
