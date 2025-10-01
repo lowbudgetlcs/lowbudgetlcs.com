@@ -23,7 +23,7 @@ const getGameDataFromSheets = async () => {
     const divisionsData = await getDivisionsForSeason();
     const allGamesData: SheetGameData[] = [];
 
-    for (const division of [divisionsData[0]]) {
+    for (const division of divisionsData) {
       const { name: divisionName, spreadSheetId: spreadsheetId } = division;
       console.log(`[Game ID Grabber] Getting all game IDs for ${divisionName} division...`);
 
