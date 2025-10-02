@@ -2,8 +2,6 @@ import Logo from "../Logo";
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
-import StatsLink from "../StatsLink";
-import DraftLink from "../DraftLink";
 import MainLink from "../MainLink";
 import SubdomainLink from "../SubdomainLink";
 
