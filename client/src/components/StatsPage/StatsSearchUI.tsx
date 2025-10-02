@@ -18,18 +18,18 @@ function StatsSearchUI() {
       setLoading(false);
     };
     return (
-        <div className="search flex-grow">
+        <div className="search">
           <h2 className="text-center text-xl font-bold">Search a Player</h2>
           <form
             onSubmit={handleFormSubmit}
-            className="flex flex-col gap-4 p-4 items-center"
+            className="flex flex-col p-2 items-center"
           >
             <input
               id="summonerName"
               name="summonerName"
               onChange={(e) => setSummonerName(e.target.value)}
               placeholder="JohnDoe#NA1"
-              className="w-3/5 h-12 rounded-lg text-2xl p-4 text-black"
+              className="h-12 rounded-lg text-2xl px-2 py-4 text-black"
             />
             {error ? (
               <p className="error-message text-orange">{error}</p>

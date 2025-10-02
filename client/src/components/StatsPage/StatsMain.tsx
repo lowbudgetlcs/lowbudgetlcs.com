@@ -3,6 +3,7 @@ import MiniGameCard from "./cards/MiniGameCard";
 import { useEffect, useState } from "react";
 import getRecentGames from "./dataHandlers/getRecentGames";
 import { RecentGame } from "../../types/StatTypes";
+import StatsSearchUI from "./StatsSearchUI";
 const StatsMain = () => {
   const [recentGames, setRecentGames] = useState<RecentGame[]>([]);
   const [loading, setLoading] = useState(true);
@@ -24,23 +25,26 @@ const StatsMain = () => {
         <h1 className="text-4xl text-center font-bold opacity-0 p-4 animate-slide-in-right">
           Stats
         </h1>
-        <ul className="flex flex-col items-center gap-8">
+        <ul className="flex items-center gap-4">
           <NavLink
             to={"/#"}
-            className={`text-xl font-bold w-64 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:250ms] animate-slide-in-right`}>
+            className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-right`}>
+            <li>Seasons</li>
+          </NavLink>
+          <NavLink
+            to={"/#"}
+            className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-fadeIn`}>
             <li>Divisions</li>
           </NavLink>
           <NavLink
             to={"/#"}
-            className={`text-xl font-bold w-64 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-right`}>
+            className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-left`}>
             <li>Teams</li>
           </NavLink>
-          <NavLink
-            to={"/#"}
-            className={`text-xl font-bold w-64 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:550ms] animate-slide-in-right`}>
-            <li>Player Search</li>
-          </NavLink>
         </ul>
+        <div className="playerSearch opacity-0 pt-8 [animation-delay:400ms] animate-fadeIn">
+          <StatsSearchUI />
+        </div>
       </div>
       <div
         className={`bg-light-gray rounded-md md:w-[32rem] border-2 p-4 border-gray flex flex-col transition text-white`}>
