@@ -1,9 +1,10 @@
-import { desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray } from "drizzle-orm";
 import { db } from "../..";
 import {
   matchesInWebsite,
   matchParticipantsInWebsite,
   matchTeamStatsInWebsite,
+  playersInWebsite,
   teamsInWebsite,
 } from "../../schema";
 
@@ -101,6 +102,22 @@ export const getGamesForTeam = async (teamId: number) => {
   }
 };
 
+export const getPlayer = async (summonerName: string, tagline: string) => {
+  try {
+    const player = await db
+      .select()
+      .from(playersInWebsite)
+      .where(
+        and(eq(playersInWebsite.summonerName, summonerName), eq(playersInWebsite.tagLine, tagline))
+      )
+      .limit(1);
+    return player[0] || null;
+  } catch (err) {
+    console.error("Error in getPlayer: ", err);
+    return null;
+  }
+};
+
 export const getRecentGamesByDivision = async (amount: number, divisionId: number) => {
   try {
     const recentMatches = await db
@@ -143,6 +160,51 @@ export const getRecentGamesByDivision = async (amount: number, divisionId: numbe
     return finalResult;
   } catch (err) {
     console.error("Error in getRecentGamesByDivision: ", err);
+    return [];
+  }
+};
+
+export const getGamesForPlayer = async (puuid: string) => {
+  try {
+    const playerMatches = await db
+      .select({ matchId: matchParticipantsInWebsite.matchId })
+      .from(matchParticipantsInWebsite)
+      .where(eq(matchParticipantsInWebsite.playerPuuid, puuid));
+
+    const matchIds = playerMatches.map((ts) => ts.matchId);
+
+    const teamMatches = await db
+      .select()
+      .from(matchesInWebsite)
+      .where(inArray(matchesInWebsite.matchId, matchIds))
+      .orderBy(desc(matchesInWebsite.gameEndTimeStamp)); // Order by most recent
+
+    const allTeamStats = await db
+      .select()
+      .from(matchTeamStatsInWebsite)
+      .leftJoin(teamsInWebsite, eq(matchTeamStatsInWebsite.teamId, teamsInWebsite.id))
+      .where(inArray(matchTeamStatsInWebsite.matchId, matchIds));
+
+    const allParticipants = await db
+      .select()
+      .from(matchParticipantsInWebsite)
+      .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
+
+    const finalResult = teamMatches.map((match) => {
+      const teamsForMatch = allTeamStats.filter(
+        (ts) => ts.match_team_stats.matchId === match.matchId
+      );
+      const participantsForMatch = allParticipants.filter((p) => p.matchId === match.matchId);
+      return {
+        ...match,
+        teams: teamsForMatch,
+        participants: participantsForMatch,
+      };
+    });
+
+    return finalResult;
+  } catch (err) {
+    console.error("Error in getGamesForPlayer: ", err);
     return [];
   }
 };
