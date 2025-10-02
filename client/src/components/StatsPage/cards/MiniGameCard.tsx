@@ -12,16 +12,16 @@ const MiniGameCard = ({ game }: { game: RecentGame }) => {
 
   const roleOrder = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
 
-  // Filters and sorts players for the second team
-  const sortedTeam2 = game.participants
-    .slice(0, 5)
+  // Filters and sorts players for the first team
+  const sortedTeam1 = game.participants
+    .slice(5, 10)
     .sort(
       (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
     );
 
-  // Filters and sorts players for the first team
-  const sortedTeam1 = game.participants
-    .slice(5, 10) 
+  // Filters and sorts players for the second team
+  const sortedTeam2 = game.participants
+    .slice(0, 5)
     .sort(
       (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
     );
