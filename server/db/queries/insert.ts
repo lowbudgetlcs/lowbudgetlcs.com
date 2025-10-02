@@ -324,6 +324,7 @@ const insertMatchParticipants = async (game: ProcessedGameData) => {
 };
 
 export const insertFullMatchData = async (processedGames: ProcessedGameData[]) => {
+  let successCount = 0;
   for (const game of processedGames) {
     try {
       await db.transaction(async (tx) => {
@@ -331,6 +332,7 @@ export const insertFullMatchData = async (processedGames: ProcessedGameData[]) =
         await insertMatchTeamStats(game);
         await insertMatchParticipants(game);
       });
+      successCount++;
     } catch (error) {
       console.error(
         `[Game Stats Updater] Failed to insert data for match: ${game.gameId}. Error: ${error}`
@@ -338,5 +340,5 @@ export const insertFullMatchData = async (processedGames: ProcessedGameData[]) =
       continue;
     }
   }
-  return processedGames.length;
+  return successCount;
 };
