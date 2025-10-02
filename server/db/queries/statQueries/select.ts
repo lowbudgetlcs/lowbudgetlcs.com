@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "../..";
 import {
   matchesInWebsite,
@@ -108,7 +108,10 @@ export const getPlayer = async (summonerName: string, tagline: string) => {
       .select()
       .from(playersInWebsite)
       .where(
-        and(eq(playersInWebsite.summonerName, summonerName), eq(playersInWebsite.tagLine, tagline))
+        and(
+          eq(sql`lower(${playersInWebsite.summonerName})`, summonerName.toLowerCase()),
+          eq(sql`lower(${playersInWebsite.tagLine})`, tagline.toLowerCase())
+        )
       )
       .limit(1);
     return player[0] || null;
