@@ -2,7 +2,7 @@ import Logo from "./Logo";
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
-import DraftLink from "./DraftLink";
+import SubdomainLink from "./SubdomainLink";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -30,20 +30,17 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
       } ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
-      `}
-    >
+      `}>
       <div className="w-full h-20"></div>
       <ul
         className={` ${
           isOpen ? "" : "hidden"
-        } text-white font-semibold text-3xl w-fit transition-all duration-100 flex flex-col gap-0 justify-around`}
-      >
+        } text-white font-semibold text-3xl w-fit transition-all duration-100 flex flex-col gap-0 justify-around`}>
         <li className="text-left animate-slide-in-300 opacity-0">
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/"
-          >
+            to="/">
             <div className="navBox pl-14 py-10">Home</div>
           </NavLink>
         </li>
@@ -51,26 +48,24 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/about"
-          >
+            to="/about">
             <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
-        <li className="text-left animate-slide-in-500 opacity-0">
-          <NavLink
-            className="hover:text-orange transition duration-300"
-            to="https://docs.google.com/document/d/1gwZpciwnRG8nao42zNZCKxwXf7fgdFXQm-tDAaQ6T1I/edit?usp=sharing"
-            target="_blank"
-          >
-            <div className="navBox pl-14 py-10">Rules</div>
-          </NavLink>
+        <li className="animate-slide-in-500 opacity-0">
+          <SubdomainLink
+            to="/"
+            subdomain="stats"
+            onClick={closeToTop}
+            className="hover:text-orange transition duration-300">
+            <div className="navBox pl-14 py-10">Stats</div>
+          </SubdomainLink>
         </li>
         <li className="animate-slide-in-600 opacity-0">
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/rosters"
-          >
+            to="/rosters">
             <div className="navBox pl-14 py-10">Rosters</div>
           </NavLink>
         </li>
@@ -78,18 +73,18 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/allstars"
-          >
+            to="/allstars">
             <div className="navBox pl-14 py-10">All Stars</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-800 opacity-0">
-          <DraftLink
-            className="hover:text-orange transition duration-300"
+          <SubdomainLink
             to="/"
-          >
+            subdomain="draft"
+            className="hover:text-orange transition duration-300"
+            onClick={closeToTop}>
             <div className="navBox pl-14 py-10">Draft Tool</div>
-          </DraftLink>
+          </SubdomainLink>
         </li>
       </ul>
     </div>
@@ -115,28 +110,23 @@ function Navbar() {
     <header
       className={`fixed top-0 z-[20] transition duration-500 mx-auto w-full h-20 ${
         isTop ? "" : "bg-light-gray"
-      }`}
-    >
+      }`}>
       <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
         <div
           onClick={toggleNavbar}
-          className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10"
-        >
+          className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10">
           <div
             className={`absolute ${
               isOpen ? "top-2 rotate-45" : "top-0"
-            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-          ></div>
+            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}></div>
           <div
             className={`absolute ${
               isOpen ? "opacity-0" : "opacity-100"
-            } transition-all duration-300  top-2 px-3 py-0.5 rounded-xl bg-white`}
-          ></div>
+            } transition-all duration-300  top-2 px-3 py-0.5 rounded-xl bg-white`}></div>
           <div
             className={`absolute ${
               isOpen ? "top-2 -rotate-45" : "top-4"
-            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-          ></div>
+            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}></div>
         </div>
         <Logo />
       </div>
