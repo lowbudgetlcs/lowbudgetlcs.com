@@ -1,35 +1,34 @@
+import express, { Request, Response } from "express";
+import { getGamesForTeam, getRecentGames } from "../db/queries/statQueries/select";
 
-// Player Stats from DB
-// app.get(
-//   "/api/stats/player/:summonerName",
-//   async (req: Request, res: Response) => {
-//     try {
-//       const summonerName: string = req.params.summonerName;
-//       const response = await getAllPlayerGames(summonerName);
-//       res.json(response);
-//     } catch (err: any) {
-//       if (err.message === "No Player Found") {
-//         res.status(404).json({ error: "Player not found" });
-//       } else {
-//         res.status(500).json({ error: "Internal Server Error" });
-//       }
-//     }
-//   }
-// );
+const statRoutes = express.Router();
 
-// Team Stats from DB
-// app.get("/api/stats/team/:teamID", async (req: Request, res: Response) => {
-//   try {
-//     console.log("pinged");
-//     const teamID: number = Number(req.params.teamID);
-//     console.log(teamID);
-//     const response = await getAllTeamGames(teamID);
-//     res.json(response);
-//   } catch (err: any) {
-//     if (err.message === "No Team Found") {
-//       res.status(404).json({ error: "Team not found" });
-//     } else {
-//       res.status(500).json({ error: "Internal Server Error" });
-//     }
-//   }
-// });
+// Get recent game stats from db
+statRoutes.get("/api/games/recent/:amount", async (req: Request, res: Response) => {
+  try {
+    const summonerName: string = req.params.summonerName;
+    const response = await getRecentGames(5);
+    if (response.length <= 0) {
+      res.status(404).json({ error: "Matches Not Found" });
+    }
+    res.json(response);
+  } catch (err: any) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+export default statRoutes;
+
+// Get all games for a team
+statRoutes.get("/api/games/team/:teamId", async (req: Request, res: Response) => {
+  try {
+    const teamId: number = Number(req.params.teamId);
+    const response = await getGamesForTeam(teamId);
+    if (response.length <= 0) {
+      res.status(404).json({ error: "Matches Not Found" });
+    }
+    res.json(response);
+  } catch (err: any) {
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
