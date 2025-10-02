@@ -129,7 +129,7 @@ export async function insertFinalFearlessLobby(draft: FearlessFinishedProps) {
 
 export const insertTeams = async (teams: DbTeamData[]) => {
   try {
-    const insertTeams = db.transaction(async (t) => {
+    await db.transaction(async (t) => {
       await t.insert(teamsInWebsite).values(teams);
     });
   } catch (err) {
