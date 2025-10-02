@@ -34,6 +34,12 @@ const parseSimpleDateString = (dateString: string | null | undefined) => {
     return tempDate;
   }
 
+  // Validate day count for the specific month
+  const testDate = new Date(year, month, day);
+  if (testDate.getMonth() !== month || testDate.getDate() !== day) {
+    return tempDate;
+  }
+
   return new Date(year, month, day);
 };
 
