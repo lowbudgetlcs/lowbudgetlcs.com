@@ -84,7 +84,7 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
   }
 });
 // Get player overall stats by summonerID
-statRoutes.get("/api/player/:summonerName/:tagline", async (req: Request, res: Response) => {
+statRoutes.get("/api/player/summoner/:summonerName/:tagline", async (req: Request, res: Response) => {
   try {
     const summonerName: string = req.params.summonerName;
     const tagline: string = req.params.tagline;
@@ -137,4 +137,19 @@ statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
   }
 });
 
+// Check if a player is in the database
+statRoutes.get("/api/player/check/:summonerName/:tagline", async (req: Request, res: Response) => {
+  try {
+    const summonerName: string = req.params.summonerName;
+    const tagline: string = req.params.tagline;
+    const playerResponse = await getPlayer(summonerName, tagline);
+    if (!playerResponse) {
+      return res.status(404).json({ found: false });
+    }
+    return res.status(200).json({ found: true, puuid: playerResponse.puuid });
+  } catch (err: any) {
+    console.error("Error checking player existence:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 export default statRoutes;

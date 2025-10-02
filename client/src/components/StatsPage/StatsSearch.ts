@@ -2,24 +2,18 @@ import { useNavigate } from "react-router-dom";
 
 export const handlePlayerSearch = async (
     summonerName: string,
-    setGameList: React.Dispatch<React.SetStateAction<Array<object>>>,
     setError: React.Dispatch<React.SetStateAction<string | null>>,
     navigate: ReturnType<typeof useNavigate>
   ) => {
-    setGameList([]);
     setError(null);
     try {
       const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
-      const splitSummoner = summonerName.trim().split("");
-      const hashtagIndex = splitSummoner.indexOf("#");
-      if (hashtagIndex !== -1) {
-        splitSummoner[hashtagIndex] = "%23";
-      }
-      const trimmedSummoner = splitSummoner.join("");
-      const summonerDisplay = summonerName.split("#").join(" #")
+      const splitSummoner = summonerName.trim().toLowerCase().split("#");
+      const actualSummonerName = splitSummoner[0]
+      const tagLine = splitSummoner[1]
   
       const gameResponse = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/api/stats/player/${trimmedSummoner}`,
+        `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/check/${actualSummonerName}/${tagLine}`,
         {
           headers: {
             "x-api-key": apiKey,
@@ -38,11 +32,8 @@ export const handlePlayerSearch = async (
             throw new Error("Failed to fetch player data.");
         }
       }
-      const gameData: Array<object> = await gameResponse.json();
-      const flatArr = gameData.flat();
-      setGameList(flatArr);
   
-      navigate(`/stats/player/${trimmedSummoner}`, { state: { gameData: gameData, summonerName: summonerDisplay } });
+      navigate(`/player/${encodeURIComponent(actualSummonerName)}-${encodeURIComponent(tagLine)}`);
     } catch (err: any) {
        setError(err.message || "An unexpected error occurred");   
     }
