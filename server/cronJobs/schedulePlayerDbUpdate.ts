@@ -31,7 +31,6 @@ const schedulePlayerDbUpdate = () => {
       } catch (err) {
         console.error("❌ [DB Player Updater] An error occurred while updating player names:", err);
       }
-      task.stop();
     },
     {
       timezone: "America/Chicago",
