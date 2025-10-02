@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../interfaces/MatchV5";
+import { ParticipantDto } from "../../../types/MatchV5";
 import summonerSpells from "../json/summoner-spells.json";
 
 const SummonerSpellsDisplay = ({ playerData }: { playerData: ParticipantDto }) => {

@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../interfaces/MatchV5";
+import { ParticipantDto } from "../../../types/MatchV5";
 import itemJson from "../json/items.json";
 const ItemDisplay = ({ playerData }: { playerData: ParticipantDto }) => {
   const itemList = [

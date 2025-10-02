@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../../../../types/MatchV5";
 import runes from "../../json/perks.json";
 const DisplayRuneImage = (playerData: ParticipantDto, runeNumber: number, styleType: string) => {
   const rawPrimaryRune = playerData.perks.styles.find((style) => style.description === styleType);

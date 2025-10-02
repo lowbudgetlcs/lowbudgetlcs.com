@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import MHTitlePopup from "./MHTitlePopup";
 import { useParams } from "react-router-dom";
 import { useSessionStorageState } from "../../hooks/useSessionStorageState";
-import { MatchDto } from "./interfaces/MatchV5";
+import { MatchDto } from "../../types/MatchV5";
 import MHMatchDisplay from "./MatchHistoryDisplay/MHMatchDisplay";
 import handleMatchSearch from "./handleMatchSearch";
 import ErrorPage from "../ErrorPage";

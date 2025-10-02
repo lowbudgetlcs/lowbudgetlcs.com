@@ -1,4 +1,4 @@
-import { BanDto } from "../interfaces/MatchV5";
+import { BanDto } from "../../../types/MatchV5";
 
 const MHBans = ({ banList }: { banList: BanDto[] }) => {
   return (

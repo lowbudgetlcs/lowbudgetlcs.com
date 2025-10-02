@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { MatchDto } from "../interfaces/MatchV5";
+import { MatchDto } from "../../../types/MatchV5";
 import MHBans from "./MHBans";
 import TeamContainer from "./TeamContainer";
 

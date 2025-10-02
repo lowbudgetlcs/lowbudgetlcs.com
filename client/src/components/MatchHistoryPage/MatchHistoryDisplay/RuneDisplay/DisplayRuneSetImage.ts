@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../../../../types/MatchV5";
 import runeSets from "../../json/perkstyles.json";
 
 const DisplayRuneSetImage = (playerData: ParticipantDto) => {

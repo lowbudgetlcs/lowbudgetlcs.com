@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ParticipantDto, TeamDto } from "../interfaces/MatchV5";
+import { ParticipantDto, TeamDto } from "../../../types/MatchV5";
 import PlayerContainer from "./PlayerContainers/PlayerContainer";
 import NavList from "../../NavList";
 import DamageContainer from "./PlayerContainers/DamageContainer";

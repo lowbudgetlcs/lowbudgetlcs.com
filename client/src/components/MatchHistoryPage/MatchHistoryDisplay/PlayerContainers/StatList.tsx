@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../../../../types/MatchV5";
 
 const StatTable = ({ players }: { players: ParticipantDto[] }) => {
   return (
