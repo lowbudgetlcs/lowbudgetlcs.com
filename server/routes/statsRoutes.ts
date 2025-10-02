@@ -6,6 +6,8 @@ import {
   getRecentGames,
   getRecentGamesByDivision,
 } from "../db/queries/statQueries/select";
+import playerStatsAggregation from "../stats/playerStatsAggegation";
+import teamStatsAggregation from "../stats/teamStatsAggregation";
 
 const statRoutes = express.Router();
 
@@ -72,7 +74,7 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// Get player overall stats
+// Get player overall stats by summerID
 statRoutes.get("/api/player/:summonerName/:tagline", async (req: Request, res: Response) => {
   try {
     const summonerName: string = req.params.summonerName;
@@ -81,13 +83,46 @@ statRoutes.get("/api/player/:summonerName/:tagline", async (req: Request, res: R
     if (!playerResponse) {
       return res.status(404).json({ error: "Player Not Found" });
     }
-    // TODO: Add logic to get overall stats for the player
-    return res.json(playerResponse);
+    const puuid = playerResponse.puuid;
+    const overallStats = await playerStatsAggregation(puuid);
+    if (!overallStats) {
+      return res.status(404).json({ error: "Player Stats Not Found" });
+    }
+    return res.json(overallStats);
   } catch (err: any) {
-    console.error("Error fetching player stats:", err);
+    console.error("Error fetching player stats by name:", err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
-    
+});
+
+// Get player stats by puuid
+statRoutes.get("/api/player/puuid/:puuid", async (req: Request, res: Response) => {
+  try {
+    const puuid: string = req.params.puuid;
+    const overallStats = await playerStatsAggregation(puuid);
+    if (!overallStats) {
+      return res.status(404).json({ error: "Player Stats Not Found" });
+    }
+    return res.json(overallStats);
+  } catch (err: any) {
+    console.error("Error fetching player stats puuid:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Get team overall stats
+statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
+  try {
+    const teamId: number = Number(req.params.teamId);
+    const overallStats = await teamStatsAggregation(teamId);
+    if (!overallStats) {
+      return res.status(404).json({ error: "Team Stats Not Found" });
+    }
+    return res.json(overallStats);
+  } catch (err: any) {
+    console.error("Error fetching team stats:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 export default statRoutes;
