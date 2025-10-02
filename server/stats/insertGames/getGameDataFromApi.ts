@@ -27,9 +27,9 @@ const getGameDataFromApi = async (sheetGames: SheetGameData[]) => {
         console.log("✅ Resuming API calls for Riot.");
       }
       const checkGameId = await getIndividualApiMatchData(game);
+      requestCount++;
       if (!checkGameId) continue;
       allMatchData.push(checkGameId);
-      requestCount++;
     }
     return allMatchData;
   } catch (err) {
