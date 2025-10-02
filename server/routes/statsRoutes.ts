@@ -74,7 +74,7 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-// Get player overall stats by summerID
+// Get player overall stats by summonerID
 statRoutes.get("/api/player/:summonerName/:tagline", async (req: Request, res: Response) => {
   try {
     const summonerName: string = req.params.summonerName;
