@@ -20,7 +20,7 @@ const runDailyGameUpdate = async () => {
     console.log("[Game Stats Updater] 2/4 Fetching game data from Riot API...");
     const apiData = await getGameDataFromApi(sheetData);
     if (!apiData || apiData.length === 0) {
-      console.error("[Game Stats Updater] ✅ Job finished: No new games found from API.");
+      console.log("[Game Stats Updater] ✅ Job finished: No new games found from API.");
       return;
     }
 
