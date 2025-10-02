@@ -11,6 +11,7 @@ import DraftRoutes from "./routes/DraftRoutes";
 import DefaultRoutes from "./routes/DefaultRoutes";
 import { useEffect } from "react";
 import StatRoutes from "./routes/StatRoutes";
+import StatsNavbar from "./components/StatsPage/StatsNavBar";
 
 function App() {
   // Finds the subdomain (used for draft site)
@@ -33,6 +34,7 @@ function App() {
   const pathname = window.location.pathname;
   const subdomain = getSubdomain(currentHost);
   const isDraftRoute = subdomain === "draft";
+  const isStatsRoute = subdomain === "stats";
 
   useEffect(() => {
     if (pathname.startsWith("/draft")) {
@@ -59,7 +61,7 @@ function App() {
       {!isDraftRoute && <Twitch />}
       <SettingsProvider>
         <DraftSettings />
-        {!isDraftRoute ? <Navbar /> : <DraftNavbar />}
+        {isDraftRoute ? <DraftNavbar /> : isStatsRoute ? <StatsNavbar /> : <Navbar />}
         <LeagueDataProvider>
           <Routes>
             {subdomain === "draft" ? (
