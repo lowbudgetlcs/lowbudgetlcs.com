@@ -1,20 +1,78 @@
 import { RecentGame } from "../../../types/StatTypes";
+import formatDuration from "../../../utils/formatDuration";
+import formatTimeAgo from "../../../utils/formatTimeAgo";
 
-const MiniGameCard = ({ key, game }: { key: number; game: RecentGame }) => {
-  const { teams: team1Stats } = game.teams[0];
-  const { teams: team2Stats } = game.teams[1];
-  if (!team1Stats || !team2Stats) return null;
-  const timeSinceGamePlayed = BigInt(Date.now()) - game.gameEndTimeStamp;
-  const gameDuration = game.gameEndTimeStamp - game.gameStartTimeStamp;
+const MiniGameCard = ({ game }: { game: RecentGame }) => {
+  const { teams: team1Info } = game.teams[0];
+  const { teams: team2Info } = game.teams[1];
+  const { match_team_stats: team1Stats } = game.teams[0];
+  const { match_team_stats: team2Stats } = game.teams[1];
+  if (!team1Stats || !team2Stats || !team1Info || !team2Info) return null;
+  const timeSinceGamePlayed = Number(BigInt(Date.now()) - BigInt(game.gameEndTimeStamp));
+
+  // Define the standard order of roles for sorting
+  const roleOrder = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
+
+  // Filter and sort players for the first team
+  const sortedTeam2 = game.participants
+    .slice(0, 5)
+    .sort(
+      (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
+    );
+
+  // Filter and sort players for the second team
+  const sortedTeam1 = game.participants
+    .slice(5, 10) 
+    .sort(
+      (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
+    );
+
+  const gameDurationMs = game.gameDuration * 1000;
   return (
     <div
-      key={key}
-      className="flex flex-col items-center justify-center bg-light-gray rounded-md p-4 w-full max-w-sm">
-      <h3 className="text-xl font-bold">
-        {team1Stats.teamName} vs. {team2Stats.teamName}
+      className={`flex flex-col justify-center ${
+        team1Stats.win ? "bg-blue/30" : "bg-red/30"
+      } rounded-md p-2 w-full`}>
+      <h3 className="font-bold truncate border-b-2 mb-2">
+        {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
       </h3>
-      <p className="text-lg">{gameDuration}</p>
-      <p className="text-sm text-gray-400">{timeSinceGamePlayed}</p>
+      <div className="flex items-center gap-32">
+        <div className="flex flex-col">
+          <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
+          <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
+        </div>
+        <div className="players flex items-center gap-2">
+          {/* TODO: Put Player Champion Icons on left with player names and tag on right */}
+          <div className="flex flex-col items-start gap-0.5">
+            {sortedTeam1.map((player, index) => (
+              <div key={index} className="flex items-center">
+                <img
+                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/tile`}
+                  alt={player.championName!}
+                  className="w-4 h-4 border-[0.5px] border-black mr-2"
+                />
+                <p className="flex truncate">
+                  <span className="text-xs text-white/95">{player.riotIdGameName}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col items-start ml-6 gap-0.5">
+            {sortedTeam2.map((player, index) => (
+              <div key={index} className="flex items-center">
+                <img
+                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/tile`}
+                  alt={player.championName!}
+                  className="w-4 h-4 border-[0.5px] border-black mr-2"
+                />
+                <p className="flex truncate">
+                  <span className="text-xs text-white/95">{player.riotIdGameName}</span>
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
