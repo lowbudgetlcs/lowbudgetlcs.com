@@ -6,7 +6,7 @@ import {
   getRecentGames,
   getRecentGamesByDivision,
 } from "../db/queries/statQueries/select";
-import playerStatsAggregation from "../stats/playerStatsAggegation";
+import playerStatsAggregation from "../stats/playerStatsAggregation";
 import teamStatsAggregation from "../stats/teamStatsAggregation";
 
 const statRoutes = express.Router();
@@ -15,6 +15,9 @@ const statRoutes = express.Router();
 statRoutes.get("/api/games/recent/:amount", async (req: Request, res: Response) => {
   try {
     const amount: number = Number(req.params.amount);
+    if (isNaN(amount) || amount <= 0) {
+      return res.status(400).json({ error: "Invalid amount parameter" });
+    }
     const response = await getRecentGames(amount);
     if (response.length <= 0) {
       return res.status(404).json({ error: "Matches Not Found" });
@@ -30,6 +33,9 @@ statRoutes.get("/api/games/division/:divisionId/:amount", async (req: Request, r
   try {
     const divisionId: number = Number(req.params.divisionId);
     const amount: number = Number(req.params.amount);
+    if (isNaN(divisionId) || isNaN(amount) || divisionId <= 0 || amount <= 0) {
+      return res.status(400).json({ error: "Invalid parameters" });
+    }
     const response = await getRecentGamesByDivision(amount, divisionId);
     if (response.length <= 0) {
       return res.status(404).json({ error: "Matches Not Found" });
@@ -44,6 +50,9 @@ statRoutes.get("/api/games/division/:divisionId/:amount", async (req: Request, r
 statRoutes.get("/api/games/team/:teamId", async (req: Request, res: Response) => {
   try {
     const teamId: number = Number(req.params.teamId);
+    if (isNaN(teamId) || teamId <= 0) {
+      return res.status(400).json({ error: "Invalid team ID" });
+    }
     const response = await getGamesForTeam(teamId);
     if (response.length <= 0) {
       return res.status(404).json({ error: "Matches Not Found" });
@@ -114,6 +123,9 @@ statRoutes.get("/api/player/puuid/:puuid", async (req: Request, res: Response) =
 statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
   try {
     const teamId: number = Number(req.params.teamId);
+    if (isNaN(teamId) || teamId <= 0) {
+      return res.status(400).json({ error: "Invalid team ID" });
+    }
     const overallStats = await teamStatsAggregation(teamId);
     if (!overallStats) {
       return res.status(404).json({ error: "Team Stats Not Found" });
