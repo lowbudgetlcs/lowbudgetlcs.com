@@ -72,5 +72,22 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+// Get player overall stats
+statRoutes.get("/api/player/:summonerName/:tagline", async (req: Request, res: Response) => {
+  try {
+    const summonerName: string = req.params.summonerName;
+    const tagline: string = req.params.tagline;
+    const playerResponse = await getPlayer(summonerName, tagline);
+    if (!playerResponse) {
+      return res.status(404).json({ error: "Player Not Found" });
+    }
+    // TODO: Add logic to get overall stats for the player
+    return res.json(playerResponse);
+  } catch (err: any) {
+    console.error("Error fetching player stats:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+    
+});
 
 export default statRoutes;
