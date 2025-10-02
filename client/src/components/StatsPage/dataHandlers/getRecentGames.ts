@@ -3,10 +3,10 @@ import { RecentGame } from "../../../types/StatTypes";
 const getRecentGames = async (amount: number, divisionId?: number) => {
   try {
     const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
-    let url = `${import.meta.env.VITE_BACKEND_URL}/api/games/recent/${amount}`;
+    let url = `${import.meta.env.VITE_BACKEND_URL}/stats/api/games/recent/${amount}`;
 
     if (divisionId) {
-      url = `${import.meta.env.VITE_BACKEND_URL}/api/games/division/${divisionId}/${amount}`;
+      url = `${import.meta.env.VITE_BACKEND_URL}/stats/api/games/division/${divisionId}/${amount}`;
     }
 
     const response = await fetch(url, {
@@ -14,7 +14,6 @@ const getRecentGames = async (amount: number, divisionId?: number) => {
         "x-api-key": apiKey,
       },
     });
-
     if (!response.ok) {
       throw new Error("Failed to fetch recent games");
     }
