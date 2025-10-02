@@ -10,17 +10,16 @@ const MiniGameCard = ({ game }: { game: RecentGame }) => {
   if (!team1Stats || !team2Stats || !team1Info || !team2Info) return null;
   const timeSinceGamePlayed = Number(BigInt(Date.now()) - BigInt(game.gameEndTimeStamp));
 
-  // Define the standard order of roles for sorting
   const roleOrder = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
 
-  // Filter and sort players for the first team
+  // Filters and sorts players for the second team
   const sortedTeam2 = game.participants
     .slice(0, 5)
     .sort(
       (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
     );
 
-  // Filter and sort players for the second team
+  // Filters and sorts players for the first team
   const sortedTeam1 = game.participants
     .slice(5, 10) 
     .sort(
@@ -42,7 +41,6 @@ const MiniGameCard = ({ game }: { game: RecentGame }) => {
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
         <div className="players flex items-center gap-2">
-          {/* TODO: Put Player Champion Icons on left with player names and tag on right */}
           <div className="flex flex-col items-start gap-0.5">
             {sortedTeam1.map((player, index) => (
               <div key={index} className="flex items-center">
