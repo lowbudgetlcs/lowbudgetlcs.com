@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 function StatsSearchUI() {
     const [summonerName, setSummonerName] = useState("");
-    const [gameList, setGameList] = useState<Array<object>>([]);
-    console.debug(gameList)
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -14,7 +12,7 @@ function StatsSearchUI() {
     const handleFormSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       setLoading(true);
-      await handlePlayerSearch(summonerName, setGameList, setError, navigate);
+      await handlePlayerSearch(summonerName, setError, navigate);
       setLoading(false);
     };
     return (
