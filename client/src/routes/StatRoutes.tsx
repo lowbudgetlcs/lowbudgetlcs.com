@@ -6,7 +6,7 @@ import StatsPlayer from "../components/StatsPage/PlayerStatDisplay/StatsPlayer";
 
 const StatRoutes = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen items-center">
       <Routes>
         <Route path="/" element={<StatsMain />} />
         <Route path="team/" element={<StatsSeason />} />
