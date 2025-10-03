@@ -9,7 +9,16 @@ export interface ChampionStat {
   avgKills: number;
   avgDeaths: number;
   avgAssists: number;
-  avgCs: number;
+  avgCsPerMin: number;
+  avgGoldPerMin: number;
+  avgVisionScore: number;
+  avgDamagePerMin: number;
+  avgKillParticipation: number;
+  avgGoldShare: number;
+  avgDamageShare: number;
+  avgDeathShare: number;
+  avgDamageTakenShare: number;
+  avgControlWards: number;
 }
 
 interface BestGameStat {
@@ -23,20 +32,24 @@ export interface PlayerOverallStats {
   wins: number;
   losses: number;
   winrate: number;
-  kda: number;
-  // Averages
+  kda: number; // Averages
   avgKills: number;
   avgDeaths: number;
   avgAssists: number;
   avgCsPerMin: number;
   avgGoldPerMin: number;
   avgVisionScore: number;
-  //   Player Roles
-  roles: string[];
-  // Champion Pool
+  avgDamagePerMin: number;
+  avgDamageToObjectives: number;
+  avgControlWards: number; // Team Percentages
+  avgKillParticipation: number;
+  avgGoldShare: number;
+  avgDamageShare: number;
+  avgDeathShare: number;
+  avgDamageTakenShare: number; // Player Roles
+  roles: string[]; // Champion Pool
   championPool: ChampionStat[];
-  uniqueChampions: number;
-  // Best Game Performances
+  uniqueChampions: number; // Best Game Performances
   highestKills: BestGameStat;
   highestAssists: BestGameStat;
   highestDamageToChamps: BestGameStat;
