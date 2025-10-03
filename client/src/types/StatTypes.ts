@@ -1,4 +1,4 @@
-interface ChampionStat {
+export interface ChampionStat {
   championName: string;
   championId: number;
   games: number;
