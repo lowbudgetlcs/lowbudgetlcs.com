@@ -8,12 +8,12 @@ export const handlePlayerSearch = async (
     setError(null);
     try {
       const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
-      const splitSummoner = summonerName.trim().toLowerCase().split("#");
+      const splitSummoner = summonerName.trim().split("#");
       const actualSummonerName = splitSummoner[0]
       const tagLine = splitSummoner[1]
   
       const gameResponse = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/check/${actualSummonerName}/${tagLine}`,
+        `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/check/${actualSummonerName.toLowerCase()}/${tagLine.toLowerCase()}`,
         {
           headers: {
             "x-api-key": apiKey,
