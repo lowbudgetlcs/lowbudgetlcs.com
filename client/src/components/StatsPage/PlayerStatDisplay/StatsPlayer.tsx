@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import getPlayerOverallStats from "../dataHandlers/getPlayerOverallStats";
-import { PlayerOverallStats } from "../../../types/StatTypes";
+import { PlayerOverallStats, RecentGame } from "../../../types/StatTypes";
 import PlayerStatSidebar from "./PlayerStatSidebar";
 import ChampionStatCard from "../cards/ChampionStatCard";
 import AchievementsDisplay from "./AchievementsDisplay";
 import PerformanceOverview from "./PerformanceOverview";
 import CombatPerformance from "./CombatPerformance";
 import EconPerformance from "./EconPerformance";
+import NavList from "../../NavList";
+import getPlayerGames from "../dataHandlers/getPlayerGames";
+import PlayerGameCard from "../cards/PlayerGameCard";
 
 function StatsPlayer() {
   const params = useParams();
@@ -23,6 +26,13 @@ function StatsPlayer() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [playerData, setPlayerData] = useState<PlayerOverallStats | null>(null);
+  const [playerGames, setPlayerGames] = useState<RecentGame[]>([]);
+
+  const [activeLink, setActiveLink] = useState<string>("Overview");
+  const toggleActive = (navItem: string) => {
+    setActiveLink(navItem);
+  };
+  const navItems = ["Overview", "Recent Games"];
   useEffect(() => {
     if (!fullSummonerName) {
       navigate("/");
@@ -34,7 +44,6 @@ function StatsPlayer() {
       setLoading(true);
       setError(null);
       try {
-        // This is a placeholder for your actual data fetching function.
         const response = await getPlayerOverallStats(summonerName, tagLine);
         if (!response) {
           setError("Player data not found.");
@@ -50,8 +59,28 @@ function StatsPlayer() {
     };
 
     fetchPlayerData();
-  }, [fullSummonerName, navigate]);
+  }, [fullSummonerName, navigate, summonerName, tagLine]);
 
+  useEffect(() => {
+    if (!playerData) return;
+    const fetchPlayerMatches = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await getPlayerGames(summonerName, tagLine);
+        if (!response) {
+          setError("Player data not found.");
+          return;
+        }
+        setPlayerGames(response);
+      } catch (err: any) {
+        console.error("Error fetching player matches:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPlayerMatches();
+  }, [playerData, summonerName, tagLine]);
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-black text-white text-xl">
@@ -78,67 +107,50 @@ function StatsPlayer() {
         </div>
         <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
       </Link>
-      <div className="flex flex-col md:flex-row justify-stretch p-4 gap-8">
+      <div className="flex flex-col md:flex-row justify-stretch md:p-4 gap-8">
         {/* Stat Sidebar */}
         <PlayerStatSidebar summonerName={summonerName} tagLine={tagLine} playerData={playerData} />
-        <div className="extendedStatsContainer flex flex-col gap-8 flex-grow p-4 border-2 border-gray rounded-md">
+        <div className="extendedStatsContainer flex flex-col gap-4 flex-grow p-4 border-2 border-gray rounded-md">
           {/* Achievements */}
           <AchievementsDisplay />
           {/* Performance Overview */}
           <PerformanceOverview playerData={playerData} />
-          <div className="performanceOverview flex flex-col sm:flex-row gap-2">
-            <CombatPerformance playerData={playerData} />
-            <EconPerformance playerData={playerData} />
-          </div>
-          {/* Favorite Champions */}
-          <div className="favoriteChampions">
-            <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">
-              Favorite Champions
-            </h2>
-            <div className="favoreChampContainer flex flex-col gap-4 lg:grid grid-cols-2">
-              {playerData.championPool
-                .sort((a, b) => b.games - a.games)
-                .slice(0, 4)
-                .map((champ) => (
-                  <div
-                    key={champ.championName}
-                    className="championContainer flex gap-2 bg-gray/20 p-2 rounded-md border-2 border-gray">
-                    <img
-                      src={`https://cdn.communitydragon.org/latest/champion/${champ.championName}/square`}
-                      width={"50px"}
-                      height={"50px"}
-                      alt={champ.championName}
-                      className="rounded-md"
-                    />
-                    <div className="champText flex justify-between items-center w-full">
-                      <div>
-                        <p className="font-bold">{champ.championName}</p>
-                        <p className="opacity-55">{champ.games} Games</p>
-                      </div>
-                      <p>
-                        Win Rate:
-                        <span className={champ.winrate >= 50 ? "text-blue-400" : "text-red-400"}>
-                          {champ.winrate.toFixed(0)}%
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                ))}
+          <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
+          {activeLink === "Overview" ? (
+            <>
+              <div className="performanceOverview flex flex-col sm:flex-row gap-2">
+                <CombatPerformance playerData={playerData} />
+                <EconPerformance playerData={playerData} />
+              </div>
+              {/* Champion Stats */}
+              <div className="specificChampStats">
+                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">
+                  Champion Stats
+                </h2>
+                <div className="champStats flex flex-col gap-4 max-h-72 overflow-y-auto">
+                  {/* Champion Box */}
+                  {/* Make it autofill with information from data */}
+                  {playerData.championPool
+                    .slice(0, 6)
+                    .sort((a, b) => b.games - a.games)
+                    .map((champ) => (
+                      <ChampionStatCard champ={champ} />
+                    ))}
+                </div>
+              </div>
+            </>
+          ) : activeLink === "Recent Games" ? (
+            <div className="recentGames">
+              <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Games</h2>
+              <div className="flex flex-col gap-2 items-center min-h-64">
+                {playerGames.length > 0 ? (
+                  playerGames.map((game, index) => <PlayerGameCard key={index} game={game} />)
+                ) : (
+                  <p className="text-xl text-white">No recent games found.</p>
+                )}
+              </div>
             </div>
-          </div>
-          {/* Champion Stats */}
-          <div className="specificChampStats">
-            <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Champion Stats</h2>
-            <div className="champStats flex flex-col gap-4 lg:grid grid-cols-2">
-              {/* Champion Box */}
-              {/* Make it autofill with information from data */}
-              {playerData.championPool
-                .sort((a, b) => b.games - a.games)
-                .map((champ) => (
-                  <ChampionStatCard champ={champ} />
-                ))}
-            </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </div>
