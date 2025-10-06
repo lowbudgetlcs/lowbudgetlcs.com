@@ -25,9 +25,8 @@ const ItemDisplay = ({ playerData }: { playerData: ParticipantDto }) => {
       <div className="itemContainer grid grid-cols-3 gap-0.5">
         {itemList.map((item, index) => {
           const rawItem = itemJson.find((i) => i.id === item);
-          if (!rawItem) return null;
+          if (!rawItem) return <div key={index} className="w-8 h-8 border-2 border-gray"></div>;
           const filename = rawItem.iconPath.split("/").pop();
-          // 3. Update the iconPath with the new format
           rawItem.iconPath = `/latest/game/assets/items/Icons2D/${filename}`;
           const correctedItem = rawItem.iconPath.replace(" ", "_").toLowerCase();
           const itemLink = `https://raw.communitydragon.org${correctedItem}`;
