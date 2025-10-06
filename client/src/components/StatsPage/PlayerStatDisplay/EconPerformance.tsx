@@ -24,6 +24,7 @@ const EconPerformance = ({ playerData }: { playerData: PlayerOverallStats }) => 
           iconBgColor="bg-green bg-opacity-50"
           title="CS/Min"
           value={playerData.avgCsPerMin.toFixed(1)}
+          valueColor={playerData.avgCsPerMin >= 7 ? "text-blue" : (playerData.avgCsPerMin < 7 && !playerData.roles.includes("TOP"))? "text-red" : "text-white"}
         />
         {/* Gold/Game */}
         <IndividualStatCard
