@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import MainLink from "../MainLink";
 import SubdomainLink from "../SubdomainLink";
+import StatsSearchUI from "./StatsSearchUI";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -111,7 +112,7 @@ function StatsNavbar() {
       className={`fixed top-0 z-[20] transition duration-500 mx-auto w-full h-20 ${
         isTop ? "" : "bg-light-gray"
       }`}>
-      <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
+      <div className="flex relative items-center justify-between px-4 text-lg h-full overflow-hidden ">
         <div
           onClick={toggleNavbar}
           className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10">
@@ -128,6 +129,7 @@ function StatsNavbar() {
               isOpen ? "top-2 -rotate-45" : "top-4"
             } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}></div>
         </div>
+        <StatsSearchUI navbar={true} />
         <Logo />
       </div>
       <FullNav isOpen={isOpen} setIsOpen={setIsOpen} />
