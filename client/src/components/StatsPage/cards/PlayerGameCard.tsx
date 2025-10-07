@@ -1,8 +1,12 @@
+import { ParticipantDto } from "../../../types/MatchV5";
 import { RecentGame } from "../../../types/StatTypes";
 import formatDuration from "../../../utils/formatDuration";
 import formatTimeAgo from "../../../utils/formatTimeAgo";
+import ItemDisplay from "../../MatchHistoryPage/MatchHistoryDisplay/ItemDisplay";
+import Runes from "../../MatchHistoryPage/MatchHistoryDisplay/RuneDisplay/Runes";
+import SummonerSpellsDisplay from "../../MatchHistoryPage/MatchHistoryDisplay/SummonerSpellsDisplay";
 
-const PlayerGameCard = ({ game }: { game: RecentGame }) => {
+const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) => {
   const { teams: team1Info } = game.teams[0];
   const { teams: team2Info } = game.teams[1];
   const { match_team_stats: team1Stats } = game.teams[0];
@@ -26,20 +30,44 @@ const PlayerGameCard = ({ game }: { game: RecentGame }) => {
       (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
     );
 
+  // Find team player was on (team 100 or team 200)
+  let playerTeamId: number | null;
+  const player = game.participants.find((p) => p.playerPuuid === puuid);
+  if (player) {
+    playerTeamId = player.teamId;
+  } else {
+    return null;
+  }
+  const championLink = `https://cdn.communitydragon.org/latest/champion/${player.championId}/square`;
   const gameDurationMs = game.gameDuration * 1000;
   return (
     <div
       className={`flex flex-col justify-center ${
-        team1Stats.win ? "bg-blue/30" : "bg-red/30"
+        player.win ? "bg-blue/30" : "bg-red/30"
       } rounded-md p-2 w-full`}>
       <h3 className="font-bold truncate border-b-2 mb-2">
         {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
       </h3>
+
       <div className="flex items-center gap-32">
         <div className="flex flex-col">
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
+        <div className="individualChampInfo hidden md:flex items-center gap-1">
+          <div className="champImage relative w-12 h-12 shrink-0">
+            <img src={championLink} alt={` ${player.championName}`} />
+            <p className="absolute bottom-0 right-0 text-xs rounded-md bg-black px-0.5">
+              {player.champLevel}
+            </p>
+          </div>
+          <div className="flex gap-1">
+            <SummonerSpellsDisplay playerData={player as unknown as ParticipantDto} />
+            <Runes playerData={player as unknown as ParticipantDto} />
+          </div>
+          <ItemDisplay playerData={player as unknown as ParticipantDto} />
+        </div>
+
         <div className="players flex items-center gap-2">
           <div className="flex flex-col items-start gap-0.5">
             {sortedTeam1.map((player, index) => (
