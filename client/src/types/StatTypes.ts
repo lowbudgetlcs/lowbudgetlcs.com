@@ -28,6 +28,7 @@ interface BestGameStat {
 }
 
 export interface PlayerOverallStats {
+  puuid: string;
   totalGames: number;
   wins: number;
   losses: number;

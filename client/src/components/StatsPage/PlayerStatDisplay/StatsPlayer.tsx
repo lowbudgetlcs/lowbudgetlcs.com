@@ -136,7 +136,7 @@ function StatsPlayer() {
                         .slice(0, 6)
                         .sort((a, b) => b.games - a.games)
                         .map((champ) => (
-                          <ChampionStatCard champ={champ} />
+                          <ChampionStatCard key={champ.championName} champ={champ} />
                         ))}
                     </div>
                   </div>
@@ -146,7 +146,7 @@ function StatsPlayer() {
                   <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Games</h2>
                   <div className="flex flex-col gap-2 items-center min-h-64">
                     {playerGames.length > 0 ? (
-                      playerGames.map((game, index) => <PlayerGameCard key={index} game={game} />)
+                      playerGames.map((game, index) => <PlayerGameCard key={index} game={game} puuid={playerData.puuid} />)
                     ) : (
                       <p className="text-xl text-white">No recent games found.</p>
                     )}

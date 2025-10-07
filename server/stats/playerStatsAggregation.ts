@@ -52,6 +52,7 @@ interface BestGameStat {
 }
 
 export interface PlayerOverallStats {
+  puuid: string;
   totalGames: number;
   wins: number;
   losses: number;
@@ -183,6 +184,7 @@ const playerStatsAggregation = async (puuid: string): Promise<PlayerOverallStats
       return acc;
     },
     {
+      puuid: puuid,
       totalGames: 0,
       wins: 0,
       totalKills: 0,
@@ -248,6 +250,7 @@ const playerStatsAggregation = async (puuid: string): Promise<PlayerOverallStats
     .sort((a, b) => b.games - a.games);
 
   return {
+    puuid: stats.puuid,
     totalGames: totalGames,
     wins: stats.wins,
     losses: totalGames - stats.wins,
