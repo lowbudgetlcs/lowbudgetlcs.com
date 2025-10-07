@@ -49,39 +49,35 @@ const PlayerStatSidebar = ({ summonerName, tagLine, playerData }: PlayerStatSide
         <ul className="quickStats flex flex-col gap-2">
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">Win Rate:</p>
-            <p className="">
-              {!playerData ? <LoadingIcon /> : playerData.winrate.toFixed(0) + "%"}
-            </p>
+            {!playerData ? <LoadingIcon /> : <p>{playerData.winrate.toFixed(0) + "%"}</p>}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">Games:</p>
-            <p className="">{!playerData ? <LoadingIcon /> : playerData.totalGames}</p>
+            {!playerData ? <LoadingIcon /> : <p>{playerData.totalGames}</p>}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">KDA:</p>
-            <p className="">{!playerData ? <LoadingIcon /> : playerData.kda.toFixed(2)}</p>
+            {!playerData ? <LoadingIcon /> : <p>{playerData.kda.toFixed(2)}</p>}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">Kill Participation:</p>
-            <p className="">
-              {!playerData ? <LoadingIcon /> : playerData.avgKillParticipation.toFixed(0) + "%"}
-            </p>
+            {!playerData ? (
+              <LoadingIcon />
+            ) : (
+              <p>{playerData.avgKillParticipation.toFixed(0) + "%"}</p>
+            )}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">CS/Min:</p>
-            <p className="">{!playerData ? <LoadingIcon /> : playerData.avgCsPerMin.toFixed(1)}</p>
+            {!playerData ? <LoadingIcon /> : <p>{playerData.avgCsPerMin.toFixed(1)}</p>}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">Damage/Min:</p>
-            <p className="">
-              {!playerData ? <LoadingIcon /> : playerData.avgDamagePerMin.toFixed(0)}
-            </p>
+            {!playerData ? <LoadingIcon /> : <p>{playerData.avgDamagePerMin.toFixed(0)}</p>}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">Vision/Game:</p>
-            <p className="">
-              {!playerData ? <LoadingIcon /> : playerData.avgVisionScore.toFixed(1)}
-            </p>
+            {!playerData ? <LoadingIcon /> : <p>{playerData.avgVisionScore.toFixed(1)}</p>}
           </li>
         </ul>
       </div>
