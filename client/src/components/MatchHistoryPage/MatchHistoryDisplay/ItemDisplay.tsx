@@ -1,5 +1,5 @@
 import { ParticipantDto } from "../../../types/MatchV5";
-import itemJson from "../json/items.json";
+import itemJson from "../../json/items.json";
 const ItemDisplay = ({ playerData }: { playerData: ParticipantDto }) => {
   const itemList = [
     playerData.item0,
