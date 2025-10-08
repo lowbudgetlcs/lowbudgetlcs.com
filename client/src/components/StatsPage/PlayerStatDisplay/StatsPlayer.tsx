@@ -91,7 +91,7 @@ function StatsPlayer() {
   }
 
   return (
-    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-[90rem]">
+    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-[75rem] w-full mx-auto">
       <Link
         to={`/`}
         className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center  group">
@@ -103,10 +103,10 @@ function StatsPlayer() {
         </div>
         <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
       </Link>
-      <div className="flex flex-col md:flex-row justify-stretch p-2 md:p-4 gap-4 lg:gap-8">
+      <div className="flex flex-col md:flex-row justify-stretch md:p-4 gap-4 lg:gap-8 overflow-x-hidden">
         {/* Stat Sidebar */}
         <PlayerStatSidebar summonerName={summonerName} tagLine={tagLine} playerData={playerData} />
-        <div className="extendedStatsContainer flex flex-col gap-4 flex-grow p-4 border-2 border-gray rounded-md min-h-64">
+        <div className="extendedStatsContainer flex flex-col gap-4 flex-grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
           {!playerData || loading ? (
             <div className="loading min-w-64 flex items-center justify-center">
               <LoadingIcon />
