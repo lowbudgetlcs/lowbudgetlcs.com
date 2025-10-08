@@ -49,8 +49,8 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
       className={`flex flex-col justify-center ${
         player.win ? "bg-blue/30" : "bg-red/30"
       } rounded-md p-2 w-full`}>
-      <div className="flex flex-col border-b-2 mb-2 justify-center">
-        <h3 className="font-bold truncate">
+      <div className="flex flex-col border-b-2 mb-2 justify-center truncate">
+        <h3 className="font-bold min-w-0 truncate">
           {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
         </h3>
 
