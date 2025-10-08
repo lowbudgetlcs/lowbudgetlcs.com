@@ -20,12 +20,12 @@ const StatsMain = () => {
     fetchData();
   }, []);
   return (
-    <div className="flex gap-2 bg-white text-black dark:bg-black dark:text-white grow pt-20 transition duration-500 items-center justify-around">
-      <div className={` p-4 md:p-12 flex flex-col items-center transition duration-500 text-white`}>
+    <div className="flex flex-col md:flex-row gap-2 bg-white text-black dark:bg-black dark:text-white grow pt-20 transition duration-500 items-center justify-around">
+      <div className={` p-4 md:p-10 flex flex-col items-center transition duration-500 text-white`}>
         <h1 className="text-4xl text-center font-bold opacity-0 p-4 animate-slide-in-right">
           Stats
         </h1>
-        <ul className="flex items-center gap-4">
+        <ul className="flex flex-col lg:flex-row items-center gap-4">
           <NavLink
             to={"/#"}
             className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-right`}>
@@ -47,7 +47,7 @@ const StatsMain = () => {
         </div>
       </div>
       <div
-        className={`bg-light-gray rounded-md md:w-[32rem] border-2 p-4 border-gray flex flex-col transition text-white`}>
+        className={`bg-light-gray rounded-md md:w-[28rem] lg:w-[32rem] border-2 p-4 border-gray flex flex-col transition text-white`}>
         <h2 className="text-2xl text-center font-bold opacity-0 pb-2 animate-slide-in-left">
           Recent Games
         </h2>
