@@ -138,6 +138,7 @@ export default {
       xl: '1440px',
       lg: '1024px',
       draftMd: '1275px',
+      smd: '900px',
       md: '768px',
       sm: '375px',
       xxl: '2000px',
