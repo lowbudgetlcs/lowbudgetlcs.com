@@ -49,7 +49,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
         {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
       </h3>
 
-      <div className="flex items-center gap-32">
+      <div className="flex items-center justify-between lg:pr-4">
         <div className="flex flex-col">
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
@@ -68,7 +68,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
           <ItemDisplay playerData={player as unknown as ParticipantDto} />
         </div>
 
-        <div className="players flex items-center gap-2">
+        <div className="players flex items-center">
           <div className="flex flex-col items-start gap-0.5">
             {sortedTeam1.map((player, index) => (
               <div key={index} className="flex items-center">
@@ -78,7 +78,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
                 <p className="flex truncate">
-                  <span className="text-xs text-white/95">{player.riotIdGameName}</span>
+                  <span className="text-xs text-white/95 truncate">{player.riotIdGameName}</span>
                 </p>
               </div>
             ))}
@@ -92,7 +92,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
                 <p className="flex truncate">
-                  <span className="text-xs text-white/95">{player.riotIdGameName}</span>
+                  <span className="text-xs text-white/95 truncate">{player.riotIdGameName}</span>
                 </p>
               </div>
             ))}
