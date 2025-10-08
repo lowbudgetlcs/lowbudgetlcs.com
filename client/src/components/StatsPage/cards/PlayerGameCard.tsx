@@ -30,7 +30,6 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
       (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
     );
 
-  // Find team player was on (team 100 or team 200)
   let playerTeamId: number | null;
   const player = game.participants.find((p) => p.playerPuuid === puuid);
   if (player) {
@@ -40,12 +39,17 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
   }
   const championLink = `https://cdn.communitydragon.org/latest/champion/${player.championId}/square`;
   const gameDurationMs = game.gameDuration * 1000;
+  const teamKills = game.participants
+    .filter((p) => p.teamId === player.teamId)
+    .reduce((sum, p) => sum + (p.kills || 0), 0);
+  const kp = teamKills > 0 ? (((player.kills || 0) + (player.assists ||0)) / teamKills) * 100 : 0;
+   
   return (
     <div
       className={`flex flex-col justify-center ${
         player.win ? "bg-blue/30" : "bg-red/30"
       } rounded-md p-2 w-full`}>
-      <div className="flex border-b-2 mb-2 items-center justify-between">
+      <div className="flex flex-col border-b-2 mb-2 justify-center">
         <h3 className="font-bold truncate">
           {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
         </h3>
@@ -61,7 +65,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
-        <div className="individualChampInfo hidden md:flex items-center gap-1">
+        <div className="individualChampInfo flex items-center gap-1">
           <div className="champImage relative w-12 h-12 shrink-0">
             <img src={championLink} alt={` ${player.championName}`} />
             <p className="absolute bottom-0 right-0 text-xs rounded-md bg-black px-0.5">
@@ -73,18 +77,23 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
             <Runes playerData={player as unknown as ParticipantDto} />
           </div>
           <ItemDisplay playerData={player as unknown as ParticipantDto} />
-          <div className="kda flex flex-col items-center shrink-0 p-2">
+          <div className="kda flex flex-col items-center shrink-0 md:p-2">
             <div className="flex font-bold justify-center">
               <p>{player.kills}</p>&nbsp;/&nbsp;
               <p className="text-red">{player.deaths}</p>
               &nbsp;/&nbsp;
               <p>{player.assists}</p>
             </div>
-            <p className="text-white/60 text-sm">K / D / A</p>
+            <p className="text-white/60 text-sm">
+              {(player.totalMinionsKilled || 0) + (player.neutralMinionsKilled || 0)} CS
+            </p>
+            <p className="text-white/60 text-sm">
+              {kp.toFixed(0)}% KP
+            </p>
           </div>
         </div>
 
-        <div className="players flex items-center truncate w-48">
+        <div className="players hidden smd:flex items-center truncate w-48">
           <div className="flex flex-col items-start gap-0.5 truncate">
             {sortedTeam1.map((player, index) => (
               <div key={index} className="flex items-center">
