@@ -42,8 +42,8 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
   const teamKills = game.participants
     .filter((p) => p.teamId === player.teamId)
     .reduce((sum, p) => sum + (p.kills || 0), 0);
-  const kp = teamKills > 0 ? (((player.kills || 0) + (player.assists ||0)) / teamKills) * 100 : 0;
-   
+  const kp = teamKills > 0 ? (((player.kills || 0) + (player.assists || 0)) / teamKills) * 100 : 0;
+
   return (
     <div
       className={`flex flex-col justify-center ${
@@ -65,19 +65,22 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
-        <div className="individualChampInfo flex items-center gap-1">
-          <div className="champImage relative w-12 h-12 shrink-0">
-            <img src={championLink} alt={` ${player.championName}`} />
-            <p className="absolute bottom-0 right-0 text-xs rounded-md bg-black px-0.5">
-              {player.champLevel}
-            </p>
+        <div className="individualChampInfo flex items-center justify-between smd:justify-normal gap-1 w-full smd:w-fit">
+          <div className="flex items-center gap-2">
+            <div className="champImage relative w-12 h-12 shrink-0">
+              <img src={championLink} alt={` ${player.championName}`} />
+              <p className="absolute bottom-0 right-0 text-xs rounded-md bg-black px-0.5">
+                {player.champLevel}
+              </p>
+            </div>
+            <div className="flex gap-1">
+              <SummonerSpellsDisplay playerData={player as unknown as ParticipantDto} />
+              <Runes playerData={player as unknown as ParticipantDto} />
+            </div>
           </div>
-          <div className="flex gap-1">
-            <SummonerSpellsDisplay playerData={player as unknown as ParticipantDto} />
-            <Runes playerData={player as unknown as ParticipantDto} />
-          </div>
+
           <ItemDisplay playerData={player as unknown as ParticipantDto} />
-          <div className="kda flex flex-col items-center shrink-0 md:p-2">
+          <div className="kda flex flex-col items-center shrink-0 w-20">
             <div className="flex font-bold justify-center">
               <p>{player.kills}</p>&nbsp;/&nbsp;
               <p className="text-red">{player.deaths}</p>
@@ -87,9 +90,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
             <p className="text-white/60 text-sm">
               {(player.totalMinionsKilled || 0) + (player.neutralMinionsKilled || 0)} CS
             </p>
-            <p className="text-white/60 text-sm">
-              {kp.toFixed(0)}% KP
-            </p>
+            <p className="text-white/60 text-sm">{kp.toFixed(0)}% KP</p>
           </div>
         </div>
 
