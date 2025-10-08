@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { RecentGame } from "../../../types/StatTypes";
 import formatDuration from "../../../utils/formatDuration";
 import formatTimeAgo from "../../../utils/formatTimeAgo";
@@ -49,9 +50,11 @@ const MiniGameCard = ({ game }: { game: RecentGame }) => {
                   alt={player.championName!}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
-                <p className="flex truncate">
-                  <span className="text-xs text-white/95">{player.riotIdGameName}</span>
-                </p>
+                <Link
+                  to={`/player/${player.riotIdGameName}-${player.riotIdTagLine}`}
+                  className="flex truncate  hover:text-white hover:underline text-white/80">
+                  <span className="text-xs">{player.riotIdGameName}</span>
+                </Link>
               </div>
             ))}
           </div>
@@ -63,9 +66,11 @@ const MiniGameCard = ({ game }: { game: RecentGame }) => {
                   alt={player.championName!}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
-                <p className="flex truncate">
-                  <span className="text-xs text-white/95">{player.riotIdGameName}</span>
-                </p>
+                <Link
+                  to={`/player/${player.riotIdGameName}-${player.riotIdTagLine}`}
+                  className="flex truncate hover:text-white hover:underline text-white/80">
+                  <span className="text-xs">{player.riotIdGameName}</span>
+                </Link>
               </div>
             ))}
           </div>
