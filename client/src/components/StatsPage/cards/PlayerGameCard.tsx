@@ -45,12 +45,19 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
       className={`flex flex-col justify-center ${
         player.win ? "bg-blue/30" : "bg-red/30"
       } rounded-md p-2 w-full`}>
-      <h3 className="font-bold truncate border-b-2 mb-2">
-        {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
-      </h3>
+      <div className="flex border-b-2 mb-2 items-center justify-between">
+        <h3 className="font-bold truncate">
+          {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
+        </h3>
 
-      <div className="flex items-center justify-between lg:pr-4">
-        <div className="flex flex-col">
+        <div className="flex gap-2 items-center lg:hidden">
+          <p className="text-sm font-bold">{formatDuration(gameDurationMs)}</p>
+          <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between">
+        <div className="hidden lg:flex flex-col">
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
@@ -66,10 +73,19 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
             <Runes playerData={player as unknown as ParticipantDto} />
           </div>
           <ItemDisplay playerData={player as unknown as ParticipantDto} />
+          <div className="kda flex flex-col items-center shrink-0 p-2">
+            <div className="flex font-bold justify-center">
+              <p>{player.kills}</p>&nbsp;/&nbsp;
+              <p className="text-red">{player.deaths}</p>
+              &nbsp;/&nbsp;
+              <p>{player.assists}</p>
+            </div>
+            <p className="text-white/60 text-sm">K / D / A</p>
+          </div>
         </div>
 
-        <div className="players flex items-center">
-          <div className="flex flex-col items-start gap-0.5">
+        <div className="players flex items-center truncate w-48">
+          <div className="flex flex-col items-start gap-0.5 truncate">
             {sortedTeam1.map((player, index) => (
               <div key={index} className="flex items-center">
                 <img
@@ -83,7 +99,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
               </div>
             ))}
           </div>
-          <div className="flex flex-col items-start ml-6 gap-0.5">
+          <div className="flex flex-col items-start ml-2 gap-0.5 truncate">
             {sortedTeam2.map((player, index) => (
               <div key={index} className="flex items-center">
                 <img
