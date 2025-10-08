@@ -6,6 +6,9 @@ import formatTimeAgo from "../../../utils/formatTimeAgo";
 import ItemDisplay from "../../MatchHistoryPage/MatchHistoryDisplay/ItemDisplay";
 import Runes from "../../MatchHistoryPage/MatchHistoryDisplay/RuneDisplay/Runes";
 import SummonerSpellsDisplay from "../../MatchHistoryPage/MatchHistoryDisplay/SummonerSpellsDisplay";
+import MainLink from "../../MainLink";
+import Button from "../../Button";
+import SubdomainLink from "../../SubdomainLink";
 
 const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) => {
   const { teams: team1Info } = game.teams[0];
@@ -127,6 +130,14 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
             ))}
           </div>
         </div>
+      </div>
+      <div className="btns">
+        <MainLink to={`/mh/${game.matchId.split("_")[1]}`}>
+        <Button>To Match</Button>
+        </MainLink>
+        <SubdomainLink subdomain="draft" to={`/draft/${game.draftCode}`}>
+          <Button>To Draft</Button>
+        </SubdomainLink>
       </div>
     </div>
   );
