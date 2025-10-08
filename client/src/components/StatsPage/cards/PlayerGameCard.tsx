@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ParticipantDto } from "../../../types/MatchV5";
 import { RecentGame } from "../../../types/StatTypes";
 import formatDuration from "../../../utils/formatDuration";
@@ -30,11 +31,9 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
       (a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? "")
     );
 
-  let playerTeamId: number | null;
   const player = game.participants.find((p) => p.playerPuuid === puuid);
-  if (player) {
-    playerTeamId = player.teamId;
-  } else {
+
+  if (!player) {
     return null;
   }
   const championLink = `https://cdn.communitydragon.org/latest/champion/${player.championId}/square`;
@@ -103,9 +102,11 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
                   alt={player.championName!}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
-                <p className="flex truncate">
-                  <span className="text-xs text-white/95 truncate">{player.riotIdGameName}</span>
-                </p>
+                <Link
+                  to={`/player/${player.riotIdGameName}-${player.riotIdTagLine}`}
+                  className="flex truncate hover:text-white hover:underline text-white/80">
+                  <span className="text-xs truncate">{player.riotIdGameName}</span>
+                </Link>
               </div>
             ))}
           </div>
@@ -117,9 +118,11 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
                   alt={player.championName!}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
-                <p className="flex truncate">
-                  <span className="text-xs text-white/95 truncate">{player.riotIdGameName}</span>
-                </p>
+                <Link
+                  to={`/player/${player.riotIdGameName}-${player.riotIdTagLine}`}
+                  className="flex truncate hover:text-white hover:underline text-white/80">
+                  <span className="text-xs truncate">{player.riotIdGameName}</span>
+                </Link>
               </div>
             ))}
           </div>
