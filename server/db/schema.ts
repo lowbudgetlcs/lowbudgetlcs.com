@@ -5,9 +5,9 @@ import {
   integer,
   text,
   boolean,
-  foreignKey,
   serial,
   timestamp,
+  foreignKey,
   bigint,
   varchar,
   type AnyPgColumn,
@@ -74,36 +74,6 @@ export const draftLobbiesInWebsite = website.table(
   (table) => [unique("draft_lobbies_shortcode_key").on(table.shortcode)]
 );
 
-export const teamsInWebsite = website.table(
-  "teams",
-  {
-    id: serial().primaryKey().notNull(),
-    divisionId: integer("division_id"),
-    teamName: text("team_name").notNull(),
-    teamTag: text("team_tag"),
-    active: boolean().default(true).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    formerTeam: bigint("former_team", { mode: "number" }),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.divisionId],
-      foreignColumns: [divisionsInWebsite.id],
-      name: "teams_division_id_fkey",
-    }).onDelete("set null"),
-    foreignKey({
-      columns: [table.formerTeam],
-      foreignColumns: [table.id],
-      name: "teams_former_team_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("set null"),
-  ]
-);
-
 export const fearlessDraftLobbiesInWebsite = website.table("fearless_draft_lobbies", {
   id: integer()
     .primaryKey()
@@ -153,6 +123,36 @@ export const divisionsInWebsite = website.table(
       name: "divisions_season_id_fkey",
     }).onDelete("cascade"),
     unique("divisions_division_name_key").on(table.divisionName),
+  ]
+);
+
+export const teamsInWebsite = website.table(
+  "teams",
+  {
+    id: serial().primaryKey().notNull(),
+    divisionId: integer("division_id"),
+    teamName: text("team_name").notNull(),
+    teamTag: text("team_tag"),
+    active: boolean().default(true).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
+      sql`CURRENT_TIMESTAMP`
+    ),
+    // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+    formerTeam: bigint("former_team", { mode: "number" }),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.divisionId],
+      foreignColumns: [divisionsInWebsite.id],
+      name: "teams_division_id_fkey",
+    }).onDelete("set null"),
+    foreignKey({
+      columns: [table.formerTeam],
+      foreignColumns: [table.id],
+      name: "teams_former_team_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("set null"),
   ]
 );
 
@@ -605,34 +605,6 @@ export const teams = pgTable(
   ]
 );
 
-export const gamesInWebsite = website.table(
-  "games",
-  {
-    id: serial().primaryKey().notNull(),
-    shortcode: text().notNull(),
-    gameNum: integer("game_num").notNull(),
-    winnerId: integer("winner_id"),
-    loserId: integer("loser_id"),
-    callbackResult: jsonb("callback_result"),
-    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.loserId],
-      foreignColumns: [teams.id],
-      name: "fk_loser_id",
-    }),
-    foreignKey({
-      columns: [table.winnerId],
-      foreignColumns: [teams.id],
-      name: "fk_winner_id",
-    }),
-    unique("games_shortcode_key").on(table.shortcode),
-  ]
-);
-
 export const draftLobbies = pgTable(
   "draft_lobbies",
   {
@@ -685,38 +657,6 @@ export const draftLobbies = pgTable(
   ]
 );
 
-export const playersInWebsite = website.table("players", {
-  puuid: text().primaryKey().notNull(),
-  summonerName: text("summoner_name").notNull(),
-  tagLine: text("tag_line").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
-    sql`CURRENT_TIMESTAMP`
-  ),
-});
-
-export const playerTeamHistoryInWebsite = website.table(
-  "player_team_history",
-  {
-    id: serial().primaryKey().notNull(),
-    playerPuuid: text("player_puuid").notNull(),
-    teamId: integer("team_id").notNull(),
-    startDate: date("start_date").notNull(),
-    endDate: date("end_date"),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.playerPuuid],
-      foreignColumns: [playersInWebsite.puuid],
-      name: "player_team_history_player_puuid_fkey",
-    }).onDelete("cascade"),
-    foreignKey({
-      columns: [table.teamId],
-      foreignColumns: [teamsInWebsite.id],
-      name: "player_team_history_team_id_fkey",
-    }).onDelete("cascade"),
-  ]
-);
-
 export const matchesInWebsite = website.table(
   "matches",
   {
@@ -732,6 +672,7 @@ export const matchesInWebsite = website.table(
     gameEndTimeStamp: bigint("game_end_time_stamp", { mode: "number" }).notNull(),
     endOfGameResult: text("end_of_game_result").notNull(),
     queueId: integer("queue_id").notNull(),
+    tournamentCode: text("tournament_code"),
   },
   (table) => [
     foreignKey({
@@ -926,11 +867,6 @@ export const matchParticipantsInWebsite = website.table(
       foreignColumns: [matchesInWebsite.matchId],
       name: "match_participants_match_id_fkey",
     }).onDelete("cascade"),
-    foreignKey({
-      columns: [table.playerPuuid],
-      foreignColumns: [playersInWebsite.puuid],
-      name: "match_participants_player_puuid_fkey",
-    }),
   ]
 );
 
@@ -954,3 +890,37 @@ export const currentSeasonDivisionsInWebsite = website.table(
       .onDelete("set null"),
   ]
 );
+
+export const playerTeamHistoryInWebsite = website.table(
+  "player_team_history",
+  {
+    id: serial().primaryKey().notNull(),
+    playerPuuid: text("player_puuid").notNull(),
+    teamId: integer("team_id").notNull(),
+    startDate: date("start_date").notNull(),
+    endDate: date("end_date"),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.playerPuuid],
+      foreignColumns: [playersInWebsite.puuid],
+      name: "player_team_history_player_puuid_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("set null"),
+    foreignKey({
+      columns: [table.teamId],
+      foreignColumns: [teamsInWebsite.id],
+      name: "player_team_history_team_id_fkey",
+    }).onDelete("cascade"),
+  ]
+);
+
+export const playersInWebsite = website.table("players", {
+  puuid: text().primaryKey().notNull(),
+  summonerName: text("summoner_name").notNull(),
+  tagLine: text("tag_line").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
+    sql`CURRENT_TIMESTAMP`
+  ),
+});
