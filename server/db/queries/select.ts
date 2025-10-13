@@ -4,6 +4,7 @@ import {
   asTeams,
   currentSeasonDivisionsInWebsite,
   divisions,
+  divisionsInWebsite,
   draftLobbiesInWebsite,
   fearlessDraftLobbiesInWebsite,
   games,
@@ -435,4 +436,18 @@ export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]
     console.error("[Game Stats Updater] Error in getHistoricalTeamIdsByName:", error);
     return [];
   }
+};
+
+export const getDivisionsForSelectedSeason = async (seasonId: number) => {
+  try {
+    const divisionsData = await db
+      .select()
+      .from(divisionsInWebsite)
+      .where(eq(divisionsInWebsite.seasonId, seasonId));
+    return divisionsData;
+  } catch (error) {
+    console.error("Error in getDivisionsForSelectedSeason:", error);
+    return [];
+  }
+
 };

@@ -37,7 +37,7 @@ const StatsMain = () => {
             <li>Divisions</li>
           </NavLink>
           <NavLink
-            to={"/#"}
+            to={"/team"}
             className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-left`}>
             <li>Teams</li>
           </NavLink>

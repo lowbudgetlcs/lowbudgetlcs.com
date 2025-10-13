@@ -1,12 +1,14 @@
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "../..";
 import {
+  divisionsInWebsite,
   draftLobbies,
   draftLobbiesInWebsite,
   matchesInWebsite,
   matchParticipantsInWebsite,
   matchTeamStatsInWebsite,
   playersInWebsite,
+  seasonsInWebsite,
   teamsInWebsite,
 } from "../../schema";
 
@@ -205,12 +207,12 @@ export const getGamesForPlayer = async (puuid: string) => {
       );
 
     const matchIds = playerMatches.map((ts) => ts.matchId);
-    const tournamentCodes: string[] = []
-      for (const match of playerMatches) { 
-        if (match.tournamentCodes) {
-          tournamentCodes.push(match.tournamentCodes)
-        }
+    const tournamentCodes: string[] = [];
+    for (const match of playerMatches) {
+      if (match.tournamentCodes) {
+        tournamentCodes.push(match.tournamentCodes);
       }
+    }
 
     const teamMatches = await db
       .select()
@@ -267,6 +269,33 @@ export const getGamesForPlayer = async (puuid: string) => {
     return finalResult;
   } catch (err) {
     console.error("Error in getGamesForPlayer: ", err);
+    return [];
+  }
+};
+
+export const getSeasons = async () => {
+  try {
+    const seasons = await db.select().from(seasonsInWebsite);
+    return seasons;
+  } catch (err) {
+    console.error("Error in getSeasons: ", err);
+    return [];
+  }
+};
+
+export const getTeamsBySeason = async (seasonId: number) => {
+  try {
+    const teams = await db
+      .select()
+      .from(divisionsInWebsite)
+      .where(eq(divisionsInWebsite.seasonId, seasonId))
+      .leftJoin(
+        teamsInWebsite,
+        eq(divisionsInWebsite.id, teamsInWebsite.divisionId)
+      );
+    return teams;
+  } catch (err) {
+    console.error("Error in getTeamsBySeason: ", err);
     return [];
   }
 };
