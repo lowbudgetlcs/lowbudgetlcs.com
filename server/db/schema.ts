@@ -115,6 +115,7 @@ export const divisionsInWebsite = website.table(
     createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
       sql`CURRENT_TIMESTAMP`
     ),
+    eventId: integer("event_id"),
   },
   (table) => [
     foreignKey({
