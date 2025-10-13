@@ -131,13 +131,15 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
           </div>
         </div>
       </div>
-      <div className="btns">
+      <div className="btns flex items-center justify-center gap-4">
+        {game.tournamentCode && (
+          <SubdomainLink subdomain="draft" to={`/draft/${game.tournamentCode}`}>
+            <Button>Draft</Button>
+          </SubdomainLink>
+        )}
         <MainLink to={`/mh/${game.matchId.split("_")[1]}`}>
-        <Button>To Match</Button>
+          <Button>Match</Button>
         </MainLink>
-        <SubdomainLink subdomain="draft" to={`/draft/${game.draftCode}`}>
-          <Button>To Draft</Button>
-        </SubdomainLink>
       </div>
     </div>
   );
