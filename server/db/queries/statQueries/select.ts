@@ -244,7 +244,7 @@ export const getGamesForPlayer = async (puuid: string) => {
         eq(draftLobbiesInWebsite.shortcode, matchesInWebsite.tournamentCode)
       )
       .where(inArray(draftLobbiesInWebsite.shortcode, tournamentCodes));
-    console.log(draftCodes);
+
     const finalResult = teamMatches.map((match) => {
       const teamsForMatch = allTeamStats.filter(
         (ts) => ts.match_team_stats.matchId === match.matchId
