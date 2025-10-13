@@ -249,5 +249,7 @@ export interface RecentGame {
   queueId: number;
   teams: MatchTeam[];
   participants: MatchParticipant[];
-  draftCode: string | null
+  tournamentCode: string | null;
+  draftCode: string | null;
+  fearlessCode: string | null;
 }

@@ -164,6 +164,7 @@ const insertMatch = async (gameData: ProcessedGameData) => {
       gameEndTimeStamp: matchInfo.gameEndTimestamp,
       endOfGameResult: matchInfo.endOfGameResult,
       queueId: matchInfo.queueId,
+      tournamentCode: matchInfo.tournamentCode,
     });
     return true;
   } catch (err) {

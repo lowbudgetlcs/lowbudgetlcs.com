@@ -1,6 +1,8 @@
 import { and, desc, eq, inArray, sql } from "drizzle-orm";
 import { db } from "../..";
 import {
+  draftLobbies,
+  draftLobbiesInWebsite,
   matchesInWebsite,
   matchParticipantsInWebsite,
   matchTeamStatsInWebsite,
@@ -170,7 +172,9 @@ export const getRecentGamesByDivision = async (amount: number, divisionId: numbe
 export const getGamesForPlayer = async (puuid: string) => {
   try {
     const playerMatches = await db
-      .select({ matchId: matchParticipantsInWebsite.matchId })
+      .select({
+        matchId: matchParticipantsInWebsite.matchId,
+      })
       .from(matchParticipantsInWebsite)
       .where(eq(matchParticipantsInWebsite.playerPuuid, puuid));
 
@@ -193,15 +197,35 @@ export const getGamesForPlayer = async (puuid: string) => {
       .from(matchParticipantsInWebsite)
       .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
+    const tournamentCodes = teamMatches.map((ts) => ts.tournamentCode);
+
+    const draftCodes = await db
+      .select({
+        draftCode: draftLobbiesInWebsite.lobbyCode,
+        fearlessCode: draftLobbiesInWebsite.fearlessCode,
+        tournamentCode: draftLobbiesInWebsite.shortcode,
+      })
+      .from(draftLobbiesInWebsite)
+      .leftJoin(
+        matchesInWebsite,
+        eq(draftLobbiesInWebsite.shortcode, matchesInWebsite.tournamentCode)
+      )
+      .where(eq(draftLobbiesInWebsite.shortcode, matchesInWebsite.tournamentCode));
+
     const finalResult = teamMatches.map((match) => {
       const teamsForMatch = allTeamStats.filter(
         (ts) => ts.match_team_stats.matchId === match.matchId
       );
       const participantsForMatch = allParticipants.filter((p) => p.matchId === match.matchId);
+      const draftCodeForMatch = draftCodes.find(
+        (draft) => draft.tournamentCode === match.tournamentCode
+      );
       return {
         ...match,
         teams: teamsForMatch,
         participants: participantsForMatch,
+        draftCode: draftCodeForMatch?.draftCode,
+        fearlessCode: draftCodeForMatch?.fearlessCode,
       };
     });
 
