@@ -1,7 +1,6 @@
 import { RecentGame } from "../../../types/StatTypes";
 
 const getPlayerGames = async (summonerName: string, tagline: string) => {
-  try {
     const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
     const url = `${
       import.meta.env.VITE_BACKEND_URL
@@ -18,10 +17,6 @@ const getPlayerGames = async (summonerName: string, tagline: string) => {
 
     const games: RecentGame[] = await response.json();
     return games;
-  } catch (error) {
-    console.error("Error fetching player games:", error);
-    return [];
-  }
 };
 
 export default getPlayerGames;
