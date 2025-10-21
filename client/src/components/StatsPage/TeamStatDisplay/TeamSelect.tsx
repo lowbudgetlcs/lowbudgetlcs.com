@@ -57,7 +57,7 @@ const TeamSelect = () => {
   }
 
   return (
-    <div>
+    <div className="grow w-full">
       <div
         className={`allstars flex gap-2 bg-white text-black dark:bg-black dark:text-white flex-col items-center justify-center grow pt-20 transition duration-500 ${
           buttonsShown ? "" : "hidden"

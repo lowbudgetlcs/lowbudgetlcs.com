@@ -8,7 +8,7 @@ const TeamSidebar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItem
   let currentAnimationNum = 200;
   return (
     <div className="sidebar text-white pt-20 bg-light-gray transition duration-500 opacity-0 animate-slide-in-right text-nowrap">
-      <ul className="flex flex-row md:flex-col md:justify-center items-center md:px-8 gap-8 text-lg md:text-2xl overflow-x-scroll overflow-y-hidden md:overflow-y-scroll font-bold no-scrollbar p-2">
+      <ul className={`flex flex-row md:flex-col md:justify-center items-center md:px-8 gap-8 text-lg md:text-2xl overflow-x-scroll overflow-y-hidden md:overflow-y-scroll font-bold no-scrollbar p-2 ${navItems.length > 3 ? '': 'justify-center'}`}>
         {navItems.map((navItem) => {
           currentAnimationNum = currentAnimationNum + 100;
           const animationTiming = `animate-slide-in-${currentAnimationNum}`;
