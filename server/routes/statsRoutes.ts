@@ -251,12 +251,10 @@ statRoutes.get(
           console.warn(`Error getting logos: `, logoErr.message);
         }
       }
-      console.log("Finished")
       const divisionsResponse = await getDivisionsForSelectedSeason(seasonId);
       if (divisionsResponse.length <= 0) {
         return res.status(404).json({ error: "Season Not Found" });
       }
-      console.log("Returning")
       return res.json({
         divisions: divisionsResponse,
         teams: teamsResponse,
