@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import StatsPlayer from "../components/StatsPage/PlayerStatDisplay/StatsPlayer";
 import TeamSelect from "../components/StatsPage/TeamStatDisplay/TeamSelect";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import TeamDisplay from "../components/StatsPage/TeamStatDisplay/TeamDisplay";
 
 const queryClient = new QueryClient();
 const StatRoutes = () => {
@@ -14,6 +15,7 @@ const StatRoutes = () => {
           <Route path="/" element={<StatsMain />} />
           <Route path="team/" element={<TeamSelect />} />
           <Route path="player/:summonerName" element={<StatsPlayer />} />
+          <Route path="team/:teamId" element={<TeamDisplay />} />
         </Routes>
         <div className="flex-none">
           <Footer />
