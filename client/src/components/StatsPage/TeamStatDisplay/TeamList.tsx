@@ -48,7 +48,7 @@ const TeamList = ({ activeSeason }: { activeSeason: number }) => {
           if (team.divisions.divisionName === activeLink)
             return (
               <Link
-                to={`${team.teams.id}`}
+                to={`${encodeURIComponent(team.teams.teamName)}`}
                 key={team.teams.id}
                 className={`teamCard relative transition duration-300 rounded-md bg-gray/80 dark:bg-gray/40 w-64 lg:w-[24rem]`}>
                 <div className="flex flex-col md:flex-row py-2 md:py-0 md:pl-4 gap-2 items-center justify-center max-w-md md:max-w-full md:w-full h-40 md:h-32 overflow-hidden">

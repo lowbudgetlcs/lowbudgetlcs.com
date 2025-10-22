@@ -15,7 +15,7 @@ const StatRoutes = () => {
           <Route path="/" element={<StatsMain />} />
           <Route path="team/" element={<TeamSelect />} />
           <Route path="player/:summonerName" element={<StatsPlayer />} />
-          <Route path="team/:teamId" element={<TeamDisplay />} />
+          <Route path="team/:teamName" element={<TeamDisplay />} />
         </Routes>
         <div className="flex-none">
           <Footer />
