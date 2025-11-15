@@ -8,6 +8,7 @@ import {
   getSeasons,
   getTeamsBySeason,
 } from "../db/queries/statQueries/select";
+import { getTeamIdByName } from "../db/queries/select";
 import playerStatsAggregation from "../stats/playerStatsAggregation";
 import teamStatsAggregation from "../stats/teamStatsAggregation";
 import { EventWithTeamsDto } from "./rosterRoutes";
@@ -182,6 +183,28 @@ statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
     return res.json(overallStats);
   } catch (err: any) {
     console.error("Error fetching team stats:", err);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Get team overall stats by team name (resolves active team id then aggregates)
+statRoutes.get("/api/team/name/:teamName", async (req: Request, res: Response) => {
+  try {
+    const teamName: string = decodeURIComponent(req.params.teamName);
+    if (!teamName) {
+      return res.status(400).json({ error: "Invalid team name" });
+    }
+    const teamId = await getTeamIdByName(teamName);
+    if (!teamId) {
+      return res.status(404).json({ error: "Team Not Found" });
+    }
+    const overallStats = await teamStatsAggregation(teamId);
+    if (!overallStats) {
+      return res.status(404).json({ error: "Team Stats Not Found" });
+    }
+    return res.json({ teamId, overallStats });
+  } catch (err: any) {
+    console.error("Error fetching team stats by name:", err);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });

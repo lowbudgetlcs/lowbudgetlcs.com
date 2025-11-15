@@ -365,7 +365,7 @@ export const getTeamIdByName = async (name: string) => {
       .select({
         id: teams.id,
       })
-      .from(teams)
+      .from(teamsInWebsite)
       .where(and(eq(teamsInWebsite.teamName, name), eq(teamsInWebsite.active, true)))
       .limit(1);
 

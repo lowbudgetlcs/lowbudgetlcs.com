@@ -53,6 +53,9 @@ export interface TeamOverallStats {
   blueSidePerformance: SidePerformance;
   redSidePerformance: SidePerformance;
   laneDistribution: Record<string, LaneDistribution>;
+  goldDistribution?: Record<string, number>;
+  damageDistribution?: Record<string, number>;
+  visionDistribution?: Record<string, number>;
   // Roster Breakdown
   roster: RosterPlayerStat[];
 }
@@ -263,6 +266,17 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
     return acc;
   }, {} as Record<string, LaneDistribution>);
 
+  // Also prepare direct distributions (simple numeric map) for client convenience
+  const goldDistribution: Record<string, number> = {};
+  const damageDistribution: Record<string, number> = {};
+  const visionDistribution: Record<string, number> = {};
+  Object.keys(finalLaneDistribution).forEach((k) => {
+    const v = finalLaneDistribution[k];
+    goldDistribution[k] = v.gold;
+    damageDistribution[k] = v.damage;
+    visionDistribution[k] = v.vision;
+  });
+
   return {
     totalGames: totalGames,
     wins: stats.wins,
@@ -308,6 +322,9 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
       winrate: stats.redSideGames > 0 ? (stats.redSideWins / stats.redSideGames) * 100 : 0,
     },
     laneDistribution: finalLaneDistribution,
+    goldDistribution,
+    damageDistribution,
+    visionDistribution,
     roster: roster,
   };
 };
