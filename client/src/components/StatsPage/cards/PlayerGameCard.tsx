@@ -156,7 +156,14 @@ const PlayerGameCard = ({
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
                 <Link
-                  to={`/player/${player.riotIdGameName}-${player.riotIdTagLine}`}
+                  to={(() => {
+                    const gameName = player.riotIdGameName || player.summonerName || "";
+                    const tagLine = player.riotIdTagLine || "";
+                    if (tagLine && tagLine.trim().length > 0) {
+                      return `/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
+                    }
+                    return `/player/${encodeURIComponent(gameName)}`;
+                  })()}
                   className="flex truncate hover:text-white hover:underline text-white/80"
                 >
                   <span className="text-xs truncate">
@@ -175,7 +182,14 @@ const PlayerGameCard = ({
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
                 <Link
-                  to={`/player/${player.riotIdGameName}-${player.riotIdTagLine}`}
+                  to={(() => {
+                    const gameName = player.riotIdGameName || player.summonerName || "";
+                    const tagLine = player.riotIdTagLine || "";
+                    if (tagLine && tagLine.trim().length > 0) {
+                      return `/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
+                    }
+                    return `/player/${encodeURIComponent(gameName)}`;
+                  })()}
                   className="flex truncate hover:text-white hover:underline text-white/80"
                 >
                   <span className="text-xs truncate">
