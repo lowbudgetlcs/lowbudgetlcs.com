@@ -99,7 +99,7 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-white/60">Games: {p.gamesPlayed}</div>
-                  <div className="text-xs">Winrate: <span className={p.winrate < 50 ? "text-red" : "text-blue"}>{p.winrate.toFixed(0)}%</span></div>
+                  <div className="text-xs text-white/60">Winrate: <span className={p.winrate < 50 ? "text-red/80" : "text-blue/80"}>{p.winrate.toFixed(0)}%</span></div>
                 </div>
               </Link>
             ))
