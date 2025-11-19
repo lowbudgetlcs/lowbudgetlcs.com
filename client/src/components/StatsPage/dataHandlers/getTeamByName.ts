@@ -1,4 +1,12 @@
-const getTeamByName = async (teamName: string) => {
+import { TeamOverallStats } from "../../../types/StatTypes";
+
+interface TeamByNameResponse {
+  teamId: number;
+  overallStats: TeamOverallStats;
+  logo?: string | null;
+}
+
+const getTeamByName = async (teamName: string): Promise<TeamByNameResponse | null> => {
   try {
     const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
     const url = `${import.meta.env.VITE_BACKEND_URL}/stats/api/team/name/${encodeURIComponent(
@@ -14,8 +22,7 @@ const getTeamByName = async (teamName: string) => {
       throw new Error("Failed to fetch team info by name");
     }
 
-    const payload = await response.json();
-    // payload: { teamId, overallStats }
+    const payload: TeamByNameResponse = await response.json();
     return payload;
   } catch (error) {
     console.error("Error fetching team by name:", error);

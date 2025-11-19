@@ -9,6 +9,7 @@ import MiniGameCard from "../cards/MiniGameCard";
 import IndividualStatCard from "../cards/IndividualStatCard";
 import { TeamOverallStats } from "../../../types/StatTypes";
 import AchievementsDisplay from "../PlayerStatDisplay/AchievementsDisplay";
+import TeamStatSidebar from "./TeamStatSidebar";
 import DistributionCard from "./DistributionCard";
 import { FaCrown, FaCoins } from "react-icons/fa";
 import { LuSwords } from "react-icons/lu";
@@ -53,12 +54,7 @@ function TeamDisplay() {
 
   const teamPayload = teamQuery.data;
   const teamData = teamPayload?.overallStats as TeamOverallStats;
-  const roster = (teamData?.roster || []) as Array<{
-    summonerName: string;
-    gamesPlayed: number;
-    winrate: number;
-    kda: number;
-  }>;
+  const teamLogo = teamPayload?.logo || null;
   const teamGames = teamGamesQuery.data;
 
   const goldDistribution = (teamData as any)?.goldDistribution || {};
@@ -95,7 +91,7 @@ function TeamDisplay() {
         <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
       </Link>
       <div className="flex flex-col md:flex-row justify-stretch md:p-4 gap-4 lg:gap-8 overflow-x-hidden">
-
+        <TeamStatSidebar teamName={teamName} teamData={teamData} logo={teamLogo} />
         <div className="extendedStatsContainer flex flex-col gap-4 flex-grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
           <>
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
@@ -165,26 +161,6 @@ function TeamDisplay() {
                     iconBgColor="bg-cyan bg-opacity-50"
                     data={visionDistribution}
                   />
-                </div>
-
-                <div className="rosterBreakdown my-4">
-                  <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Roster</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    {roster.map((p) => (
-                      <div key={p.summonerName} className="p-2 rounded-md bg-gray/20">
-                        <div className="flex justify-between">
-                          <div>
-                            <strong>{p.summonerName}</strong>
-                            <div className="text-sm">Games: {p.gamesPlayed}</div>
-                          </div>
-                          <div className="text-right">
-                            <div>Winrate: {p.winrate.toFixed(0)}%</div>
-                            <div>KDA: {p.kda.toFixed(2)}</div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
                 </div>
               </>
             ) : activeLink === "Recent Games" ? (

@@ -59,32 +59,35 @@ export interface PlayerOverallStats {
 }
 
 interface RosterPlayerStat {
-    summonerName: string;
-    gamesPlayed: number;
-    winrate: number;
-    kda: number;
-    avgKills: number;
-    avgDeaths: number;
-    avgAssists: number;
+  summonerName: string;
+  gamesPlayed: number;
+  winrate: number;
+  kda: number;
+  avgKills: number;
+  avgDeaths: number;
+  avgAssists: number;
+  roles?: string[];
+  riotIdGameName?: string | null;
+  riotIdTagLine?: string | null;
 }
 
 export interface TeamOverallStats {
-    totalGames: number;
-    wins: number;
-    losses: number;
-    winrate: number;
-    avgGameDuration: number;
-    // Objective Stats
-    avgBarons: number;
-    avgDragons: number;
-    avgTowers: number;
-    avgInhibitors: number;
-    avgGrubs: number; // Added Grubs
-    avgAtakhan: number; // Added Atakhan
-    firstBloodRate: number;
-    firstTowerRate: number;
-    // Roster Breakdown
-    roster: RosterPlayerStat[];
+  totalGames: number;
+  wins: number;
+  losses: number;
+  winrate: number;
+  avgGameDuration: number;
+  // Objective Stats
+  avgBarons: number;
+  avgDragons: number;
+  avgTowers: number;
+  avgInhibitors: number;
+  avgGrubs: number; // Added Grubs
+  avgAtakhan: number; // Added Atakhan
+  firstBloodRate: number;
+  firstTowerRate: number;
+  // Roster Breakdown
+  roster: RosterPlayerStat[];
 }
 
 export interface MatchParticipant {

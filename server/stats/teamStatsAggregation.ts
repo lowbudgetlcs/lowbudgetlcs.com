@@ -8,6 +8,9 @@ interface RosterPlayerStat {
   avgKills: number;
   avgDeaths: number;
   avgAssists: number;
+  roles?: string[];
+  riotIdGameName?: string;
+  riotIdTagLine?: string;
 }
 
 interface SidePerformance {
@@ -72,6 +75,9 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
       totalDeaths: number;
       totalAssists: number;
       wins: number;
+      roleCounts: Record<string, number>;
+      gameName: string;
+      tagLine: string;
     };
   } = {};
   const initialLaneDistribution = {
@@ -167,7 +173,9 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
         if (player.firstBloodKill) teamGotFirstBlood = true;
         if (player.firstTowerKill) teamGotFirstTower = true;
 
-        const name = (player.riotIdGameName ?? "Unknown") + (player.riotIdTagLine ?? "Unknown");
+        const gameName = player.riotIdGameName ?? "Unknown";
+        const tagLine = player.riotIdTagLine ?? "Unknown";
+        const name = `${gameName}-${tagLine}`;
         if (!acc.rosterStats[name]) {
           acc.rosterStats[name] = {
             summonerName: name,
@@ -181,6 +189,9 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
             totalDeaths: 0,
             totalAssists: 0,
             wins: 0,
+            roleCounts: {},
+            gameName,
+            tagLine,
           };
         }
         const rosterPlayer = acc.rosterStats[name];
@@ -189,6 +200,9 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
         rosterPlayer.totalKills += player.kills ?? 0;
         rosterPlayer.totalDeaths += player.deaths ?? 0;
         rosterPlayer.totalAssists += player.assists ?? 0;
+        // track role counts
+        const playerRole = player.teamPosition ?? 'UNKNOWN';
+        rosterPlayer.roleCounts[playerRole] = (rosterPlayer.roleCounts[playerRole] ?? 0) + 1;
       });
 
       if (teamGotFirstBlood) acc.firstBloodCount += 1;
@@ -251,7 +265,17 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
       player.kda =
         (player.totalKills + player.totalAssists) /
         (player.totalDeaths === 0 ? 1 : player.totalDeaths);
-      return player as RosterPlayerStat;
+      // derive roles from the roleCounts map, sorted by frequency
+      const entries = Object.entries((player as any).roleCounts || {}) as [string, number][];
+      const sortedRoles = entries.sort((a, b) => b[1] - a[1]).map((r) => r[0]);
+      const roles = sortedRoles.slice(0, 2); // top 2 roles
+      return {
+        ...player,
+        roles,
+        // include both gameName and tagLine for linking
+        riotIdGameName: (player as any).gameName,
+        riotIdTagLine: (player as any).tagLine,
+      } as unknown as RosterPlayerStat & { roles: string[]; riotIdGameName: string; riotIdTagLine: string };
     })
     .sort((a, b) => b.gamesPlayed - a.gamesPlayed);
 
