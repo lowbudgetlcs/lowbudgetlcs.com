@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { DraftInitializeProps, DraftStateProps } from "../../draftTool/states/draftState";
 import { db } from "../index";
+import { checkForGameId } from "./select";
 import {
   draftLobbiesInWebsite,
   fearlessDraftLobbiesInWebsite,
@@ -328,6 +329,12 @@ export const insertFullMatchData = async (processedGames: ProcessedGameData[]) =
   let successCount = 0;
   for (const game of processedGames) {
     try {
+      // Skips if the game already exists in the database
+      const alreadyExists = await checkForGameId(game.gameId);
+      if (alreadyExists) {
+        console.log(`[Game Stats Updater] Skipping insert for existing match: ${game.gameId}`);
+        continue;
+      }
       await db.transaction(async (tx) => {
         await insertMatch(game);
         await insertMatchTeamStats(game);

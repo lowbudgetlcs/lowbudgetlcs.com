@@ -334,6 +334,21 @@ export const checkForGameId = async (matchId: string) => {
   }
 };
 
+// Bulk fetch existing match IDs from the DB. Returns an array of matchId strings that exist.
+export const getExistingMatchIds = async (matchIds: string[]) => {
+  if (!matchIds || matchIds.length === 0) return [];
+  try {
+    const rows = await db
+      .select({ matchId: matchesInWebsite.matchId })
+      .from(matchesInWebsite)
+      .where(inArray(matchesInWebsite.matchId, matchIds));
+    return rows.map((r: any) => r.matchId);
+  } catch (err) {
+    console.error("[Game ID Grabber] Error fetching existing matchIds from DB: ", err);
+    return [];
+  }
+};
+
 export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[]) => {
   if (!puuids || puuids.length < 3 || !possibleTeamIds || possibleTeamIds.length === 0) {
     return null;
