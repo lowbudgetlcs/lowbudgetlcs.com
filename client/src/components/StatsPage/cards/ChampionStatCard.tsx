@@ -23,7 +23,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
             <p className="opacity-55">{champ.games} Games</p>
           </div>
           <p>
-            Win Rate:{" "}
+            Win Rate:
             <span className={champ.winrate >= 50 ? "text-blue" : "text-red"}>
               {" "}
               {champ.winrate.toFixed(0)}%
@@ -31,16 +31,14 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
           </p>
         </div>
       </div>
-      <div className="smallStatBoxesChamp flex sm:grid flex-col grid-rows-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="smallStatBoxesChamp flex md:grid flex-col grid-rows-2 sm:grid-cols-2 gap-4">
         {/* KDA */}
         <IndividualStatCard
           icon={<LuSwords className="text-white w-[25px] h-[25px]" />}
           iconBgColor="bg-red bg-opacity-50"
           title="KDA Ratio"
           value={champ.kda.toFixed(2)}
-          valueColor={
-            champ.kda >= 2 ? "text-blue" : champ.kda <= 1 ? "text-red" : "text-white"
-          }
+          valueColor={champ.kda >= 2 ? "text-blue" : champ.kda <= 1 ? "text-red" : "text-white"}
         />
         {/* Damage/Min */}
         <IndividualStatCard
