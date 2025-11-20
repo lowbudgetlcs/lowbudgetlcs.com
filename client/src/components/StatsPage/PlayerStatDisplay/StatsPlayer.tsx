@@ -97,7 +97,7 @@ function StatsPlayer() {
                 {/* Champion Stats */}
                 <div className="specificChampStats">
                   <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Champion Stats</h2>
-                  <div className="champStats flex flex-col gap-4 max-h-72 overflow-y-auto">
+                  <div className="champStats grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto">
                     {/* Champion Box */}
                     {/* Make it autofill with information from data */}
                     {playerData.championPool
