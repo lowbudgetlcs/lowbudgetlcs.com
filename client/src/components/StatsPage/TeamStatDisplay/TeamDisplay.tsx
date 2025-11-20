@@ -76,7 +76,7 @@ function TeamDisplay() {
   }
 
   return (
-    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-[75rem] w-full mx-auto">
+    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-[90rem] w-full mx-auto">
       <Link
         to={`/`}
         className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center group">
@@ -90,16 +90,16 @@ function TeamDisplay() {
         </div>
         <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
       </Link>
-      <div className="flex flex-col md:flex-row justify-stretch md:p-4 gap-4 lg:gap-8 overflow-x-hidden">
+      <div className="flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
         <TeamStatSidebar teamName={teamName} teamData={teamData} logo={teamLogo} />
         <div className="extendedStatsContainer flex flex-col gap-4 flex-grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
           <>
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
             {activeLink === "Overview" ? (
               <>
-                <h1 className="text-3xl font-bold">{teamName} — Team Overview</h1>
                 <AchievementsDisplay />
-                <div className="performanceOverview grid lg:grid-cols-3 gap-4 my-4">
+                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Performance Overview</h2>
+                <div className="smallStatBoxes grid lg:grid-cols-3 gap-4">
                   <IndividualStatCard
                     icon={<FaCrown className="text-white w-[25px] h-[25px]" />}
                     iconBgColor="bg-purple bg-opacity-50"
@@ -120,7 +120,6 @@ function TeamDisplay() {
                     value={teamData.totalGames}
                   />
                 </div>
-
                 <div className="objectiveStats grid lg:grid-cols-3 gap-4 my-4">
                   <IndividualStatCard
                     icon={<GiMineExplosion className="text-white w-[25px] h-[25px]" />}
@@ -142,21 +141,22 @@ function TeamDisplay() {
                   />
                 </div>
 
-                <div className="distributionGrid grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 my-4">
+                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Stat Distribution</h2>
+                <div className="distributionGrid grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   <DistributionCard
-                    title="Gold Distribution"
+                    title="Gold"
                     icon={<FaCoins />}
                     iconBgColor="bg-yellow bg-opacity-50"
                     data={goldDistribution}
                   />
                   <DistributionCard
-                    title="Damage Distribution"
+                    title="Damage"
                     icon={<GiMineExplosion />}
                     iconBgColor="bg-red bg-opacity-50"
                     data={damageDistribution}
                   />
                   <DistributionCard
-                    title="Vision Distribution"
+                    title="Vision"
                     icon={<IoPieChart />}
                     iconBgColor="bg-cyan bg-opacity-50"
                     data={visionDistribution}
@@ -168,9 +168,7 @@ function TeamDisplay() {
                 <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Games</h2>
                 <div className="flex flex-col gap-2 items-center min-h-64">
                   {teamGames && teamGames.length > 0 ? (
-                    teamGames.map((game, index) => (
-                      <MiniGameCard key={index} game={game} />
-                    ))
+                    teamGames.map((game, index) => <MiniGameCard key={index} game={game} />)
                   ) : (
                     <p className="text-xl text-white">No recent games found.</p>
                   )}

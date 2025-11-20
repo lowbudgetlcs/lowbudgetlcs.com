@@ -23,7 +23,7 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
   const logo = propLogo || teamMeta?.logo || null;
 
   return (
-    <div className="statSideBar md:sticky md:top-20 self-start">
+    <div className="statSideBar sticky w-full md:w-72 flex-shrink-0 mb-4 md:mb-0 left-0 md:top-24 self-start">
       <div className="flex flex-col p-4 gap-2 bg-gray/20 border-2 border-gray rounded-md flex-grow md:min-w-64 max-h-fit">
         <div className="flex flex-col items-center justify-center">
           {logo ? (
@@ -85,21 +85,20 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
                               ? "Bottom"
                               : "Support"
                           }
-                          aria-hidden={true}
                           width={24}
                           height={24}
                         />
                       ))
                       .slice(0, 1)}
                   </div>
-                  <div className="flex flex-col">
-                    <p className="text-sm">{p.riotIdGameName}</p>
+                  <div className="flex flex-col truncate">
+                    <p className="text-sm truncate">{p.riotIdGameName}</p>
                     <p className="text-sm text-white/60">#{p.riotIdTagLine}</p>
                   </div>
                 </div>
                 <div className="text-right">
                   <div className="text-xs text-white/60">Games: {p.gamesPlayed}</div>
-                  <div className="text-xs text-white/60">Winrate: <span className={p.winrate < 50 ? "text-red/80" : "text-blue/80"}>{p.winrate.toFixed(0)}%</span></div>
+                  <div className="text-xs text-white/60 whitespace-nowrap">Winrate: <span className={p.winrate < 50 ? "text-red/80" : "text-blue/80"}>{p.winrate.toFixed(0)}%</span></div>
                 </div>
               </Link>
             ))
