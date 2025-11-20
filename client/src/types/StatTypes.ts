@@ -71,21 +71,50 @@ interface RosterPlayerStat {
   riotIdTagLine?: string | null;
 }
 
+interface LaneDistribution {
+  gold: number;
+  damage: number;
+  vision: number;
+}
+interface SidePerformance {
+  games: number;
+  wins: number;
+  winrate: number;
+}
 export interface TeamOverallStats {
   totalGames: number;
   wins: number;
   losses: number;
   winrate: number;
   avgGameDuration: number;
+  kda: number;
+  avgKills: number;
+  avgDeaths: number;
+  avgAssists: number;
+  avgVisionScore: number;
+  avgDamagePerMin: number;
+  avgGoldPerMin: number;
   // Objective Stats
   avgBarons: number;
   avgDragons: number;
   avgTowers: number;
   avgInhibitors: number;
-  avgGrubs: number; // Added Grubs
-  avgAtakhan: number; // Added Atakhan
+  avgGrubs: number;
+  avgHeralds: number;
+  avgAtahkhan: number;
   firstBloodRate: number;
   firstTowerRate: number;
+  firstDragonRate: number;
+  firstBaronRate: number;
+  firstInhibitorRate: number;
+  dragonControlRate: number;
+  voidGrubControlRate: number;
+  blueSidePerformance: SidePerformance;
+  redSidePerformance: SidePerformance;
+  laneDistribution: Record<string, LaneDistribution>;
+  goldDistribution?: Record<string, number>;
+  damageDistribution?: Record<string, number>;
+  visionDistribution?: Record<string, number>;
   // Roster Breakdown
   roster: RosterPlayerStat[];
 }

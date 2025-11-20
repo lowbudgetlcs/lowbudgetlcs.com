@@ -57,9 +57,9 @@ function TeamDisplay() {
   const teamLogo = teamPayload?.logo || null;
   const teamGames = teamGamesQuery.data;
 
-  const goldDistribution = (teamData as any)?.goldDistribution || {};
-  const damageDistribution = (teamData as any)?.damageDistribution || {};
-  const visionDistribution = (teamData as any)?.visionDistribution || {};
+  const goldDistribution = teamData?.goldDistribution || {};
+  const damageDistribution = teamData?.damageDistribution || {};
+  const visionDistribution = teamData?.visionDistribution || {};
 
   if (error) {
     console.error(error);
