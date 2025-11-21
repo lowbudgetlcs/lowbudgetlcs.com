@@ -164,11 +164,20 @@ function TeamDisplay() {
                     data={visionDistribution}
                   />
                 </div>
-                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Side Performance</h2>
-                <SidePerformance
-                  blueSidePerformance={teamData.blueSidePerformance}
-                  redSidePerformance={teamData.redSidePerformance}
-                />
+                <div className="flex flex-col md:flex-row gap-4">
+                  <div className="flex-grow">
+                    <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">
+                      Side Performance
+                    </h2>
+                    <SidePerformance
+                      blueSidePerformance={teamData.blueSidePerformance}
+                      redSidePerformance={teamData.redSidePerformance}
+                    />
+                  </div>
+                  <div className="flex-grow">
+                    <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Common Bans</h2>
+                  </div>
+                </div>
 
                 <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Objective Control</h2>
                 <ObjectiveControl teamData={teamData} />
@@ -183,7 +192,9 @@ function TeamDisplay() {
 
                 <div className="flex flex-col gap-2 items-center min-h-64">
                   {teamGames && teamGames.length > 0 ? (
-                    teamGames.map((game, index) => <MiniGameCard key={index} game={game} teamName={fullTeamName} />)
+                    teamGames.map((game, index) => (
+                      <MiniGameCard key={index} game={game} teamName={fullTeamName} />
+                    ))
                   ) : (
                     <p className="text-xl text-white">No recent games found.</p>
                   )}
