@@ -28,7 +28,9 @@ interface BestGameStat {
 }
 
 export interface PlayerOverallStats {
+  currentTeamID?: number | null;
   puuid: string;
+  teamName?: string | null;
   totalGames: number;
   wins: number;
   losses: number;

@@ -5,6 +5,7 @@ import supportIcon from "../../../assets/laneIcons/supportIcon.svg";
 import jungleIcon from "../../../assets/laneIcons/jungleIcon.svg";
 import { PlayerOverallStats } from "../../../types/StatTypes";
 import LoadingIcon from "../../LoadingIcon";
+import { Link } from "react-router-dom";
 
 interface PlayerStatSidebarProps {
   summonerName: string;
@@ -19,6 +20,12 @@ const PlayerStatSidebar = ({ summonerName, tagLine, playerData }: PlayerStatSide
         <h1 className="text-lg text-center font-bold">
           {summonerName} <span className="text-white/60">#{tagLine}</span>
         </h1>
+        {/* Team */}
+        <div className="text-center">
+          {playerData?.teamName ? (
+            <Link to={`/team/${encodeURIComponent(playerData.teamName)}`} className="text-white/60 hover:underline hover:text-white">{playerData.teamName}</Link>
+          ) : null}
+        </div>
         {/* Rank & Role */}
         <div className="rankRole flex justify-center items-center border-b-2 p-2 border-white/45">
           {playerData ? (
@@ -61,11 +68,7 @@ const PlayerStatSidebar = ({ summonerName, tagLine, playerData }: PlayerStatSide
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">Kill Participation:</p>
-            {!playerData ? (
-              <LoadingIcon />
-            ) : (
-              <p>{playerData.avgKillParticipation.toFixed(0) + "%"}</p>
-            )}
+            {!playerData ? <LoadingIcon /> : <p>{playerData.avgKillParticipation.toFixed(0) + "%"}</p>}
           </li>
           <li className="statitem inline-flex justify-between">
             <p className="text-white/55">CS/Min:</p>

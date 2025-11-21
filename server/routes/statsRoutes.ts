@@ -93,11 +93,11 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
     const summonerName: string = req.params.summonerName;
     const tagline: string = req.params.tagline;
     const puuidResponse = await getPlayer(summonerName, tagline);
-    if (!puuidResponse || !puuidResponse.puuid) {
+    if (!puuidResponse || !puuidResponse.players.puuid) {
       return res.status(404).json({ error: "Player Not Found" });
     }
 
-    const response = await getGamesForPlayer(puuidResponse.puuid);
+    const response = await getGamesForPlayer(puuidResponse.players.puuid);
     if (response.length <= 0) {
       return res.status(404).json({ error: "Matches Not Found" });
     }
@@ -116,12 +116,12 @@ statRoutes.get("/api/player/summoner/:summonerName/:tagline", async (req: Reques
     if (!playerResponse) {
       return res.status(404).json({ error: "Player Not Found" });
     }
-    const puuid = playerResponse.puuid;
+    const puuid = playerResponse.players.puuid;
     const overallStats = await playerStatsAggregation(puuid);
     if (!overallStats) {
       return res.status(404).json({ error: "Player Stats Not Found" });
     }
-    return res.json(overallStats);
+    return res.json({...playerResponse.team, ...overallStats});
   } catch (err: any) {
     console.error("Error fetching player stats by name:", err);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -217,7 +217,7 @@ statRoutes.get("/api/player/check/:summonerName/:tagline", async (req: Request, 
     if (!playerResponse) {
       return res.status(404).json({ found: false });
     }
-    return res.status(200).json({ found: true, puuid: playerResponse.puuid });
+    return res.status(200).json({ found: true, puuid: playerResponse.players.puuid });
   } catch (err: any) {
     console.error("Error checking player existence:", err);
     return res.status(500).json({ error: "Internal Server Error" });
