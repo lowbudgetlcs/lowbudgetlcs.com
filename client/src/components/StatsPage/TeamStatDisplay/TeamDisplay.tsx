@@ -183,7 +183,7 @@ function TeamDisplay() {
 
                 <div className="flex flex-col gap-2 items-center min-h-64">
                   {teamGames && teamGames.length > 0 ? (
-                    teamGames.map((game, index) => <MiniGameCard key={index} game={game} />)
+                    teamGames.map((game, index) => <MiniGameCard key={index} game={game} teamName={fullTeamName} />)
                   ) : (
                     <p className="text-xl text-white">No recent games found.</p>
                   )}
