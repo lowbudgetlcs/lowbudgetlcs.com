@@ -175,7 +175,12 @@ function TeamDisplay() {
               </>
             ) : activeLink === "Recent Games" ? (
               <div className="recentGames">
-                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Games</h2>
+                <div className="border-b-2 border-white/60 mb-4">
+                  <h2 className="text-2xl font-bold">Games - {teamData?.totalGames}</h2>
+                  <p className="text-white/60">Wins: {teamData?.wins}</p>
+                  <p className="text-white/60">Losses: {teamData?.losses}</p>
+                </div>
+
                 <div className="flex flex-col gap-2 items-center min-h-64">
                   {teamGames && teamGames.length > 0 ? (
                     teamGames.map((game, index) => <MiniGameCard key={index} game={game} />)
