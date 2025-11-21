@@ -14,33 +14,39 @@ const SidePerformance = ({
     <div className="sidePerformanceCard bg-gray/20 border-2 border-gray rounded-md p-4 text-white">
       <div className="sideRows mt-2 space-y-4">
         <div>
-          <div className="flex justify-between items-baseline mb-1">
+          <div className="flex justify-between items-center mb-1">
             <div className="text-sm flex items-center gap-2">
               <div className="h-3 w-3 bg-blue rounded-sm" />
               <span>Blue Side</span>
             </div>
-            <div className="text-sm text-white">Win Rate: {Number(blue.winrate).toFixed(0)}% • Games: {blue.games}</div>
+            <div className="text-right">
+              <div className="text-sm text-white/60">Win Rate: {Number(blue.winrate).toFixed(0)}%</div>
+              <div className="text-sm text-white/60">Games: {blue.games}</div>
+            </div>
           </div>
           <div className="w-full bg-white/20 rounded h-4">
             <div
               className="h-4 rounded bg-blue"
-              style={{ width: `${Math.max(0, Math.min(100, Number(blue.winrate))) }%` }}
+              style={{ width: `${Math.max(0, Math.min(100, Number(blue.winrate)))}%` }}
             />
           </div>
         </div>
 
         <div>
-          <div className="flex justify-between items-baseline mb-1">
+          <div className="flex justify-between items-center mb-1">
             <div className="text-sm flex items-center gap-2">
               <div className="h-3 w-3 bg-red rounded-sm" />
               <span>Red Side</span>
             </div>
-            <div className="text-sm text-white">Win Rate: {Number(red.winrate).toFixed(0)}% • Games: {red.games}</div>
+            <div className="text-sm text-white/60 text-right">
+              <div>Win Rate: {Number(red.winrate).toFixed(0)}%</div>
+              <div>Games: {red.games}</div>
+            </div>
           </div>
           <div className="w-full bg-white/20 rounded h-4">
             <div
               className="h-4 rounded bg-red"
-              style={{ width: `${Math.max(0, Math.min(100, Number(red.winrate))) }%` }}
+              style={{ width: `${Math.max(0, Math.min(100, Number(red.winrate)))}%` }}
             />
           </div>
         </div>
