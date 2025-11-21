@@ -81,12 +81,6 @@ export const getGamesForTeam = async (teamId: number) => {
     }
 
     const matchIds = teamMatchStats.map((ts) => ts.matchId);
-      const tournamentCodes: string[] = [];
-    for (const match of teamMatchStats) {
-      if (match.tournamentCodes) {
-        tournamentCodes.push(match.tournamentCodes);
-      }
-    }
     const teamMatches = await db
       .select()
       .from(matchesInWebsite)
@@ -107,6 +101,13 @@ export const getGamesForTeam = async (teamId: number) => {
       .from(matchParticipantsInWebsite)
       .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
+      const tournamentCodes: string[] = Array.from(
+      new Set(
+        teamMatches
+          .map((match) => match.tournamentCode)
+          .filter((c): c is string => !!c)
+      )
+    );
     const draftCodes = await db
       .select({
         draftCode: draftLobbiesInWebsite.lobbyCode,
@@ -119,7 +120,8 @@ export const getGamesForTeam = async (teamId: number) => {
         eq(draftLobbiesInWebsite.shortcode, matchesInWebsite.tournamentCode)
       )
       .where(inArray(draftLobbiesInWebsite.shortcode, tournamentCodes));
-      console.log(draftCodes)
+
+
     const finalResult = teamMatches.map((match) => {
       const teamsForMatch = allTeamStats.filter(
         (ts) => ts.match_team_stats.matchId === match.matchId
@@ -237,18 +239,20 @@ export const getGamesForPlayer = async (puuid: string) => {
       );
 
     const matchIds = playerMatches.map((ts) => ts.matchId);
-    const tournamentCodes: string[] = [];
-    for (const match of playerMatches) {
-      if (match.tournamentCodes) {
-        tournamentCodes.push(match.tournamentCodes);
-      }
-    }
 
     const teamMatches = await db
       .select()
       .from(matchesInWebsite)
       .where(inArray(matchesInWebsite.matchId, matchIds))
       .orderBy(desc(matchesInWebsite.gameEndTimeStamp)); // Order by most recent
+
+    const tournamentCodes: string[] = Array.from(
+      new Set(
+        teamMatches
+          .map((m) => m.tournamentCode)
+          .filter((c): c is string => !!c)
+      )
+    );
 
     const allTeamStats = await db
       .select()
