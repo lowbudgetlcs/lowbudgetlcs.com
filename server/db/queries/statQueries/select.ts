@@ -66,16 +66,27 @@ export const getRecentGames = async (amount: number) => {
 export const getGamesForTeam = async (teamId: number) => {
   try {
     const teamMatchStats = await db
-      .select({ matchId: matchTeamStatsInWebsite.matchId })
+      .select({ matchId: matchTeamStatsInWebsite.matchId,
+        tournamentCodes: matchesInWebsite.tournamentCode
+       })
       .from(matchTeamStatsInWebsite)
-      .where(eq(matchTeamStatsInWebsite.teamId, teamId));
+      .where(eq(matchTeamStatsInWebsite.teamId, teamId))
+      .leftJoin(
+        matchesInWebsite,
+        eq(matchTeamStatsInWebsite.matchId, matchesInWebsite.matchId)
+      );
 
     if (teamMatchStats.length === 0) {
       return [];
     }
 
     const matchIds = teamMatchStats.map((ts) => ts.matchId);
-
+      const tournamentCodes: string[] = [];
+    for (const match of teamMatchStats) {
+      if (match.tournamentCodes) {
+        tournamentCodes.push(match.tournamentCodes);
+      }
+    }
     const teamMatches = await db
       .select()
       .from(matchesInWebsite)
@@ -96,6 +107,19 @@ export const getGamesForTeam = async (teamId: number) => {
       .from(matchParticipantsInWebsite)
       .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
+    const draftCodes = await db
+      .select({
+        draftCode: draftLobbiesInWebsite.lobbyCode,
+        fearlessCode: draftLobbiesInWebsite.fearlessCode,
+        tournamentCode: draftLobbiesInWebsite.shortcode,
+      })
+      .from(draftLobbiesInWebsite)
+      .leftJoin(
+        matchesInWebsite,
+        eq(draftLobbiesInWebsite.shortcode, matchesInWebsite.tournamentCode)
+      )
+      .where(inArray(draftLobbiesInWebsite.shortcode, tournamentCodes));
+      console.log(draftCodes)
     const finalResult = teamMatches.map((match) => {
       const teamsForMatch = allTeamStats.filter(
         (ts) => ts.match_team_stats.matchId === match.matchId
@@ -103,10 +127,15 @@ export const getGamesForTeam = async (teamId: number) => {
       const participantsForMatch = allParticipants.filter(
         (p) => p.matchId === match.matchId
       );
+      const draftCodeForMatch = draftCodes.find(
+        (draft) => draft.tournamentCode === match.tournamentCode
+      );
       return {
         ...match,
         teams: teamsForMatch,
         participants: participantsForMatch,
+        draftCode: draftCodeForMatch?.draftCode,
+        fearlessCode: draftCodeForMatch?.fearlessCode,
       };
     });
 
