@@ -400,7 +400,7 @@ export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]
   let iterations = 0;
 
   try {
-    // First, find the starting team by its name
+    // First, finds the starting team by its name
     const initialTeam = await db
       .select({
         id: teamsInWebsite.id,
@@ -418,7 +418,7 @@ export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]
     visitedIds.add(initialTeam[0].id);
     nextFormerTeamId = initialTeam[0].formerTeamId;
 
-    // Iteratively walk down the 'former_team' chain
+    // Iteratively walks down the 'former_team' chain
     while (nextFormerTeamId && iterations < maxIterations) {
       // Cycle detection
       if (visitedIds.has(nextFormerTeamId)) {
