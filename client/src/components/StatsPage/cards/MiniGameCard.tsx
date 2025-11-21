@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { RecentGame } from "../../../types/StatTypes";
 import formatDuration from "../../../utils/formatDuration";
 import formatTimeAgo from "../../../utils/formatTimeAgo";
+import SubdomainLink from "../../SubdomainLink";
+import MainLink from "../../MainLink";
 
 const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string }) => {
   const { teams: team1Info } = game.teams[0];
@@ -12,18 +14,23 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
   const timeSinceGamePlayed = Number(BigInt(Date.now()) - BigInt(game.gameEndTimeStamp));
 
   const roleOrder = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"];
+  const team1Id = team1Stats.teamId;
+  const team2Id = team2Stats.teamId;
 
   // Filters and sorts players for the first team
   const sortedTeam1 = game.participants
-    .filter((p) => p.teamId === team1Stats.teamId)
+    .filter((p) => p.teamId === team1Id)
     .sort((a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? ""));
-
   // Filters and sorts players for the second team
   const sortedTeam2 = game.participants
-    .filter((p) => p.teamId === team2Stats.teamId)
+    .filter((p) => p.teamId === team2Id)
     .sort((a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? ""));
 
   const gameDurationMs = game.gameDuration * 1000;
+  const getPlayerKey = (player: any, idx: number) =>
+    player.riotIdGameName ||
+    player.summonerName ||
+    `${player.championName}-${player.teamPosition}-${player.teamId}-${idx}`;
   return (
     <div
       className={`flex flex-col justify-center ${
@@ -40,8 +47,36 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
           : "bg-red/30"
       } rounded-md p-2 w-full`}>
       <h3 className="font-bold truncate border-b-2 mb-2">
-        {team1Info.teamName} <span className="text-white/80">vs.</span> {team2Info.teamName}
+        <Link className="truncate hover:underline" to={`/team/${encodeURIComponent(team1Info.teamName)}`}>
+          {team1Info.teamName} - {team1Stats.win ? "Win" : "Loss"}
+        </Link>{" "}
+        <span className="text-white/80">vs.</span>{" "}
+        <Link className="truncate hover:underline" to={`/team/${encodeURIComponent(team2Info.teamName)}`}>
+          {team2Info.teamName} - {team2Stats.win ? "Win" : "Loss"}
+        </Link>
       </h3>
+      <div className="btns flex items-center gap-2">
+        {game.fearlessCode ? (
+          <SubdomainLink
+            subdomain="draft"
+            to={`/fearless/${game.fearlessCode}`}
+            className="bg-gray hover:bg-orange transition duration-300 rounded-md px-2 py-0.5 text-sm">
+            Fearless
+          </SubdomainLink>
+        ) : game.draftCode ? (
+          <SubdomainLink
+            subdomain="draft"
+            to={`/draft/${game.draftCode}`}
+            className="bg-gray hover:bg-orange transition duration-300 rounded-md px-2 py-0.5 text-sm">
+            Draft
+          </SubdomainLink>
+        ) : null}
+        <MainLink
+          to={`/mh/${game.matchId.split("_")[1]}`}
+          className="bg-gray hover:bg-orange transition duration-300 rounded-md px-2 py-1 text-sm">
+          Match
+        </MainLink>
+      </div>
       <div className="flex items-center gap-32">
         <div className="flex flex-col">
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
@@ -50,7 +85,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
         <div className="players flex items-center gap-2">
           <div className="flex flex-col items-start gap-0.5">
             {sortedTeam1.map((player, index) => (
-              <div key={index} className="flex items-center">
+              <div key={getPlayerKey(player, index)} className="flex items-center">
                 <img
                   src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/square`}
                   alt={player.championName || ""}
@@ -73,7 +108,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
           </div>
           <div className="flex flex-col items-start ml-6 gap-0.5">
             {sortedTeam2.map((player, index) => (
-              <div key={index} className="flex items-center">
+              <div key={getPlayerKey(player, index)} className="flex items-center">
                 <img
                   src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/square`}
                   alt={player.championName || ""}
