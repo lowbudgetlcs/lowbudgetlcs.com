@@ -5,9 +5,9 @@ import {
   integer,
   text,
   boolean,
+  foreignKey,
   serial,
   timestamp,
-  foreignKey,
   bigint,
   varchar,
   type AnyPgColumn,
@@ -21,13 +21,7 @@ import {
 import { sql } from "drizzle-orm";
 
 export const website = pgSchema("website");
-export const eventStatus = pgEnum("event_status", [
-  "active",
-  "complete",
-  "canceled",
-  "paused",
-  "preparing",
-]);
+export const eventStatus = pgEnum("event_status", ["active", "complete", "canceled", "paused", "preparing"]);
 
 export const draftLobbiesInWebsite = website.table(
   "draft_lobbies",
@@ -74,6 +68,27 @@ export const draftLobbiesInWebsite = website.table(
   (table) => [unique("draft_lobbies_shortcode_key").on(table.shortcode)]
 );
 
+export const divisionsInWebsite = website.table(
+  "divisions",
+  {
+    id: serial().primaryKey().notNull(),
+    seasonId: integer("season_id").notNull(),
+    divisionName: text("division_name").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
+      sql`CURRENT_TIMESTAMP`
+    ),
+    eventId: integer("event_id"),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.seasonId],
+      foreignColumns: [seasonsInWebsite.id],
+      name: "divisions_season_id_fkey",
+    }).onDelete("cascade"),
+    unique("divisions_division_name_key").on(table.divisionName),
+  ]
+);
+
 export const fearlessDraftLobbiesInWebsite = website.table("fearless_draft_lobbies", {
   id: integer()
     .primaryKey()
@@ -104,27 +119,6 @@ export const seasonsInWebsite = website.table(
     ),
   },
   (table) => [unique("seasons_season_name_key").on(table.seasonName)]
-);
-
-export const divisionsInWebsite = website.table(
-  "divisions",
-  {
-    id: serial().primaryKey().notNull(),
-    seasonId: integer("season_id").notNull(),
-    divisionName: text("division_name").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
-      sql`CURRENT_TIMESTAMP`
-    ),
-    eventId: integer("event_id"),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.seasonId],
-      foreignColumns: [seasonsInWebsite.id],
-      name: "divisions_season_id_fkey",
-    }).onDelete("cascade"),
-    unique("divisions_division_name_key").on(table.divisionName),
-  ]
 );
 
 export const teamsInWebsite = website.table(
@@ -200,10 +194,7 @@ export const players = pgTable(
     teamId: integer("team_id"),
   },
   (table) => [
-    index("players_summoner_name_idx").using(
-      "btree",
-      table.summonerName.asc().nullsLast().op("text_ops")
-    ),
+    index("players_summoner_name_idx").using("btree", table.summonerName.asc().nullsLast().op("text_ops")),
     foreignKey({
       columns: [table.teamId],
       foreignColumns: [teams.id],
@@ -296,18 +287,12 @@ export const playerPerformances = pgTable(
       "btree",
       table.divisionId.asc().nullsLast().op("int4_ops")
     ),
-    index("player_performances_game_id_idx").using(
-      "btree",
-      table.gameId.asc().nullsLast().op("int4_ops")
-    ),
+    index("player_performances_game_id_idx").using("btree", table.gameId.asc().nullsLast().op("int4_ops")),
     index("player_performances_player_id_idx").using(
       "btree",
       table.playerId.asc().nullsLast().op("int4_ops")
     ),
-    index("player_performances_team_id_idx").using(
-      "btree",
-      table.teamId.asc().nullsLast().op("int4_ops")
-    ),
+    index("player_performances_team_id_idx").using("btree", table.teamId.asc().nullsLast().op("int4_ops")),
     foreignKey({
       columns: [table.divisionId],
       foreignColumns: [divisions.id],
@@ -364,14 +349,8 @@ export const teamPerformances = pgTable(
       "btree",
       table.divisionId.asc().nullsLast().op("int4_ops")
     ),
-    index("team_performances_game_id_idx").using(
-      "btree",
-      table.gameId.asc().nullsLast().op("int4_ops")
-    ),
-    index("team_performances_team_id_idx").using(
-      "btree",
-      table.teamId.asc().nullsLast().op("int4_ops")
-    ),
+    index("team_performances_game_id_idx").using("btree", table.gameId.asc().nullsLast().op("int4_ops")),
+    index("team_performances_team_id_idx").using("btree", table.teamId.asc().nullsLast().op("int4_ops")),
     foreignKey({
       columns: [table.divisionId],
       foreignColumns: [divisions.id],
@@ -596,14 +575,7 @@ export const teams = pgTable(
     captainId: integer("captain_id"),
     divisionId: integer("division_id"),
   },
-  (table) => [
-    index("teams_name_idx").using("btree", table.name.asc().nullsLast().op("text_ops")),
-    foreignKey({
-      columns: [table.divisionId],
-      foreignColumns: [divisions.id],
-      name: "fk_division_id",
-    }),
-  ]
+  (table) => [index("teams_name_idx").using("btree", table.name.asc().nullsLast().op("text_ops"))]
 );
 
 export const draftLobbies = pgTable(
@@ -684,33 +656,6 @@ export const matchesInWebsite = website.table(
   ]
 );
 
-export const matchTeamStatsInWebsite = website.table(
-  "match_team_stats",
-  {
-    id: serial().primaryKey().notNull(),
-    matchId: text("match_id").notNull(),
-    teamId: integer("team_id").notNull(),
-    riotTeamId: integer("riot_team_id").notNull(),
-    win: boolean().notNull(),
-    baronKills: integer("baron_kills").default(0),
-    dragonKills: integer("dragon_kills").default(0),
-    inhibitorKills: integer("inhibitor_kills").default(0),
-    riftHeraldKills: integer("rift_herald_kills").default(0),
-    towerKills: integer("tower_kills").default(0),
-    hordeKills: integer("horde_kills").default(0),
-    atakhanKills: integer("atakhan_kills").default(0),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.matchId],
-      foreignColumns: [matchesInWebsite.matchId],
-      name: "match_team_stats_match_id_fkey",
-    }).onDelete("cascade"),
-    unique("match_team_stats_match_id_team_id_key").on(table.matchId, table.teamId),
-    unique("match_team_stats_match_id_riot_team_id_key").on(table.matchId, table.riotTeamId),
-  ]
-);
-
 export const matchParticipantsInWebsite = website.table(
   "match_participants",
   {
@@ -750,21 +695,15 @@ export const matchParticipantsInWebsite = website.table(
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
     trueDamageDealt: bigint("true_damage_dealt", { mode: "number" }).default(0),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    totalDamageDealtToChampions: bigint("total_damage_dealt_to_champions", {
-      mode: "number",
-    }).default(0),
+    totalDamageDealtToChampions: bigint("total_damage_dealt_to_champions", { mode: "number" }).default(0),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    physicalDamageDealtToChampions: bigint("physical_damage_dealt_to_champions", {
-      mode: "number",
-    }).default(0),
+    physicalDamageDealtToChampions: bigint("physical_damage_dealt_to_champions", { mode: "number" }).default(
+      0
+    ),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    magicDamageDealtToChampions: bigint("magic_damage_dealt_to_champions", {
-      mode: "number",
-    }).default(0),
+    magicDamageDealtToChampions: bigint("magic_damage_dealt_to_champions", { mode: "number" }).default(0),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    trueDamageDealtToChampions: bigint("true_damage_dealt_to_champions", {
-      mode: "number",
-    }).default(0),
+    trueDamageDealtToChampions: bigint("true_damage_dealt_to_champions", { mode: "number" }).default(0),
     largestCriticalStrike: integer("largest_critical_strike").default(0),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
     totalDamageTaken: bigint("total_damage_taken", { mode: "number" }).default(0),
@@ -781,9 +720,9 @@ export const matchParticipantsInWebsite = website.table(
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
     totalHealsOnTeammates: bigint("total_heals_on_teammates", { mode: "number" }).default(0),
     // You can use { mode: "bigint" } if numbers are exceeding js number limitations
-    totalDamageShieldedOnTeammates: bigint("total_damage_shielded_on_teammates", {
-      mode: "number",
-    }).default(0),
+    totalDamageShieldedOnTeammates: bigint("total_damage_shielded_on_teammates", { mode: "number" }).default(
+      0
+    ),
     totalUnitsHealed: integer("total_units_healed").default(0),
     goldEarned: integer("gold_earned").default(0),
     goldSpent: integer("gold_spent").default(0),
@@ -871,6 +810,36 @@ export const matchParticipantsInWebsite = website.table(
   ]
 );
 
+export const matchTeamStatsInWebsite = website.table(
+  "match_team_stats",
+  {
+    id: serial().primaryKey().notNull(),
+    matchId: text("match_id").notNull(),
+    teamId: integer("team_id").notNull(),
+    riotTeamId: integer("riot_team_id").notNull(),
+    win: boolean().notNull(),
+    baronKills: integer("baron_kills").default(0),
+    dragonKills: integer("dragon_kills").default(0),
+    inhibitorKills: integer("inhibitor_kills").default(0),
+    riftHeraldKills: integer("rift_herald_kills").default(0),
+    towerKills: integer("tower_kills").default(0),
+    hordeKills: integer("horde_kills").default(0),
+    atakhanKills: integer("atakhan_kills").default(0),
+    firstDragon: boolean().default(false),
+    firstBaron: boolean().default(false),
+    firstInhibitor: boolean().default(false),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.matchId],
+      foreignColumns: [matchesInWebsite.matchId],
+      name: "match_team_stats_match_id_fkey",
+    }).onDelete("cascade"),
+    unique("match_team_stats_match_id_team_id_key").on(table.matchId, table.teamId),
+    unique("match_team_stats_match_id_riot_team_id_key").on(table.matchId, table.riotTeamId),
+  ]
+);
+
 export const currentSeasonDivisionsInWebsite = website.table(
   "current_season_divisions",
   {
@@ -921,7 +890,5 @@ export const playersInWebsite = website.table("players", {
   puuid: text().primaryKey().notNull(),
   summonerName: text("summoner_name").notNull(),
   tagLine: text("tag_line").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(
-    sql`CURRENT_TIMESTAMP`
-  ),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).default(sql`CURRENT_TIMESTAMP`),
 });
