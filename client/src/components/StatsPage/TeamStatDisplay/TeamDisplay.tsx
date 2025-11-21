@@ -10,6 +10,8 @@ import IndividualStatCard from "../cards/IndividualStatCard";
 import { TeamOverallStats } from "../../../types/StatTypes";
 import AchievementsDisplay from "../PlayerStatDisplay/AchievementsDisplay";
 import TeamStatSidebar from "./TeamStatSidebar";
+import SidePerformance from "./SidePerformance";
+import ObjectiveControl from "./ObjectiveControl";
 import DistributionCard from "./DistributionCard";
 import { FaCrown, FaCoins } from "react-icons/fa";
 import { LuSwords } from "react-icons/lu";
@@ -162,6 +164,14 @@ function TeamDisplay() {
                     data={visionDistribution}
                   />
                 </div>
+                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Side Performance</h2>
+                <SidePerformance
+                  blueSidePerformance={teamData.blueSidePerformance}
+                  redSidePerformance={teamData.redSidePerformance}
+                />
+
+                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Objective Control</h2>
+                <ObjectiveControl teamData={teamData} />
               </>
             ) : activeLink === "Recent Games" ? (
               <div className="recentGames">

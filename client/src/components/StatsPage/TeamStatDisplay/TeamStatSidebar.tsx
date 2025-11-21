@@ -47,6 +47,9 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
                 to={(() => {
                   const gameName = p.riotIdGameName || p.summonerName;
                   const tagLine = p.riotIdTagLine || "";
+                  if (p.gamesPlayed === 0) {
+                    return "#";
+                  }
                   if (tagLine && tagLine.trim().length > 0) {
                     return `/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
                   }
@@ -92,14 +95,28 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
                       .slice(0, 1)}
                   </div>
                   <div className="flex flex-col truncate">
-                    <p className="text-sm truncate">{p.riotIdGameName}</p>
-                    <p className="text-sm text-white/60">#{p.riotIdTagLine}</p>
+                    <p className="text-sm truncate">{p.riotIdGameName || p.summonerName.split("-")[0]}</p>
+                    <p className="text-sm text-white/60">
+                      #{p.riotIdTagLine || p.summonerName.split("-")[1]}
+                    </p>
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs text-white/60">Games: {p.gamesPlayed}</div>
-                  <div className="text-xs text-white/60 whitespace-nowrap">Winrate: <span className={p.winrate < 50 ? "text-red/80" : "text-blue/80"}>{p.winrate.toFixed(0)}%</span></div>
-                </div>
+                {p.gamesPlayed > 0 ? (
+                  <div className="text-right">
+                    <div className="text-xs text-white/60">Games: {p.gamesPlayed}</div>
+                    <div className="text-xs text-white/60 whitespace-nowrap">
+                      Winrate:{" "}
+                      <span className={p.winrate < 50 ? "text-red/80" : "text-blue/80"}>
+                        {p.winrate.toFixed(0)}%
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-right">
+                    <div className="text-xs text-white/60">Unused</div>
+                    <div className="text-xs text-white/60 whitespace-nowrap">Player</div>
+                  </div>
+                )}
               </Link>
             ))
           )}
