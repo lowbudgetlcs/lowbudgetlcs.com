@@ -174,9 +174,6 @@ function TeamDisplay() {
                       redSidePerformance={teamData.redSidePerformance}
                     />
                   </div>
-                  <div className="flex-grow">
-                    <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Common Bans</h2>
-                  </div>
                 </div>
 
                 <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">Objective Control</h2>
