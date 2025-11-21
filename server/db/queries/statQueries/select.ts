@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../..";
 import {
   divisionsInWebsite,
@@ -8,6 +8,7 @@ import {
   matchParticipantsInWebsite,
   matchTeamStatsInWebsite,
   playersInWebsite,
+  playerTeamHistoryInWebsite,
   seasonsInWebsite,
   teamsInWebsite,
 } from "../../schema";
@@ -296,6 +297,33 @@ export const getTeamsBySeason = async (seasonId: number) => {
     return teams;
   } catch (err) {
     console.error("Error in getTeamsBySeason: ", err);
+    return [];
+  }
+};
+
+export const getCurrentRosterForTeam = async (teamId: number) => {
+  try {
+    const roster = await db
+      .select({
+        puuid: playersInWebsite.puuid,
+        summonerName: playersInWebsite.summonerName,
+        tagLine: playersInWebsite.tagLine,
+      })
+      .from(playerTeamHistoryInWebsite)
+      .innerJoin(
+        playersInWebsite,
+        eq(playerTeamHistoryInWebsite.playerPuuid, playersInWebsite.puuid)
+      )
+      .where(
+        and(
+          eq(playerTeamHistoryInWebsite.teamId, teamId),
+          isNull(playerTeamHistoryInWebsite.endDate)
+        )
+      );
+
+    return roster;
+  } catch (error) {
+    console.error("Error in getCurrentRosterForTeam:", error);
     return [];
   }
 };

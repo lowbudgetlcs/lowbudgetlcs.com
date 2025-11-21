@@ -82,9 +82,7 @@ export interface PlayerOverallStats {
   longestTimeSpentLiving: BestGameStat;
 }
 
-const playerStatsAggregation = async (
-  puuid: string
-): Promise<PlayerOverallStats | null> => {
+const playerStatsAggregation = async (puuid: string): Promise<PlayerOverallStats | null> => {
   const games = await getGamesForPlayer(puuid);
   if (!games || games.length === 0) {
     return null;
@@ -97,9 +95,7 @@ const playerStatsAggregation = async (
       const player = game.participants.find((p) => p.playerPuuid === puuid);
       if (!player) return acc; // Calculate team-based stats for this game
 
-      const teammates = game.participants.filter(
-        (p) => p.teamId === player.teamId
-      );
+      const teammates = game.participants.filter((p) => p.teamId === player.teamId);
       const teamTotals = teammates.reduce(
         (teamAcc, p) => {
           teamAcc.kills += p.kills ?? 0;
@@ -113,23 +109,16 @@ const playerStatsAggregation = async (
       );
 
       const killParticipation =
-        teamTotals.kills > 0
-          ? ((player.kills ?? 0) + (player.assists ?? 0)) / teamTotals.kills
-          : 0;
-      const goldShare =
-        teamTotals.gold > 0 ? (player.goldEarned ?? 0) / teamTotals.gold : 0;
+        teamTotals.kills > 0 ? ((player.kills ?? 0) + (player.assists ?? 0)) / teamTotals.kills : 0;
+      const goldShare = teamTotals.gold > 0 ? (player.goldEarned ?? 0) / teamTotals.gold : 0;
       const damageShare =
         teamTotals.damageToChamps > 0
-          ? Number(player.totalDamageDealtToChampions ?? 0) /
-            teamTotals.damageToChamps
+          ? Number(player.totalDamageDealtToChampions ?? 0) / teamTotals.damageToChamps
           : 0;
-      const deathShare =
-        teamTotals.deaths > 0 ? (player.deaths ?? 0) / teamTotals.deaths : 0;
+      const deathShare = teamTotals.deaths > 0 ? (player.deaths ?? 0) / teamTotals.deaths : 0;
       const damageTakenShare =
-        teamTotals.damageTaken > 0
-          ? Number(player.totalDamageTaken ?? 0) / teamTotals.damageTaken
-          : 0; // Updates Totals
-
+        teamTotals.damageTaken > 0 ? Number(player.totalDamageTaken ?? 0) / teamTotals.damageTaken : 0;
+      // Updates Totals
       acc.totalGames += 1;
       if (player.win) acc.wins += 1;
       acc.totalKills += player.kills ?? 0;
@@ -139,12 +128,8 @@ const playerStatsAggregation = async (
       acc.totalGold += player.goldEarned ?? 0;
       acc.totalVisionScore += player.visionScore ?? 0;
       acc.totalControlWards += player.visionWardsBoughtInGame ?? 0;
-      acc.totalDamageToChamps += Number(
-        player.totalDamageDealtToChampions ?? 0
-      );
-      acc.totalDamageToObjectives += Number(
-        player.damageDealtToObjectives ?? 0
-      );
+      acc.totalDamageToChamps += Number(player.totalDamageDealtToChampions ?? 0);
+      acc.totalDamageToObjectives += Number(player.damageDealtToObjectives ?? 0);
       acc.totalKillParticipation += killParticipation;
       acc.totalGoldShare += goldShare;
       acc.totalDamageShare += damageShare;
@@ -190,13 +175,9 @@ const playerStatsAggregation = async (
       champ.totalGold += player.goldEarned ?? 0;
       champ.totalVisionScore += player.visionScore ?? 0;
       champ.totalControlWards += player.visionWardsBoughtInGame ?? 0;
-      champ.totalDamageToChamps += Number(
-        player.totalDamageDealtToChampions ?? 0
-      );
+      champ.totalDamageToChamps += Number(player.totalDamageDealtToChampions ?? 0);
       champ.totalDamageTaken += Number(player.totalDamageTaken ?? 0);
-      champ.totalDamageToObjectives += Number(
-        player.damageDealtToObjectives ?? 0
-      );
+      champ.totalDamageToObjectives += Number(player.damageDealtToObjectives ?? 0);
       champ.totalTimePlayed += player.timePlayed ?? 0;
       champ.totalKillParticipation += killParticipation;
       champ.totalGoldShare += goldShare;
@@ -234,10 +215,7 @@ const playerStatsAggregation = async (
   );
 
   const totalGames = stats.totalGames;
-  const totalDurationMinutes = games.reduce(
-    (acc, game) => acc + game.gameDuration / 60,
-    0
-  );
+  const totalDurationMinutes = games.reduce((acc, game) => acc + game.gameDuration / 60, 0);
 
   const finalRoles = Object.entries(stats.roleCounts)
     .sort(([, a], [, b]) => b - a)
@@ -246,8 +224,7 @@ const playerStatsAggregation = async (
   const championPool: ChampionStat[] = Object.values(stats.championStats)
     .map((champ) => {
       const champGames = champ.games;
-      const champDurationMinutes =
-        champ.totalTimePlayed > 0 ? champ.totalTimePlayed / 60 : 1;
+      const champDurationMinutes = champ.totalTimePlayed > 0 ? champ.totalTimePlayed / 60 : 1;
       const avgDeathsForKda = champ.totalDeaths === 0 ? 1 : champ.totalDeaths;
 
       return {
@@ -281,21 +258,14 @@ const playerStatsAggregation = async (
     wins: stats.wins,
     losses: totalGames - stats.wins,
     winrate: (stats.wins / totalGames) * 100,
-    kda:
-      (stats.totalKills + stats.totalAssists) /
-      (stats.totalDeaths === 0 ? 1 : stats.totalDeaths),
+    kda: (stats.totalKills + stats.totalAssists) / (stats.totalDeaths === 0 ? 1 : stats.totalDeaths),
     avgKills: stats.totalKills / totalGames,
     avgDeaths: stats.totalDeaths / totalGames,
     avgAssists: stats.totalAssists / totalGames,
-    avgCsPerMin:
-      totalDurationMinutes > 0 ? stats.totalCS / totalDurationMinutes : 0,
-    avgGoldPerMin:
-      totalDurationMinutes > 0 ? stats.totalGold / totalDurationMinutes : 0,
+    avgCsPerMin: totalDurationMinutes > 0 ? stats.totalCS / totalDurationMinutes : 0,
+    avgGoldPerMin: totalDurationMinutes > 0 ? stats.totalGold / totalDurationMinutes : 0,
     avgVisionScore: stats.totalVisionScore / totalGames,
-    avgDamagePerMin:
-      totalDurationMinutes > 0
-        ? stats.totalDamageToChamps / totalDurationMinutes
-        : 0,
+    avgDamagePerMin: totalDurationMinutes > 0 ? stats.totalDamageToChamps / totalDurationMinutes : 0,
     avgDamageToObjectives: stats.totalDamageToObjectives / totalGames,
     avgControlWards: stats.totalControlWards / totalGames,
     avgKillParticipation: (stats.totalKillParticipation / totalGames) * 100,

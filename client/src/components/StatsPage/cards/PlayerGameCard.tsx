@@ -29,7 +29,7 @@ const PlayerGameCard = ({
 
   // Filters and sorts players for the first team
   const sortedTeam1 = game.participants
-    .slice(5, 10)
+    .filter((p) => p.teamId === team1Stats.teamId)
     .sort(
       (a, b) =>
         roleOrder.indexOf(a.teamPosition ?? "") -
@@ -38,7 +38,7 @@ const PlayerGameCard = ({
 
   // Filters and sorts players for the second team
   const sortedTeam2 = game.participants
-    .slice(0, 5)
+    .filter((p) => p.teamId === team2Stats.teamId)
     .sort(
       (a, b) =>
         roleOrder.indexOf(a.teamPosition ?? "") -
