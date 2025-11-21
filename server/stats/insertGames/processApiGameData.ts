@@ -17,12 +17,12 @@ const processApiGameData = async (apiMatches: ApiMatchData[]) => {
   for (const match of apiMatches) {
     const participants = match.matchData.info.participants;
 
-    // 1. Find the winning team's in-game ID (100 for blue, 200 for red)
+    // Step 1: Finds the winning team's Riot team ID (100 for blue, 200 for red)
     const winningParticipant = participants.find((p) => p.win);
     if (!winningParticipant) continue; // Skip if match data is inconclusive
     const winningRiotTeamId = winningParticipant.teamId;
 
-    // 2. Separate participants into winning and losing player lists by their PUUIDs
+    // Step 2: Separates participants into winning and losing player lists by their PUUIDs
     const winningPlayerPuuids = participants
       .filter((p) => p.teamId === winningRiotTeamId)
       .map((p) => p.puuid);
@@ -30,24 +30,41 @@ const processApiGameData = async (apiMatches: ApiMatchData[]) => {
       .filter((p) => p.teamId !== winningRiotTeamId)
       .map((p) => p.puuid);
 
-    // 3. Find the winning team's ID
-    const winningTeamCandidates = await getHistoricalTeamIdsByName(match.team1Name);
-    let finalWinningTeamId = await findTeamIdByPlayers(winningPlayerPuuids, winningTeamCandidates);
-    if (!finalWinningTeamId && winningTeamCandidates.length === 1) {
-      console.warn(
-        `[Game Stats Updater] Failed finding Winning Team for: ${match.gameId}. Using possible TeamId: ${winningTeamCandidates[0]}`
-      );
-      finalWinningTeamId = winningTeamCandidates[0];
-    }
+    // Step 3: Determines which team is which and winner/loser
+    const team1Candidates = await getHistoricalTeamIdsByName(match.team1Name);
+    const team2Candidates = await getHistoricalTeamIdsByName(match.team2Name);
 
-    // 4. Find the losing team's ID
-    const losingTeamCandidates = await getHistoricalTeamIdsByName(match.team2Name);
-    let finalLosingTeamId = await findTeamIdByPlayers(losingPlayerPuuids, losingTeamCandidates);
-    if (!finalLosingTeamId && losingTeamCandidates.length === 1) {
-      console.warn(
-        `[Game Stats Updater] Failed finding Losing Team for: ${match.gameId}. Using possible TeamId: ${losingTeamCandidates[0]}`
-      );
-      finalLosingTeamId = losingTeamCandidates[0];
+    const team1IsWinnerId = await findTeamIdByPlayers(winningPlayerPuuids, team1Candidates);
+    const team2IsWinnerId = await findTeamIdByPlayers(winningPlayerPuuids, team2Candidates);
+
+    const team1IsLoserId = await findTeamIdByPlayers(losingPlayerPuuids, team1Candidates);
+    const team2IsLoserId = await findTeamIdByPlayers(losingPlayerPuuids, team2Candidates);
+
+    let finalWinningTeamId: number | null = null;
+    let finalLosingTeamId: number | null = null;
+
+    // Step 4: Fills in the other winning/losing team ID based on findings
+    if (team1IsWinnerId) {
+      finalWinningTeamId = team1IsWinnerId;
+      finalLosingTeamId = team2IsLoserId || team2Candidates[0];
+    } else if (team2IsWinnerId) {
+      finalWinningTeamId = team2IsWinnerId;
+      finalLosingTeamId = team1IsLoserId || team1Candidates[0];
+    } else if (team1IsLoserId) {
+      finalLosingTeamId = team1IsLoserId;
+      finalWinningTeamId = team2Candidates[0];
+    } else if (team2IsLoserId) {
+      finalLosingTeamId = team2IsLoserId;
+      finalWinningTeamId = team1Candidates[0];
+    } else {
+      // Fallback in case winner could not be determined. Should never hit this.
+      if (team1Candidates.length > 0 && team2Candidates.length > 0) {
+        console.warn(
+          `[Game Stats Updater] Could not match players to teams for ${match.gameId}. Defaulting to Team 1 (${match.team1Name}) as Winner.`
+        );
+        finalWinningTeamId = team1Candidates[0];
+        finalLosingTeamId = team2Candidates[0];
+      }
     }
     if (finalWinningTeamId && finalLosingTeamId) {
       processedGames.push({
