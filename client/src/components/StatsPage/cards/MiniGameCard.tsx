@@ -75,7 +75,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
             {sortedTeam2.map((player, index) => (
               <div key={index} className="flex items-center">
                 <img
-                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/tile`}
+                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/square`}
                   alt={player.championName || ""}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
