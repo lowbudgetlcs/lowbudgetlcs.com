@@ -48,12 +48,18 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
           : "bg-red/30"
       } rounded-md p-2 w-full`}>
       <h3 className="font-bold truncate border-b-2 mb-2 flex gap-2">
-        <Link className="truncate hover:underline flex gap-1 items-center" to={`/team/${encodeURIComponent(team1Info.teamName)}`}>
-          {team1Info.teamName}{team1Stats.win && <FaCrown />}
+        <Link
+          className="truncate hover:underline flex gap-1 items-center"
+          to={`/team/${encodeURIComponent(team1Info.teamName)}`}>
+          {team1Stats.win && <FaCrown />}
+          {team1Info.teamName}
         </Link>{" "}
         <span className="text-white/80">vs.</span>{" "}
-        <Link className="truncate hover:underline flex gap-1 items-center" to={`/team/${encodeURIComponent(team2Info.teamName)}`}>
-          {team2Info.teamName}{team2Stats.win && <FaCrown />}
+        <Link
+          className="truncate hover:underline flex gap-1 items-center"
+          to={`/team/${encodeURIComponent(team2Info.teamName)}`}>
+          {team2Stats.win && <FaCrown />}
+          {team2Info.teamName}
         </Link>
       </h3>
       <div className="btns flex items-center gap-2">
