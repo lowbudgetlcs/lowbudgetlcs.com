@@ -38,7 +38,7 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
           <p className="text-white font-bold">Roster</p>
         </div>
 
-        <div className="rosterList flex flex-col gap-2 overflow-y-auto max-h-96 pt-2">
+        <div className="rosterList flex flex-col gap-2 overflow-y-auto max-h-80 pt-2">
           {!teamData ? (
             <LoadingIcon />
           ) : (
