@@ -47,22 +47,29 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
           ? "bg-blue/30"
           : "bg-red/30"
       } rounded-md p-2 w-full`}>
-      <h3 className="font-bold truncate border-b-2 mb-2 flex gap-2">
-        <Link
-          className="truncate hover:underline flex gap-1 items-center"
-          to={`/team/${encodeURIComponent(team1Info.teamName)}`}>
-          {team1Stats.win && <FaCrown />}
-          {team1Info.teamName}
-        </Link>{" "}
-        <span className="text-white/80">vs.</span>{" "}
-        <Link
-          className="truncate hover:underline flex gap-1 items-center"
-          to={`/team/${encodeURIComponent(team2Info.teamName)}`}>
-          {team2Stats.win && <FaCrown />}
-          {team2Info.teamName}
-        </Link>
-      </h3>
-      <div className="btns flex items-center gap-2">
+      <div className="flex flex-col border-b-2 justify-center truncate mb-2">
+        <h3 className="font-bold min-w-0 truncate flex gap-2">
+          <Link
+            className="truncate hover:underline flex gap-1 items-center"
+            to={`/team/${encodeURIComponent(team1Info.teamName)}`}>
+            {team1Stats.win && <FaCrown />}
+            {team1Info.teamName}
+          </Link>{" "}
+          <span className="text-white/80">vs.</span>{" "}
+          <Link
+            className="truncate hover:underline flex gap-1 items-center"
+            to={`/team/${encodeURIComponent(team2Info.teamName)}`}>
+            {team2Stats.win && <FaCrown />}
+            {team2Info.teamName}
+          </Link>
+        </h3>
+
+        <div className="flex gap-2 items-center lg:hidden">
+          <p className="text-sm font-bold">{formatDuration(gameDurationMs)}</p>
+          <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
+        </div>
+      </div>
+      <div className="btns flex items-center gap-2 mb-1">
         {game.fearlessCode ? (
           <SubdomainLink
             subdomain="draft"
@@ -85,7 +92,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
         </MainLink>
       </div>
       <div className="flex items-center gap-32">
-        <div className="flex flex-col">
+        <div className="hidden lg:flex flex-col">
           <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
           <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
