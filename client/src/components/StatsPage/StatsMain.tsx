@@ -26,7 +26,7 @@ const StatsMain = () => {
           Stats
         </h1>
         <ul className="flex flex-col lg:flex-row items-center gap-4">
-          <NavLink
+          {/* <NavLink
             to={"/#"}
             className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-right`}>
             <li>Seasons</li>
@@ -35,11 +35,11 @@ const StatsMain = () => {
             to={"/#"}
             className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-fadeIn`}>
             <li>Divisions</li>
-          </NavLink>
+          </NavLink> */}
           <NavLink
             to={"/team"}
             className={`text-xl font-bold w-48 text-center bg-gray px-8 py-8 rounded-md hover:bg-orange transition duration-300 opacity-0 [animation-delay:400ms] animate-slide-in-left`}>
-            <li>Teams</li>
+            <li>Teams List</li>
           </NavLink>
         </ul>
         <div className="playerSearch opacity-0 pt-8 [animation-delay:400ms] animate-fadeIn">
