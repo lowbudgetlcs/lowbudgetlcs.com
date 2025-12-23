@@ -1,6 +1,6 @@
 import { PlayerOverallStats } from "../../../types/StatTypes";
 
-const ChampionTopImage = ({playerData}: {playerData: PlayerOverallStats}) => {
+const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) => {
   const championName = playerData.championPool[0].championName.toLowerCase();
   if (!championName) {
     return null;
@@ -16,7 +16,7 @@ const ChampionTopImage = ({playerData}: {playerData: PlayerOverallStats}) => {
           height={400}
         />
         <div className="absolute top-0 w-full h-full bg-gradient-to-b from-black via-transparent to-black"></div>
-                <div className="absolute top-0 w-full h-full bg-gradient-to-r from-black via-transparent to-black"></div>
+        <div className="absolute top-0 w-full h-full bg-gradient-to-r from-black via-transparent to-black"></div>
       </div>
     </div>
   );
