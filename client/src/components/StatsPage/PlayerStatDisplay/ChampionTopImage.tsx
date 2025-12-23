@@ -10,7 +10,7 @@ const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) =>
       <div className="w-full relative h-64">
         <img
           src={`https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${championName}/skins/base/images/${championName}_splash_centered_0.jpg`}
-          alt="Top Champion"
+          alt="Champion Splash Art"
           className="w-full h-full object-cover object-[50%_20%]"
           width={900}
           height={400}
