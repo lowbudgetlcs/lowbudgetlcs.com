@@ -18,6 +18,8 @@ import { LuSwords } from "react-icons/lu";
 import { IoLogoGameControllerA } from "react-icons/io";
 import { GiMineExplosion } from "react-icons/gi";
 import { IoPieChart } from "react-icons/io5";
+import getTeamSeasons from "../dataHandlers/getTeamSeasons";
+import getTeamStatsById from "../dataHandlers/getTeamStatsById";
 
 function TeamDisplay() {
   const params = useParams();
@@ -27,6 +29,8 @@ function TeamDisplay() {
   // NavList code
   const navItems = ["Overview", "Recent Games"];
   const [activeLink, setActiveLink] = useState<string>("Overview");
+  const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
+
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
@@ -43,19 +47,37 @@ function TeamDisplay() {
     queryFn: () => getTeamByName(teamName),
   });
 
-  const teamId = teamQuery.data?.teamId;
-
-  const teamGamesQuery = useQuery({
-    queryKey: ["teamGames", teamId],
-    queryFn: () => (teamId ? getTeamGames(teamId) : Promise.resolve(null)),
-    enabled: !!teamId,
+  const seasonsQuery = useQuery({
+    queryKey: ["teamSeasons", teamName],
+    queryFn: () => getTeamSeasons(teamName),
   });
 
-  const loading = teamQuery.isPending || teamGamesQuery.isPending;
-  const error = teamQuery.error || teamGamesQuery.error;
+  const activeTeamId = selectedTeamId ?? teamQuery.data?.teamId;
+  const shouldFetchStatsById = selectedTeamId !== null && selectedTeamId !== teamQuery.data?.teamId;
+
+  const statsByIdQuery = useQuery({
+    queryKey: ["teamStatsById", selectedTeamId],
+    queryFn: () => (selectedTeamId ? getTeamStatsById(selectedTeamId) : Promise.resolve(null)),
+    enabled: !!shouldFetchStatsById,
+  });
+
+  const teamGamesQuery = useQuery({
+    queryKey: ["teamGames", activeTeamId],
+    queryFn: () => (activeTeamId ? getTeamGames(activeTeamId) : Promise.resolve(null)),
+    enabled: !!activeTeamId,
+  });
+
+  const loading =
+    teamQuery.isPending ||
+    teamGamesQuery.isPending ||
+    seasonsQuery.isPending ||
+    (shouldFetchStatsById && statsByIdQuery.isPending);
+  const error = teamQuery.error || teamGamesQuery.error || seasonsQuery.error || statsByIdQuery.error;
 
   const teamPayload = teamQuery.data;
-  const teamData = teamPayload?.overallStats as TeamOverallStats;
+  const teamData = shouldFetchStatsById
+    ? statsByIdQuery.data
+    : (teamPayload?.overallStats as TeamOverallStats);
   const teamLogo = teamPayload?.logo || null;
   const teamGames = teamGamesQuery.data;
 
@@ -93,7 +115,14 @@ function TeamDisplay() {
         <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
       </Link>
       <div className="flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
-        <TeamStatSidebar teamName={teamName} teamData={teamData} logo={teamLogo} />
+        <TeamStatSidebar
+          teamName={teamName}
+          teamData={teamData}
+          logo={teamLogo}
+          seasons={seasonsQuery.data}
+          selectedTeamId={activeTeamId}
+          onSeasonChange={setSelectedTeamId}
+        />
         <div className="extendedStatsContainer flex flex-col gap-4 flex-grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
           <>
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />

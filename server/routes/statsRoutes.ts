@@ -12,7 +12,11 @@ import { getTeamIdByName } from "../db/queries/select";
 import playerStatsAggregation from "../stats/playerStatsAggregation";
 import teamStatsAggregation from "../stats/teamStatsAggregation";
 import { EventWithTeamsDto } from "./rosterRoutes";
-import { getDivisionsForSeason, getDivisionsForSelectedSeason } from "../db/queries/select";
+import {
+  getDivisionsForSeason,
+  getDivisionsForSelectedSeason,
+  getTeamSeasonsByName,
+} from "../db/queries/select";
 
 const statRoutes = express.Router();
 
@@ -290,6 +294,17 @@ statRoutes.get("/api/seasons/:seasonId", async (req: Request, res: Response) => 
       console.error("Error getting season by ID:", err);
       return res.status(500).json({ error: "Internal Server Error" });
     }
+  }
+});
+
+statRoutes.get("/api/teams/:teamName/seasons", async (req: Request, res: Response) => {
+  try {
+    const teamName = req.params.teamName;
+    const seasons = await getTeamSeasonsByName(teamName);
+    res.json(seasons);
+  } catch (error) {
+    console.error("Error fetching team seasons:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 

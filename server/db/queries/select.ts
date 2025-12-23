@@ -12,6 +12,7 @@ import {
   players,
   playersInWebsite,
   playerTeamHistoryInWebsite,
+  seasonsInWebsite,
   teams,
   teamsInWebsite,
 } from "../schema";
@@ -464,5 +465,26 @@ export const getDivisionsForSelectedSeason = async (seasonId: number) => {
     console.error("Error in getDivisionsForSelectedSeason:", error);
     return [];
   }
-
 };
+
+export async function getTeamSeasonsByName(teamName: string) {
+  try {
+    const teamSeasons = await db
+      .select({
+        teamId: teamsInWebsite.id,
+        seasonId: seasonsInWebsite.id,
+        seasonName: seasonsInWebsite.seasonName,
+        divisionName: divisionsInWebsite.divisionName,
+      })
+      .from(teamsInWebsite)
+      .innerJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
+      .innerJoin(seasonsInWebsite, eq(divisionsInWebsite.seasonId, seasonsInWebsite.id))
+      .where(eq(teamsInWebsite.teamName, teamName))
+      .orderBy(desc(seasonsInWebsite.id));
+
+    return teamSeasons;
+  } catch (error) {
+    console.error("Error in getTeamSeasonsByName:", error);
+    return [];
+  }
+}

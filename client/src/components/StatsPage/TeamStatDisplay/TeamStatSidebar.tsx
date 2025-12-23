@@ -7,14 +7,25 @@ import LoadingIcon from "../../LoadingIcon";
 import { Link } from "react-router-dom";
 import { TeamOverallStats } from "../../../types/StatTypes";
 import { useFetchData } from "../../../leagueData";
+import { TeamSeason } from "../dataHandlers/getTeamSeasons";
 
 interface TeamStatSidebarProps {
   teamName: string;
   teamData: TeamOverallStats | null;
   logo?: string | null;
+  seasons?: TeamSeason[];
+  selectedTeamId?: number | null;
+  onSeasonChange?: (teamId: number) => void;
 }
 
-const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebarProps) => {
+const TeamStatSidebar = ({
+  teamName,
+  teamData,
+  logo: propLogo,
+  seasons,
+  selectedTeamId,
+  onSeasonChange,
+}: TeamStatSidebarProps) => {
   const { teams } = useFetchData();
 
   // find team logo if it exists
@@ -32,6 +43,18 @@ const TeamStatSidebar = ({ teamName, teamData, logo: propLogo }: TeamStatSidebar
             <div className="w-24 h-24 bg-gray rounded-full mb-2" />
           )}
           <h1 className="text-lg text-center font-bold">{teamName}</h1>
+          {seasons && seasons.length > 0 && onSeasonChange && (
+            <select
+              className="mt-2 bg-light-gray text-white p-1 rounded border border-gray text-sm w-full max-w-[200px]"
+              value={selectedTeamId || ""}
+              onChange={(e) => onSeasonChange(Number(e.target.value))}>
+              {seasons.map((season) => (
+                <option key={season.teamId} value={season.teamId}>
+                  {season.seasonName} - {season.divisionName}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         <div className="rankRole flex items-center border-b-2 border-white/45">
