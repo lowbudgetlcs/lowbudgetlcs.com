@@ -16,7 +16,7 @@ interface PlayerStatSidebarProps {
 const PlayerStatSidebar = ({ summonerName, tagLine, playerData }: PlayerStatSidebarProps) => {
   return (
     <div className="statSideBar sticky w-full md:w-64 flex-shrink-0 mb-4 md:mb-0 left-0 md:top-24 self-start">
-      <div className="flex flex-col py-8 px-4 gap-2 bg-gray/20 border-2 border-gray rounded-md flex-grow md:min-w-64">
+      <div className="flex flex-col py-8 px-4 gap-2 bg-black border-2 border-gray rounded-md flex-grow md:min-w-64">
         <h1 className="text-lg text-center font-bold">
           {summonerName} <span className="text-white/60">#{tagLine}</span>
         </h1>
