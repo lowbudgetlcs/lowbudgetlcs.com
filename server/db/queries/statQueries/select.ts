@@ -2,7 +2,6 @@ import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../..";
 import {
   divisionsInWebsite,
-  draftLobbies,
   draftLobbiesInWebsite,
   matchesInWebsite,
   matchParticipantsInWebsite,
