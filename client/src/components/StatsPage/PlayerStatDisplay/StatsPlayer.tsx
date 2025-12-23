@@ -119,7 +119,7 @@ function StatsPlayer() {
         <div className="extendedStatsContainer flex flex-col gap-4 flex-grow md:mt-48 px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64 z-10 bg-black">
           <>
             {/* Achievements */}
-            <AchievementsDisplay />
+            <AchievementsDisplay playerData={playerData} />
             {/* Performance Overview */}
             <PerformanceOverview playerData={playerData} />
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />

@@ -1,4 +1,4 @@
-import { getGamesForTeam, getCurrentRosterForTeam } from "../db/queries/statQueries/select";
+import { getGamesForTeam, getCurrentRosterForTeam, getTeamDetails } from "../db/queries/statQueries/select";
 
 interface RosterPlayerStat {
   summonerName: string;
@@ -61,10 +61,13 @@ export interface TeamOverallStats {
   visionDistribution?: Record<string, number>;
   // Roster Breakdown
   roster: RosterPlayerStat[];
+  customAchievements?: number[];
 }
 
 const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | null> => {
   const games = await getGamesForTeam(teamId);
+  const teamDetails = await getTeamDetails(teamId);
+
   if (!games || games.length === 0) {
     return null;
   }
@@ -364,6 +367,7 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
     damageDistribution,
     visionDistribution,
     roster: roster,
+    customAchievements: teamDetails?.customAchievements ?? [],
   };
 };
 

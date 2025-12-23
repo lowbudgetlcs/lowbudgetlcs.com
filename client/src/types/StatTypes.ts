@@ -58,6 +58,7 @@ export interface PlayerOverallStats {
   highestDamageToChamps: BestGameStat;
   highestCS: BestGameStat;
   longestTimeSpentLiving: BestGameStat;
+  customAchievements?: number[];
 }
 
 interface RosterPlayerStat {
@@ -117,6 +118,7 @@ export interface TeamOverallStats {
   goldDistribution?: Record<string, number>;
   damageDistribution?: Record<string, number>;
   visionDistribution?: Record<string, number>;
+  customAchievements: number[];
   // Roster Breakdown
   roster: RosterPlayerStat[];
 }

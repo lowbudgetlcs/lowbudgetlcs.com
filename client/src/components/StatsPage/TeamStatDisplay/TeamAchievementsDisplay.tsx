@@ -5,11 +5,9 @@ import { IoEye } from "react-icons/io5";
 import { PiCampfireFill } from "react-icons/pi";
 import { useQuery } from "@tanstack/react-query";
 import getAchievements from "../dataHandlers/getAchievements";
-import commonAchievements from "../commonAchievements.json";
-import { PlayerOverallStats, TeamOverallStats } from "../../../types/StatTypes";
+import { TeamOverallStats } from "../../../types/StatTypes";
 
-interface AchievementsDisplayProps {
-  playerData?: PlayerOverallStats;
+interface TeamAchievementsDisplayProps {
   teamData?: TeamOverallStats;
 }
 
@@ -22,30 +20,19 @@ const iconMap: { [key: string]: React.ElementType } = {
   FaCrown: FaCrown,
 };
 
-const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
+const TeamAchievementsDisplay = ({ teamData }: TeamAchievementsDisplayProps) => {
   const { data: customAchievementsDef } = useQuery({
     queryKey: ["achievements"],
     queryFn: getAchievements,
   });
 
-  const customAchievementsIds = playerData?.customAchievements || [];
+  const customAchievementsIds = teamData?.customAchievements || [];
 
   const displayedCustomAchievements = customAchievementsDef
     ? customAchievementsDef.filter((ach) => customAchievementsIds.includes(ach.id))
     : [];
 
-  const displayedCommonAchievements = playerData
-    ? commonAchievements.filter((ach) => {
-        if (ach.name === "Great Farmer") return playerData.avgCsPerMin > 7;
-        if (ach.name === "Blood Thirsty") return playerData.avgKillParticipation > 50;
-        if (ach.name === "Survivor") return playerData.avgDeaths < 5;
-        if (ach.name === "Gray Screen Enthusiast") return playerData.avgDeaths > 7;
-        if (ach.name === "All-Seeing Eye") return playerData.avgVisionScore > 60;
-        return false;
-      })
-    : [];
-
-  if (displayedCustomAchievements.length === 0 && displayedCommonAchievements.length === 0) {
+  if (displayedCustomAchievements.length === 0) {
     return null;
   }
 
@@ -66,23 +53,9 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
             </div>
           );
         })}
-
-        {/* Common Achievements */}
-        {displayedCommonAchievements.map((ach, index) => {
-          const IconComponent = iconMap[ach.icon];
-          return (
-            <div
-              key={`common-${index}`}
-              className={`achievement flex gap-2 border-2 border-${ach.color} bg-${ach.color}/40 items-center px-2 py-1 rounded-md`}
-              title={ach.desc}>
-              {IconComponent && <IconComponent />}
-              <p>{ach.name}</p>
-            </div>
-          );
-        })}
       </div>
     </div>
   );
 };
 
-export default AchievementsDisplay;
+export default TeamAchievementsDisplay;

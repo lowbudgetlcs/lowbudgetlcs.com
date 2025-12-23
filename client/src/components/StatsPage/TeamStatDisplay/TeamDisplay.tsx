@@ -8,7 +8,7 @@ import getTeamGames from "../dataHandlers/getTeamGames";
 import MiniGameCard from "../cards/MiniGameCard";
 import IndividualStatCard from "../cards/IndividualStatCard";
 import { TeamOverallStats } from "../../../types/StatTypes";
-import AchievementsDisplay from "../PlayerStatDisplay/AchievementsDisplay";
+import TeamAchievementsDisplay from "./TeamAchievementsDisplay";
 import TeamStatSidebar from "./TeamStatSidebar";
 import SidePerformance from "./SidePerformance";
 import ObjectiveControl from "./ObjectiveControl";
@@ -128,7 +128,7 @@ function TeamDisplay() {
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
             {activeLink === "Overview" ? (
               <>
-                <AchievementsDisplay />
+                <TeamAchievementsDisplay teamData={teamData} />
                 <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Performance Overview</h2>
                 <div className="smallStatBoxes grid lg:grid-cols-3 gap-4">
                   <IndividualStatCard

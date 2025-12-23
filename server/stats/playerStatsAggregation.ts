@@ -67,6 +67,7 @@ export interface PlayerOverallStats {
   avgDamagePerMin: number;
   avgDamageToObjectives: number;
   avgControlWards: number; // Team Percentages
+  avgWardsPlaced: number;
   avgKillParticipation: number;
   avgGoldShare: number;
   avgDamageShare: number;
@@ -131,6 +132,7 @@ const playerStatsAggregation = async (
       acc.totalGold += player.goldEarned ?? 0;
       acc.totalVisionScore += player.visionScore ?? 0;
       acc.totalControlWards += player.visionWardsBoughtInGame ?? 0;
+      acc.totalWardsPlaced += player.wardsPlaced ?? 0;
       acc.totalDamageToChamps += Number(player.totalDamageDealtToChampions ?? 0);
       acc.totalDamageToObjectives += Number(player.damageDealtToObjectives ?? 0);
       acc.totalKillParticipation += killParticipation;
@@ -200,6 +202,7 @@ const playerStatsAggregation = async (
       totalGold: 0,
       totalVisionScore: 0,
       totalControlWards: 0,
+      totalWardsPlaced: 0,
       totalDamageToChamps: 0,
       totalDamageToObjectives: 0,
       totalKillParticipation: 0,
@@ -271,6 +274,7 @@ const playerStatsAggregation = async (
     avgDamagePerMin: totalDurationMinutes > 0 ? stats.totalDamageToChamps / totalDurationMinutes : 0,
     avgDamageToObjectives: stats.totalDamageToObjectives / totalGames,
     avgControlWards: stats.totalControlWards / totalGames,
+    avgWardsPlaced: totalDurationMinutes > 0 ? stats.totalWardsPlaced / totalDurationMinutes : 0,
     avgKillParticipation: (stats.totalKillParticipation / totalGames) * 100,
     avgGoldShare: (stats.totalGoldShare / totalGames) * 100,
     avgDamageShare: (stats.totalDamageShare / totalGames) * 100,

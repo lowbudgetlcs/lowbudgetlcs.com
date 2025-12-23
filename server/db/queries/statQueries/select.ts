@@ -9,8 +9,19 @@ import {
   playersInWebsite,
   playerTeamHistoryInWebsite,
   seasonsInWebsite,
+  statAchievementsInWebsite,
   teamsInWebsite,
 } from "../../schema";
+
+export const getAllAchievements = async () => {
+  try {
+    const achievements = await db.select().from(statAchievementsInWebsite);
+    return achievements;
+  } catch (err) {
+    console.error("Error in getAllAchievements: ", err);
+    return [];
+  }
+};
 
 export const getRecentGames = async (amount: number) => {
   try {
@@ -315,5 +326,19 @@ export const getCurrentRosterForTeam = async (teamId: number) => {
   } catch (error) {
     console.error("Error in getCurrentRosterForTeam:", error);
     return [];
+  }
+};
+
+export const getTeamDetails = async (teamId: number) => {
+  try {
+    const team = await db
+      .select()
+      .from(teamsInWebsite)
+      .where(eq(teamsInWebsite.id, teamId))
+      .limit(1);
+    return team[0];
+  } catch (err) {
+    console.error("Error in getTeamDetails: ", err);
+    return null;
   }
 };

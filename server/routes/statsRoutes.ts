@@ -7,6 +7,7 @@ import {
   getRecentGamesByDivision,
   getSeasons,
   getTeamsBySeason,
+  getAllAchievements,
 } from "../db/queries/statQueries/select";
 import { getTeamIdByName } from "../db/queries/select";
 import playerStatsAggregation from "../stats/playerStatsAggregation";
@@ -324,6 +325,16 @@ statRoutes.get("/api/teams/:teamName/seasons", async (req: Request, res: Respons
     res.json(seasons);
   } catch (error) {
     console.error("Error fetching team seasons:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+statRoutes.get("/api/achievements", async (req: Request, res: Response) => {
+  try {
+    const achievements = await getAllAchievements();
+    res.json(achievements);
+  } catch (error) {
+    console.error("Error fetching achievements:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
