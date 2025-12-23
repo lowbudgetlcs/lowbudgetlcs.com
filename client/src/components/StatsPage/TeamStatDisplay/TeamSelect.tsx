@@ -8,25 +8,11 @@ import { useQuery } from "@tanstack/react-query";
 
 const TeamSelect = () => {
   const [activeLink, setActiveLink] = useState<number>();
-  const [sidebarShown, setSidebarShown] = useState<boolean>(false);
-  const [buttonsShown, setButtonsShown] = useState<boolean>(true);
   const [navItems, setNavItems] = useState<number[]>([]);
 
   const toggleActive = (navItem: number) => {
     setActiveLink(navItem);
   };
-
-  useEffect(() => {
-    let timer: number;
-    if (activeLink) {
-      timer = setTimeout(() => {
-        setButtonsShown(false);
-        setSidebarShown(true);
-      }, 500);
-    }
-
-    return () => clearTimeout(timer);
-  }, [activeLink]);
 
   const { isPending, data, error, isError, isSuccess } = useQuery({
     queryKey: ["seasons"],
@@ -56,35 +42,18 @@ const TeamSelect = () => {
     setNavItems(gotNavItems);
   }
 
+  useEffect(() => {
+    if (navItems.length > 0 && !activeLink) {
+      setActiveLink(navItems[navItems.length - 1]);
+    }
+  }, [navItems, activeLink]);
+  
   return (
     <div className="grow w-full">
-      <div
-        className={`allstars flex gap-2 bg-white text-black dark:bg-black dark:text-white flex-col items-center justify-center grow pt-20 transition duration-500 ${
-          buttonsShown ? "" : "hidden"
-        } ${activeLink ? "opacity-0" : ""}`}>
-        <div className="title text-4xl text-center">
-          <h2>Team Stats: Select a Season</h2>
-        </div>
-        {/* Navigation */}
-        <div className={`ASNav flex flex-col items-center gap-4 px-4 justify-center grow py-4`}>
-          <div className="seasonSelect flex justify-center flex-wrap gap-8">
-            {navItems.map((navItem) => (
-              <button
-                key={navItem}
-                onClick={() => toggleActive(navItem)}
-                className={`text-2xl font-bold bg-gray px-14 py-10 rounded-md hover:bg-orange transition duration-300`}>
-                Season {navItem}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      {sidebarShown && (
         <div className="flex flex-col md:flex-row grow">
           <TeamSidebar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
           <TeamList activeSeason={activeLink ? activeLink : 15} />
         </div>
-      )}
     </div>
   );
 };
