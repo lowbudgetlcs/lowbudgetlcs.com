@@ -25,7 +25,7 @@
   },
   {
     "name": "All-Seeing Eye",
-    "desc": "Averages over 1.5 wards placed per minute",
+    "desc": "Averages over 60 vision score per game",
     "icon": "IoEye",
     "color": "purple"
   }
