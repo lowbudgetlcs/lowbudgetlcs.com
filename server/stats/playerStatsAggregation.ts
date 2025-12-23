@@ -82,8 +82,11 @@ export interface PlayerOverallStats {
   longestTimeSpentLiving: BestGameStat;
 }
 
-const playerStatsAggregation = async (puuid: string): Promise<PlayerOverallStats | null> => {
-  const games = await getGamesForPlayer(puuid);
+const playerStatsAggregation = async (
+  puuid: string,
+  seasonId?: number
+): Promise<PlayerOverallStats | null> => {
+  const games = await getGamesForPlayer(puuid, seasonId);
   if (!games || games.length === 0) {
     return null;
   }

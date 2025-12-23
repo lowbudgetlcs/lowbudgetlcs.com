@@ -488,3 +488,27 @@ export async function getTeamSeasonsByName(teamName: string) {
     return [];
   }
 }
+
+export async function getPlayerSeasonsByPuuid(puuid: string) {
+  try {
+    const playerSeasons = await db
+      .select({
+        teamId: teamsInWebsite.id,
+        seasonId: seasonsInWebsite.id,
+        seasonName: seasonsInWebsite.seasonName,
+        divisionName: divisionsInWebsite.divisionName,
+        teamName: teamsInWebsite.teamName,
+      })
+      .from(playerTeamHistoryInWebsite)
+      .innerJoin(teamsInWebsite, eq(playerTeamHistoryInWebsite.teamId, teamsInWebsite.id))
+      .innerJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
+      .innerJoin(seasonsInWebsite, eq(divisionsInWebsite.seasonId, seasonsInWebsite.id))
+      .where(eq(playerTeamHistoryInWebsite.playerPuuid, puuid))
+      .orderBy(desc(seasonsInWebsite.id));
+
+    return playerSeasons;
+  } catch (error) {
+    console.error("Error in getPlayerSeasonsByPuuid:", error);
+    return [];
+  }
+}

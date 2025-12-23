@@ -13,6 +13,7 @@ import PlayerGameCard from "../cards/PlayerGameCard";
 import LoadingIcon from "../../LoadingIcon";
 import { useQuery } from "@tanstack/react-query";
 import ChampionTopImage from "./ChampionTopImage";
+import getPlayerSeasons from "../dataHandlers/getPlayerSeasons";
 
 function StatsPlayer() {
   const params = useParams();
@@ -22,6 +23,8 @@ function StatsPlayer() {
   // NavList code
   const navItems = ["Overview", "Recent Games"];
   const [activeLink, setActiveLink] = useState<string>("Overview");
+  const [selectedSeasonId, setSelectedSeasonId] = useState<number | null>(null);
+
   const toggleActive = (navItem: string) => {
     setActiveLink(navItem);
   };
@@ -36,15 +39,36 @@ function StatsPlayer() {
   const tagLine = fullSummonerName.split("-")[1];
 
   const playerStatsQuery = useQuery({
-    queryKey: ["playerData", summonerName, tagLine],
-    queryFn: () => getPlayerOverallStats(summonerName, tagLine),
+    queryKey: ["playerData", summonerName, tagLine, selectedSeasonId],
+    queryFn: () =>
+      getPlayerOverallStats(summonerName, tagLine, selectedSeasonId ? selectedSeasonId : undefined),
   });
   const playerGamesQuery = useQuery({
-    queryKey: ["playerGames", summonerName, tagLine],
-    queryFn: () => getPlayerGames(summonerName, tagLine),
+    queryKey: ["playerGames", summonerName, tagLine, selectedSeasonId],
+    queryFn: () =>
+      getPlayerGames(summonerName, tagLine, selectedSeasonId ? selectedSeasonId : undefined),
   });
 
-  const loading = playerStatsQuery.isPending || playerGamesQuery.isPending;
+  const seasonsQuery = useQuery({
+    queryKey: ["playerSeasons", summonerName, tagLine],
+    queryFn: async () => {
+      // We need puuid to fetch seasons.
+      // We can get it from playerStatsQuery data if available, or we might need a separate call.
+      // However, playerStatsQuery returns PlayerOverallStats which has puuid.
+      // But playerStatsQuery depends on this query potentially? No.
+      // Let's wait for playerStatsQuery to succeed once to get PUUID.
+      // Or we can fetch player info first.
+      // Actually, getPlayerOverallStats returns puuid.
+      if (playerStatsQuery.data?.puuid) {
+        return getPlayerSeasons(playerStatsQuery.data.puuid);
+      }
+      return [];
+    },
+    enabled: !!playerStatsQuery.data?.puuid,
+  });
+
+  const loading =
+    playerStatsQuery.isPending || playerGamesQuery.isPending || (seasonsQuery.isPending && !!playerStatsQuery.data?.puuid);
   const error = playerStatsQuery.error || playerGamesQuery.error;
 
   const playerData = playerStatsQuery.data;
@@ -83,7 +107,14 @@ function StatsPlayer() {
         {/* Top Champion Image */}
         <ChampionTopImage playerData={playerData} />
         {/* Stat Sidebar */}
-        <PlayerStatSidebar summonerName={summonerName} tagLine={tagLine} playerData={playerData} />
+        <PlayerStatSidebar
+          summonerName={summonerName}
+          tagLine={tagLine}
+          playerData={playerData}
+          seasons={seasonsQuery.data}
+          selectedSeasonId={selectedSeasonId}
+          onSeasonChange={setSelectedSeasonId}
+        />
         {/* Extended Stats */}
         <div className="extendedStatsContainer flex flex-col gap-4 flex-grow md:mt-48 px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64 z-10 bg-black">
           <>

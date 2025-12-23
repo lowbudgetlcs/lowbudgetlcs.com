@@ -193,16 +193,35 @@ export const getRecentGamesByDivision = async (amount: number, divisionId: numbe
   }
 };
 
-export const getGamesForPlayer = async (puuid: string) => {
+export const getGamesForPlayer = async (puuid: string, seasonId?: number) => {
   try {
-    const playerMatches = await db
-      .select({
-        matchId: matchParticipantsInWebsite.matchId,
-        tournamentCodes: matchesInWebsite.tournamentCode,
-      })
-      .from(matchParticipantsInWebsite)
-      .where(eq(matchParticipantsInWebsite.playerPuuid, puuid))
-      .leftJoin(matchesInWebsite, eq(matchParticipantsInWebsite.matchId, matchesInWebsite.matchId));
+    let playerMatches;
+
+    if (seasonId) {
+      playerMatches = await db
+        .select({
+          matchId: matchParticipantsInWebsite.matchId,
+          tournamentCodes: matchesInWebsite.tournamentCode,
+        })
+        .from(matchParticipantsInWebsite)
+        .leftJoin(matchesInWebsite, eq(matchParticipantsInWebsite.matchId, matchesInWebsite.matchId))
+        .leftJoin(divisionsInWebsite, eq(matchesInWebsite.divisionId, divisionsInWebsite.id))
+        .where(
+          and(
+            eq(matchParticipantsInWebsite.playerPuuid, puuid),
+            eq(divisionsInWebsite.seasonId, seasonId)
+          )
+        );
+    } else {
+      playerMatches = await db
+        .select({
+          matchId: matchParticipantsInWebsite.matchId,
+          tournamentCodes: matchesInWebsite.tournamentCode,
+        })
+        .from(matchParticipantsInWebsite)
+        .where(eq(matchParticipantsInWebsite.playerPuuid, puuid))
+        .leftJoin(matchesInWebsite, eq(matchParticipantsInWebsite.matchId, matchesInWebsite.matchId));
+    }
 
     const matchIds = playerMatches.map((ts) => ts.matchId);
 

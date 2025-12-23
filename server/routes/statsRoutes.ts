@@ -16,6 +16,7 @@ import {
   getDivisionsForSeason,
   getDivisionsForSelectedSeason,
   getTeamSeasonsByName,
+  getPlayerSeasonsByPuuid,
 } from "../db/queries/select";
 
 const statRoutes = express.Router();
@@ -96,12 +97,14 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
   try {
     const summonerName: string = req.params.summonerName;
     const tagline: string = req.params.tagline;
+    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
+
     const puuidResponse = await getPlayer(summonerName, tagline);
     if (!puuidResponse || !puuidResponse.players.puuid) {
       return res.status(404).json({ error: "Player Not Found" });
     }
 
-    const response = await getGamesForPlayer(puuidResponse.players.puuid);
+    const response = await getGamesForPlayer(puuidResponse.players.puuid, seasonId);
     if (response.length <= 0) {
       return res.status(404).json({ error: "Matches Not Found" });
     }
@@ -111,21 +114,24 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, 
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 // Get player overall stats by summonerID
 statRoutes.get("/api/player/summoner/:summonerName/:tagline", async (req: Request, res: Response) => {
   try {
     const summonerName: string = req.params.summonerName;
     const tagline: string = req.params.tagline;
+    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
+
     const playerResponse = await getPlayer(summonerName, tagline);
     if (!playerResponse) {
       return res.status(404).json({ error: "Player Not Found" });
     }
     const puuid = playerResponse.players.puuid;
-    const overallStats = await playerStatsAggregation(puuid);
+    const overallStats = await playerStatsAggregation(puuid, seasonId);
     if (!overallStats) {
       return res.status(404).json({ error: "Player Stats Not Found" });
     }
-    return res.json({...playerResponse.team, ...overallStats});
+    return res.json({ ...playerResponse.team, ...overallStats });
   } catch (err: any) {
     console.error("Error fetching player stats by name:", err);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -136,7 +142,9 @@ statRoutes.get("/api/player/summoner/:summonerName/:tagline", async (req: Reques
 statRoutes.get("/api/player/puuid/:puuid", async (req: Request, res: Response) => {
   try {
     const puuid: string = req.params.puuid;
-    const overallStats = await playerStatsAggregation(puuid);
+    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
+
+    const overallStats = await playerStatsAggregation(puuid, seasonId);
     if (!overallStats) {
       return res.status(404).json({ error: "Player Stats Not Found" });
     }
@@ -146,6 +154,18 @@ statRoutes.get("/api/player/puuid/:puuid", async (req: Request, res: Response) =
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+statRoutes.get("/api/player/:puuid/seasons", async (req: Request, res: Response) => {
+  try {
+    const puuid = req.params.puuid;
+    const seasons = await getPlayerSeasonsByPuuid(puuid);
+    res.json(seasons);
+  } catch (error) {
+    console.error("Error fetching player seasons:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 
 // Get team overall stats
 statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
