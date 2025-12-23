@@ -76,17 +76,6 @@ export const seasonsInWebsite = website.table("seasons", {
 	unique("seasons_season_name_key").on(table.seasonName),
 ]);
 
-export const fearlessDraftLobbiesInWebsite = website.table("fearless_draft_lobbies", {
-	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "website.fearless_draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
-	fearlessCode: text("fearless_code").notNull(),
-	team1Code: text("team1_code").notNull(),
-	team2Code: text("team2_code").notNull(),
-	team1Name: text("team1_name").notNull(),
-	team2Name: text("team2_name").notNull(),
-	totalDrafts: integer("total_drafts").notNull(),
-	fearlessComplete: boolean("fearless_complete").default(false),
-});
-
 export const teamsInWebsite = website.table("teams", {
 	id: serial().primaryKey().notNull(),
 	divisionId: integer("division_id"),
@@ -96,6 +85,8 @@ export const teamsInWebsite = website.table("teams", {
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	formerTeam: bigint("former_team", { mode: "number" }),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	customAchievements: bigint("custom_achievements", { mode: "number" }).array(),
 }, (table) => [
 	foreignKey({
 			columns: [table.divisionId],
@@ -108,6 +99,35 @@ export const teamsInWebsite = website.table("teams", {
 			name: "teams_former_team_fkey"
 		}).onUpdate("cascade").onDelete("set null"),
 ]);
+
+export const fearlessDraftLobbiesInWebsite = website.table("fearless_draft_lobbies", {
+	id: integer().primaryKey().generatedByDefaultAsIdentity({ name: "website.fearless_draft_lobbies_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 2147483647, cache: 1 }),
+	fearlessCode: text("fearless_code").notNull(),
+	team1Code: text("team1_code").notNull(),
+	team2Code: text("team2_code").notNull(),
+	team1Name: text("team1_name").notNull(),
+	team2Name: text("team2_name").notNull(),
+	totalDrafts: integer("total_drafts").notNull(),
+	fearlessComplete: boolean("fearless_complete").default(false),
+});
+
+export const statAchievementsInWebsite = website.table("stat_achievements", {
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "website.stat_achievements_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 9223372036854775807, cache: 1 }),
+	name: text().notNull(),
+	description: text().notNull(),
+	icon: text().notNull(),
+	color: text().notNull(),
+});
+
+export const playersInWebsite = website.table("players", {
+	puuid: text().primaryKey().notNull(),
+	summonerName: text("summoner_name").notNull(),
+	tagLine: text("tag_line").notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	customAchievements: bigint("custom_achievements", { mode: "number" }).array(),
+});
 
 export const matchParticipantsInWebsite = website.table("match_participants", {
 	id: serial().primaryKey().notNull(),
@@ -336,10 +356,3 @@ export const playerTeamHistoryInWebsite = website.table("player_team_history", {
 			name: "player_team_history_team_id_fkey"
 		}).onDelete("cascade"),
 ]);
-
-export const playersInWebsite = website.table("players", {
-	puuid: text().primaryKey().notNull(),
-	summonerName: text("summoner_name").notNull(),
-	tagLine: text("tag_line").notNull(),
-	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
-});
