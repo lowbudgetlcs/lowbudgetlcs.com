@@ -12,6 +12,7 @@ import getPlayerGames from "../dataHandlers/getPlayerGames";
 import PlayerGameCard from "../cards/PlayerGameCard";
 import LoadingIcon from "../../LoadingIcon";
 import { useQuery } from "@tanstack/react-query";
+import ChampionTopImage from "./ChampionTopImage";
 
 function StatsPlayer() {
   const params = useParams();
@@ -78,10 +79,13 @@ function StatsPlayer() {
         </div>
         <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
       </Link>
-      <div className="flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
+      <div className="relative flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
+        {/* Top Champion Image */}
+        <ChampionTopImage playerData={playerData} />
         {/* Stat Sidebar */}
         <PlayerStatSidebar summonerName={summonerName} tagLine={tagLine} playerData={playerData} />
-        <div className="extendedStatsContainer flex flex-col gap-4 flex-grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
+        {/* Extended Stats */}
+        <div className="extendedStatsContainer flex flex-col gap-4 flex-grow md:mt-48 px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64 z-10 bg-black">
           <>
             {/* Achievements */}
             <AchievementsDisplay />
