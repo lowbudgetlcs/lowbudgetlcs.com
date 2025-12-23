@@ -24,9 +24,9 @@ function App() {
     if (host.startsWith("draft.localhost")) {
       return "draft";
     }
-    if (host.startsWith("stats.localhost")) {
-      return "stats";
-    }
+    // if (host.startsWith("stats.localhost")) {
+    //   return "stats";
+    // }
     return null;
   };
 
@@ -34,7 +34,7 @@ function App() {
   const pathname = window.location.pathname;
   const subdomain = getSubdomain(currentHost);
   const isDraftRoute = subdomain === "draft";
-  const isStatsRoute = subdomain === "stats";
+  // const isStatsRoute = subdomain === "stats";
 
   useEffect(() => {
     if (pathname.startsWith("/draft")) {
@@ -61,15 +61,16 @@ function App() {
       {!isDraftRoute && <Twitch />}
       <SettingsProvider>
         <DraftSettings />
-        {isDraftRoute ? <DraftNavbar /> : isStatsRoute ? <StatsNavbar /> : <Navbar />}
+        {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <StatsNavbar /> : <Navbar />}
         <LeagueDataProvider>
           <Routes>
             {subdomain === "draft" ? (
               <Route path="/*" element={<DraftRoutes />} />
-            ) : subdomain === "stats" ? (
-              <Route path="/*" element={<StatRoutes />} />
             ) : (
-              <Route path="/*" element={<DefaultRoutes />} />
+              <>
+                <Route path="/stats/*" element={<StatRoutes />} />
+                <Route path="/*" element={<DefaultRoutes />} />
+              </>
             )}
           </Routes>
         </LeagueDataProvider>

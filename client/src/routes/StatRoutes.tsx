@@ -12,8 +12,8 @@ const StatRoutes = () => {
     <QueryClientProvider client={queryClient}>
       <div className="flex flex-col min-h-screen items-center">
         <Routes>
-          <Route path="/" element={<StatsMain />} />
-          <Route path="team/" element={<TeamSelect />} />
+          <Route index element={<StatsMain />} />
+          <Route path="team" element={<TeamSelect />} />
           <Route path="player/:summonerName" element={<StatsPlayer />} />
           <Route path="team/:teamName" element={<TeamDisplay />} />
         </Routes>

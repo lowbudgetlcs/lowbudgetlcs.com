@@ -30,7 +30,7 @@ const TeamList = ({ activeSeason }: { activeSeason: number }) => {
 
   if (isError) {
     console.error(error);
-    navigate("/");
+    navigate("/stats");
     return null;
   }
 

@@ -2,7 +2,6 @@ import Logo from "../Logo";
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
-import MainLink from "../MainLink";
 import SubdomainLink from "../SubdomainLink";
 import StatsSearchUI from "./StatsSearchUI";
 
@@ -39,44 +38,44 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           isOpen ? "" : "hidden"
         } text-white font-semibold text-3xl w-fit transition-all duration-100 flex flex-col gap-0 justify-around`}>
         <li className="text-left animate-slide-in-300 opacity-0">
-          <MainLink
+          <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/">
             <div className="navBox pl-14 py-10">Home</div>
-          </MainLink>
+          </NavLink>
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
-          <MainLink
+          <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/about">
             <div className="navBox pl-14 py-10">About</div>
-          </MainLink>
+          </NavLink>
         </li>
         <li className="animate-slide-in-500 opacity-0">
           <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
-            to="/">
+            to="/stats">
             <div className="navBox pl-14 py-10">Stats</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-600 opacity-0">
-          <MainLink
+          <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/rosters">
             <div className="navBox pl-14 py-10">Rosters</div>
-          </MainLink>
+          </NavLink>
         </li>
         <li className="animate-slide-in-700 opacity-0">
-          <MainLink
+          <NavLink
             onClick={closeToTop}
             className="hover:text-orange transition duration-300"
             to="/allstars">
             <div className="navBox pl-14 py-10">All Stars</div>
-          </MainLink>
+          </NavLink>
         </li>
         <li className="animate-slide-in-800 opacity-0">
           <SubdomainLink

@@ -26,6 +26,11 @@ function Footer() {
             </NavLink>
           </li>
           <li className="">
+            <NavLink className="hover:text-orange transition" to="/stats">
+              <div className="">Stats</div>
+            </NavLink>
+          </li>
+          <li className="">
             <MainLink className="hover:text-orange transition" to="/rosters">
               <div className="">Rosters</div>
             </MainLink>
@@ -50,26 +55,17 @@ function Footer() {
 
       <ul className="flex gap-8 p-2">
         <li className="w-8 h-auto">
-          <NavLink
-            aria-label="Instagram Profile"
-            target="_blank"
-            to="https://www.instagram.com/lowbudgetlcs">
+          <NavLink aria-label="Instagram Profile" target="_blank" to="https://www.instagram.com/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-instagram text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink
-            aria-label="Discord Server"
-            target="_blank"
-            to="https://discord.com/invite/XfsEEq4aPC">
+          <NavLink aria-label="Discord Server" target="_blank" to="https://discord.com/invite/XfsEEq4aPC">
             <i className="hover:text-orange transition duration-300 bi bi-discord text-4xl"></i>
           </NavLink>
         </li>
         <li className="w-8 h-auto">
-          <NavLink
-            aria-label="Twitch Channel"
-            target="_blank"
-            to="https://www.twitch.tv/lowbudgetlcs">
+          <NavLink aria-label="Twitch Channel" target="_blank" to="https://www.twitch.tv/lowbudgetlcs">
             <i className="hover:text-orange transition duration-300 bi bi-twitch text-4xl"></i>
           </NavLink>
         </li>
@@ -84,14 +80,13 @@ function Footer() {
       </ul>
       <div className="riotDisclaimer text-xs md:text-center p-2 text-white/70">
         <p className="mb-2">
-          This competition is not affiliated with or sponsored by Riot Games, Inc. or League of
-          Legends Esports.
+          This competition is not affiliated with or sponsored by Riot Games, Inc. or League of Legends
+          Esports.
         </p>
         <p className="mb-2">
-          LowBudgetLCS isn't endorsed by Riot Games and doesn't reflect the views or opinions of
-          Riot Games or anyone officially involved in producing or managing Riot Games properties.
-          Riot Games, and all associated properties are trademarks or registered trademarks of Riot
-          Games, Inc.
+          LowBudgetLCS isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or
+          anyone officially involved in producing or managing Riot Games properties. Riot Games, and all
+          associated properties are trademarks or registered trademarks of Riot Games, Inc.
         </p>
       </div>
     </div>

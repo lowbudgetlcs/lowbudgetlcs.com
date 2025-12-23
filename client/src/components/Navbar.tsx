@@ -53,13 +53,12 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           </NavLink>
         </li>
         <li className="animate-slide-in-500 opacity-0">
-          <SubdomainLink
-            to="/"
-            subdomain="stats"
+          <NavLink
+            to="/stats"
             onClick={closeToTop}
             className="hover:text-orange transition duration-300">
             <div className="navBox pl-14 py-10">Stats</div>
-          </SubdomainLink>
+          </NavLink>
         </li>
         <li className="animate-slide-in-600 opacity-0">
           <NavLink
