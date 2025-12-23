@@ -59,10 +59,13 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
           return (
             <div
               key={`custom-${ach.id}`}
-              className={`achievement flex gap-2 border-2 border-${ach.color} bg-${ach.color}/40 items-center px-2 py-1 rounded-md`}
-              title={ach.description}>
+              className={`achievement group relative flex gap-2 border-2 border-${ach.color} bg-${ach.color} bg-opacity-40 items-center px-2 py-1 rounded-md cursor-context-menu select-none`}
+            >
               <IconComponent />
               <p>{ach.name}</p>
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[200px] bg-gray text-white text-xs px-2 py-1 rounded z-50 animate-fadeIn text-center pointer-events-none">
+                {ach.description}
+              </div>
             </div>
           );
         })}
@@ -73,10 +76,13 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
           return (
             <div
               key={`common-${index}`}
-              className={`achievement flex gap-2 border-2 border-${ach.color} bg-${ach.color}/40 items-center px-2 py-1 rounded-md`}
-              title={ach.desc}>
+              className={`achievement group relative flex gap-2 border-2 border-${ach.color} bg-${ach.color} bg-opacity-40 items-center px-2 py-1 rounded-md cursor-context-menu select-none`}
+            >
               {IconComponent && <IconComponent />}
               <p>{ach.name}</p>
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[150px] bg-gray text-white text-xs px-2 py-1 rounded z-50 animate-fadeIn-300ms text-center pointer-events-none">
+                {ach.desc}
+              </div>
             </div>
           );
         })}
