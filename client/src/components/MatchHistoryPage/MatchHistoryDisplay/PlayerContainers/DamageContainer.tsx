@@ -1,5 +1,5 @@
 import { Bar } from "react-chartjs-2";
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../../../../types/MatchV5";
 import {
   Chart as ChartJS,
   BarElement,

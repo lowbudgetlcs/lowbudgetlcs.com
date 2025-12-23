@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Great Farmer",
+    "desc": "Averages over 7 cs/minute",
+    "icon": "FaWheatAwn",
+    "color": "green"
+  },
+  {
+    "name": "Blood Thirsty",
+    "desc": "Averages over 50% kill participation",
+    "icon": "FaSkull",
+    "color": "red"
+  },
+  {
+    "name": "Survivor",
+    "desc": "Averages under 5 deaths per game",
+    "icon": "PiCampfireFill",
+    "color": "green"
+  },
+  {
+    "name": "Gray Screen Enthusiast",
+    "desc": "Averages over 10 deaths per game",
+    "icon": "GiCoffin",
+    "color": "gray"
+  },
+  {
+    "name": "All-Seeing Eye",
+    "desc": "Averages over 60 vision score per game",
+    "icon": "IoEye",
+    "color": "purple"
+  }
+]

@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../../../../types/MatchV5";
 import ItemDisplay from "../ItemDisplay";
 import PlayerInfo from "../PlayerInfo";
 import Runes from "../RuneDisplay/Runes";

@@ -1,5 +1,5 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
-import runes from "../../json/perks.json";
+import { ParticipantDto } from "../../../../types/MatchV5";
+import runes from "../../../json/perks.json";
 const DisplayStatMod = (playerData: ParticipantDto, statType: string) => {
   const defense = playerData.perks.statPerks.defense;
   const flex = playerData.perks.statPerks.flex;

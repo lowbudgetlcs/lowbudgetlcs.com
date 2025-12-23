@@ -1,14 +1,16 @@
-import { eq, sql } from "drizzle-orm";
+import { and, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
-  asTeams,
+  allstarsTeamsInWebsite,
   currentSeasonDivisionsInWebsite,
-  divisions,
+  divisionsInWebsite,
   draftLobbiesInWebsite,
   fearlessDraftLobbiesInWebsite,
-  games,
-  players,
-  teams,
+  matchesInWebsite,
+  playersInWebsite,
+  playerTeamHistoryInWebsite,
+  seasonsInWebsite,
+  teamsInWebsite,
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
@@ -18,66 +20,16 @@ export const getDivisionsForSeason = async () => {
   return divisionsData;
 };
 
-export async function getTournamentCodes() {
-  const tournamentCodes = await db.select().from(games);
-  return tournamentCodes;
-}
-
-// export async function getIdFromPerformance(id: number) {
-//   const performanceStats = await db
-//     .select({ performanceId: performances.id })
-//     .from(performances)
-//     .where(eq(performances.playerId, id));
-//   return performanceStats;
-// }
-
-export async function getPlayer(summonerName: string) {
-  const player = await db
-    .select({ summonerName: players.summonerName, id: players.id })
-    .from(players)
-    .where(eq(sql`LOWER(${players.summonerName})`, summonerName.toLowerCase()));
-
-  if (player.length < 1) {
-    throw new Error("No Player Found");
+export async function getPlayersByPuuid(puuids: string[]) {
+  if (puuids.length === 0) {
+    return [];
   }
-
-  return player;
+  const players = await db
+    .select()
+    .from(playersInWebsite)
+    .where(inArray(playersInWebsite.puuid, puuids));
+  return players;
 }
-// export async function getPlayerGameStats(id: number) {
-//   const gameStats = await db
-//     .select()
-//     .from(playerData)
-//     .where(eq(playerData.performanceId, id));
-//   return gameStats;
-// }
-
-// export async function getAllGameIDs(id: number) {
-//   const gameStats = await db
-//     .select({
-//       gameId: games.id,
-//       teamWinId: games.winnerId,
-//       teamLoseId: games.loserId,
-//     })
-//     .from(games)
-//     .leftJoin(performances, eq(games.id, performances.gameId))
-//     .where(eq(performances.teamId, id));
-//   return gameStats;
-// }
-// export async function getTeamGameStats(id: number) {
-//   const gameStats = await db
-//     .select({
-//       gameId: games.id,
-//       playerId: players.id,
-//       playerName: players.summonerName,
-//       playerStats: playerData,
-//     })
-//     .from(games)
-//     .leftJoin(performances, eq(games.id, performances.gameId)) // Join games and performances
-//     .leftJoin(playerData, eq(playerData.performanceId, performances.id)) // Join performances and playerData
-//     .leftJoin(players, eq(players.id, performances.playerId)) // Join performances and players
-//     .where(eq(performances.teamId, id)); // Filter by team ID
-//   return gameStats;
-// }
 
 export async function checkDBForURL(blueCode: string, redCode: string) {
   const matchingURL = await db
@@ -103,24 +55,6 @@ export async function checkDBForFearlessCode(fearlessCode: string) {
     return false;
   } else {
     return true;
-  }
-}
-// Check to see if shortCode exists in game table
-export async function getMatchingShortCode(shortCode: string) {
-  try {
-    const matchingCode = await db
-      .select({ shortCode: games.shortcode })
-      .from(games)
-      .where(eq(games.shortcode, shortCode));
-    const checkDupes = await checkDuplicateShortCode(shortCode);
-    if (checkDupes) {
-      return false;
-    } else {
-      return matchingCode.length > 0;
-    }
-  } catch (err) {
-    console.error("Error checking tournamentID with server: ", err);
-    throw new Error("Failed to check tournamentID");
   }
 }
 
@@ -259,10 +193,295 @@ export async function getPastFearlessSeries(fearlessCode: string) {
 
 export async function getAllStarsPosts(seasonId: number) {
   try {
-    const posts = await db.select().from(asTeams).where(eq(asTeams.seasonId, seasonId));
+    const posts = await db.select().from(allstarsTeamsInWebsite).where(eq(allstarsTeamsInWebsite.seasonId, seasonId));
     return posts;
   } catch (err) {
     console.error("Error fetching roster data: ", err);
     throw new Error("Failed to fetch roster data");
+  }
+}
+
+export const getSelectTeams = async (teamNamesFromSheet: string[]) => {
+  try {
+    const teams = await db
+      .select()
+      .from(teamsInWebsite)
+      .where(inArray(teamsInWebsite.teamName, teamNamesFromSheet));
+    return teams;
+  } catch (err) {
+    console.error("Error fetching all teams in select: ", err);
+    throw new Error("Failed to fetch all SELECTED teams");
+  }
+};
+
+export const getAllTeams = async () => {
+  try {
+    const teams = await db.select().from(teamsInWebsite);
+    return teams;
+  } catch (err) {
+    console.error("Error fetching all teams in select: ", err);
+    throw new Error("Failed to fetch all teams");
+  }
+};
+
+export const findOpenHistoryForPlayer = async (puuid: string) => {
+  try {
+    const history = await db
+      .select()
+      .from(playerTeamHistoryInWebsite)
+      .where(
+        and(
+          eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
+          isNull(playerTeamHistoryInWebsite.endDate)
+        )
+      )
+      .orderBy(desc(playerTeamHistoryInWebsite.startDate))
+      .limit(1);
+    return history.length > 0 ? history[0] : null;
+  } catch (err) {
+    console.error("Error finding open history for player: ", err);
+    throw new Error("Failed to find open history for player");
+  }
+};
+
+export const getAllPlayers = async () => {
+  try {
+    const players = await db.select().from(playersInWebsite);
+    return players;
+  } catch (err) {
+    console.error("Error fetching all players: ", err);
+    throw new Error("Failed to fetch all players");
+  }
+};
+
+export const getPlayerByName = async (summonerName: string, tagLine: string) => {
+  try {
+    const players = await db
+      .select({
+        puuid: playersInWebsite.puuid,
+      })
+      .from(playersInWebsite)
+      .where(
+        and(eq(playersInWebsite.summonerName, summonerName), eq(playersInWebsite.tagLine, tagLine))
+      );
+    if (players.length === 0 || !players[0].puuid) {
+      return null;
+    }
+    return players[0].puuid;
+  } catch (err) {
+    console.error("Error fetching all playersOneFind: ", err);
+    throw new Error("Failed to fetch all players");
+  }
+};
+
+export async function doesHistoryExist(
+  puuid: string,
+  teamId: number,
+  startDate: Date
+): Promise<boolean> {
+  const formattedStartDate = startDate.toISOString().split("T")[0];
+
+  const result = await db
+    .select({ id: playerTeamHistoryInWebsite.id })
+    .from(playerTeamHistoryInWebsite)
+    .where(
+      and(
+        eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
+        eq(playerTeamHistoryInWebsite.teamId, teamId),
+        eq(playerTeamHistoryInWebsite.startDate, formattedStartDate)
+      )
+    )
+    .limit(1);
+  return result.length > 0;
+}
+
+export const checkForGameId = async (matchId: string) => {
+  try {
+    const game = await db
+      .select()
+      .from(matchesInWebsite)
+      .where(eq(matchesInWebsite.matchId, matchId));
+    return game.length > 0;
+  } catch (err) {
+    console.error("[Game ID Grabber] Error checking for gameId in DB: ", err);
+    return false;
+  }
+};
+
+// Bulk fetch existing match IDs from the DB. Returns an array of matchId strings that exist.
+export const getExistingMatchIds = async (matchIds: string[]) => {
+  if (!matchIds || matchIds.length === 0) return [];
+  try {
+    const rows = await db
+      .select({ matchId: matchesInWebsite.matchId })
+      .from(matchesInWebsite)
+      .where(inArray(matchesInWebsite.matchId, matchIds));
+    return rows.map((r: any) => r.matchId);
+  } catch (err) {
+    console.error("[Game ID Grabber] Error fetching existing matchIds from DB: ", err);
+    return [];
+  }
+};
+
+export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[]) => {
+  if (!puuids || puuids.length < 3 || !possibleTeamIds || possibleTeamIds.length === 0) {
+    return null;
+  }
+  try {
+    const result = await db
+      .select({ teamId: playerTeamHistoryInWebsite.teamId })
+      .from(playerTeamHistoryInWebsite)
+      .where(
+        and(
+          inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
+          inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds)
+        )
+      )
+      .groupBy(playerTeamHistoryInWebsite.teamId)
+      .orderBy(desc(sql`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`))
+      .limit(1);
+
+    return result.length > 0 ? result[0].teamId : null;
+  } catch (error) {
+    console.error("[Game Stats Updater] Error in findTeamIdByPlayers:", error);
+    return null;
+  }
+};
+
+export const getTeamIdByName = async (name: string) => {
+  try {
+    const result = await db
+      .select({
+        id: teamsInWebsite.id,
+      })
+      .from(teamsInWebsite)
+      .where(and(eq(teamsInWebsite.teamName, name), eq(teamsInWebsite.active, true)))
+      .limit(1);
+
+    return result.length > 0 ? result[0].id : null;
+  } catch (error) {
+    console.error("[Game Stats Updater] Error in getTeamIdByName:", error);
+    return null;
+  }
+};
+export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]> => {
+  const historicalIds: number[] = [];
+  const visitedIds = new Set<number>();
+  let currentTeamName: string | null = name;
+  let nextFormerTeamId: number | null = null;
+
+  const maxIterations = 100; // Safety limit
+  let iterations = 0;
+
+  try {
+    // First, finds the starting team by its name
+    const initialTeam = await db
+      .select({
+        id: teamsInWebsite.id,
+        formerTeamId: teamsInWebsite.formerTeam,
+      })
+      .from(teamsInWebsite)
+      .where(eq(teamsInWebsite.teamName, currentTeamName))
+      .limit(1);
+
+    if (initialTeam.length === 0) {
+      return []; // No team found with that name
+    }
+
+    historicalIds.push(initialTeam[0].id);
+    visitedIds.add(initialTeam[0].id);
+    nextFormerTeamId = initialTeam[0].formerTeamId;
+
+    // Iteratively walks down the 'former_team' chain
+    while (nextFormerTeamId && iterations < maxIterations) {
+      // Cycle detection
+      if (visitedIds.has(nextFormerTeamId)) {
+        console.warn("[Game Stats Updater] Cycle detected in former_team chain");
+        break;
+      }
+      iterations++;
+
+      const formerTeam = await db
+        .select({
+          id: teamsInWebsite.id,
+          formerTeamId: teamsInWebsite.formerTeam,
+        })
+        .from(teamsInWebsite)
+        .where(eq(teamsInWebsite.id, nextFormerTeamId))
+        .limit(1);
+
+      if (formerTeam.length > 0) {
+        historicalIds.push(formerTeam[0].id);
+        visitedIds.add(formerTeam[0].id);
+        nextFormerTeamId = formerTeam[0].formerTeamId;
+      } else {
+        // No more former teams in the chain
+        nextFormerTeamId = null;
+      }
+    }
+
+    return historicalIds;
+  } catch (error) {
+    console.error("[Game Stats Updater] Error in getHistoricalTeamIdsByName:", error);
+    return [];
+  }
+};
+
+export const getDivisionsForSelectedSeason = async (seasonId: number) => {
+  try {
+    const divisionsData = await db
+      .select()
+      .from(divisionsInWebsite)
+      .where(eq(divisionsInWebsite.seasonId, seasonId));
+    return divisionsData;
+  } catch (error) {
+    console.error("Error in getDivisionsForSelectedSeason:", error);
+    return [];
+  }
+};
+
+export async function getTeamSeasonsByName(teamName: string) {
+  try {
+    const teamSeasons = await db
+      .select({
+        teamId: teamsInWebsite.id,
+        seasonId: seasonsInWebsite.id,
+        seasonName: seasonsInWebsite.seasonName,
+        divisionName: divisionsInWebsite.divisionName,
+      })
+      .from(teamsInWebsite)
+      .innerJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
+      .innerJoin(seasonsInWebsite, eq(divisionsInWebsite.seasonId, seasonsInWebsite.id))
+      .where(eq(teamsInWebsite.teamName, teamName))
+      .orderBy(desc(seasonsInWebsite.id));
+
+    return teamSeasons;
+  } catch (error) {
+    console.error("Error in getTeamSeasonsByName:", error);
+    return [];
+  }
+}
+
+export async function getPlayerSeasonsByPuuid(puuid: string) {
+  try {
+    const playerSeasons = await db
+      .select({
+        teamId: teamsInWebsite.id,
+        seasonId: seasonsInWebsite.id,
+        seasonName: seasonsInWebsite.seasonName,
+        divisionName: divisionsInWebsite.divisionName,
+        teamName: teamsInWebsite.teamName,
+      })
+      .from(playerTeamHistoryInWebsite)
+      .innerJoin(teamsInWebsite, eq(playerTeamHistoryInWebsite.teamId, teamsInWebsite.id))
+      .innerJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
+      .innerJoin(seasonsInWebsite, eq(divisionsInWebsite.seasonId, seasonsInWebsite.id))
+      .where(eq(playerTeamHistoryInWebsite.playerPuuid, puuid))
+      .orderBy(desc(seasonsInWebsite.id));
+
+    return playerSeasons;
+  } catch (error) {
+    console.error("Error in getPlayerSeasonsByPuuid:", error);
+    return [];
   }
 }

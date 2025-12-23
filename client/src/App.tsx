@@ -10,6 +10,8 @@ import DraftSettings from "./components/DraftTool/DraftSettings";
 import DraftRoutes from "./routes/DraftRoutes";
 import DefaultRoutes from "./routes/DefaultRoutes";
 import { useEffect } from "react";
+import StatRoutes from "./routes/StatRoutes";
+import StatsNavbar from "./components/StatsPage/StatsNavBar";
 
 function App() {
   // Finds the subdomain (used for draft site)
@@ -18,10 +20,13 @@ function App() {
     if (parts.length > 2) {
       return parts[0];
     }
-    // if develeoping, will always return draft (since no .com with localhost)
+    // if develeoping, will always return draft/stats (since no .com with localhost)
     if (host.startsWith("draft.localhost")) {
       return "draft";
     }
+    // if (host.startsWith("stats.localhost")) {
+    //   return "stats";
+    // }
     return null;
   };
 
@@ -29,18 +34,19 @@ function App() {
   const pathname = window.location.pathname;
   const subdomain = getSubdomain(currentHost);
   const isDraftRoute = subdomain === "draft";
+  // const isStatsRoute = subdomain === "stats";
 
   useEffect(() => {
     if (pathname.startsWith("/draft")) {
-      const baseHost = "lowbudgetlcs.com"; 
-      const newPath = pathname.substring("/draft".length); 
+      const baseHost = "lowbudgetlcs.com";
+      const newPath = pathname.substring("/draft".length);
       const newUrl = `${window.location.protocol}//draft.${baseHost}${newPath}${window.location.search}${window.location.hash}`;
 
       window.location.replace(newUrl);
     }
   }, [currentHost, pathname, subdomain]);
-  // If a redirect is happening, you might want to render null or a loading spinner
-  // to prevent the rest of the app from rendering momentarily.
+
+  // Redirect for old draft links
   if (!subdomain && pathname.startsWith("/draft")) {
     return (
       <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
@@ -55,13 +61,16 @@ function App() {
       {!isDraftRoute && <Twitch />}
       <SettingsProvider>
         <DraftSettings />
-        {!isDraftRoute ? <Navbar /> : <DraftNavbar />}
+        {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <StatsNavbar /> : <Navbar />}
         <LeagueDataProvider>
           <Routes>
             {subdomain === "draft" ? (
               <Route path="/*" element={<DraftRoutes />} />
             ) : (
-              <Route path="/*" element={<DefaultRoutes />} />
+              <>
+                <Route path="/stats/*" element={<StatRoutes />} />
+                <Route path="/*" element={<DefaultRoutes />} />
+              </>
             )}
           </Routes>
         </LeagueDataProvider>

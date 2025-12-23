@@ -1,0 +1,43 @@
+import { PlatformId, RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
+import { checkForGameId } from "../../db/queries/select";
+import { SheetGameData } from "./getGameDataFromSheets";
+import delay from "../utils/delay";
+import getIndividualApiMatchData from "./getIndividualApiData";
+export interface ApiMatchData {
+  divisionId: number;
+  gameId: string;
+  draftLink: string;
+  team1Name: string;
+  team2Name: string;
+  matchData: RiotAPITypes.MatchV5.MatchDTO;
+}
+const getGameDataFromApi = async (sheetGames: SheetGameData[]) => {
+  try {
+    let requestCount = 0;
+    const rateLimit = 400; // Riot API rate limit per 1 minute
+    const timeToWait = 60000; // 1 minute in milliseconds
+
+    const allMatchData: ApiMatchData[] = [];
+    for (const game of sheetGames) {
+      if (requestCount >= rateLimit) {
+        console.log(`⏱️ Rate limit of ${rateLimit} reached for Riot. Pausing for 1 minute...`);
+        await delay(timeToWait);
+        // Reset the counter after waiting
+        requestCount = 0;
+        console.log("✅ Resuming API calls for Riot.");
+      }
+      const dbGameCheck = await checkForGameId(`NA1_${game.gameId}`);
+      if (dbGameCheck) continue;
+      
+      const checkGameId = await getIndividualApiMatchData(game);
+      requestCount++;
+      if (!checkGameId) continue;
+      allMatchData.push(checkGameId);
+    }
+    return allMatchData;
+  } catch (err) {
+    console.error("[Game ID Grabber]Error getting Game Ids From Api: ", err);
+  }
+};
+
+export default getGameDataFromApi;

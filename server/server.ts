@@ -11,6 +11,10 @@ import { draftSocket } from "./draftTool/sockets/draftSocket";
 import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
 import matchRoutes from "./routes/matchRoutes";
 import allStarsRoutes from "./routes/allStarsRoutes";
+import schedulePlayerDbUpdate from "./cronJobs/schedulePlayerDbUpdate";
+import runDailyGameUpdate from "./stats/runDailyStatsUpdate";
+import scheduleGameStatsUpdate from "./cronJobs/scheduleGameStatsUpdate";
+import statRoutes from "./routes/statsRoutes";
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
@@ -84,6 +88,8 @@ app.use("/roster", rosterRoutes);
 app.use("/draft", draftRoutes);
 app.use("/mh", matchRoutes);
 app.use("/allstars", allStarsRoutes);
+app.use("/stats", statRoutes);
+
 
 // Set up namespaces
 const draftNamespace = io.of("/draft");
@@ -92,6 +98,10 @@ const fearlessNamespace = io.of("/fearless");
 // Initialize draftSocket with the io instance
 draftSocket(draftNamespace);
 fearlessSocket(fearlessNamespace);
+
+// Cron Jobs
+schedulePlayerDbUpdate();
+scheduleGameStatsUpdate();
 
 server.listen(port, () => {
   console.log("Server started on port " + port);

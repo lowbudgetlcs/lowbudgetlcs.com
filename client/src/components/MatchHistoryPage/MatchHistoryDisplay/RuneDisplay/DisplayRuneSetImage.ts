@@ -1,5 +1,5 @@
-import { ParticipantDto } from "../../interfaces/MatchV5";
-import runeSets from "../../json/perkstyles.json";
+import { ParticipantDto } from "../../../../types/MatchV5";
+import runeSets from "../../../json/perkstyles.json";
 
 const DisplayRuneSetImage = (playerData: ParticipantDto) => {
   const rawRuneSet = playerData.perks.styles.find((style) => style.description === "subStyle");

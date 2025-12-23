@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { MatchDto } from "../interfaces/MatchV5";
+import { MatchDto } from "../../../types/MatchV5";
 import MHBans from "./MHBans";
 import TeamContainer from "./TeamContainer";
 
@@ -32,12 +32,12 @@ const MHMatchDisplay = ({ matchData }: { matchData: MatchDto }) => {
             <p className="text-white/60">MatchID: {params.matchID}</p>
           </div>
           <div className="teamBans flex flex-col gap-4 items-center">
-            <div className="flex gap-2 items-center">
-              <p className="text-blue font-bold">Blue Bans:</p>
+            <div className="flex flex-col md:flex-row gap-2 items-center">
+              <p className="text-blue font-bold w-20">Blue Bans:</p>
               <MHBans banList={matchData.info.teams[0].bans} />
             </div>
-            <div className="flex gap-2 items-center">
-              <p className="text-red font-bold">Red Bans:</p>
+            <div className="flex flex-col md:flex-row gap-2 items-center">
+              <p className="text-red font-bold w-20">Red Bans:</p>
               <MHBans banList={matchData.info.teams[1].bans} />
             </div>
           </div>

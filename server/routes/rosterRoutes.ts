@@ -22,7 +22,7 @@ interface TeamDto {
   logoName: string;
   eventId: number;
 }
-interface EventWithTeamsDto {
+export interface EventWithTeamsDto {
   id: number;
   name: string;
   description: string;

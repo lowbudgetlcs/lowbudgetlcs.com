@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ParticipantDto, TeamDto } from "../interfaces/MatchV5";
+import { ParticipantDto, TeamDto } from "../../../types/MatchV5";
 import PlayerContainer from "./PlayerContainers/PlayerContainer";
 import NavList from "../../NavList";
 import DamageContainer from "./PlayerContainers/DamageContainer";
@@ -54,7 +54,7 @@ const TeamContainer = ({
         </div>
         <div className="baron flex items-center">
           <img src={baronIcon} className="h-8"></img>
-          <p>{team.objectives.dragon.kills}</p>
+          <p>{team.objectives.baron.kills}</p>
         </div>
         <div className="herald flex items-center">
           <img src={heraldIcon} className="h-8"></img>

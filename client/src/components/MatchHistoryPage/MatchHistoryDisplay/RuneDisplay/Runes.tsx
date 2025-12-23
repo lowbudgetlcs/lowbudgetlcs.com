@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ParticipantDto } from "../../interfaces/MatchV5";
+import { ParticipantDto } from "../../../../types/MatchV5";
 import DisplayRuneImage from "./DisplayRuneImage";
 import DisplayRuneSetImage from "./DisplayRuneSetImage";
 import ShowAllRuneImages from "./ShowAllRuneImages";
