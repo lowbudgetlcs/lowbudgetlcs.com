@@ -1,19 +1,15 @@
 import { and, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
-  asTeams,
+  allstarsTeamsInWebsite,
   currentSeasonDivisionsInWebsite,
-  divisions,
   divisionsInWebsite,
   draftLobbiesInWebsite,
   fearlessDraftLobbiesInWebsite,
-  games,
   matchesInWebsite,
-  players,
   playersInWebsite,
   playerTeamHistoryInWebsite,
   seasonsInWebsite,
-  teams,
   teamsInWebsite,
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
@@ -23,11 +19,6 @@ export const getDivisionsForSeason = async () => {
   const divisionsData = await db.select().from(currentSeasonDivisionsInWebsite);
   return divisionsData;
 };
-
-export async function getTournamentCodes() {
-  const tournamentCodes = await db.select().from(games);
-  return tournamentCodes;
-}
 
 export async function getPlayersByPuuid(puuids: string[]) {
   if (puuids.length === 0) {
@@ -64,24 +55,6 @@ export async function checkDBForFearlessCode(fearlessCode: string) {
     return false;
   } else {
     return true;
-  }
-}
-// Check to see if shortCode exists in game table
-export async function getMatchingShortCode(shortCode: string) {
-  try {
-    const matchingCode = await db
-      .select({ shortCode: games.shortcode })
-      .from(games)
-      .where(eq(games.shortcode, shortCode));
-    const checkDupes = await checkDuplicateShortCode(shortCode);
-    if (checkDupes) {
-      return false;
-    } else {
-      return matchingCode.length > 0;
-    }
-  } catch (err) {
-    console.error("Error checking tournamentID with server: ", err);
-    throw new Error("Failed to check tournamentID");
   }
 }
 
@@ -220,7 +193,7 @@ export async function getPastFearlessSeries(fearlessCode: string) {
 
 export async function getAllStarsPosts(seasonId: number) {
   try {
-    const posts = await db.select().from(asTeams).where(eq(asTeams.seasonId, seasonId));
+    const posts = await db.select().from(allstarsTeamsInWebsite).where(eq(allstarsTeamsInWebsite.seasonId, seasonId));
     return posts;
   } catch (err) {
     console.error("Error fetching roster data: ", err);
@@ -379,7 +352,7 @@ export const getTeamIdByName = async (name: string) => {
   try {
     const result = await db
       .select({
-        id: teams.id,
+        id: teamsInWebsite.id,
       })
       .from(teamsInWebsite)
       .where(and(eq(teamsInWebsite.teamName, name), eq(teamsInWebsite.active, true)))
