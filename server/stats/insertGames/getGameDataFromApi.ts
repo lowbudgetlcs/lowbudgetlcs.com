@@ -14,13 +14,13 @@ export interface ApiMatchData {
 const getGameDataFromApi = async (sheetGames: SheetGameData[]) => {
   try {
     let requestCount = 0;
-    const rateLimit = 95;
-    const timeToWait = 120000; // 2 minutes in milliseconds
+    const rateLimit = 400; // Riot API rate limit per 1 minute
+    const timeToWait = 60000; // 1 minute in milliseconds
 
     const allMatchData: ApiMatchData[] = [];
     for (const game of sheetGames) {
       if (requestCount >= rateLimit) {
-        console.log(`⏱️ Rate limit of ${rateLimit} reached for Riot. Pausing for 2 minutes...`);
+        console.log(`⏱️ Rate limit of ${rateLimit} reached for Riot. Pausing for 1 minute...`);
         await delay(timeToWait);
         // Reset the counter after waiting
         requestCount = 0;

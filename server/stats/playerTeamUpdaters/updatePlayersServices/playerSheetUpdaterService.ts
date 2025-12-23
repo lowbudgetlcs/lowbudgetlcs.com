@@ -19,8 +19,8 @@ export const playerSheetUpdaterService = async () => {
     console.log("🚀 [Sheet Player Reader] Starting daily player update from Google Sheets...");
 
     let requestCount = 0;
-    const rateLimit = 95;
-    const timeToWait = 120000; // 2 minutes in milliseconds
+    const rateLimit = 400; // Riot API rate limit per 1 minute
+    const timeToWait = 60000; // 1 minute in milliseconds
 
     const sheets = google.sheets({ version: "v4", auth });
     const divisionsData = await getDivisionsForSeason();
