@@ -74,9 +74,9 @@ const TeamStatSidebar = ({
                     return "#";
                   }
                   if (tagLine && tagLine.trim().length > 0) {
-                    return `/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
+                    return `/stats/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
                   }
-                  return `/player/${encodeURIComponent(gameName)}`;
+                  return `/stats/player/${encodeURIComponent(gameName)}`;
                 })()}
                 key={p.summonerName}
                 aria-label={`Player ${p.summonerName} profile`}

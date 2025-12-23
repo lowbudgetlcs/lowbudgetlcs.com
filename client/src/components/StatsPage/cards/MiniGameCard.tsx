@@ -51,14 +51,14 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
         <h3 className="font-bold min-w-0 truncate flex gap-2">
           <Link
             className="truncate hover:underline flex gap-1 items-center"
-            to={`/team/${encodeURIComponent(team1Info.teamName)}`}>
+            to={`/stats/team/${encodeURIComponent(team1Info.teamName)}`}>
             {team1Stats.win && <FaCrown />}
             {team1Info.teamName}
           </Link>{" "}
           <span className="text-white/80">vs.</span>{" "}
           <Link
             className="truncate hover:underline flex gap-1 items-center"
-            to={`/team/${encodeURIComponent(team2Info.teamName)}`}>
+            to={`/stats/team/${encodeURIComponent(team2Info.teamName)}`}>
             {team2Stats.win && <FaCrown />}
             {team2Info.teamName}
           </Link>
@@ -110,9 +110,9 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                     const gameName = player.riotIdGameName || player.summonerName || "";
                     const tagLine = player.riotIdTagLine || "";
                     if (tagLine && tagLine.trim().length > 0) {
-                      return `/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
+                      return `/stats/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
                     }
-                    return `/player/${encodeURIComponent(gameName)}`;
+                    return `/stats/player/${encodeURIComponent(gameName)}`;
                   })()}
                   className="flex truncate  hover:text-white hover:underline text-white/80">
                   <span className="text-xs">{player.riotIdGameName}</span>
@@ -133,9 +133,9 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                     const gameName = player.riotIdGameName || player.summonerName || "";
                     const tagLine = player.riotIdTagLine || "";
                     if (tagLine && tagLine.trim().length > 0) {
-                      return `/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
+                      return `/stats/player/${encodeURIComponent(gameName)}-${encodeURIComponent(tagLine)}`;
                     }
-                    return `/player/${encodeURIComponent(gameName)}`;
+                    return `/stats/player/${encodeURIComponent(gameName)}`;
                   })()}
                   className="flex truncate hover:text-white hover:underline text-white/80">
                   <span className="text-xs">{player.riotIdGameName}</span>

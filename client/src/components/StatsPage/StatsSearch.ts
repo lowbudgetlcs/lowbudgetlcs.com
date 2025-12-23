@@ -33,7 +33,7 @@ export const handlePlayerSearch = async (
         }
       }
   
-      navigate(`/player/${encodeURIComponent(actualSummonerName)}-${encodeURIComponent(tagLine)}`);
+      navigate(`/stats/player/${encodeURIComponent(actualSummonerName)}-${encodeURIComponent(tagLine)}`);
     } catch (err: any) {
        setError(err.message || "An unexpected error occurred");   
     }

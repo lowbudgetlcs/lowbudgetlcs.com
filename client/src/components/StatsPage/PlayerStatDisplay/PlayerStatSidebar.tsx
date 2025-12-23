@@ -63,7 +63,7 @@ const PlayerStatSidebar = ({
           <div className="text-center">
             {playerData?.teamName ? (
               <Link
-                to={`/team/${encodeURIComponent(playerData.teamName)}`}
+                to={`/stats/team/${encodeURIComponent(playerData.teamName)}`}
                 className="text-white/60 hover:underline hover:text-white">
                 {playerData.teamName}
               </Link>
