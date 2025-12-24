@@ -35,7 +35,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
   if (!player) {
     return null;
   }
-  const championLink = `https://cdn.communitydragon.org/latest/champion/${player.championId}/square`;
+  const championLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`;
   const gameDurationMs = game.gameDuration * 1000;
   const teamKills = game.participants
     .filter((p) => p.teamId === player.teamId)
@@ -129,7 +129,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
             {sortedTeam1.map((player, index) => (
               <div key={index} className="flex items-center">
                 <img
-                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/square`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName!}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
@@ -152,7 +152,7 @@ const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) =>
             {sortedTeam2.map((player, index) => (
               <div key={index} className="flex items-center">
                 <img
-                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/tile`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/splashTile`}
                   alt={player.championName!}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />

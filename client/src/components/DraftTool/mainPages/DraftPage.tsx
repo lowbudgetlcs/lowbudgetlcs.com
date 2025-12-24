@@ -55,12 +55,12 @@ function DraftPage() {
   useEffect(() => {
     championRoles.forEach((champion) => {
       const fixedName = champion.name.toLowerCase() === "wukong" ? "monkeyking" : champion.name;
-      preloadImage(`https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`);
+      preloadImage(`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/splashTile`);
       preloadImage(
-        `https://cdn.communitydragon.org/latest/champion/${fixedName}/splash-art/centered`
+        `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/splashCentered`
       );
       if (streamMode) {
-        preloadImage(`https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`);
+        preloadImage(`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/portrait`);
       }
     });
   }, [championRoles]);

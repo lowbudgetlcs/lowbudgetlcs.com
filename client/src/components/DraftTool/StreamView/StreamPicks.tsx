@@ -39,7 +39,7 @@ const StreamPicks = ({
   useEffect(() => {
     if (draftState.phaseType === "pick" && currentHover) {
       setLink(
-        `https://cdn.communitydragon.org/latest/champion/${currentHover}/splash-art/centered`
+        `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${currentHover}/splashCentered`
       );
     } else {
       setLink("#");
