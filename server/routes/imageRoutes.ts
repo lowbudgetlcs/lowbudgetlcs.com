@@ -4,13 +4,14 @@ import { getAllImages } from "../images/getAllImages";
 
 const imageRoutes = express.Router();
 
-imageRoutes.get("/api/champions/:champion/:type", async (req, res) => {
+imageRoutes.get("/api/champion/:champion/:type", async (req, res) => {
   try {
     const championName = req.params.champion;
     const imageType = req.params.type; // 'splashCentered', 'splashTile', or 'square'
     const imageFind = await getAllImages(championName, imageType);
     if (imageFind) {
-      res.status(200).json(imageFind);
+      res.set("Content-Type", imageFind.contentType);
+      res.send(imageFind.buffer);
     } else {
       res.status(404).json({ error: "Champion images not found" });
     }

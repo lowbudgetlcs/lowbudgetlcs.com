@@ -24,8 +24,15 @@ export const getAllImages = async (championName: string, imageType: string) => {
     }
   }
 
-  if (championImages) {
-    return championImages[imageType];
+  if (championImages && championImages[imageType]) {
+    const dataUri = championImages[imageType];
+    const matches = dataUri.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
+    if (matches && matches.length === 3) {
+      return {
+        contentType: matches[1],
+        buffer: Buffer.from(matches[2], 'base64')
+      };
+    }
   }
   return null;
 }
