@@ -1,3 +1,13 @@
+interface ChampionData {
+  id: number;
+  name: string;
+  description: string;
+  alias: string;
+  contentId: string;
+  squarePortraitPath: string;
+  roles: string[];
+}
+
 export const imageCache = new Map<string, any>();
 export let lastCacheTime = 0;
 let fetchPromise: Promise<void> | null = null;
@@ -8,8 +18,8 @@ const fetchAndCreateUrl = async (url: string) => {
     if (!response.ok) return null;
     const arrayBuffer = await response.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
-    const base64 = buffer.toString('base64');
-    const mimeType = url.endsWith('.jpg') ? 'image/jpeg' : 'image/png';
+    const base64 = buffer.toString("base64");
+    const mimeType = url.endsWith(".jpg") ? "image/jpeg" : "image/png";
     return `data:${mimeType};base64,${base64}`;
   } catch (error) {
     return null;
@@ -21,25 +31,43 @@ export const storeAllImages = async () => {
     return fetchPromise;
   }
 
-  const championData = require("./champions.json");
-  
+  const championData = async () => {
+    try {
+      const response = await fetch(
+        "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json"
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch champion data");
+      }
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching champion data:", error);
+      return [];
+    }
+  };
+  const championDataJson: ChampionData[] = await championData();
+  if (!championDataJson || championDataJson.length === 0) {
+    console.error("Failed to fetch champion data from JSON");
+    return;
+  }
+
   fetchPromise = (async () => {
     try {
-      for (const champ of championData) {
-        const name = champ.name;
-        if (name === "nothing") continue;
-        const lowerCaseName = name.toLowerCase();
-        
-        const existingImages = imageCache.get(name);
+      for (const champ of championDataJson) {
+        // Remove None champion
+        const { id, alias } = champ;
+        if (id === -1) continue;
+        const lowerCaseName = alias.toLowerCase();
+        const existingImages = imageCache.get(alias);
 
         const splashCenteredUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.jpg`;
         const splashTileUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.jpg`;
-        const squareUrl = `https://ddragon.leagueoflegends.com/cdn/15.24.1/img/champion/${name}.png`;
+        const squareUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${id}.png`;
 
         const [newSplashCentered, newSplashTile, newSquare] = await Promise.all([
           fetchAndCreateUrl(splashCenteredUrl),
           fetchAndCreateUrl(splashTileUrl),
-          fetchAndCreateUrl(squareUrl)
+          fetchAndCreateUrl(squareUrl),
         ]);
 
         const championImageUrls = {
@@ -47,7 +75,7 @@ export const storeAllImages = async () => {
           splashTile: newSplashTile || existingImages?.splashTile,
           square: newSquare || existingImages?.square,
         };
-        imageCache.set(name, championImageUrls);
+        imageCache.set(alias, championImageUrls);
       }
       lastCacheTime = Date.now();
       console.log("✅ [Image Store] All champion images have been fetched and stored.");
