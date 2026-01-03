@@ -6,8 +6,8 @@ const imageRoutes = express.Router();
 
 imageRoutes.get("/api/champion/:champion/:type", async (req, res) => {
   try {
-    const championName = req.params.champion;
-    const imageType = req.params.type; // 'splashCentered', 'splashTile', or 'square'
+    const championName = req.params.champion.toLowerCase();
+    const imageType = req.params.type; // 'splashCentered', 'splashTile', 'square', or 'portrait'
     const imageFind = await getAllImages(championName, imageType);
     if (imageFind) {
       res.set("Content-Type", imageFind.contentType);
