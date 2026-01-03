@@ -31,7 +31,7 @@ const DisplayBanImage = ({
       setLink((prevLink) => {
         const fixedName =
           currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`;
+        const imageURL = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/splashTile`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -41,7 +41,7 @@ const DisplayBanImage = ({
       setLink((prevLink) => {
         const fixedName =
           championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/tile`;
+        const imageURL = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/splashTile`;
         if (imageURL !== prevLink) {
           return imageURL;
         }

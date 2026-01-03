@@ -49,7 +49,7 @@ const FearlessBansBar = () => {
               {fearlessState.allPicks.map((ban, index) => {
                 const fixedName =
                   ban.toLowerCase() === "wukong" ? "monkeyKing" : ban;
-                const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/square`;
+                const imageURL = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/splashTile`;
                 return (
                   <div
                     className={`banBox ${ban} w-12 h-12 border-2 border-gray rounded-md`}

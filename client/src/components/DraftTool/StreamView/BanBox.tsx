@@ -71,7 +71,7 @@ const BanBox = ({
   };
   if (!champInfo) return null;
 
-  const champInfoURL = `https://cdn.communitydragon.org/latest/champion/${champInfo.name}/splash-art/centered`;
+  const champInfoURL = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${champInfo.name}/splashCentered`;
   return (
     <div className="fixed top-[20%] inset-x-0 flex items-center justify-center">
       <div

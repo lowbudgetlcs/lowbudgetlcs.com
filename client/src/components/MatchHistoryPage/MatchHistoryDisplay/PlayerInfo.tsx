@@ -1,7 +1,7 @@
 import { ParticipantDto } from "../../../types/MatchV5";
 
 const PlayerInfo = ({ playerData }: { playerData: ParticipantDto }) => {
-  const championLink = `https://cdn.communitydragon.org/latest/champion/${playerData.championId}/square`;
+  const championLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${playerData.championId}/square`;
 
   return (
     <div className="playerInfo flex gap-2 items-center shrink-0 w-72">

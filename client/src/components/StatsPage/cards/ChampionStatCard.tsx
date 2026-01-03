@@ -13,7 +13,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
       className="championContainer border-2 border-gray bg-gray rounded-md bg-opacity-20 p-4">
       <div className="flex gap-2 border-gray pb-2">
         <img
-          src={`https://cdn.communitydragon.org/latest/champion/${champ.championName}/square`}
+          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${champ.championName}/square`}
           width={"50px"}
           height={"50px"}
           alt={champ.championName}></img>

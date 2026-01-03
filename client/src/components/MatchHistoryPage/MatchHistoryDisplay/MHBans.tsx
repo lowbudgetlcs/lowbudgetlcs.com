@@ -4,7 +4,7 @@ const MHBans = ({ banList }: { banList: BanDto[] }) => {
   return (
     <div className="banList grid grid-cols-3 grid-rows-2 lg:flex flex-row gap-2">
       {banList.map((ban: BanDto) => {
-        const link = `https://cdn.communitydragon.org/latest/champion/${ban.championId}/square`;
+        const link = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${ban.championId}/square`;
         if (ban.championId === -1)
           return (
             <div className="border-2 border-black w-12 h-12">

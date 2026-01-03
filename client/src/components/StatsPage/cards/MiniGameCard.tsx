@@ -101,7 +101,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
             {sortedTeam1.map((player, index) => (
               <div key={getPlayerKey(player, index)} className="flex items-center">
                 <img
-                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/square`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName || ""}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />
@@ -124,7 +124,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
             {sortedTeam2.map((player, index) => (
               <div key={getPlayerKey(player, index)} className="flex items-center">
                 <img
-                  src={`https://cdn.communitydragon.org/latest/champion/${player.championName}/square`}
+                  src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName || ""}
                   className="w-4 h-4 border-[0.5px] border-black mr-2"
                 />

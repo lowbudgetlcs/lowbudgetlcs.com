@@ -34,7 +34,7 @@ const StreamPickImage = ({
         // Fixes Wukong's name
         const fixedName =
           currentHover.toLowerCase() === "wukong" ? "monkeyKing" : currentHover;
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`;
+        const imageURL = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/portrait`;
         if (imageURL !== prevLink) {
           return imageURL;
         }
@@ -45,7 +45,7 @@ const StreamPickImage = ({
         // Fixes Wukong's name
         const fixedName =
           championName.toLowerCase() === "wukong" ? "monkeyKing" : championName;
-        const imageURL = `https://cdn.communitydragon.org/latest/champion/${fixedName}/portrait`;
+        const imageURL = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/portrait`;
         if (imageURL !== prevLink) {
           return imageURL;
         }

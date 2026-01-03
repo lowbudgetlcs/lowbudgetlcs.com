@@ -19,7 +19,7 @@ export function LoadChampIcons({
   const pickedChampions = draftState.picksArray;
   const bannedChampions = draftState.bansArray;
   const { smallIcons, champNamesVisible } = useSettingsContext();
-  const dDragonIconLink = `https://cdn.communitydragon.org/latest/champion/`;
+  const dDragonIconLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/`;
   const nothingIconLink =
     "https://raw.communitydragon.org/10.1/plugins/rcp-fe-lol-item-sets/global/default/icon-helmet.png";
   const { animationToggle } = useSettingsContext();
