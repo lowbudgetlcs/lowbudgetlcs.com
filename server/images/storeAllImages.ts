@@ -60,13 +60,19 @@ export const storeAllImages = async () => {
         const lowerCaseName = alias.toLowerCase();
         const existingImages = imageCache.get(alias);
 
-        const splashCenteredUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.jpg`;
-        const splashTileUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.jpg`;
+        const splashCenteredUrlBase = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.jpg`;
+        const splashCenteredUrlSkin0 = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/skin0/images/${lowerCaseName}_splash_centered_0.jpg`;
+        const splashCenteredUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.${lowerCaseName}.jpg`;
+
+        const splashTileUrlBase = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.jpg`;
+        const splashTileUrlSkin0 = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/skin0/images/${lowerCaseName}_splash_tile_0.jpg`;
+        const splashTileUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.${lowerCaseName}.jpg`;
+
         const squareUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${id}.png`;
 
         const [newSplashCentered, newSplashTile, newSquare] = await Promise.all([
-          fetchAndCreateUrl(splashCenteredUrl),
-          fetchAndCreateUrl(splashTileUrl),
+          fetchAndCreateUrl(splashCenteredUrlBase).then((res) => res || fetchAndCreateUrl(splashCenteredUrlSkin0)).then((res) => res || fetchAndCreateUrl(splashCenteredUrlBaseWithExtraNameOnImage)),
+          fetchAndCreateUrl(splashTileUrlBase).then((res) => res || fetchAndCreateUrl(splashTileUrlSkin0)).then((res) => res || fetchAndCreateUrl(splashTileUrlBaseWithExtraNameOnImage)),
           fetchAndCreateUrl(squareUrl),
         ]);
 
