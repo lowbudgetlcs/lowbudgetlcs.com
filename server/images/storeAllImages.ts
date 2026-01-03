@@ -68,18 +68,27 @@ export const storeAllImages = async () => {
         const splashTileUrlSkin0 = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/skin0/images/${lowerCaseName}_splash_tile_0.jpg`;
         const splashTileUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.${lowerCaseName}.jpg`;
 
+        
+        const portraitUrlBase = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen.jpg`;
+        const portraitUrlBaseWith0 = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.jpg`;
+        const portraitUrlSkin0 = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/skin0/${lowerCaseName}loadscreen.jpg`;
+        const portraitUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.${lowerCaseName}.jpg`;
+
+
         const squareUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${id}.png`;
 
-        const [newSplashCentered, newSplashTile, newSquare] = await Promise.all([
+        const [newSplashCentered, newSplashTile, newSquare, newPortrait] = await Promise.all([
           fetchAndCreateUrl(splashCenteredUrlBase).then((res) => res || fetchAndCreateUrl(splashCenteredUrlSkin0)).then((res) => res || fetchAndCreateUrl(splashCenteredUrlBaseWithExtraNameOnImage)),
           fetchAndCreateUrl(splashTileUrlBase).then((res) => res || fetchAndCreateUrl(splashTileUrlSkin0)).then((res) => res || fetchAndCreateUrl(splashTileUrlBaseWithExtraNameOnImage)),
           fetchAndCreateUrl(squareUrl),
+          fetchAndCreateUrl(portraitUrlBase).then((res) => res || fetchAndCreateUrl(portraitUrlSkin0)).then((res) => res || fetchAndCreateUrl(portraitUrlBaseWith0)).then((res) => res || fetchAndCreateUrl(portraitUrlBaseWithExtraNameOnImage)),
         ]);
 
         const championImageUrls = {
           splashCentered: newSplashCentered || existingImages?.splashCentered,
           splashTile: newSplashTile || existingImages?.splashTile,
           square: newSquare || existingImages?.square,
+          portrait: newPortrait || existingImages?.portrait,
         };
         imageCache.set(alias, championImageUrls);
       }
