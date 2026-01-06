@@ -1,7 +1,12 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
 import { insertDraft } from "../db/queries/insert";
-import { checkDuplicateShortCode, getPastDraft, getPastFearlessSeries } from "../db/queries/select";
+import {
+  checkDuplicateShortCode,
+  getChampionList,
+  getPastDraft,
+  getPastFearlessSeries,
+} from "../db/queries/select";
 import { DraftInitializeProps, initializeDraftState } from "../draftTool/states/draftState";
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
 import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
@@ -18,7 +23,7 @@ draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Resp
     }
 
     const checkDBForTourneyCode = await checkDuplicateShortCode(shortCode);
-    console.log(checkDBForTourneyCode)
+    console.log(checkDBForTourneyCode);
     if (checkDBForTourneyCode) {
       res.status(200).json({ valid: false });
       return;
@@ -38,11 +43,8 @@ draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Resp
 draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
   try {
     // Pull nick names and tournament ID from request (if there is one)
-    const {
-      redName,
-      blueName,
-      tournamentID,
-    }: { redName: string; blueName: string; tournamentID?: string } = req.body;
+    const { redName, blueName, tournamentID }: { redName: string; blueName: string; tournamentID?: string } =
+      req.body;
 
     // Generate unique URLs for the draft
     const lobbyCode = tournamentID ? tournamentID : randomUUID();
@@ -87,8 +89,7 @@ draftRoutes.post("/api/createFearlessDraft", async (req: Request, res: Response)
       team2Name,
       draftCount,
       tournamentID,
-    }: { team1Name: string; team2Name: string; draftCount: number; tournamentID?: string | null } =
-      req.body;
+    }: { team1Name: string; team2Name: string; draftCount: number; tournamentID?: string | null } = req.body;
     // Generate unique URLs for the draft
     const team1Code = randomUUID();
     const team2Code = randomUUID();
@@ -150,6 +151,17 @@ draftRoutes.get("/api/pastFearless/:fearlessCode", async (req: Request, res: Res
     }
   } catch (err) {
     console.error("Error in Finding Past Game:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Get champion data from database
+draftRoutes.get("/api/championData", async (req: Request, res: Response) => {
+  try {
+    const championData = await getChampionList();
+    res.status(200).json(championData);
+  } catch (err) {
+    console.error("Error in fetching champion data:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
