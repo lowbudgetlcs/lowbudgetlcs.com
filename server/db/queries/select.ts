@@ -475,7 +475,7 @@ export async function getPlayerSeasonsByPuuid(puuid: string) {
   }
 }
 
-export async function getChampionDataFromDB() {
+export async function getChampionList() {
   try {
     const championList = await db.select().from(championListInWebsite);
     return championList;
