@@ -16,6 +16,7 @@ import scheduleGameStatsUpdate from "./cronJobs/scheduleGameStatsUpdate";
 import scheduleImageFetch from "./cronJobs/scheduleImageFetch";
 import statRoutes from "./routes/statsRoutes";
 import imageRoutes from "./routes/imageRoutes";
+import adminRoutes from "./routes/adminRoutes";
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
@@ -76,6 +77,7 @@ app.use("/mh", matchRoutes);
 app.use("/allstars", allStarsRoutes);
 app.use("/stats", statRoutes);
 app.use("/images", imageRoutes);
+app.use("/admin", adminRoutes);
 
 
 // Set up namespaces
