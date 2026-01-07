@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 
 import { Link, useLocation, useParams } from "react-router-dom";
-import { Champion } from "../interfaces/draftInterfaces";
 import DraftDisplay from "../draftViews/DraftDisplay";
 import Button from "../../Button";
 import StreamDisplay from "../StreamView/StreamDisplay";
 import { useDraftContext } from "../providers/DraftProvider";
-import championData from "../championRoles.json";
 import MobileDraftDisplay from "../mobileViews/MobileDraftDisplay";
 import { useSettingsContext } from "../providers/SettingsProvider";
 import ReconnectPopup from "../popups/ReconnectPopup";
@@ -14,9 +12,8 @@ import ConnectPopup from "../popups/ConnectPopup";
 import ErrorPopup from "../popups/ErrorPopup";
 
 function DraftPage() {
-  const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft } =
+  const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft, championList } =
     useDraftContext();
-  const [championRoles] = useState<Champion[]>(championData);
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [reloadPage, setReloadPage] = useState<boolean>(false);
   const { forceDesktopView } = useSettingsContext();
@@ -53,7 +50,7 @@ function DraftPage() {
 
   // Preload all champion images
   useEffect(() => {
-    championRoles.forEach((champion) => {
+    championList.forEach((champion) => {
       const fixedName = champion.name.toLowerCase() === "wukong" ? "monkeyking" : champion.name;
       preloadImage(`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/splashTile`);
       preloadImage(
@@ -63,7 +60,7 @@ function DraftPage() {
         preloadImage(`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${fixedName}/portrait`);
       }
     });
-  }, [championRoles]);
+  }, [championList]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -82,7 +79,7 @@ function DraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
-        <StreamDisplay championRoles={championRoles} />
+        <StreamDisplay championRoles={championList} />
       </>
     );
   } else if (draftState && lobbyCode && (draftSocket || isPastDraft) && !error) {
@@ -91,14 +88,14 @@ function DraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
-        <DraftDisplay championRoles={championRoles} />
+        <DraftDisplay championRoles={championList} />
       </>
     ) : (
       <>
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
-        <MobileDraftDisplay championRoles={championRoles} />
+        <MobileDraftDisplay championRoles={championList} />
       </>
     );
   } else if (loading) {

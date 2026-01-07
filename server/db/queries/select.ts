@@ -1,7 +1,8 @@
-import { and, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   allstarsTeamsInWebsite,
+  championListInWebsite,
   currentSeasonDivisionsInWebsite,
   divisionsInWebsite,
   draftLobbiesInWebsite,
@@ -24,10 +25,7 @@ export async function getPlayersByPuuid(puuids: string[]) {
   if (puuids.length === 0) {
     return [];
   }
-  const players = await db
-    .select()
-    .from(playersInWebsite)
-    .where(inArray(playersInWebsite.puuid, puuids));
+  const players = await db.select().from(playersInWebsite).where(inArray(playersInWebsite.puuid, puuids));
   return players;
 }
 
@@ -193,7 +191,10 @@ export async function getPastFearlessSeries(fearlessCode: string) {
 
 export async function getAllStarsPosts(seasonId: number) {
   try {
-    const posts = await db.select().from(allstarsTeamsInWebsite).where(eq(allstarsTeamsInWebsite.seasonId, seasonId));
+    const posts = await db
+      .select()
+      .from(allstarsTeamsInWebsite)
+      .where(eq(allstarsTeamsInWebsite.seasonId, seasonId));
     return posts;
   } catch (err) {
     console.error("Error fetching roster data: ", err);
@@ -230,10 +231,7 @@ export const findOpenHistoryForPlayer = async (puuid: string) => {
       .select()
       .from(playerTeamHistoryInWebsite)
       .where(
-        and(
-          eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
-          isNull(playerTeamHistoryInWebsite.endDate)
-        )
+        and(eq(playerTeamHistoryInWebsite.playerPuuid, puuid), isNull(playerTeamHistoryInWebsite.endDate))
       )
       .orderBy(desc(playerTeamHistoryInWebsite.startDate))
       .limit(1);
@@ -261,9 +259,7 @@ export const getPlayerByName = async (summonerName: string, tagLine: string) => 
         puuid: playersInWebsite.puuid,
       })
       .from(playersInWebsite)
-      .where(
-        and(eq(playersInWebsite.summonerName, summonerName), eq(playersInWebsite.tagLine, tagLine))
-      );
+      .where(and(eq(playersInWebsite.summonerName, summonerName), eq(playersInWebsite.tagLine, tagLine)));
     if (players.length === 0 || !players[0].puuid) {
       return null;
     }
@@ -274,11 +270,7 @@ export const getPlayerByName = async (summonerName: string, tagLine: string) => 
   }
 };
 
-export async function doesHistoryExist(
-  puuid: string,
-  teamId: number,
-  startDate: Date
-): Promise<boolean> {
+export async function doesHistoryExist(puuid: string, teamId: number, startDate: Date): Promise<boolean> {
   const formattedStartDate = startDate.toISOString().split("T")[0];
 
   const result = await db
@@ -297,10 +289,7 @@ export async function doesHistoryExist(
 
 export const checkForGameId = async (matchId: string) => {
   try {
-    const game = await db
-      .select()
-      .from(matchesInWebsite)
-      .where(eq(matchesInWebsite.matchId, matchId));
+    const game = await db.select().from(matchesInWebsite).where(eq(matchesInWebsite.matchId, matchId));
     return game.length > 0;
   } catch (err) {
     console.error("[Game ID Grabber] Error checking for gameId in DB: ", err);
@@ -482,6 +471,29 @@ export async function getPlayerSeasonsByPuuid(puuid: string) {
     return playerSeasons;
   } catch (error) {
     console.error("Error in getPlayerSeasonsByPuuid:", error);
+    return [];
+  }
+}
+
+export async function getChampionList() {
+  try {
+    const championList = await db
+      .select()
+      .from(championListInWebsite)
+      .orderBy(asc(championListInWebsite.name));
+    // Move "Nothing" or "None" to the start
+    const nothingIndex = championList.findIndex(
+      (c) =>
+        c.name.toLowerCase() === "nothing" || c.name.toLowerCase() === "none" || c.id === -1
+    );
+
+    if (nothingIndex > -1) {
+      const nothingChamp = championList.splice(nothingIndex, 1)[0];
+      championList.unshift(nothingChamp);
+    }
+    return championList;
+  } catch (error) {
+    console.error("Error fetching champion data from DB:", error);
     return [];
   }
 }

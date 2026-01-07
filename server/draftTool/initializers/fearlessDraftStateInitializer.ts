@@ -47,7 +47,6 @@ const fearlessDraftStateInitializer = ({
       fearlessCode: fearlessCode,
       addedPhases: [],
     };
-    console.log(draftState[lobbyCode])
     setTimeout(() => {
       if (draftState[lobbyCode]) {
         delete draftState[lobbyCode];

@@ -6,34 +6,29 @@ import DraftPage from "../components/DraftTool/mainPages/DraftPage";
 import { FearlessProvider } from "../components/DraftTool/providers/FearlessProvider";
 import FearlessMain from "../components/DraftTool/mainPages/FearlessMain";
 import FearlessDraftPage from "../components/DraftTool/mainPages/FearlessDraftPage";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 const DraftRoutes = () => {
   return (
-    <Routes>
-      <Route element={<SocketProvider />}>
-        <Route path="/" element={<CreateDraft />} />
-        <Route element={<DraftProvider />}>
-          <Route path=":lobbyCode" element={<DraftPage />} />
-          <Route path=":lobbyCode/:sideCode" element={<DraftPage />} />
-        </Route>
-        <Route element={<FearlessProvider />}>
-          <Route
-            path="fearless/:fearlessCode"
-            element={<FearlessMain />}
-          />
-          <Route
-            path="fearless/:fearlessCode/:teamCode"
-            element={<FearlessMain />}
-          />
+    <QueryClientProvider client={queryClient}>
+      <Routes>
+        <Route element={<SocketProvider />}>
+          <Route path="/" element={<CreateDraft />} />
           <Route element={<DraftProvider />}>
-            <Route
-              path="fearless/:fearlessCode/:teamCode/:lobbyCode"
-              element={<FearlessDraftPage />}
-            />
+            <Route path=":lobbyCode" element={<DraftPage />} />
+            <Route path=":lobbyCode/:sideCode" element={<DraftPage />} />
+          </Route>
+          <Route element={<FearlessProvider />}>
+            <Route path="fearless/:fearlessCode" element={<FearlessMain />} />
+            <Route path="fearless/:fearlessCode/:teamCode" element={<FearlessMain />} />
+            <Route element={<DraftProvider />}>
+              <Route path="fearless/:fearlessCode/:teamCode/:lobbyCode" element={<FearlessDraftPage />} />
+            </Route>
           </Route>
         </Route>
-      </Route>
-    </Routes>
+      </Routes>
+    </QueryClientProvider>
   );
 };
 

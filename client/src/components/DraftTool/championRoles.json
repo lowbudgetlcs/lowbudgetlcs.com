@@ -1,862 +1,1429 @@
 [
   {
+    "id": -1,
     "name": "nothing",
     "displayName": "None",
-    "roles": ["Top", "Mid", "Support", "Bottom", "Jungle"]
+    "roles": [
+      "Top",
+      "Mid",
+      "Support",
+      "Bottom",
+      "Jungle"
+    ]
   },
   {
+    "id": 266,
     "name": "Aatrox",
     "displayName": "Aatrox",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 103,
     "name": "Ahri",
     "displayName": "Ahri",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 84,
     "name": "Akali",
     "displayName": "Akali",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 166,
     "name": "Akshan",
     "displayName": "Akshan",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 12,
     "name": "Alistar",
     "displayName": "Alistar",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 799,
     "name": "Ambessa",
     "displayName": "Ambessa",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 32,
     "name": "Amumu",
     "displayName": "Amumu",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 34,
     "name": "Anivia",
     "displayName": "Anivia",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 1,
     "name": "Annie",
     "displayName": "Annie",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 523,
     "name": "Aphelios",
     "displayName": "Aphelios",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 22,
     "name": "Ashe",
     "displayName": "Ashe",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 136,
     "name": "AurelionSol",
     "displayName": "Aurelion Sol",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 893,
     "name": "Aurora",
     "displayName": "Aurora",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 268,
     "name": "Azir",
     "displayName": "Azir",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 432,
     "name": "Bard",
     "displayName": "Bard",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 200,
     "name": "Belveth",
     "displayName": "Bel'Veth",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 53,
     "name": "Blitzcrank",
     "displayName": "Blitzcrank",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 63,
     "name": "Brand",
     "displayName": "Brand",
-    "roles": ["Support", "Jungle"]
+    "roles": [
+      "Support",
+      "Jungle"
+    ]
   },
   {
+    "id": 201,
     "name": "Braum",
     "displayName": "Braum",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 233,
     "name": "Briar",
     "displayName": "Briar",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 51,
     "name": "Caitlyn",
     "displayName": "Caitlyn",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 164,
     "name": "Camille",
     "displayName": "Camille",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 69,
     "name": "Cassiopeia",
     "displayName": "Cassiopeia",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 31,
     "name": "Chogath",
     "displayName": "Cho'Gath",
-    "roles": ["Top", "Mid"]
+    "roles": [
+      "Top",
+      "Mid"
+    ]
   },
   {
+    "id": 42,
     "name": "Corki",
     "displayName": "Corki",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 122,
     "name": "Darius",
     "displayName": "Darius",
-    "roles": ["Top", "Jungle"]
+    "roles": [
+      "Top",
+      "Jungle"
+    ]
   },
   {
+    "id": 131,
     "name": "Diana",
     "displayName": "Diana",
-    "roles": ["Mid", "Jungle"]
+    "roles": [
+      "Mid",
+      "Jungle"
+    ]
   },
   {
+    "id": 119,
     "name": "Draven",
     "displayName": "Draven",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 36,
     "name": "DrMundo",
     "displayName": "Dr. Mundo",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 245,
     "name": "Ekko",
     "displayName": "Ekko",
-    "roles": ["Mid", "Jungle"]
+    "roles": [
+      "Mid",
+      "Jungle"
+    ]
   },
   {
+    "id": 60,
     "name": "Elise",
     "displayName": "Elise",
-    "roles": ["Jungle", "Support"]
+    "roles": [
+      "Jungle",
+      "Support"
+    ]
   },
   {
+    "id": 28,
     "name": "Evelynn",
     "displayName": "Evelynn",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 81,
     "name": "Ezreal",
     "displayName": "Ezreal",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 9,
     "name": "Fiddlesticks",
     "displayName": "Fiddlesticks",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 114,
     "name": "Fiora",
     "displayName": "Fiora",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 105,
     "name": "Fizz",
     "displayName": "Fizz",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 3,
     "name": "Galio",
     "displayName": "Galio",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 41,
     "name": "Gangplank",
     "displayName": "Gangplank",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 86,
     "name": "Garen",
     "displayName": "Garen",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 150,
     "name": "Gnar",
     "displayName": "Gnar",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 79,
     "name": "Gragas",
     "displayName": "Gragas",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 104,
     "name": "Graves",
     "displayName": "Graves",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 887,
     "name": "Gwen",
     "displayName": "Gwen",
-    "roles": ["Top", "Jungle"]
+    "roles": [
+      "Top",
+      "Jungle"
+    ]
   },
   {
+    "id": 120,
     "name": "Hecarim",
     "displayName": "Hecarim",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 74,
     "name": "Heimerdinger",
     "displayName": "Heimerdinger",
-    "roles": ["Mid", "Top"]
+    "roles": [
+      "Mid",
+      "Top"
+    ]
   },
   {
+    "id": 910,
     "name": "Hwei",
     "displayName": "Hwei",
-    "roles": ["Mid", "Support"]
+    "roles": [
+      "Mid",
+      "Support"
+    ]
   },
   {
+    "id": 420,
     "name": "Illaoi",
     "displayName": "Illaoi",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 39,
     "name": "Irelia",
     "displayName": "Irelia",
-    "roles": ["Top", "Mid"]
+    "roles": [
+      "Top",
+      "Mid"
+    ]
   },
   {
+    "id": 427,
     "name": "Ivern",
     "displayName": "Ivern",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 40,
     "name": "Janna",
     "displayName": "Janna",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 59,
     "name": "JarvanIV",
     "displayName": "Jarvan IV",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 24,
     "name": "Jax",
     "displayName": "Jax",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 126,
     "name": "Jayce",
     "displayName": "Jayce",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 202,
     "name": "Jhin",
     "displayName": "Jhin",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 222,
     "name": "Jinx",
     "displayName": "Jinx",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 145,
     "name": "Kaisa",
     "displayName": "Kai'Sa",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 429,
     "name": "Kalista",
     "displayName": "Kalista",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 43,
     "name": "Karma",
     "displayName": "Karma",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 30,
     "name": "Karthus",
     "displayName": "Karthus",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 38,
     "name": "Kassadin",
     "displayName": "Kassadin",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 55,
     "name": "Katarina",
     "displayName": "Katarina",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 10,
     "name": "Kayle",
     "displayName": "Kayle",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 141,
     "name": "Kayn",
     "displayName": "Kayn",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 85,
     "name": "Kennen",
     "displayName": "Kennen",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 121,
     "name": "Khazix",
     "displayName": "Kha'Zix",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 203,
     "name": "Kindred",
     "displayName": "Kindred",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 240,
     "name": "Kled",
     "displayName": "Kled",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 96,
     "name": "KogMaw",
     "displayName": "Kog'Maw",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 897,
     "name": "Ksante",
     "displayName": "K'Sante",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 7,
     "name": "Leblanc",
     "displayName": "LeBlanc",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 64,
     "name": "LeeSin",
     "displayName": "Lee Sin",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 89,
     "name": "Leona",
     "displayName": "Leona",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 876,
     "name": "Lillia",
     "displayName": "Lillia",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 127,
     "name": "Lissandra",
     "displayName": "Lissandra",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 236,
     "name": "Lucian",
     "displayName": "Lucian",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 117,
     "name": "Lulu",
     "displayName": "Lulu",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 99,
     "name": "Lux",
     "displayName": "Lux",
-    "roles": ["Mid", "Support"]
+    "roles": [
+      "Mid",
+      "Support"
+    ]
   },
   {
+    "id": 54,
     "name": "Malphite",
     "displayName": "Malphite",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 90,
     "name": "Malzahar",
     "displayName": "Malzahar",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 57,
     "name": "Maokai",
     "displayName": "Maokai",
-    "roles": ["Top", "Support"]
+    "roles": [
+      "Top",
+      "Support"
+    ]
   },
   {
+    "id": 11,
     "name": "MasterYi",
     "displayName": "Master Yi",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 800,
     "name": "Mel",
     "displayName": "Mel",
-    "roles": ["Mid", "Bottom", "Support"]
+    "roles": [
+      "Mid",
+      "Bottom",
+      "Support"
+    ]
   },
   {
+    "id": 902,
     "name": "Milio",
     "displayName": "Milio",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 21,
     "name": "MissFortune",
     "displayName": "Miss Fortune",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 82,
     "name": "Mordekaiser",
     "displayName": "Mordekaiser",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 25,
     "name": "Morgana",
     "displayName": "Morgana",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 950,
     "name": "Naafiri",
     "displayName": "Naafiri",
-    "roles": ["Mid", "Jungle"]
+    "roles": [
+      "Mid",
+      "Jungle"
+    ]
   },
   {
+    "id": 267,
     "name": "Nami",
     "displayName": "Nami",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 75,
     "name": "Nasus",
     "displayName": "Nasus",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 111,
     "name": "Nautilus",
     "displayName": "Nautilus",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 518,
     "name": "Neeko",
     "displayName": "Neeko",
-    "roles": ["Mid", "Support"]
+    "roles": [
+      "Mid",
+      "Support"
+    ]
   },
   {
+    "id": 76,
     "name": "Nidalee",
     "displayName": "Nidalee",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 895,
     "name": "Nilah",
     "displayName": "Nilah",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 56,
     "name": "Nocturne",
     "displayName": "Nocturne",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 20,
     "name": "Nunu",
     "displayName": "Nunu & Willump",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 2,
     "name": "Olaf",
     "displayName": "Olaf",
-    "roles": ["Jungle", "Top"]
+    "roles": [
+      "Jungle",
+      "Top"
+    ]
   },
   {
+    "id": 61,
     "name": "Orianna",
     "displayName": "Orianna",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 516,
     "name": "Ornn",
     "displayName": "Ornn",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 80,
     "name": "Pantheon",
     "displayName": "Pantheon",
-    "roles": ["Top", "Jungle", "Support"]
+    "roles": [
+      "Top",
+      "Jungle",
+      "Support"
+    ]
   },
   {
+    "id": 78,
     "name": "Poppy",
     "displayName": "Poppy",
-    "roles": ["Jungle", "Support"]
+    "roles": [
+      "Jungle",
+      "Support"
+    ]
   },
   {
+    "id": 555,
     "name": "Pyke",
     "displayName": "Pyke",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 246,
     "name": "Qiyana",
     "displayName": "Qiyana",
-    "roles": ["Mid", "Jungle"]
+    "roles": [
+      "Mid",
+      "Jungle"
+    ]
   },
   {
+    "id": 133,
     "name": "Quinn",
     "displayName": "Quinn",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 497,
     "name": "Rakan",
     "displayName": "Rakan",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 33,
     "name": "Rammus",
     "displayName": "Rammus",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 421,
     "name": "RekSai",
     "displayName": "Rek'Sai",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 526,
     "name": "Rell",
     "displayName": "Rell",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 888,
     "name": "Renata",
     "displayName": "Renata Glasc",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 58,
     "name": "Renekton",
     "displayName": "Renekton",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 107,
     "name": "Rengar",
     "displayName": "Rengar",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 92,
     "name": "Riven",
     "displayName": "Riven",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 68,
     "name": "Rumble",
     "displayName": "Rumble",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 13,
     "name": "Ryze",
     "displayName": "Ryze",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 360,
     "name": "Samira",
     "displayName": "Samira",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 113,
     "name": "Sejuani",
     "displayName": "Sejuani",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 235,
     "name": "Senna",
     "displayName": "Senna",
-    "roles": ["Bottom", "Support"]
+    "roles": [
+      "Bottom",
+      "Support"
+    ]
   },
   {
+    "id": 147,
     "name": "Seraphine",
     "displayName": "Seraphine",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 875,
     "name": "Sett",
     "displayName": "Sett",
-    "roles": ["Top", "Support"]
+    "roles": [
+      "Top",
+      "Support"
+    ]
   },
   {
+    "id": 35,
     "name": "Shaco",
     "displayName": "Shaco",
-    "roles": ["Jungle", "Support"]
+    "roles": [
+      "Jungle",
+      "Support"
+    ]
   },
   {
+    "id": 98,
     "name": "Shen",
     "displayName": "Shen",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 102,
     "name": "Shyvana",
     "displayName": "Shyvana",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 27,
     "name": "Singed",
     "displayName": "Singed",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 14,
     "name": "Sion",
     "displayName": "Sion",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 15,
     "name": "Sivir",
     "displayName": "Sivir",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 72,
     "name": "Skarner",
     "displayName": "Skarner",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 901,
     "name": "Smolder",
     "displayName": "Smolder",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 37,
     "name": "Sona",
     "displayName": "Sona",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 16,
     "name": "Soraka",
     "displayName": "Soraka",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 50,
     "name": "Swain",
     "displayName": "Swain",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 517,
     "name": "Sylas",
     "displayName": "Sylas",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 134,
     "name": "Syndra",
     "displayName": "Syndra",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 223,
     "name": "TahmKench",
     "displayName": "Tahm Kench",
-    "roles": ["Top", "Support"]
+    "roles": [
+      "Top",
+      "Support"
+    ]
   },
   {
+    "id": 163,
     "name": "Taliyah",
     "displayName": "Taliyah",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 91,
     "name": "Talon",
     "displayName": "Talon",
-    "roles": ["Mid", "Jungle"]
+    "roles": [
+      "Mid",
+      "Jungle"
+    ]
   },
   {
+    "id": 44,
     "name": "Taric",
     "displayName": "Taric",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 17,
     "name": "Teemo",
     "displayName": "Teemo",
-    "roles": ["Top", "Support"]
+    "roles": [
+      "Top",
+      "Support"
+    ]
   },
   {
+    "id": 412,
     "name": "Thresh",
     "displayName": "Thresh",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 18,
     "name": "Tristana",
     "displayName": "Tristana",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 48,
     "name": "Trundle",
     "displayName": "Trundle",
-    "roles": ["Top", "Jungle"]
+    "roles": [
+      "Top",
+      "Jungle"
+    ]
   },
   {
+    "id": 23,
     "name": "Tryndamere",
     "displayName": "Tryndamere",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 4,
     "name": "TwistedFate",
     "displayName": "Twisted Fate",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 29,
     "name": "Twitch",
     "displayName": "Twitch",
-    "roles": ["Bottom", "Support"]
+    "roles": [
+      "Bottom",
+      "Support"
+    ]
   },
   {
+    "id": 77,
     "name": "Udyr",
     "displayName": "Udyr",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 6,
     "name": "Urgot",
     "displayName": "Urgot",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 110,
     "name": "Varus",
     "displayName": "Varus",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 67,
     "name": "Vayne",
     "displayName": "Vayne",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 45,
     "name": "Veigar",
     "displayName": "Veigar",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 161,
     "name": "Velkoz",
     "displayName": "Vel'Koz",
-    "roles": ["Mid", "Support"]
+    "roles": [
+      "Mid",
+      "Support"
+    ]
   },
   {
+    "id": 711,
     "name": "Vex",
     "displayName": "Vex",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 254,
     "name": "Vi",
     "displayName": "Vi",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 234,
     "name": "Viego",
     "displayName": "Viego",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 112,
     "name": "Viktor",
     "displayName": "Viktor",
-    "roles": ["Mid"]
+    "roles": [
+      "Mid"
+    ]
   },
   {
+    "id": 8,
     "name": "Vladimir",
     "displayName": "Vladimir",
-    "roles": ["Mid", "Top"]
+    "roles": [
+      "Mid",
+      "Top"
+    ]
   },
   {
+    "id": 106,
     "name": "Volibear",
     "displayName": "Volibear",
-    "roles": ["Jungle", "Top"]
+    "roles": [
+      "Jungle",
+      "Top"
+    ]
   },
   {
+    "id": 19,
     "name": "Warwick",
     "displayName": "Warwick",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 62,
     "name": "Wukong",
     "displayName": "Wukong",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 498,
     "name": "Xayah",
     "displayName": "Xayah",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 101,
     "name": "Xerath",
     "displayName": "Xerath",
-    "roles": ["Mid", "Support"]
+    "roles": [
+      "Mid",
+      "Support"
+    ]
   },
   {
+    "id": 5,
     "name": "XinZhao",
     "displayName": "Xin Zhao",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 157,
     "name": "Yasuo",
     "displayName": "Yasuo",
-    "roles": ["Mid", "Top"]
+    "roles": [
+      "Mid",
+      "Top"
+    ]
   },
   {
+    "id": 777,
     "name": "Yone",
     "displayName": "Yone",
-    "roles": ["Mid", "Top"]
+    "roles": [
+      "Mid",
+      "Top"
+    ]
   },
   {
+    "id": 83,
     "name": "Yorick",
     "displayName": "Yorick",
-    "roles": ["Top"]
+    "roles": [
+      "Top"
+    ]
   },
   {
+    "id": 804,
     "name": "Yunara",
     "displayName": "Yunara",
-    "roles": ["Bottom"] 
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 350,
     "name": "Yuumi",
     "displayName": "Yuumi",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 154,
     "name": "Zac",
     "displayName": "Zac",
-    "roles": ["Jungle"]
+    "roles": [
+      "Jungle"
+    ]
   },
   {
+    "id": 238,
     "name": "Zed",
     "displayName": "Zed",
-    "roles": ["Mid", "Jungle"]
+    "roles": [
+      "Mid",
+      "Jungle"
+    ]
   },
   {
+    "id": 904,
+    "name": "Zaahen",
+    "displayName": "Zaahen",
+    "roles": [
+      "Top"
+    ]
+  },
+  {
+    "id": 221,
     "name": "Zeri",
     "displayName": "Zeri",
-    "roles": ["Bottom"]
+    "roles": [
+      "Bottom"
+    ]
   },
   {
+    "id": 115,
     "name": "Ziggs",
     "displayName": "Ziggs",
-    "roles": ["Mid", "Bottom"]
+    "roles": [
+      "Mid",
+      "Bottom"
+    ]
   },
   {
+    "id": 26,
     "name": "Zilean",
     "displayName": "Zilean",
-    "roles": ["Support"]
+    "roles": [
+      "Support"
+    ]
   },
   {
+    "id": 142,
     "name": "Zoe",
     "displayName": "Zoe",
-    "roles": ["Mid", "Support"]
+    "roles": [
+      "Mid",
+      "Support"
+    ]
   },
   {
+    "id": 143,
     "name": "Zyra",
     "displayName": "Zyra",
-    "roles": ["Support", "Jungle"]
+    "roles": [
+      "Support",
+      "Jungle"
+    ]
   }
 ]

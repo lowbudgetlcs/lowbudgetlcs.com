@@ -158,7 +158,6 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             <div className="relative">
               <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
                 <LoadChampIcons
-                  championRoles={championRoles}
                   searchValue={searchValue}
                   selectedRole={selectedRole}
                 />
