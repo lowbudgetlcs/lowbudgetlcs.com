@@ -1,20 +1,17 @@
 import { useCallback, useMemo } from "react";
-import { Champion } from "../interfaces/draftInterfaces";
 import { useDraftContext } from "../providers/DraftProvider";
 import { useSettingsContext } from "../providers/SettingsProvider";
 
 interface LoadChampIconsProps {
-  championRoles: Champion[];
   searchValue: string;
   selectedRole: string;
 }
 
 export function LoadChampIcons({
-  championRoles,
   searchValue,
   selectedRole,
 }: LoadChampIconsProps) {
-  const { draftState, chosenChamp, setChosenChamp, draftSocket } =
+  const { draftState, chosenChamp, setChosenChamp, draftSocket, championList } =
     useDraftContext();
   const pickedChampions = draftState.picksArray;
   const bannedChampions = draftState.bansArray;
@@ -39,14 +36,14 @@ export function LoadChampIcons({
     [bannedChampions, draftSocket, pickedChampions, setChosenChamp]
   );
 
-  const championList = useMemo(() => {
-    return championRoles
+  const championRoleList = useMemo(() => {
+    return championList
       .filter((champion) => {
         const trimmedChamp = champion.name.toLowerCase().trim();
         const matchesSearch = trimmedChamp.includes(
           searchValue.toLowerCase().trim()
         );
-        const trimmedDisplayChamp = champion.displayName.toLowerCase().trim();
+        const trimmedDisplayChamp = (champion.displayName || champion.name).toLowerCase().trim();
         const matchesDisplay = trimmedDisplayChamp.includes(
           searchValue.toLowerCase().trim()
         );
@@ -58,12 +55,11 @@ export function LoadChampIcons({
           return matchesSearch || matchesDisplay || includesInitials;
         }
 
-        const selectedChampion = championRoles.find(
+        const selectedChampion = championList.find(
           (champ) => champ.name === champion.name
         );
         if (!selectedChampion) return false;
-
-        const hasSelectedRole = champion.roles.includes(selectedRole);
+        const hasSelectedRole = champion.roles?.includes(selectedRole);
 
         return (
           (matchesSearch || includesInitials || matchesDisplay) &&
@@ -141,7 +137,7 @@ export function LoadChampIcons({
         );
       });
   }, [
-    championRoles,
+    championList,
     searchValue,
     selectedRole,
     pickedChampions,
@@ -151,7 +147,7 @@ export function LoadChampIcons({
     handlePick
   ]);
 
-  return <>{championList}</>;
+  return <>{championRoleList}</>;
 }
 
 export default LoadChampIcons;

@@ -1,7 +1,8 @@
 export interface Champion {
+  id: number;
   name: string;
-  roles: string[];
-  displayName: string;
+  roles: string[] | null;
+  displayName: string | null;
 }
 
 export interface DraftProps {
