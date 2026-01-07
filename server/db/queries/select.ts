@@ -1,4 +1,4 @@
-import { and, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   allstarsTeamsInWebsite,
@@ -477,7 +477,20 @@ export async function getPlayerSeasonsByPuuid(puuid: string) {
 
 export async function getChampionList() {
   try {
-    const championList = await db.select().from(championListInWebsite);
+    const championList = await db
+      .select()
+      .from(championListInWebsite)
+      .orderBy(asc(championListInWebsite.name));
+    // Move "Nothing" or "None" to the start
+    const nothingIndex = championList.findIndex(
+      (c) =>
+        c.name.toLowerCase() === "nothing" || c.name.toLowerCase() === "none" || c.id === -1
+    );
+
+    if (nothingIndex > -1) {
+      const nothingChamp = championList.splice(nothingIndex, 1)[0];
+      championList.unshift(nothingChamp);
+    }
     return championList;
   } catch (error) {
     console.error("Error fetching champion data from DB:", error);
