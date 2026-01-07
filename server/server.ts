@@ -12,7 +12,6 @@ import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
 import matchRoutes from "./routes/matchRoutes";
 import allStarsRoutes from "./routes/allStarsRoutes";
 import schedulePlayerDbUpdate from "./cronJobs/schedulePlayerDbUpdate";
-import runDailyGameUpdate from "./stats/runDailyStatsUpdate";
 import scheduleGameStatsUpdate from "./cronJobs/scheduleGameStatsUpdate";
 import scheduleImageFetch from "./cronJobs/scheduleImageFetch";
 import statRoutes from "./routes/statsRoutes";
@@ -54,21 +53,6 @@ const apiLimiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 minutes
   max: 2000, // Limit each IP to 2000 requests per windowMs
 });
-
-// const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
-
-//   const apiKey = process.env.SERVER_API_KEY;
-
-//   const requestApiKey = req.query.api_key;
-
-//   if (!requestApiKey || requestApiKey !== apiKey) {
-//     return res.status(401).json({ message: "Invalid or missing API key." });
-//   }
-
-//   next();
-// };
-
-// Forcing a deploy because I forgot to migrate this project to the new deploy scripts :-D Hi ducky!!!
 
 app.use(cors(corsOptions));
 app.use(express.json());
