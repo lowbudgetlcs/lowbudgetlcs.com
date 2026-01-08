@@ -76,6 +76,8 @@ jobs:
             echo PRODUCTION="${{ vars.PRODUCTION }}" >> .env
             echo DATABASE_URL="${{ secrets.DATABASE_URL }}" >> .env
             echo RIOTAPI="${{ secrets.RIOT_API_TOKEN }}" >> .env
+            echo BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" >> .env
+            echo BETTER_AUTH_URL="${{ secrets.BETTER_AUTH_URL }}" >> .env
             docker compose down
             docker compose pull
             docker compose up -d
