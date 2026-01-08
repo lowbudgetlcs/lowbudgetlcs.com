@@ -5,7 +5,7 @@ import {
   checkIfLive,
   getTwitchConfig,
   getTwitchToken,
-} from "../services/twitchService";
+} from "../utils/twitchConfig";
 
 // Twitch Life check. Runs every time the website is opened
 twitchRoutes.get(

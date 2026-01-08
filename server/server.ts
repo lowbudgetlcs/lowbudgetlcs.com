@@ -4,7 +4,7 @@ import http from "http";
 import { rateLimit } from "express-rate-limit";
 import draftRoutes from "./routes/draftRoutes";
 import twitchRoutes from "./routes/twitchRoutes";
-import { getTwitchConfig } from "./services/twitchService";
+import { getTwitchConfig } from "./utils/twitchConfig";
 import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./draftTool/sockets/draftSocket";
@@ -12,11 +12,13 @@ import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
 import matchRoutes from "./routes/matchRoutes";
 import allStarsRoutes from "./routes/allStarsRoutes";
 import schedulePlayerDbUpdate from "./cronJobs/schedulePlayerDbUpdate";
-import runDailyGameUpdate from "./stats/runDailyStatsUpdate";
 import scheduleGameStatsUpdate from "./cronJobs/scheduleGameStatsUpdate";
 import scheduleImageFetch from "./cronJobs/scheduleImageFetch";
 import statRoutes from "./routes/statsRoutes";
 import imageRoutes from "./routes/imageRoutes";
+import adminRoutes from "./routes/adminRoutes";
+import { auth } from "./utils/auth";
+import { toNodeHandler } from "better-auth/node";
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
@@ -55,22 +57,8 @@ const apiLimiter = rateLimit({
   max: 2000, // Limit each IP to 2000 requests per windowMs
 });
 
-// const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
-
-//   const apiKey = process.env.SERVER_API_KEY;
-
-//   const requestApiKey = req.query.api_key;
-
-//   if (!requestApiKey || requestApiKey !== apiKey) {
-//     return res.status(401).json({ message: "Invalid or missing API key." });
-//   }
-
-//   next();
-// };
-
-// Forcing a deploy because I forgot to migrate this project to the new deploy scripts :-D Hi ducky!!!
-
 app.use(cors(corsOptions));
+app.all("/admin/api/auth/*", toNodeHandler(auth))
 app.use(express.json());
 app.use("/api/", apiLimiter);
 
@@ -92,6 +80,7 @@ app.use("/mh", matchRoutes);
 app.use("/allstars", allStarsRoutes);
 app.use("/stats", statRoutes);
 app.use("/images", imageRoutes);
+app.use("/admin", adminRoutes);
 
 
 // Set up namespaces
@@ -103,8 +92,9 @@ draftSocket(draftNamespace);
 fearlessSocket(fearlessNamespace);
 
 // Cron Jobs
-schedulePlayerDbUpdate();
-scheduleGameStatsUpdate();
+schedulePlayerDbUpdate().then(() => {
+  scheduleGameStatsUpdate();
+});
 scheduleImageFetch();
 
 server.listen(port, () => {
