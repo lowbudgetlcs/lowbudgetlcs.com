@@ -17,6 +17,8 @@ import scheduleImageFetch from "./cronJobs/scheduleImageFetch";
 import statRoutes from "./routes/statsRoutes";
 import imageRoutes from "./routes/imageRoutes";
 import adminRoutes from "./routes/adminRoutes";
+import { auth } from "./utils/auth";
+import { toNodeHandler } from "better-auth/node";
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
@@ -56,6 +58,7 @@ const apiLimiter = rateLimit({
 });
 
 app.use(cors(corsOptions));
+app.all("/admin/api/auth/*", toNodeHandler(auth))
 app.use(express.json());
 app.use("/api/", apiLimiter);
 
