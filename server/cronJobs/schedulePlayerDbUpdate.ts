@@ -23,11 +23,11 @@ const schedulePlayerDbUpdate = () => {
           return;
         }
 
+        // Update summoner names and ensure players exist in DB
+        await playerDbNameUpdater(playerTypes.uniquePlayers);
+
         // Update teams and team history
         await teamHistoryUpdate(playerTypes.players);
-
-        // Update summoner names
-        await playerDbNameUpdater(playerTypes.uniquePlayers);
       } catch (err) {
         console.error("❌ [DB Player Updater] An error occurred while updating player names:", err);
       }
