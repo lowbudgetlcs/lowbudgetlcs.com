@@ -4,7 +4,7 @@ import http from "http";
 import { rateLimit } from "express-rate-limit";
 import draftRoutes from "./routes/draftRoutes";
 import twitchRoutes from "./routes/twitchRoutes";
-import { getTwitchConfig } from "./services/twitchService";
+import { getTwitchConfig } from "./utils/twitchConfig";
 import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
 import { draftSocket } from "./draftTool/sockets/draftSocket";
