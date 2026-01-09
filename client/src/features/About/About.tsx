@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import AboutCard from "./AboutCard";
-import Button from "../Button";
+import AboutCard from "./components/AboutCard";
+import Button from "../../components/Button";
 
 const economy = {
   title: "Economy",
@@ -63,7 +63,7 @@ function About() {
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
-          className="max-w-full md:max-w-[560px] p-4"
+          className="max-w-full md:max-w-140 p-4"
         ></iframe>
         <p className="text-lg md:text-xl w-full md:w-2/3 px-8 pt-4 text-center">
           The Low Budget LCS has five separate divisions defined by both max

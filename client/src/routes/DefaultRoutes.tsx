@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import About from "../components/AboutPage/About";
+import About from "../features/About/About";
 import Roster from "../features/Roster/Roster";
 import LeaguePlayers from "../features/Roster/components/LeaguePlayers";
 import AllStars from "../features/AllStars/AllStars";
