@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -12,13 +12,18 @@
   --breakpoint-sm: 375px;
   --breakpoint-xxl: 2000px;
 
-  --color-primary-light: #eda412;
-  --color-primary-dark: #5f4207;
-  --color-bg-dark: #050505;
-  --color-bg: #121212;
-  --color-bg-light: #1f1f1f;
-  --color-text-primary: #f2f2f2;
-  --color-text-secondary: #b3b3b3;
+  /* --Dark Mode-- */
+  /* Main Colors */
+  --color-primary-light: oklch(0.77 0.16 76);
+  --color-primary-dark: oklch(0.47 0.16 76);
+  /* Background Colors */
+  --color-bg-dark: oklch(0.1 0 271);
+  --color-bg: oklch(0.2 0 271);
+  --color-bg-light: oklch(0.3 0 271);
+  /* Text Colors */
+  --color-text-primary: oklch(0.96 0 271);
+  --color-text-secondary: oklch(0.76 0 271);
+  /* --Legacy Colors-- */
   --color-gray: #363636;
   --color-light-gray: #252525;
   --color-white: #f5f5f5;
