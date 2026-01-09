@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import NavList from "../NavList";
+import NavList from "../../../components/NavList";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import allStarsData, { PostProps } from "./provider/allStarsData";
+import allStarsData, { PostProps } from "../api/allStarsData";
 
 const ASContent = ({ activeSeason }: { activeSeason: number }) => {
   const [activeLink, setActiveLink] = useState<string>("Economy");

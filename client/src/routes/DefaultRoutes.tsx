@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import About from "../components/AboutPage/About";
 import Roster from "../features/Roster/Roster";
 import LeaguePlayers from "../features/Roster/components/LeaguePlayers";
-import ASMain from "../components/AllStarsPage/ASMain";
+import AllStars from "../features/AllStars/AllStars";
 import ErrorPage from "../components/ErrorPage";
 import Footer from "../components/Footer";
 import MHHome from "../components/MatchHistoryPage/MHHome";
@@ -17,7 +17,7 @@ const DefaultRoutes = () => {
           <Route path="about" element={<About />} />
           <Route path="rosters" element={<Roster />} />
           <Route path="rosters/:league" element={<LeaguePlayers />} />
-          <Route path="allstars" element={<ASMain />} />
+          <Route path="allstars" element={<AllStars />} />
           <Route path="mh" element={<MHHome />} />
           <Route path="mh/:matchID" element={<MHHome />} />
           <Route path="*" element={<ErrorPage />} />

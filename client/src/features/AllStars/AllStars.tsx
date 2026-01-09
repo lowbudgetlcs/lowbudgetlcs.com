@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import ASTitlePopup from "./ASTitlePopup";
+import ASTitlePopup from "./components/ASTitlePopup";
 import { useLocalStorageState } from "../../hooks/uselocalStorageState";
-import ASSidebar from "./ASSidebar";
-import ASContent from "./ASContent";
+import ASSidebar from "./components/ASSidebar";
+import ASContent from "./components/ASContent";
 
-function ASMain() {
+function AllStars() {
   const [activeLink, setActiveLink] = useState<number>();
   const [sidebarShown, setSidebarShown] = useState<boolean>(false);
   const [buttonsShown, setButtonsShown] = useState<boolean>(true);
@@ -81,4 +81,4 @@ function ASMain() {
   );
 }
 
-export default ASMain;
+export default AllStars;
