@@ -100,12 +100,12 @@ function TeamCard({
       return (
         <img
           src={logo}
-          className="logo shrink-0 w-[150px] text-center text-3xl h-[150px]"
+          className="logo shrink-0 w-37.5 text-center text-3xl h-37.5"
         />
       );
     } else {
       return (
-        <div className="logo shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
+        <div className="logo shrink-0 w-37.5 text-center text-3xl h-37.5 bg-gray">
           No logo 😢
         </div>
       );
@@ -178,7 +178,7 @@ function TeamCard({
           <div
             className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
-                ? "max-h-[1000px] opacity-100 visible"
+                ? "max-h-250 opacity-100 visible"
                 : "max-h-0 opacity-0 invisible"
             }`}
           >
@@ -258,7 +258,7 @@ function TeamCard({
           <div
             className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
               isOpen
-                ? "max-h-[1000px] opacity-100"
+                ? "max-h-250 opacity-100"
                 : "max-h-0 opacity-0 invisible"
             }`}
           >
