@@ -1,6 +1,6 @@
 import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import Button from "../../components/Button";
-import NavList from "../../components/NavList";
+import NavList from "../../layout/NavList";
 import { createDraft } from "./api/createDraft";
 import { checkTournamentCode, DraftCodeProps } from "./socket/draftHandler";
 import { FormEvent, useState } from "react";
@@ -9,7 +9,7 @@ import createFearlessDraft from "./api/createFearlessDraft";
 import FearlessLinks from "./pages/Create/FearlessLinks";
 import { redirect } from "react-router-dom";
 import { DraftLinkProps, FearlessInitializerProps } from "./interfaces/draftInterfaces";
-import Footer from "../../components/Footer";
+import Footer from "../../layout/Footer";
 
 function Draft() {
   const [draftLinks, setDraftLinks] = useSessionStorageState<DraftLinkProps | undefined>(

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import getTeamsBySeason from "../../api/getTeamsBySeason";
-import NavList from "../../../../components/NavList";
+import NavList from "../../../../layout/NavList";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIcon from "../../../../components/LoadingIcon";
 import { Link, useNavigate } from "react-router-dom";

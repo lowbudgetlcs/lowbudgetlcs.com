@@ -1,8 +1,8 @@
-import Logo from "./Logo";
+import Logo from "../components/Logo";
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
-import SubdomainLink from "./SubdomainLink";
+import SubdomainLink from "../components/SubdomainLink";
 
 interface FullNavProps {
   isOpen: boolean;

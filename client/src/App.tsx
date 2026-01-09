@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./layout/Navbar";
 import ScrollToTop from "./components/ScrollToTop";
-import Twitch from "./components/Twitch";
+import Twitch from "./features/Twitch/Twitch";
 import { LeagueDataProvider } from "./components/leagueDataContext";
 import DraftNavbar from "./features/Draft/components/Navbars/DraftNavbar";
 import { SettingsProvider } from "./features/Draft/providers/SettingsProvider";

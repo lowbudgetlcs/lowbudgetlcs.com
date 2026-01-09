@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import Footer from "../components/Footer";
+import Footer from "../layout/Footer";
 import StatsPlayer from "../features/Stats/components/PlayerStatDisplay/StatsPlayer";
 import TeamSelect from "../features/Stats/components/TeamStatDisplay/TeamSelect";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

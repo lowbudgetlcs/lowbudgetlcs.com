@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import NavList from "../../../components/NavList";
+import NavList from "../../../layout/NavList";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import allStarsData, { PostProps } from "../api/allStarsData";
 

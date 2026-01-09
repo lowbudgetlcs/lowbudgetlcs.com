@@ -6,7 +6,7 @@ import AchievementsDisplay from "./AchievementsDisplay";
 import PerformanceOverview from "./PerformanceOverview";
 import CombatPerformance from "./CombatPerformance";
 import EconPerformance from "./EconPerformance";
-import NavList from "../../../../components/NavList";
+import NavList from "../../../../layout/NavList";
 import getPlayerGames from "../../api/getPlayerGames";
 import LoadingIcon from "../../../../components/LoadingIcon";
 import { useQuery } from "@tanstack/react-query";

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import DraftLink from "./DraftLink";
-import MainLink from "./MainLink";
+import DraftLink from "../components/DraftLink";
+import MainLink from "../components/MainLink";
 
 function Footer() {
   return (
