@@ -1,4 +1,4 @@
-import { MatchDto } from "../../types/MatchV5";
+import { MatchDto } from "../../../types/MatchV5";
 
 const getMatch = async (matchId: number) => {
   const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";

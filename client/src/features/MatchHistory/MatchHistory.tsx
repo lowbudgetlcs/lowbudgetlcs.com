@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import MHTitlePopup from "./MHTitlePopup";
+import MHTitlePopup from "./components/MHTitlePopup";
 import { useParams } from "react-router-dom";
 import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import { MatchDto } from "../../types/MatchV5";
-import MHMatchDisplay from "./MatchHistoryDisplay/MHMatchDisplay";
-import handleMatchSearch from "./handleMatchSearch";
-import ErrorPage from "../ErrorPage";
+import MHMatchDisplay from "./components/MHMatchDisplay";
+import handleMatchSearch from "./api/handleMatchSearch";
+import ErrorPage from "../../components/ErrorPage";
 // import { useLocalStorageState } from "../../hooks/uselocalStorageState";
 
-const MHHome = () => {
+const MatchHistory = () => {
   const [popupShown, setPopupShown] = useState<boolean>(true);
   const [matchData, setMatchData] = useSessionStorageState<MatchDto | undefined>(
     "matchData",
@@ -73,4 +73,4 @@ const MHHome = () => {
   );
 };
 
-export default MHHome;
+export default MatchHistory;

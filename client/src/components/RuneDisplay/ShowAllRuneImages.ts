@@ -1,4 +1,4 @@
-import { ParticipantDto } from "../../../../types/MatchV5";
+import { ParticipantDto } from "../../types/MatchV5";
 import DisplayRuneImage from "./DisplayRuneImage";
 
 const ShowAllRuneImages = (playerData: ParticipantDto, styleType: string, initialInt: number) => {

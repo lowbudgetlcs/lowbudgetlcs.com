@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import handleMatchSearch from "./handleMatchSearch";
-import { useSessionStorageState } from "../../hooks/useSessionStorageState";
+import handleMatchSearch from "../api/handleMatchSearch";
+import { useSessionStorageState } from "../../../hooks/useSessionStorageState";
 import { useNavigate } from "react-router-dom";
 const MHTitlePopup = () => {
   const [popupOpen, setPopupOpen] = useState<boolean>(true);

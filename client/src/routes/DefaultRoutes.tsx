@@ -5,8 +5,8 @@ import LeaguePlayers from "../features/Roster/components/LeaguePlayers";
 import AllStars from "../features/AllStars/AllStars";
 import ErrorPage from "../components/ErrorPage";
 import Footer from "../components/Footer";
-import MHHome from "../components/MatchHistoryPage/MHHome";
 import Home from "../features/Home/Home";
+import MatchHistory from "../features/MatchHistory/MatchHistory";
 
 const DefaultRoutes = () => {
   return (
@@ -18,8 +18,8 @@ const DefaultRoutes = () => {
           <Route path="rosters" element={<Roster />} />
           <Route path="rosters/:league" element={<LeaguePlayers />} />
           <Route path="allstars" element={<AllStars />} />
-          <Route path="mh" element={<MHHome />} />
-          <Route path="mh/:matchID" element={<MHHome />} />
+          <Route path="mh" element={<MatchHistory />} />
+          <Route path="mh/:matchID" element={<MatchHistory />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

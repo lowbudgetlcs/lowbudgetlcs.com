@@ -1,8 +1,8 @@
 import { ParticipantDto } from "../../../../types/MatchV5";
-import ItemDisplay from "../ItemDisplay";
+import ItemDisplay from "../../../../components/ItemDisplay";
 import PlayerInfo from "../PlayerInfo";
-import Runes from "../RuneDisplay/Runes";
-import SummonerSpellsDisplay from "../SummonerSpellsDisplay";
+import Runes from "../../../../components/RuneDisplay/Runes";
+import SummonerSpellsDisplay from "../../../../components/SummonerSpellsDisplay";
 
 interface PlayerContainerProps {
   playerData: ParticipantDto;
@@ -18,7 +18,7 @@ const PlayerContainer = ({ playerData, allPlayers, activeLink }: PlayerContainer
     killParticipation = Number(rawKP.toFixed(0));
   }
   return (
-    <div className="playerContainer bg-light-gray p-2 h-[90px] w-max grow rounded-md">
+    <div className="playerContainer bg-light-gray p-2 h-22.5 w-max grow rounded-md">
       <div className="champPlayerInfo flex gap-2 items-center h-full">
         <PlayerInfo playerData={playerData} />
         {activeLink === "Loadout/KDA" ? (
