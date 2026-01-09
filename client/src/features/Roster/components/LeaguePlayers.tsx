@@ -1,8 +1,8 @@
 import { Link, useParams } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { useState } from "react";
-import ErrorPage from "../ErrorPage";
-import { useLeagueData } from "../leagueDataContext";
+import ErrorPage from "../../../components/ErrorPage";
+import { useLeagueData } from "../../../components/leagueDataContext";
 
 function LeaguePlayers() {
   const { teams, error, loading } = useLeagueData();

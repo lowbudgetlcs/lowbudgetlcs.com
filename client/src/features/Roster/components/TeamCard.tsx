@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "../Button";
-import { PlayerProps } from "../../leagueData";
+import Button from "../../../components/Button";
+import { PlayerProps } from "../../../leagueData";
 
 interface TeamProps {
   teamName: string;

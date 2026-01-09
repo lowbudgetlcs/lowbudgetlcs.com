@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import About from "../components/AboutPage/About";
-import Roster from "../components/RosterPage/Roster";
-import LeaguePlayers from "../components/RosterPage/LeaguePlayers";
+import Roster from "../features/Roster/Roster";
+import LeaguePlayers from "../features/Roster/components/LeaguePlayers";
 import ASMain from "../components/AllStarsPage/ASMain";
 import ErrorPage from "../components/ErrorPage";
 import Footer from "../components/Footer";

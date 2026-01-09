@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import { useLeagueData } from "../leagueDataContext";
-import ErrorPage from "../ErrorPage";
+import { useLeagueData } from "../../components/leagueDataContext";
+import ErrorPage from "../../components/ErrorPage";
 
 function Roster() {
   const { divisions, error, loading } = useLeagueData();
