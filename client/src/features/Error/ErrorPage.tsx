@@ -1,5 +1,5 @@
-import Button from "./Button";
-import MainLink from "./MainLink";
+import Button from "../../components/Button";
+import MainLink from "../../components/MainLink";
 
 function ErrorPage() {
   return (

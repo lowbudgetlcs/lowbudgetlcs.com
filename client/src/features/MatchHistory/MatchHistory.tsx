@@ -5,7 +5,7 @@ import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import { MatchDto } from "../../types/MatchV5";
 import MHMatchDisplay from "./components/MHMatchDisplay";
 import handleMatchSearch from "./api/handleMatchSearch";
-import ErrorPage from "../../components/ErrorPage";
+import ErrorPage from "../Error/ErrorPage";
 // import { useLocalStorageState } from "../../hooks/uselocalStorageState";
 
 const MatchHistory = () => {

@@ -3,7 +3,7 @@ import About from "../features/About/About";
 import Roster from "../features/Roster/Roster";
 import LeaguePlayers from "../features/Roster/components/LeaguePlayers";
 import AllStars from "../features/AllStars/AllStars";
-import ErrorPage from "../components/ErrorPage";
+import ErrorPage from "../features/Error/ErrorPage";
 import Footer from "../components/Footer";
 import Home from "../features/Home/Home";
 import MatchHistory from "../features/MatchHistory/MatchHistory";
