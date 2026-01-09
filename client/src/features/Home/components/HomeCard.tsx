@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useInView } from "react-intersection-observer";
-import Button from "../Button";
+import Button from "../../../components/Button";
 
 interface CardProps {
   link: string;

@@ -1,5 +1,6 @@
-import Hero from "./Hero";
-import Summary from "./Summary";
+import Hero from "./components/Hero";
+import Summary from "./components/Summary";
+
 
 function Home() {
   return (

@@ -1,7 +1,7 @@
 import HomeCard from "./HomeCard";
-import aboutImage from "../../assets/summaryImg.jpg"
-import twitchImage from "../../assets/twitchPhone.jpg"
-import discordImage from "../../assets/smilingGamer.jpg"
+import aboutImage from "../../../assets/summaryImg.jpg"
+import twitchImage from "../../../assets/twitchPhone.jpg"
+import discordImage from "../../../assets/smilingGamer.jpg"
 
 function Summary() {
   const aboutCard = {
