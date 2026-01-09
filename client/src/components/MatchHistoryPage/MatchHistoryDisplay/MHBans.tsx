@@ -21,7 +21,7 @@ const MHBans = ({ banList }: { banList: BanDto[] }) => {
           <img
             src={link}
             key={ban.pickTurn}
-            className="w-12 h-12 grayscale-[50%]"
+            className="w-12 h-12 grayscale-50"
             alt={`champion ID: ${ban.championId}`}></img>
         );
       })}

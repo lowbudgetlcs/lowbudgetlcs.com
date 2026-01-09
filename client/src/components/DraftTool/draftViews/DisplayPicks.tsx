@@ -65,7 +65,7 @@ const DisplayPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
@@ -89,7 +89,7 @@ const DisplayPicks = ({
             />
           )}
           <div
-            className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+            className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
                 playerTurn === playerSide &&
                 playerSide === "blue" &&
@@ -113,17 +113,17 @@ const DisplayPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-[8.5rem] min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             sidePick === index
-              ? "border-blue transition-all delay-[20ms] "
+              ? "border-blue transition-all delay-20 "
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 sidePick === index
-              ? "border-red transition-all delay-[20ms] "
+              ? "border-red transition-all delay-20 "
               : "border-gray"
           } bg-gray/60 rounded-md`}
         >
@@ -137,7 +137,7 @@ const DisplayPicks = ({
             />
           )}
           <div
-            className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+            className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
                 playerTurn === playerSide &&
                 playerSide === "blue" &&

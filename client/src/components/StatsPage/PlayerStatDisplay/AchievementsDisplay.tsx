@@ -63,7 +63,7 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
             >
               <IconComponent />
               <p>{ach.name}</p>
-              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[200px] bg-gray text-white text-xs px-2 py-1 rounded z-50 animate-fadeIn text-center pointer-events-none">
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[200px] bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn text-center pointer-events-none">
                 {ach.description}
               </div>
             </div>
@@ -80,7 +80,7 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
             >
               {IconComponent && <IconComponent />}
               <p>{ach.name}</p>
-              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[150px] bg-gray text-white text-xs px-2 py-1 rounded z-50 animate-fadeIn-300ms text-center pointer-events-none">
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[150px] bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn-300ms text-center pointer-events-none">
                 {ach.desc}
               </div>
             </div>

@@ -5,12 +5,12 @@
 // type LeagueGroupsProps = { league: string };
 
 // const commercialGradient =
-//   "bg-gradient-to-br from-platinum-light to-platinum-dark";
+//   "bg-linear-to-br from-platinum-light to-platinum-dark";
 // const financialGradient =
-//   "bg-gradient-to-br from-emerald-light to-emerald-dark";
-// const economyGradient = "bg-gradient-to-br from-gold-light to-gold-dark";
+//   "bg-linear-to-br from-emerald-light to-emerald-dark";
+// const economyGradient = "bg-linear-to-br from-gold-light to-gold-dark";
 // const executiveGradient =
-//   "bg-gradient-to-br from-challenger-blue to-challenger-gold";
+//   "bg-linear-to-br from-challenger-blue to-challenger-gold";
 
 // function LeagueGroups() {
 //   const { league }: LeagueGroupsProps = useLocation().state;
@@ -72,7 +72,7 @@
 //             divisions: divisions,
 //           }}
 //           to={groupLetter.toLowerCase()}
-//           className={`relative card cursor-pointer ${gradient} flex items-center justify-center w-full min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
+//           className={`relative card cursor-pointer ${gradient} flex items-center justify-center w-full min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 dark:before:bg-light-gray before:z-0 before:absolute hover:before:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}
 //         >
 //           <h2 className="text-3xl text-white text-center font-semibold z-10">
 //             Group {groupLetter}

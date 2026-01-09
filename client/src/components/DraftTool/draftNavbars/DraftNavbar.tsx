@@ -39,7 +39,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
         isOpen ? "opacity-100" : "opacity-0"
       } ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } bg-gradient-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
+      } bg-linear-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
       `}
     >
       <div className="w-full h-20"></div>
@@ -98,7 +98,7 @@ function DraftNavbar() {
 
   return (
     <header
-      className={`fixed top-0 z-[999] transition duration-500 mx-auto h-16 ${
+      className={`fixed top-0 z-999 transition duration-500 mx-auto h-16 ${
         isTop ? "" : "bg-light-gray"
       }`}
     >

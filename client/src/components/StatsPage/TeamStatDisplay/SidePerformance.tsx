@@ -16,7 +16,7 @@ const SidePerformance = ({
         <div>
           <div className="flex justify-between items-center mb-1">
             <div className="text-sm flex items-center gap-2">
-              <div className="h-3 w-3 bg-blue rounded-sm" />
+              <div className="h-3 w-3 bg-blue rounded-xs" />
               <span>Blue Side</span>
             </div>
             <div className="text-right">
@@ -24,9 +24,9 @@ const SidePerformance = ({
               <div className="text-sm text-white/60">Games: {blue.games}</div>
             </div>
           </div>
-          <div className="w-full bg-white/20 rounded h-4">
+          <div className="w-full bg-white/20 rounded-sm h-4">
             <div
-              className="h-4 rounded bg-blue"
+              className="h-4 rounded-sm bg-blue"
               style={{ width: `${Math.max(0, Math.min(100, Number(blue.winrate)))}%` }}
             />
           </div>
@@ -35,7 +35,7 @@ const SidePerformance = ({
         <div>
           <div className="flex justify-between items-center mb-1">
             <div className="text-sm flex items-center gap-2">
-              <div className="h-3 w-3 bg-red rounded-sm" />
+              <div className="h-3 w-3 bg-red rounded-xs" />
               <span>Red Side</span>
             </div>
             <div className="text-sm text-white/60 text-right">
@@ -43,9 +43,9 @@ const SidePerformance = ({
               <div>Games: {red.games}</div>
             </div>
           </div>
-          <div className="w-full bg-white/20 rounded h-4">
+          <div className="w-full bg-white/20 rounded-sm h-4">
             <div
-              className="h-4 rounded bg-red"
+              className="h-4 rounded-sm bg-red"
               style={{ width: `${Math.max(0, Math.min(100, Number(red.winrate)))}%` }}
             />
           </div>

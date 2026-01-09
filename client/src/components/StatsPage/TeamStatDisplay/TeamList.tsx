@@ -56,16 +56,16 @@ const TeamList = ({ activeSeason }: { activeSeason: number }) => {
                     {team.teams.logo ? (
                       <img
                         src={team.teams.logo}
-                        className="logo flex-shrink-0 w-[80px] text-center text-xl h-[80px]"
+                        className="logo shrink-0 w-[80px] text-center text-xl h-[80px]"
                       />
                     ) : (
-                      <div className="logo flex-shrink-0 w-[80px] text-center text-xl h-[80px] bg-gray">
+                      <div className="logo shrink-0 w-[80px] text-center text-xl h-[80px] bg-gray">
                         No logo 😢
                       </div>
                     )}
                     <div className={`w-full h-1 md:w-1 md:h-full bg-orange`}></div>
                   </div>
-                  <div className="flex flex-col md:flex-row flex-1 flex-shrink items-center">
+                  <div className="flex flex-col md:flex-row flex-1 shrink items-center">
                     <h3 className="teamName text-lg text-center md:text-left font-semibold">
                       {team.teams.teamName}
                     </h3>

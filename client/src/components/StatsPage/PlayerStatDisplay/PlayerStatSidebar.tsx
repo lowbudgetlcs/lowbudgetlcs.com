@@ -26,8 +26,8 @@ const PlayerStatSidebar = ({
   onSeasonChange,
 }: PlayerStatSidebarProps) => {
   return (
-    <div className="statSideBar sticky w-full md:w-64 flex-shrink-0 mb-4 md:mb-0 left-0 md:top-24 self-start">
-      <div className="flex flex-col py-8 px-4 gap-2 bg-black border-2 border-gray rounded-md flex-grow md:min-w-64">
+    <div className="statSideBar sticky w-full md:w-64 shrink-0 mb-4 md:mb-0 left-0 md:top-24 self-start">
+      <div className="flex flex-col py-8 px-4 gap-2 bg-black border-2 border-gray rounded-md grow md:min-w-64">
         <h1 className="text-lg text-center font-bold">
           {summonerName} <span className="text-white/60">#{tagLine}</span>
         </h1>
@@ -71,7 +71,7 @@ const PlayerStatSidebar = ({
             {seasons && seasons.length > 0 && onSeasonChange && (
               <div className="flex justify-center">
                 <select
-                  className="mt-2 bg-light-gray text-white p-1 rounded border border-gray text-sm w-full max-w-[200px]"
+                  className="mt-2 bg-light-gray text-white p-1 rounded-sm border border-gray text-sm w-full max-w-[200px]"
                   value={selectedSeasonId || ""}
                   onChange={(e) => onSeasonChange(Number(e.target.value))}>
                   {seasons.map((season) => (

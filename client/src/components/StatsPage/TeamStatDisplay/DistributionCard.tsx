@@ -47,9 +47,9 @@ const DistributionCard = ({
                 <div className="text-sm">{laneName}</div>
                 <div className="text-sm text-white">{display}%</div>
               </div>
-              <div className="w-full bg-white/20 rounded h-4">
+              <div className="w-full bg-white/20 rounded-sm h-4">
                 <div
-                  className="h-4 rounded bg-white"
+                  className="h-4 rounded-sm bg-white"
                   style={{ width: `${Math.max(0, Math.min(100, v))}%` }}
                 />
               </div>

@@ -36,7 +36,7 @@ const Runes = ({ playerData }: { playerData: ParticipantDto }) => {
         <img src={secondaryRuneSetLink} className="w-6 h-6"></img>
       </div>
       <div
-        className={`fixed w-fit top-6 -left-9 z-[20] bg-black ${
+        className={`fixed w-fit top-6 -left-9 z-20 bg-black ${
           runesShown ? "" : "hidden"
         } flex flex-col gap-2 min-w-24 items-center justify-center text-center p-2 rounded-md border-2 border-gray/40`}
         style={{

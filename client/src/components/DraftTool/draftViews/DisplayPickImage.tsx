@@ -80,7 +80,7 @@ const DisplayPickImage = ({
             src={link}
             alt={displayName || "champion image"}
             className={`w-full h-full object-cover object-[50%_-20%] draftMd:object-[50%_4%] scale-[180%] min-[1922px]:scale-[140%] ${
-              isChampHovered ? "grayscale-[90%]" : ""
+              isChampHovered ? "grayscale-90" : ""
             } ${
               championName !== "nothing" &&
               !isPastDraft &&
@@ -99,8 +99,8 @@ const DisplayPickImage = ({
             <div
               className={`absolute -bottom-2 h-8 min-[1922px]:h-10 w-2/5 animate-fadeIn from-black ${
                 playerSide === "blue"
-                  ? "bg-gradient-to-l right-0"
-                  : "bg-gradient-to-r"
+                  ? "bg-linear-to-l right-0"
+                  : "bg-linear-to-r"
               }`}
             ></div>
             <div
@@ -119,7 +119,7 @@ const DisplayPickImage = ({
           </div>
         </div>
         <div
-          className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
+          className={`absolute top-0 right-[150%] w-full h-full bg-linear-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
             championName !== "nothing" && !isPastDraft && "animate-moveToRight"
           }`}
         ></div>

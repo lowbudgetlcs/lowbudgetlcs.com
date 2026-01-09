@@ -8,7 +8,7 @@ const MobileDraftFooter = ({
 }) => {
   return (
     <>
-      <div className="mobileFooter sticky w-full bottom-0 bg-light-gray h-14 z-[52] flex flex-col items-center justify-center">
+      <div className="mobileFooter sticky w-full bottom-0 bg-light-gray h-14 z-52 flex flex-col items-center justify-center">
         <div className="relative w-16">
           <div
             onClick={() => setFooterIsOpen(!footerIsOpen)}
@@ -16,12 +16,12 @@ const MobileDraftFooter = ({
           >
             <div
               className={`line w-8 h-2 bg-white rounded translate-x-1 transition duration-300 ${
-                footerIsOpen ? "rotate-[30deg]" : "rotate-[-30deg]"
+                footerIsOpen ? "rotate-30" : "rotate-[-30deg]"
               } `}
             ></div>
             <div
               className={`line w-8 h-2 bg-white rounded -translate-x-1 transition duration-300 ${
-                footerIsOpen ? "rotate-[-30deg]" : "rotate-[30deg]"
+                footerIsOpen ? "rotate-[-30deg]" : "rotate-30"
               }  `}
             ></div>
           </div>

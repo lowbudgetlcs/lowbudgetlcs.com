@@ -67,7 +67,7 @@ const DisplayBanImage = ({
           <img
             src={link}
             alt={championName !== "nothing" ? championName : "loading..."}
-            className={`w-full h-full object-cover grayscale-[90%]`}
+            className={`w-full h-full object-cover grayscale-90`}
           />
         )}
         <div

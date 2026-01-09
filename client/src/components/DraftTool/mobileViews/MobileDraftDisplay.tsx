@@ -50,7 +50,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
     <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col overflow-hidden">
       {/* Champion Pick Container */}
       <div
-        className={`absolute transition delay-0 duration-200 top-0 bg-gray z-[51] ${
+        className={`absolute transition delay-0 duration-200 top-0 bg-gray z-51 ${
           footerIsOpen ? "translate-y-[20%]" : "translate-y-[120%]"
         }`}
       >

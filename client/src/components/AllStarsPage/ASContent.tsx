@@ -69,7 +69,7 @@ const ASContent = ({ activeSeason }: { activeSeason: number }) => {
                 activePost === post.id ? "animate-fadeIn" : "hidden"
               }`}>
               <img
-                className="flex-none lg:w-[34rem] xxl:w-[48rem] h-auto"
+                className="flex-none lg:w-136 xxl:w-3xl h-auto"
                 src={post.image}
                 alt={`the ${post.name}`}
               />

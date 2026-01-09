@@ -34,8 +34,8 @@ const TeamStatSidebar = ({
   const logo = propLogo || teamMeta?.logo || null;
 
   return (
-    <div className="statSideBar sticky w-full md:w-72 flex-shrink-0 mb-4 md:mb-0 left-0 md:top-24 self-start">
-      <div className="flex flex-col p-4 gap-2 bg-gray/20 border-2 border-gray rounded-md flex-grow md:min-w-64 max-h-fit">
+    <div className="statSideBar sticky w-full md:w-72 shrink-0 mb-4 md:mb-0 left-0 md:top-24 self-start">
+      <div className="flex flex-col p-4 gap-2 bg-gray/20 border-2 border-gray rounded-md grow md:min-w-64 max-h-fit">
         <div className="flex flex-col items-center justify-center">
           {logo ? (
             <img src={logo} alt={`${teamName} logo`} className="w-28 h-28 object-contain mb-2" />
@@ -45,7 +45,7 @@ const TeamStatSidebar = ({
           <h1 className="text-lg text-center font-bold">{teamName}</h1>
           {seasons && seasons.length > 0 && onSeasonChange && (
             <select
-              className="mt-2 bg-light-gray text-white p-1 rounded border border-gray text-sm w-full max-w-[200px]"
+              className="mt-2 bg-light-gray text-white p-1 rounded-sm border border-gray text-sm w-full max-w-[200px]"
               value={selectedTeamId || ""}
               onChange={(e) => onSeasonChange(Number(e.target.value))}>
               {seasons.map((season) => (

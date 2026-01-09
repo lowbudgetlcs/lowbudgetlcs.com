@@ -15,8 +15,8 @@ const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) =>
           width={900}
           height={400}
         />
-        <div className="absolute top-0 w-full h-full bg-gradient-to-b from-black via-transparent to-black"></div>
-        <div className="absolute top-0 w-full h-full bg-gradient-to-r from-black via-transparent to-black"></div>
+        <div className="absolute top-0 w-full h-full bg-linear-to-b from-black via-transparent to-black"></div>
+        <div className="absolute top-0 w-full h-full bg-linear-to-r from-black via-transparent to-black"></div>
       </div>
     </div>
   );

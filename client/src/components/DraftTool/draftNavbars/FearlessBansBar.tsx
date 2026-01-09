@@ -27,12 +27,12 @@ const FearlessBansBar = () => {
         >
           <div
             className={`line w-8 h-2 bg-white rounded translate-x-1 transition duration-300 ${
-              barIsOpen ? "rotate-[30deg]" : "rotate-[-30deg]"
+              barIsOpen ? "rotate-30" : "rotate-[-30deg]"
             } `}
           ></div>
           <div
             className={`line w-8 h-2 bg-white rounded -translate-x-1 transition duration-300 ${
-              barIsOpen ? "rotate-[-30deg]" : "rotate-[30deg]"
+              barIsOpen ? "rotate-[-30deg]" : "rotate-30"
             }  `}
           ></div>
         </div>
@@ -59,7 +59,7 @@ const FearlessBansBar = () => {
                       <img
                         src={imageURL}
                         alt={ban !== "nothing" ? ban : "Nothing"}
-                        className={`w-full h-full object-cover grayscale-[40%]`}
+                        className={`w-full h-full object-cover grayscale-40`}
                       />
                     )}
                   </div>

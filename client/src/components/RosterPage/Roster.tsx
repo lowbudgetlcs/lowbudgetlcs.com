@@ -31,7 +31,7 @@ function Roster() {
             <NavLink
               key={division}
               to={`/rosters/${division}`}
-              className={`relative card cursor-pointer bg-orange flex items-center justify-center min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 before:dark:bg-light-gray before:z-0 before:absolute before:hover:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}>
+              className={`relative card cursor-pointer bg-orange flex items-center justify-center min-h-32 md:h-40 rounded-lg before:rounded-md before:bg-gray/80 dark:before:bg-light-gray before:z-0 before:absolute hover:before:opacity-0 before:w-full before:h-full before:transition-all before:duration-300`}>
               <h2 className="z-10 text-3xl text-white text-center font-semibold">{division}</h2>
             </NavLink>
           ))}

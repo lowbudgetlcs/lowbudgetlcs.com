@@ -83,7 +83,7 @@ const TeamContainer = ({
       </div>
 
       {activeLink === "Loadout/KDA" ? (
-        <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar"> {/* BUG: Repeated PlayerContainer rendering */}
+        <div className="playerContainer flex flex-col gap-2 w-screen md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar"> {/* BUG: Repeated PlayerContainer rendering */}
           {players.map((player) => (
             <PlayerContainer
               key={player.puuid} 
@@ -94,11 +94,11 @@ const TeamContainer = ({
           ))}
         </div>
       ) : activeLink === "Graphs" ? (
-        <div className="playerContainer flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full">
+        <div className="playerContainer flex flex-col gap-2 w-screen md:w-[80vw] lg:w-full">
           <DamageContainer players={players} />
         </div>
       ) : (
-        <div className="statList flex flex-col gap-2 w-[100vw] md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
+        <div className="statList flex flex-col gap-2 w-screen md:w-[80vw] lg:w-full overflow-x-scroll no-scrollbar">
           <StatList players={players} />
         </div>
       )}

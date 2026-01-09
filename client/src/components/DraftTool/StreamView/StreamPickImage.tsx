@@ -78,13 +78,13 @@ const StreamPickImage = ({
           src={link ? link : "#"}
           alt={displayName || "champion image"}
           className={`w-full h-full object-cover ${
-            isChampHovered ? "grayscale-[90%]" : ""
+            isChampHovered ? "grayscale-90" : ""
           } ${
             championName !== "nothing" && !isPastDraft && "animate-smallScaleBounce"
           } scale-105`}
         />
         <div
-          className={`absolute top-0 right-[150%] w-full h-full bg-gradient-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
+          className={`absolute top-0 right-[150%] w-full h-full bg-linear-to-br from-transparent via-white to-transparent opacity-90 blur-2xl ${
             championName !== "nothing" && !isPastDraft && "animate-moveToRight"
           }`}
         ></div>

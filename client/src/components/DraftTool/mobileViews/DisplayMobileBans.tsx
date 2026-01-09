@@ -94,7 +94,7 @@ const DisplayMobileBans = ({ playerSide }: { playerSide: string }) => {
               />
             )}
             <div
-              className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+              className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
                 playerTurn === playerSide &&
                 playerSide === "blue" &&
@@ -154,7 +154,7 @@ const DisplayMobileBans = ({ playerSide }: { playerSide: string }) => {
               />
             )}
             <div
-              className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+              className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
                 playerTurn === playerSide &&
                 playerSide === "blue" &&

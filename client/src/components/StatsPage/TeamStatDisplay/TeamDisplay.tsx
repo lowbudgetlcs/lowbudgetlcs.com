@@ -100,7 +100,7 @@ function TeamDisplay() {
   }
 
   return (
-    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-[90rem] w-full mx-auto">
+    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-360 w-full mx-auto">
       <Link
         to="/stats"
         className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center group">
@@ -123,7 +123,7 @@ function TeamDisplay() {
           selectedTeamId={activeTeamId}
           onSeasonChange={setSelectedTeamId}
         />
-        <div className="extendedStatsContainer flex flex-col gap-4 flex-grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
+        <div className="extendedStatsContainer flex flex-col gap-4 grow px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64">
           <>
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
             {activeLink === "Overview" ? (
@@ -194,7 +194,7 @@ function TeamDisplay() {
                   />
                 </div>
                 <div className="flex flex-col md:flex-row gap-4">
-                  <div className="flex-grow">
+                  <div className="grow">
                     <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4 mt-6">
                       Side Performance
                     </h2>

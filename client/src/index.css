@@ -1,37 +1,278 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-/* width */
-::-webkit-scrollbar {
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --breakpoint-*: initial;
+  --breakpoint-xl: 1440px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-draftMd: 1275px;
+  --breakpoint-smd: 900px;
+  --breakpoint-md: 768px;
+  --breakpoint-sm: 375px;
+  --breakpoint-xxl: 2000px;
+
+  --color-primary-light: #eda412;
+  --color-primary-dark: #5f4207;
+  --color-bg-dark: #050505;
+  --color-bg: #121212;
+  --color-bg-light: #1f1f1f;
+  --color-text-primary: #f2f2f2;
+  --color-text-secondary: #b3b3b3;
+  --color-gray: #363636;
+  --color-light-gray: #252525;
+  --color-white: #f5f5f5;
+  --color-black: #121212;
+  --color-light-blue: #d9dbf1;
+  --color-dark-blue: #1b1e48;
+  --color-orange: #eda412;
+  --color-blue: #125ae8;
+  --color-lblcs-light-blue: #d9dbf1;
+  --color-red: #e84057;
+  --color-yellow: #f3c623;
+  --color-vision-blue: #e84057;
+  --color-purple: #8a2be2;
+  --color-green: #28a745;
+  --color-gold-light: #c89b5f;
+  --color-gold-dark: #44311a;
+  --color-platinum-light: #86e1ed;
+  --color-platinum-dark: #074754;
+  --color-emerald-light: #5ee0a4;
+  --color-emerald-dark: #064035;
+  --color-challenger-blue: #6485e3;
+  --color-challenger-gold: #b49a5e;
+
+  --animate-slide-in-right: slide-in 0.8s forwards;
+  --animate-slide-in-left: slide-in-left 0.8s forwards;
+  --animate-slide-in-300: slide-in 0.8s 300ms forwards;
+  --animate-slide-in-400: slide-in 0.8s 400ms forwards;
+  --animate-slide-in-500: slide-in 0.8s 500ms forwards;
+  --animate-slide-in-600: slide-in 0.8s 600ms forwards;
+  --animate-slide-in-700: slide-in 0.8s 700ms forwards;
+  --animate-slide-in-800: slide-in 0.8s 800ms forwards;
+  --animate-slide-in-900: slide-in 0.8s 900ms forwards;
+  --animate-slide-in-1000: slide-in 0.8s 1000ms forwards;
+  --animate-spin: spin 6s linear infinite;
+  --animate-fadeIn: fadeIn 0.5s forwards;
+  --animate-fadeIn-300ms: fadeIn 300ms forwards;
+  --animate-selectPulse: selectPulse 0.5s linear;
+  --animate-line1X: line1X 0.8s linear;
+  --animate-line2X: line2X 0.8s ease-out;
+  --animate-moveToRight: moveToRight 0.5s linear;
+  --animate-scaleBounce: scaleBounce 0.5s linear;
+  --animate-smallScaleBounce: smallScaleBounce 0.5s linear;
+  --animate-largeScreenScaleBounce: largeScreenScaleBounce 0.5s linear;
+  --animate-expandWidth-5s: expandWidth 5s linear;
+  --animate-slideOut: slideOut 0.5s linear forwards;
+
+  --font-serif: Roboto, Helvetica, Arial, sans-serif;
+
+  --transition-property-width: width;
+
+  @keyframes slide-in {
+    0% {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes slide-in-left {
+    0% {
+      opacity: 0;
+      transform: translateX(40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes selectPulse {
+    0% {
+      filter: brightness(1);
+      transform: scale(1);
+    }
+    50% {
+      filter: brightness(1.25);
+      transform: scale(1.1);
+    }
+    100% {
+      filter: brightness(1);
+      transform: scale(1);
+    }
+  }
+  @keyframes line1X {
+    0% {
+      transform: scale(20) rotate(45deg);
+      opacity: 0;
+    }
+    25% {
+      transform: scale(1.5) rotate(45deg);
+      opacity: 1;
+    }
+    75% {
+      transform: scale(1.5) rotate(45deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5) rotate(45deg);
+      opacity: 0;
+    }
+  }
+  @keyframes line2X {
+    0% {
+      transform: scale(20) rotate(-45deg);
+      opacity: 0;
+    }
+    25% {
+      transform: scale(20) rotate(-45deg);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.5) rotate(-45deg);
+      opacity: 1;
+    }
+    75% {
+      transform: scale(1.5) rotate(-45deg);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5) rotate(-45deg);
+      opacity: 0;
+    }
+  }
+  @keyframes moveToRight {
+    0% {
+      transform: translateX(0) translateY(-100%) scale(1);
+    }
+    50% {
+      transform: translateX(150%) translateY(0) scale(1.5);
+    }
+    100% {
+      transform: translateX(250%) translateY(100%) scale(1);
+    }
+  }
+  @keyframes scaleBounce {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes smallScaleBounce {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes largeScreenScaleBounce {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes expandWidth {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+  @keyframes slideOut {
+    0% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    99% {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    100% {
+      display: none;
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@utility no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer utilities {
+  /* width */
+  ::-webkit-scrollbar {
     width: 4px;
-}
+  }
 
-/* Track */
-::-webkit-scrollbar-track {
+  /* Track */
+  ::-webkit-scrollbar-track {
     background: black;
-}
+  }
 
-/* Handle */
-::-webkit-scrollbar-thumb {
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
     background: gray;
     border-radius: 5px;
     transition: all 300ms;
     transition-duration: 300ms;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
-
-}
-
-@layer utilities {
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
   }
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
 }

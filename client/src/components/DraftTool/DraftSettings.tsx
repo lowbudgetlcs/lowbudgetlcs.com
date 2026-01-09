@@ -32,7 +32,7 @@ const DraftSettings = () => {
   if (settingsVisible) {
     return (
       <div
-        className={`popup fixed justify-center items-center z-[99999] inset-0 transition duration-1000 flex bg-black/75`}
+        className={`popup fixed justify-center items-center z-99999 inset-0 transition duration-1000 flex bg-black/75`}
       >
         <div onClick={toggleClose} className="absolute w-full h-full"></div>
         <div className="relative px-8 pt-12 rounded-lg w-full md:w-fit text-white bg-light-gray border-2 border-gray z-10">

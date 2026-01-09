@@ -100,12 +100,12 @@ function TeamCard({
       return (
         <img
           src={logo}
-          className="logo flex-shrink-0 w-[150px] text-center text-3xl h-[150px]"
+          className="logo shrink-0 w-[150px] text-center text-3xl h-[150px]"
         />
       );
     } else {
       return (
-        <div className="logo flex-shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
+        <div className="logo shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
           No logo 😢
         </div>
       );
@@ -153,7 +153,7 @@ function TeamCard({
             <div
               className={`absolute ${
                 isOpen ? "-rotate-45" : "rotate-45"
-              } top-4 -left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
+              } top-4 left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
             <div
               className={`absolute ${
@@ -167,7 +167,7 @@ function TeamCard({
             {displayLogo()}
             <div className={`w-full h-3 md:w-3 md:h-full bg-orange`}></div>
           </div>
-          <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
+          <div className="flex flex-col md:flex-row flex-1 shrink md:ml-4 items-center">
             <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
               {teamName}
             </h3>
@@ -233,7 +233,7 @@ function TeamCard({
             <div
               className={`absolute ${
                 isOpen ? "-rotate-45" : "rotate-45"
-              } top-4 -left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
+              } top-4 left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
             <div
               className={`absolute ${
@@ -247,7 +247,7 @@ function TeamCard({
             {displayLogo()}
             <div className={`w-full h-3 md:w-3 md:h-full bg-orange`}></div>
           </div>
-          <div className="flex flex-col md:flex-row flex-1 flex-shrink md:ml-4 items-center">
+          <div className="flex flex-col md:flex-row flex-1 shrink md:ml-4 items-center">
             <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
               {teamName}
             </h3>

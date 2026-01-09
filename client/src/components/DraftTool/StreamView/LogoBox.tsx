@@ -35,7 +35,7 @@ const LogoBox = () => {
             <div
               className={`absolute ${
                 isOpen ? "-rotate-45" : "rotate-45"
-              } top-4 -left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
+              } top-4 left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
             ></div>
             <div
               className={`absolute ${

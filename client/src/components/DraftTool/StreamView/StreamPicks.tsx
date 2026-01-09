@@ -100,7 +100,7 @@ const StreamPicks = ({
             />
           )}
           <div
-            className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+            className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
                 playerTurn === playerSide &&
                 playerSide === "blue" &&
@@ -129,12 +129,12 @@ const StreamPicks = ({
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
             sidePick === index
-              ? "border-blue transition-all delay-[20ms]"
+              ? "border-blue transition-all delay-20"
               : playerTurn === playerSide &&
                 playerSide === "red" &&
                 currentPhase === "pickPhase2" &&
                 sidePick === index
-              ? "border-red transition-all delay-[20ms]"
+              ? "border-red transition-all delay-20"
               : "border-gray"
           } bg-gray/60 rounded-md flex items-center`}
         >
@@ -147,7 +147,7 @@ const StreamPicks = ({
             />
           )}
           <div
-            className={`gradientAnimation absolute w-full h-full top-0 bg-gradient-to-b from-transparent via-transparent animate-pulse 
+            className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
                 playerTurn === playerSide &&
                 playerSide === "blue" &&

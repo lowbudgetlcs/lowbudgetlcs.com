@@ -57,7 +57,7 @@ function LeaguePlayers() {
           Click the dropdown to view team members
         </p>
         <div className="cardContainerContainer flex flex-col w-full justify-center items-center gap-8"></div>
-        <div className="teamContainer grid grid-cols-1 lg:grid-cols-2 gap-8 md:w-3/5 lg:w-11/12 justify-center py-8 pb-[30rem]">
+        <div className="teamContainer grid grid-cols-1 lg:grid-cols-2 gap-8 md:w-3/5 lg:w-11/12 justify-center py-8 pb-120">
           {teams.map((team) => {
             if (team.division === league)
               return (

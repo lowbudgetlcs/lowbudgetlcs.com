@@ -23,7 +23,7 @@ const ObjectiveControl = ({ teamData }: { teamData: TeamOverallStats | null }) =
     {
       title: "Atahkhan",
       icon: <GiRose className="text-white w-[25px] h-[25px]" />,
-      iconBgColor: "bg-gradient-to-b from-red/80 to-blue/80 bg-opacity-50",
+      iconBgColor: "bg-linear-to-b from-red/80 to-blue/80 bg-opacity-50",
       avg: teamData.avgAtahkhan,
       controlPercent: 0,
     },

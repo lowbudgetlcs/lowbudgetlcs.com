@@ -47,7 +47,7 @@ const StatsMain = () => {
         </div>
       </div>
       <div
-        className={`bg-light-gray rounded-md md:w-[28rem] lg:w-[32rem] border-2 p-4 border-gray flex flex-col transition text-white`}>
+        className={`bg-light-gray rounded-md md:w-md lg:w-lg border-2 p-4 border-gray flex flex-col transition text-white`}>
         <h2 className="text-2xl text-center font-bold opacity-0 pb-2 animate-slide-in-left">
           Recent Games
         </h2>
