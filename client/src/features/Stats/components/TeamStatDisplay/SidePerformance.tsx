@@ -1,4 +1,4 @@
-import { TeamOverallStats } from "../../../types/StatTypes";
+import { TeamOverallStats } from "../../../../types/StatTypes";
 
 const SidePerformance = ({
   blueSidePerformance,

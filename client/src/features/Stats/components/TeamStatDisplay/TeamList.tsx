@@ -1,8 +1,8 @@
 import { useState } from "react";
-import getTeamsBySeason from "../dataHandlers/getTeamsBySeason";
-import NavList from "../../NavList";
+import getTeamsBySeason from "../../api/getTeamsBySeason";
+import NavList from "../../../../components/NavList";
 import { useQuery } from "@tanstack/react-query";
-import LoadingIcon from "../../LoadingIcon";
+import LoadingIcon from "../../../../components/LoadingIcon";
 import { Link, useNavigate } from "react-router-dom";
 
 const TeamList = ({ activeSeason }: { activeSeason: number }) => {
@@ -56,10 +56,10 @@ const TeamList = ({ activeSeason }: { activeSeason: number }) => {
                     {team.teams.logo ? (
                       <img
                         src={team.teams.logo}
-                        className="logo shrink-0 w-[80px] text-center text-xl h-[80px]"
+                        className="logo shrink-0 w-20 text-center text-xl h-20"
                       />
                     ) : (
-                      <div className="logo shrink-0 w-[80px] text-center text-xl h-[80px] bg-gray">
+                      <div className="logo shrink-0 w-20 text-center text-xl h-20 bg-gray">
                         No logo 😢
                       </div>
                     )}

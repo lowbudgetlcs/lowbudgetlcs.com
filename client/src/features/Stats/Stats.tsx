@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
-import MiniGameCard from "./cards/MiniGameCard";
 import { useEffect, useState } from "react";
-import getRecentGames from "./dataHandlers/getRecentGames";
+import getRecentGames from "./api/getRecentGames";
 import { RecentGame } from "../../types/StatTypes";
-import StatsSearchUI from "./StatsSearchUI";
-const StatsMain = () => {
+import StatsSearchUI from "./components/StatsSearchUI";
+import MiniGameCard from "./components/cards/MiniGameCard";
+const Stats = () => {
   const [recentGames, setRecentGames] = useState<RecentGame[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,4 +63,4 @@ const StatsMain = () => {
   );
 };
 
-export default StatsMain;
+export default Stats;

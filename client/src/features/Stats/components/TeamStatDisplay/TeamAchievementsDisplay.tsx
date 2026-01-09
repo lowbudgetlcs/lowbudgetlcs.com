@@ -4,8 +4,8 @@ import { GiCoffin } from "react-icons/gi";
 import { IoEye } from "react-icons/io5";
 import { PiCampfireFill } from "react-icons/pi";
 import { useQuery } from "@tanstack/react-query";
-import getAchievements from "../dataHandlers/getAchievements";
-import { TeamOverallStats } from "../../../types/StatTypes";
+import getAchievements from "../../api/getAchievements";
+import { TeamOverallStats } from "../../../../types/StatTypes";
 
 interface TeamAchievementsDisplayProps {
   teamData?: TeamOverallStats;

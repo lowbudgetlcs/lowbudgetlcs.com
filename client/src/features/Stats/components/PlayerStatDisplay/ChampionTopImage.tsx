@@ -1,4 +1,4 @@
-import { PlayerOverallStats } from "../../../types/StatTypes";
+import { PlayerOverallStats } from "../../../../types/StatTypes";
 
 const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) => {
   const championName = playerData.championPool[0].championName.toLowerCase();

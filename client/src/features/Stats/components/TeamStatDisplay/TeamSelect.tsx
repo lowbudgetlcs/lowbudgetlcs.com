@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import TeamSidebar from "./TeamSidebar";
-import getSeasons from "../dataHandlers/getSeasons";
-import { Seasons } from "../../../types/Seasons";
+import getSeasons from "../../api/getSeasons";
+import { Seasons } from "../../../../types/Seasons";
 import TeamList from "./TeamList";
-import LoadingIcon from "../../LoadingIcon";
+import LoadingIcon from "../../../../components/LoadingIcon";
 import { useQuery } from "@tanstack/react-query";
 
 const TeamSelect = () => {

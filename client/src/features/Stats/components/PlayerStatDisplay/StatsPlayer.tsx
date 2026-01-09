@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import getPlayerOverallStats from "../dataHandlers/getPlayerOverallStats";
+import getPlayerOverallStats from "../../api/getPlayerOverallStats";
 import PlayerStatSidebar from "./PlayerStatSidebar";
-import ChampionStatCard from "../cards/ChampionStatCard";
 import AchievementsDisplay from "./AchievementsDisplay";
 import PerformanceOverview from "./PerformanceOverview";
 import CombatPerformance from "./CombatPerformance";
 import EconPerformance from "./EconPerformance";
-import NavList from "../../NavList";
-import getPlayerGames from "../dataHandlers/getPlayerGames";
-import PlayerGameCard from "../cards/PlayerGameCard";
-import LoadingIcon from "../../LoadingIcon";
+import NavList from "../../../../components/NavList";
+import getPlayerGames from "../../api/getPlayerGames";
+import LoadingIcon from "../../../../components/LoadingIcon";
 import { useQuery } from "@tanstack/react-query";
 import ChampionTopImage from "./ChampionTopImage";
-import getPlayerSeasons from "../dataHandlers/getPlayerSeasons";
+import getPlayerSeasons from "../../api/getPlayerSeasons";
+import ChampionStatCard from "../cards/ChampionStatCard";
+import PlayerGameCard from "../cards/PlayerGameCard";
 
 function StatsPlayer() {
   const params = useParams();

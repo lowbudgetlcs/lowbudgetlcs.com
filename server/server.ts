@@ -92,9 +92,9 @@ draftSocket(draftNamespace);
 fearlessSocket(fearlessNamespace);
 
 // Cron Jobs
-schedulePlayerDbUpdate().then(() => {
-  scheduleGameStatsUpdate();
-});
+// schedulePlayerDbUpdate().then(() => {
+//   scheduleGameStatsUpdate();
+// });
 scheduleImageFetch();
 
 server.listen(port, () => {

@@ -2,9 +2,9 @@ import { LuSwords } from "react-icons/lu";
 import IndividualStatCard from "./IndividualStatCard";
 import { MdAttachMoney } from "react-icons/md";
 import { BsGraphUp } from "react-icons/bs";
-import { ChampionStat } from "../../../types/StatTypes";
 import { FaHandshake, FaSkull } from "react-icons/fa";
 import { GiMineExplosion } from "react-icons/gi";
+import { ChampionStat } from "../../../../types/StatTypes";
 
 const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
   return (
@@ -34,7 +34,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
       <div className="smallStatBoxesChamp flex md:grid flex-col grid-rows-2 sm:grid-cols-2 gap-4">
         {/* KDA */}
         <IndividualStatCard
-          icon={<LuSwords className="text-white w-[25px] h-[25px]" />}
+          icon={<LuSwords className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-red bg-opacity-50"
           title="KDA Ratio"
           value={champ.kda.toFixed(2)}
@@ -42,14 +42,14 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         />
         {/* Damage/Min */}
         <IndividualStatCard
-          icon={<GiMineExplosion className="text-white w-[25px] h-[25px] bg-" />}
+          icon={<GiMineExplosion className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-purple bg-opacity-50"
           title="DMG/Min"
           value={champ.avgDamagePerMin.toFixed(0)}
         />
         {/* Deaths/Game */}
         <IndividualStatCard
-          icon={<FaSkull className="text-white w-[25px] h-[25px]" />}
+          icon={<FaSkull className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-slate-500 bg-opacity-50"
           title="Deaths/Game"
           value={champ.avgDeaths.toFixed(1)}
@@ -57,7 +57,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         />
         {/* KP */}
         <IndividualStatCard
-          icon={<FaHandshake className="text-white w-[25px] h-[25px]" />}
+          icon={<FaHandshake className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-pink-500 bg-opacity-50"
           title="Kill Participation"
           value={champ.avgKillParticipation.toFixed(0) + "%"}
@@ -65,7 +65,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         />
         {/* CS/Game */}
         <IndividualStatCard
-          icon={<BsGraphUp className="text-white w-[25px] h-[25px]" />}
+          icon={<BsGraphUp className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-green bg-opacity-50"
           title="CS/Min"
           value={champ.avgCsPerMin.toFixed(1)}
@@ -73,7 +73,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
 
         {/* Gold/Game */}
         <IndividualStatCard
-          icon={<MdAttachMoney className="text-white w-[25px] h-[25px]" />}
+          icon={<MdAttachMoney className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-yellow bg-opacity-50"
           title="Gold/Min"
           value={champ.avgGoldPerMin.toFixed(1)}

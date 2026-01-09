@@ -4,9 +4,9 @@ import { GiCoffin } from "react-icons/gi";
 import { IoEye } from "react-icons/io5";
 import { PiCampfireFill } from "react-icons/pi";
 import { useQuery } from "@tanstack/react-query";
-import getAchievements from "../dataHandlers/getAchievements";
-import commonAchievements from "../commonAchievements.json";
-import { PlayerOverallStats, TeamOverallStats } from "../../../types/StatTypes";
+import getAchievements from "../../api/getAchievements";
+import commonAchievements from "../../data/commonAchievements.json";
+import { PlayerOverallStats, TeamOverallStats } from "../../../../types/StatTypes";
 
 interface AchievementsDisplayProps {
   playerData?: PlayerOverallStats;
@@ -63,7 +63,7 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
             >
               <IconComponent />
               <p>{ach.name}</p>
-              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[200px] bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn text-center pointer-events-none">
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-50 bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn text-center pointer-events-none">
                 {ach.description}
               </div>
             </div>
@@ -80,7 +80,7 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
             >
               {IconComponent && <IconComponent />}
               <p>{ach.name}</p>
-              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-[150px] bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn-300ms text-center pointer-events-none">
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-37.5 bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn-300ms text-center pointer-events-none">
                 {ach.desc}
               </div>
             </div>

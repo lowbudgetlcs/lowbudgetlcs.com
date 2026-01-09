@@ -1,12 +1,12 @@
-import topIcon from "../../../assets/laneIcons/topIcon.svg";
-import middleIcon from "../../../assets/laneIcons/middleIcon.svg";
-import bottomIcon from "../../../assets/laneIcons/bottomIcon.svg";
-import supportIcon from "../../../assets/laneIcons/supportIcon.svg";
-import jungleIcon from "../../../assets/laneIcons/jungleIcon.svg";
-import { PlayerOverallStats } from "../../../types/StatTypes";
-import LoadingIcon from "../../LoadingIcon";
+import topIcon from "../../../../assets/laneIcons/topIcon.svg";
+import middleIcon from "../../../../assets/laneIcons/middleIcon.svg";
+import bottomIcon from "../../../../assets/laneIcons/bottomIcon.svg";
+import supportIcon from "../../../../assets/laneIcons/supportIcon.svg";
+import jungleIcon from "../../../../assets/laneIcons/jungleIcon.svg";
+import { PlayerOverallStats } from "../../../../types/StatTypes";
+import LoadingIcon from "../../../../components/LoadingIcon";
 import { Link } from "react-router-dom";
-import { PlayerSeason } from "../dataHandlers/getPlayerSeasons";
+import { PlayerSeason } from "../../api/getPlayerSeasons";
 
 interface PlayerStatSidebarProps {
   summonerName: string;
@@ -71,7 +71,7 @@ const PlayerStatSidebar = ({
             {seasons && seasons.length > 0 && onSeasonChange && (
               <div className="flex justify-center">
                 <select
-                  className="mt-2 bg-light-gray text-white p-1 rounded-sm border border-gray text-sm w-full max-w-[200px]"
+                  className="mt-2 bg-light-gray text-white p-1 rounded-sm border border-gray text-sm w-full max-w-50"
                   value={selectedSeasonId || ""}
                   onChange={(e) => onSeasonChange(Number(e.target.value))}>
                   {seasons.map((season) => (

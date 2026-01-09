@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
-import { ParticipantDto } from "../../../types/MatchV5";
-import { RecentGame } from "../../../types/StatTypes";
-import formatDuration from "../../../utils/formatDuration";
-import formatTimeAgo from "../../../utils/formatTimeAgo";
-import ItemDisplay from "../../ItemDisplay";
-import Runes from "../../RuneDisplay/Runes";
-import SummonerSpellsDisplay from "../../SummonerSpellsDisplay";
-import MainLink from "../../MainLink";
-import SubdomainLink from "../../SubdomainLink";
+import { ParticipantDto } from "../../../../types/MatchV5";
+import { RecentGame } from "../../../../types/StatTypes";
+import formatDuration from "../../../../utils/formatDuration";
+import formatTimeAgo from "../../../../utils/formatTimeAgo";
+import ItemDisplay from "../../../../components/ItemDisplay";
+import Runes from "../../../../components/RuneDisplay/Runes";
+import SummonerSpellsDisplay from "../../../../components/SummonerSpellsDisplay";
+import MainLink from "../../../../components/MainLink";
+import SubdomainLink from "../../../../components/SubdomainLink";
 import { FaCrown } from "react-icons/fa";
 
 const PlayerGameCard = ({ game, puuid }: { game: RecentGame; puuid: string }) => {

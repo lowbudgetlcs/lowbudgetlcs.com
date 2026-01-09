@@ -1,4 +1,4 @@
-import { TeamOverallStats } from "../../../types/StatTypes";
+import { TeamOverallStats } from "../../../../types/StatTypes";
 import {
   GiChessRook,
   GiCurledTentacle,
@@ -14,7 +14,7 @@ const ObjectiveControl = ({ teamData }: { teamData: TeamOverallStats | null }) =
   const objectives = [
     {
       title: "Dragon",
-      icon: <FaDragon className="text-white w-[25px] h-[25px]" />,
+      icon: <FaDragon className="text-white w-6.25 h-6.25" />,
       iconBgColor: "bg-red bg-opacity-50",
       avg: teamData.avgDragons,
       controlPercent: teamData.dragonControlRate,
@@ -22,7 +22,7 @@ const ObjectiveControl = ({ teamData }: { teamData: TeamOverallStats | null }) =
 
     {
       title: "Atahkhan",
-      icon: <GiRose className="text-white w-[25px] h-[25px]" />,
+      icon: <GiRose className="text-white w-6.25 h-6.25" />,
       iconBgColor: "bg-linear-to-b from-red/80 to-blue/80 bg-opacity-50",
       avg: teamData.avgAtahkhan,
       controlPercent: 0,
@@ -36,21 +36,21 @@ const ObjectiveControl = ({ teamData }: { teamData: TeamOverallStats | null }) =
     // },
     {
       title: "Tower",
-      icon: <GiChessRook className="text-white w-[25px] h-[25px]" />,
+      icon: <GiChessRook className="text-white w-6.25 h-6.25" />,
       iconBgColor: "bg-slate-500 bg-opacity-50",
       avg: teamData.avgTowers,
       controlPercent: teamData.firstTowerRate ?? 0,
     },
     {
       title: "Grub",
-      icon: <GiLeechingWorm className="text-white w-[25px] h-[25px]" />,
+      icon: <GiLeechingWorm className="text-white w-6.25 h-6.25" />,
       iconBgColor: "bg-purple bg-opacity-50",
       avg: teamData.avgGrubs,
       controlPercent: teamData.voidGrubControlRate ?? 0,
     },
     {
       title: "Herald",
-      icon: <GiSwirledShell className="text-white w-[25px] h-[25px]" />,
+      icon: <GiSwirledShell className="text-white w-6.25 h-6.25" />,
       iconBgColor: "bg-purple bg-opacity-50",
       avg: teamData.avgHeralds,
       controlPercent: 0,
@@ -58,7 +58,7 @@ const ObjectiveControl = ({ teamData }: { teamData: TeamOverallStats | null }) =
 
     {
       title: "Baron",
-      icon: <GiCurledTentacle className="text-white w-[25px] h-[25px]" />,
+      icon: <GiCurledTentacle className="text-white w-6.25 h-6.25" />,
       iconBgColor: "bg-purple bg-opacity-50",
       avg: teamData.avgBarons,
       controlPercent: teamData.firstBaronRate ?? 0,

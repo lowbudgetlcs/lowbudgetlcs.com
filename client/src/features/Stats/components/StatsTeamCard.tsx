@@ -47,12 +47,12 @@ function StatsTeamCard({
       return (
         <img
           src={logo}
-          className="logo shrink-0 w-[150px] text-center text-3xl h-[150px]"
+          className="logo shrink-0 w-37.5 text-center text-3xl h-37.5"
         />
       );
     } else {
       return (
-        <div className="logo shrink-0 w-[150px] text-center text-3xl h-[150px] bg-gray">
+        <div className="logo shrink-0 w-37.5 text-center text-3xl h-37.5 bg-gray">
           No logo 😢
         </div>
       );

@@ -1,13 +1,13 @@
-import topIcon from "../../../assets/laneIcons/topIcon.svg";
-import middleIcon from "../../../assets/laneIcons/middleIcon.svg";
-import bottomIcon from "../../../assets/laneIcons/bottomIcon.svg";
-import supportIcon from "../../../assets/laneIcons/supportIcon.svg";
-import jungleIcon from "../../../assets/laneIcons/jungleIcon.svg";
-import LoadingIcon from "../../LoadingIcon";
+import topIcon from "../../../../assets/laneIcons/topIcon.svg";
+import middleIcon from "../../../../assets/laneIcons/middleIcon.svg";
+import bottomIcon from "../../../../assets/laneIcons/bottomIcon.svg";
+import supportIcon from "../../../../assets/laneIcons/supportIcon.svg";
+import jungleIcon from "../../../../assets/laneIcons/jungleIcon.svg";
+import LoadingIcon from "../../../../components/LoadingIcon";
 import { Link } from "react-router-dom";
-import { TeamOverallStats } from "../../../types/StatTypes";
-import { useFetchData } from "../../../leagueData";
-import { TeamSeason } from "../dataHandlers/getTeamSeasons";
+import { TeamOverallStats } from "../../../../types/StatTypes";
+import { useFetchData } from "../../../../leagueData";
+import { TeamSeason } from "../../api/getTeamSeasons";
 
 interface TeamStatSidebarProps {
   teamName: string;
@@ -45,7 +45,7 @@ const TeamStatSidebar = ({
           <h1 className="text-lg text-center font-bold">{teamName}</h1>
           {seasons && seasons.length > 0 && onSeasonChange && (
             <select
-              className="mt-2 bg-light-gray text-white p-1 rounded-sm border border-gray text-sm w-full max-w-[200px]"
+              className="mt-2 bg-light-gray text-white p-1 rounded-sm border border-gray text-sm w-full max-w-50"
               value={selectedTeamId || ""}
               onChange={(e) => onSeasonChange(Number(e.target.value))}>
               {seasons.map((season) => (

@@ -11,7 +11,7 @@ import DraftRoutes from "./routes/DraftRoutes";
 import DefaultRoutes from "./routes/DefaultRoutes";
 import { useEffect } from "react";
 import StatRoutes from "./routes/StatRoutes";
-import StatsNavbar from "./components/StatsPage/StatsNavBar";
+import StatsNavbar from "./features/Stats/components/StatsNavBar";
 
 function App() {
   // Finds the subdomain (used for draft site)

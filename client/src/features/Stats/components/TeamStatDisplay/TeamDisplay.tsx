@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import NavList from "../../NavList";
-import LoadingIcon from "../../LoadingIcon";
+import NavList from "../../../../components/NavList";
+import LoadingIcon from "../../../../components/LoadingIcon";
 import { useQuery } from "@tanstack/react-query";
-import getTeamByName from "../dataHandlers/getTeamByName";
-import getTeamGames from "../dataHandlers/getTeamGames";
-import MiniGameCard from "../cards/MiniGameCard";
-import IndividualStatCard from "../cards/IndividualStatCard";
-import { TeamOverallStats } from "../../../types/StatTypes";
+import getTeamByName from "../../api/getTeamByName";
+import getTeamGames from "../../api/getTeamGames";
+import { TeamOverallStats } from "../../../../types/StatTypes";
 import TeamAchievementsDisplay from "./TeamAchievementsDisplay";
 import TeamStatSidebar from "./TeamStatSidebar";
 import SidePerformance from "./SidePerformance";
@@ -18,8 +16,10 @@ import { LuSwords } from "react-icons/lu";
 import { IoLogoGameControllerA } from "react-icons/io";
 import { GiMineExplosion } from "react-icons/gi";
 import { IoPieChart } from "react-icons/io5";
-import getTeamSeasons from "../dataHandlers/getTeamSeasons";
-import getTeamStatsById from "../dataHandlers/getTeamStatsById";
+import getTeamSeasons from "../../api/getTeamSeasons";
+import getTeamStatsById from "../../api/getTeamStatsById";
+import IndividualStatCard from "../cards/IndividualStatCard";
+import MiniGameCard from "../cards/MiniGameCard";
 
 function TeamDisplay() {
   const params = useParams();
@@ -132,20 +132,20 @@ function TeamDisplay() {
                 <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Performance Overview</h2>
                 <div className="smallStatBoxes grid lg:grid-cols-3 gap-4">
                   <IndividualStatCard
-                    icon={<FaCrown className="text-white w-[25px] h-[25px]" />}
+                    icon={<FaCrown className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-purple bg-opacity-50"
                     title="Win Rate"
                     value={`${teamData.winrate.toFixed(0)}%`}
                     valueColor={teamData.winrate >= 50 ? "text-blue" : "text-red"}
                   />
                   <IndividualStatCard
-                    icon={<LuSwords className="text-white w-[25px] h-[25px]" />}
+                    icon={<LuSwords className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-green bg-opacity-50"
                     title="Avg Game Length (min)"
                     value={(teamData.avgGameDuration / 60).toFixed(1)}
                   />
                   <IndividualStatCard
-                    icon={<IoLogoGameControllerA className="text-white w-[25px] h-[25px]" />}
+                    icon={<IoLogoGameControllerA className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-cyan-500 bg-opacity-50"
                     title="Games Played"
                     value={teamData.totalGames}
@@ -153,19 +153,19 @@ function TeamDisplay() {
                 </div>
                 <div className="objectiveStats grid lg:grid-cols-3 gap-4 my-4">
                   <IndividualStatCard
-                    icon={<GiMineExplosion className="text-white w-[25px] h-[25px]" />}
+                    icon={<GiMineExplosion className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-red bg-opacity-50"
                     title="Avg Dragons"
                     value={teamData.avgDragons.toFixed(2)}
                   />
                   <IndividualStatCard
-                    icon={<FaCoins className="text-white w-[25px] h-[25px]" />}
+                    icon={<FaCoins className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-orange bg-opacity-50"
                     title="Avg Barons"
                     value={teamData.avgBarons.toFixed(2)}
                   />
                   <IndividualStatCard
-                    icon={<IoPieChart className="text-white w-[25px] h-[25px]" />}
+                    icon={<IoPieChart className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-slate-500 bg-opacity-50"
                     title="Avg Towers"
                     value={teamData.avgTowers.toFixed(2)}

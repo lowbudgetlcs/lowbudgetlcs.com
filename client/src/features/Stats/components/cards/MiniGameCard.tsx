@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { RecentGame } from "../../../types/StatTypes";
-import formatDuration from "../../../utils/formatDuration";
-import formatTimeAgo from "../../../utils/formatTimeAgo";
-import SubdomainLink from "../../SubdomainLink";
-import MainLink from "../../MainLink";
+import { RecentGame } from "../../../../types/StatTypes";
+import formatDuration from "../../../../utils/formatDuration";
+import formatTimeAgo from "../../../../utils/formatTimeAgo";
+import SubdomainLink from "../../../../components/SubdomainLink";
+import MainLink from "../../../../components/MainLink";
 import { FaCrown } from "react-icons/fa";
 
 const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string }) => {

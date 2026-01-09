@@ -1,8 +1,8 @@
 import { FaCrown } from "react-icons/fa";
-import { PlayerOverallStats } from "../../../types/StatTypes";
-import IndividualStatCard from "../cards/IndividualStatCard";
+import { PlayerOverallStats } from "../../../../types/StatTypes";
 import { LuSwords } from "react-icons/lu";
 import { IoLogoGameControllerA } from "react-icons/io";
+import IndividualStatCard from "../cards/IndividualStatCard";
 
 const PerformanceOverview = ({ playerData }: { playerData: PlayerOverallStats }) => {
   return (
@@ -12,7 +12,7 @@ const PerformanceOverview = ({ playerData }: { playerData: PlayerOverallStats })
       <div className="smallStatBoxes grid lg:grid-cols-3 gap-4">
         {/* Win Rate */}
         <IndividualStatCard
-          icon={<FaCrown className="text-white w-[25px] h-[25px] bg" />}
+          icon={<FaCrown className="text-white w-6.25 h-6.25 bg" />}
           iconBgColor="bg-purple bg-opacity-50"
           title="Win Rate"
           value={`${playerData.winrate.toFixed(0)}%`}
@@ -20,7 +20,7 @@ const PerformanceOverview = ({ playerData }: { playerData: PlayerOverallStats })
         />
         {/* KDA */}
         <IndividualStatCard
-          icon={<LuSwords className="text-white w-[25px] h-[25px]" />}
+          icon={<LuSwords className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-red bg-opacity-50"
           title="KDA Ratio"
           value={playerData.kda.toFixed(2)}
@@ -30,7 +30,7 @@ const PerformanceOverview = ({ playerData }: { playerData: PlayerOverallStats })
         />
         {/* CS/Min */}
         <IndividualStatCard
-          icon={<IoLogoGameControllerA className="text-white w-[25px] h-[25px]" />}
+          icon={<IoLogoGameControllerA className="text-white w-6.25 h-6.25" />}
           iconBgColor="bg-green bg-opacity-50"
           title="Games Played"
           value={playerData.totalGames}
