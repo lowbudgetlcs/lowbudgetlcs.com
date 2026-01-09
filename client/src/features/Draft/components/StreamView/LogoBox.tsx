@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLeagueData } from "../../../../components/leagueDataContext";
+import { useLeagueData } from "../../../Roster/providers/leagueDataContext";
 import tempImage from "../../../../assets/lblcsLogo.svg";
 const LogoBox = () => {
   const { teams } = useLeagueData();

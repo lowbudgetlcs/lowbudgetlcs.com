@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useLeagueData } from "../../components/leagueDataContext";
+import { useLeagueData } from "./providers/leagueDataContext";
 import ErrorPage from "../Error/ErrorPage";
 
 function Roster() {

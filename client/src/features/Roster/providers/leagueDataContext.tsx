@@ -1,5 +1,5 @@
 import React, { createContext, useContext, ReactNode } from 'react';
-import { TeamProps, useFetchData } from '../leagueData';
+import { TeamProps, useFetchData } from '../../../leagueData';
 
 interface LeagueDataContextType {
   divisions: string[];

@@ -3,7 +3,7 @@ import "./App.css";
 import Navbar from "./layout/Navbar";
 import ScrollToTop from "./layout/ScrollToTop";
 import Twitch from "./features/Twitch/Twitch";
-import { LeagueDataProvider } from "./components/leagueDataContext";
+import { LeagueDataProvider } from "./features/Roster/providers/leagueDataContext";
 import DraftNavbar from "./features/Draft/components/Navbars/DraftNavbar";
 import { SettingsProvider } from "./features/Draft/providers/SettingsProvider";
 import DraftSettings from "./features/Draft/components/DraftSettings";

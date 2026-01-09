@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import TeamCard from "./TeamCard";
 import { useState } from "react";
 import ErrorPage from "../../Error/ErrorPage";
-import { useLeagueData } from "../../../components/leagueDataContext";
+import { useLeagueData } from "../providers/leagueDataContext";
 
 function LeaguePlayers() {
   const { teams, error, loading } = useLeagueData();
