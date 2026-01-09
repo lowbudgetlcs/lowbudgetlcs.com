@@ -10,9 +10,21 @@ export default {
 
     extend: {
       colors: {
-        // Main Colors
-        'orange': '#e8a012',
-        'light-orange': '#F3C363',
+        // --Main Colors--
+        'primary-light': '#eda412',
+        'primary-dark': '#5f4207',
+
+        // --Dark Mode Colors--
+        // Background
+        'bg-dark': '#050505',
+        'bg': '#121212',
+        'bg-light': '#1f1f1f',
+        // Text
+        'text-primary': '#f2f2f2',
+        'text-secondary': '#b3b3b3',
+
+        // --Other Colors--
+        // Legacy Colors
         'gray': '#363636',
         'light-gray': '#252525',
         'white': '#F5F5F5',
@@ -21,13 +33,13 @@ export default {
         'dark-blue': '#1B1E48',
         'blue': '#125AE8',
         'lblcs-light-blue': '#d9dbf1',
-        // For Stats
+        // Additional Colors
         'red': '#e84057',
         'yellow': '#f3c623',
         'vision-blue': '#e84057',
         'purple': '#8a2be2',
         'green': '#28a745',
-        // For Gradients
+        // Gradients
         'gold-light': '#C89B5F',
         'gold-dark': '#44311A',
         'platinum-light': '#86E1ED',
