@@ -36,7 +36,7 @@ function HomeCard({ title, text, link, btnText, image, reverse, newTab }: CardPr
           <p className="py-2 text-sm md:text-md">{text}</p>
           <div className="font-semibold">
             <NavLink target={newTab ? '_blank' : '_self'} to={link}>
-              <Button>{btnText}</Button>
+              <Button className="w-full">{btnText}</Button>
             </NavLink>
           </div>
         </div>
@@ -57,7 +57,7 @@ function HomeCard({ title, text, link, btnText, image, reverse, newTab }: CardPr
           <p className="py-2 text-sm md:text-md">{text}</p>
           <div className="font-semibold mt-4">
             <NavLink target={newTab ? '_blank' : '_self'} to={link}>
-              <Button>{btnText}</Button>
+              <Button className="w-full">{btnText}</Button>
             </NavLink>
           </div>
         </div>

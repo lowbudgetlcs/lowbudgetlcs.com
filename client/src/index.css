@@ -20,6 +20,9 @@
   --color-bg-dark: oklch(0.1 0 271);
   --color-bg: oklch(0.2 0 271);
   --color-bg-light: oklch(0.3 0 271);
+
+  /* Shadow/Border Colors */
+  --color-border: oklch(0.4 0 271);
   /* Text Colors */
   --color-text-primary: oklch(0.96 0 271);
   --color-text-secondary: oklch(0.76 0 271);
