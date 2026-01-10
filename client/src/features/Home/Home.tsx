@@ -1,5 +1,4 @@
 import Hero from "./components/Hero";
-import Summary from "./components/Summary";
 
 
 function Home() {
