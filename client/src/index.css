@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant light (&:where(.light, .light *));
 
 @theme {
   --breakpoint-*: initial;
@@ -20,12 +20,15 @@
   --color-bg-dark: oklch(0.1 0 271);
   --color-bg: oklch(0.2 0 271);
   --color-bg-light: oklch(0.3 0 271);
+  --color-bg-body: oklch(0.1 0 271);
 
   /* Shadow/Border Colors */
   --color-border: oklch(0.4 0 271);
   /* Text Colors */
   --color-text-primary: oklch(0.96 0 271);
   --color-text-secondary: oklch(0.76 0 271);
+
+
   /* --Legacy Colors-- */
   --color-gray: #363636;
   --color-light-gray: #252525;
@@ -233,6 +236,22 @@
     }
   }
 }
+  .light {
+  /* --Light Mode-- */
+  /* Main Colors */
+  --color-primary-light: oklch(0.77 0.16 76);
+  --color-primary-dark: oklch(0.47 0.16 76);
+  /* Background Colors */
+  --color-bg-light: oklch(0.98 0 276);
+  --color-bg: oklch(0.96 0 276);
+  --color-bg-dark: oklch(0.92 0 276);
+  --color-bg-body: oklch(0.98 0 276);
+  /* Shadow/Border Colors */
+  --color-border: oklch(0.86 0 276);
+  /* Text Colors */
+  --color-text-primary: oklch(0.1 0 276);
+  --color-text-secondary: oklch(0.3 0 276);
+  }
 
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
