@@ -4,8 +4,9 @@ import twitchImage from "../../../assets/twitchPhone.jpg";
 import discordImage from "../../../assets/smilingGamer.jpg";
 import Button from "../../../components/Button";
 import AltButton from "../../../components/AltButton";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import SubdomainLink from "../../../components/SubdomainLink";
+import { FaDiscord, FaInstagram, FaTwitch, FaYoutube } from "react-icons/fa";
 
 function Summary() {
   // const aboutCard = {
@@ -68,11 +69,41 @@ function Summary() {
       </div>
       <div className="w-full h-full flex justify-end items-center">
         <div className="quickNav flex flex-col p-8">
-          <SubdomainLink subdomain="draft" to="/">
-            <Button className="mb-4">Draft Tool</Button>
+          <SubdomainLink subdomain="draft" to="/" className="w-full h-full">
+            <Button className="mb-4 w-full h-full">Draft Tool</Button>
           </SubdomainLink>
           <Button className="mb-4">Rosters</Button>
           <Button className="mb-4">Stats</Button>
+          <div className="socials grid grid-cols-2 items-center place-items-center gap-2">
+            <NavLink
+              aria-label="Instagram Profile"
+              target="_blank"
+              className={``}
+              to="https://www.instagram.com/lowbudgetlcs">
+              <Button className="text-2xl"><FaInstagram /></Button>
+            </NavLink>
+            <NavLink
+              aria-label="Discord Server"
+              target="_blank"
+              to="https://discord.com/invite/XfsEEq4aPC"
+              className={``}>
+              <Button className="text-2xl"><FaDiscord /></Button>
+            </NavLink>
+            <NavLink
+              aria-label="Twitch Channel"
+              target="_blank"
+              to="https://www.twitch.tv/lowbudgetlcs"
+              className={``}>
+              <Button className="text-2xl"><FaTwitch /></Button>
+            </NavLink>
+            <NavLink
+              aria-label="Youtube Channel"
+              target="_blank"
+              to="https://www.youtube.com/@lowbudgetlcs9513"
+              className={``}>
+              <Button className="text-2xl"><FaYoutube /></Button>
+            </NavLink>
+          </div>
         </div>
       </div>
     </div>
