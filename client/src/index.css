@@ -33,7 +33,7 @@
   --color-gray: #363636;
   --color-light-gray: #252525;
   --color-white: #f5f5f5;
-  --color-black: #121212;
+  --color-black: oklch(0.1 0 271);
   --color-light-blue: #d9dbf1;
   --color-dark-blue: #1b1e48;
   --color-orange: #eda412;
