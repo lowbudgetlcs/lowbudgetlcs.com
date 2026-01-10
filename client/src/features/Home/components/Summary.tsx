@@ -4,6 +4,8 @@ import twitchImage from "../../../assets/twitchPhone.jpg";
 import discordImage from "../../../assets/smilingGamer.jpg";
 import Button from "../../../components/Button";
 import AltButton from "../../../components/AltButton";
+import { Link } from "react-router-dom";
+import SubdomainLink from "../../../components/SubdomainLink";
 
 function Summary() {
   // const aboutCard = {
@@ -42,26 +44,37 @@ function Summary() {
     { top: "The League Where Your Mom", bottom: "Can Be Your Coach." },
     { top: "Competitive Enough to Crash Out.", bottom: "Casual Enough to Have Fun." },
     { top: "Find Your Team, Lose Your Lane,", bottom: "Keep Your Friends." },
+    { top: "Where The Production Value", bottom: "Is as Low as Our Win Rates." },
   ];
   const slogan = slogans[Math.floor(Math.random() * slogans.length)];
   return (
-    <div className="summary absolute top-0 left-0 w-full h-full grid md:grid-cols-2 gap-4 place-items-center items-center bg-linear-90 from-bg-dark to-transparent">
+    <div className="summary absolute top-0 left-0 w-full h-full grid md:grid-cols-2 gap-4 place-items-center items-center bg-linear-90 from-black to-transparent">
       <div className="titleContent flex flex-col gap-4 max-w-xl rounded-md p-6">
-        <h1 className="title text-4xl text-text-primary font-bold text-center">
+        <h1 className="title text-3xl text-white font-bold text-center opacity-0 animate-slide-in-300">
           {slogan.top}
           <br />
           {slogan.bottom}
         </h1>
-        <p className="text-wrap text-text-secondary text-xl">
-          We are a free, and friendly amateur rec league that mirrors what would
-          happen if Riot Games suffered a catastrophic financial disaster
+        <p className="text-wrap text-gray-300 text-lg max-w-md opacity-0 animate-slide-in-600">
+          We are a free, and friendly amateur rec league that mirrors what would happen if Riot Games suffered
+          a catastrophic financial disaster
         </p>
-        <div className="flex gap-4 justify-center">
+        <div className="flex gap-4 justify-center opacity-0 animate-slide-in-900">
           <Button className="discord">Join The Discord</Button>
-          <AltButton>About Us</AltButton>
+          <Link to="/about">
+            <AltButton>About Us</AltButton>
+          </Link>
         </div>
       </div>
-      <div className="Something"></div>
+      <div className="w-full h-full flex justify-end items-center">
+        <div className="quickNav flex flex-col p-8">
+          <SubdomainLink subdomain="draft" to="/">
+            <Button className="mb-4">Draft Tool</Button>
+          </SubdomainLink>
+          <Button className="mb-4">Rosters</Button>
+          <Button className="mb-4">Stats</Button>
+        </div>
+      </div>
     </div>
   );
 }
