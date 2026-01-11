@@ -11,9 +11,9 @@ function Hero() {
     video = lblcsVideo;
   }
   return (
-    <div id="hero" className="hero xl:flex justify-center items-center relative w-full h-screen overflow-hidden">
+    <div id="hero" className="hero relative w-full h-screen overflow-hidden">
       <video
-        className="heroVideo min-w-full object-cover top-0 left-0 scale-125"
+        className="heroVideo absolute top-0 left-0 w-full h-full object-cover"
         autoPlay
         muted
         playsInline

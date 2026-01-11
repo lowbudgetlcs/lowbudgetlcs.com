@@ -49,17 +49,20 @@ function Summary() {
   ];
   const slogan = slogans[Math.floor(Math.random() * slogans.length)];
   return (
-    <div className="summary absolute top-0 left-0 w-full h-full grid md:grid-cols-2 gap-4 place-items-center items-center bg-linear-90 from-black to-transparent">
+    <div className="summary absolute top-0 left-0 w-full h-full flex justify-center md:grid md:grid-cols-2 gap-4 place-items-center items-center bg-linear-90 from-black to-transparent">
       <div className="titleContent flex flex-col gap-4 max-w-xl rounded-md p-6">
         <h1 className="title text-3xl text-white font-bold text-center opacity-0 animate-slide-in-300">
           {slogan.top}
           <br />
           {slogan.bottom}
         </h1>
-        <p className="text-wrap text-gray-300 text-lg max-w-md opacity-0 animate-slide-in-600">
-          We are a free, and friendly amateur rec league that mirrors what would happen if Riot Games suffered
-          a catastrophic financial disaster
-        </p>
+        <div className="px-1.5">
+          <p className="text-wrap text-gray-300 text-lg opacity-0 animate-slide-in-600">
+            We are a free, and friendly amateur rec league that mirrors what would happen if Riot Games
+            suffered a catastrophic financial disaster
+          </p>
+        </div>
+
         <div className="flex gap-4 justify-center opacity-0 animate-slide-in-900">
           <Button className="discord">Join The Discord</Button>
           <Link to="/about">
@@ -67,8 +70,8 @@ function Summary() {
           </Link>
         </div>
       </div>
-      <div className="w-full h-full flex justify-end items-center">
-        <div className="quickNav flex flex-col p-8">
+      <div className="w-full h-full md:flex justify-end items-center hidden">
+        <div className="quickNav flex flex-col p-8 ">
           <SubdomainLink subdomain="draft" to="/" className="w-full h-full">
             <Button className="mb-4 w-full h-full">Draft Tool</Button>
           </SubdomainLink>
@@ -80,28 +83,36 @@ function Summary() {
               target="_blank"
               className={``}
               to="https://www.instagram.com/lowbudgetlcs">
-              <Button className="text-2xl"><FaInstagram /></Button>
+              <Button className="text-2xl">
+                <FaInstagram />
+              </Button>
             </NavLink>
             <NavLink
               aria-label="Discord Server"
               target="_blank"
               to="https://discord.com/invite/XfsEEq4aPC"
               className={``}>
-              <Button className="text-2xl"><FaDiscord /></Button>
+              <Button className="text-2xl">
+                <FaDiscord />
+              </Button>
             </NavLink>
             <NavLink
               aria-label="Twitch Channel"
               target="_blank"
               to="https://www.twitch.tv/lowbudgetlcs"
               className={``}>
-              <Button className="text-2xl"><FaTwitch /></Button>
+              <Button className="text-2xl">
+                <FaTwitch />
+              </Button>
             </NavLink>
             <NavLink
               aria-label="Youtube Channel"
               target="_blank"
               to="https://www.youtube.com/@lowbudgetlcs9513"
               className={``}>
-              <Button className="text-2xl"><FaYoutube /></Button>
+              <Button className="text-2xl">
+                <FaYoutube />
+              </Button>
             </NavLink>
           </div>
         </div>
