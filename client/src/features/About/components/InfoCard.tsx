@@ -49,7 +49,7 @@ function InfoCard({ title, text, link, btnText, image, reverse = false, newTab =
         </p>
 
         <div className="pt-4">
-          <NavLink target={newTab ? '_blank' : '_self'} to={link} className="inline-block w-full md:w-auto">
+          <NavLink target={newTab ? '_blank' : '_self'} rel={newTab ? "noopener noreferrer" : undefined} to={link}  className="inline-block w-full md:w-auto">
             <Button className="w-full md:px-8 text-lg font-semibold tracking-wide">
               {btnText}
             </Button>
