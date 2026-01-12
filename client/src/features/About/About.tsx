@@ -92,7 +92,7 @@ function About() {
 
           <div className="flex flex-wrap justify-center gap-3 w-full max-w-4xl">
             {leagues.map((league) => (
-              <NavLink target="_blank" to={league.sheet} key={league.title}>
+              <NavLink target="_blank" rel="noopener noreferrer" to={league.sheet} key={league.title}>
                 <Button className="min-w-35">{league.title}</Button>
               </NavLink>
             ))}
@@ -112,6 +112,7 @@ function About() {
           </p>
           <NavLink
             target="_blank"
+            rel="noopener noreferrer"
             to={
               "https://docs.google.com/document/d/1gwZpciwnRG8nao42zNZCKxwXf7fgdFXQm-tDAaQ6T1I/edit?usp=sharing"
             }
