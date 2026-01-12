@@ -47,7 +47,7 @@ function About() {
   };
 
   return (
-    <div className="about bg-white text-black dark:bg-black dark:text-white font-serif pb-16 min-h-screen">
+    <div className="about bg-bg-dark light:bg-bg-light text-text-primary pb-8 min-h-screen mt-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-12 lg:py-16">
@@ -57,7 +57,7 @@ function About() {
               <div className="h-1 w-24 bg-primary-light rounded-full mx-auto lg:mx-0" />
             </div>
             
-            <p className="text-lg md:text-xl text-gray-300 leading-relaxed font-light">
+            <p className="text-lg md:text-xl text-text-secondary leading-relaxed font-light">
               The Low Budget LCS is a competitive, free, and friendly amateur rec
               league. We have multiple leagues that range across all skill levels.
               We provide an experience that mirrors what would happen if Riot Games
@@ -65,7 +65,7 @@ function About() {
             </p>
           </div>
 
-          <div className="w-full max-w-lg shadow-2xl rounded-xl overflow-hidden border border-white/10 bg-bg aspect-video">
+          <div className="w-full max-w-lg shadow-2xl rounded-xl overflow-hidden border border-text-primary/10 bg-bg aspect-video">
             <iframe
               width="100%"
               height="100%"
@@ -80,19 +80,20 @@ function About() {
         </div>
 
         {/* Divisions Section */}
-        <div className="flex flex-col items-center gap-8 py-12 border-t border-white/10">
+        <div className="flex flex-col items-center gap-8 py-12 border-t border-text-primary/10">
           <div className="text-center space-y-2">
-            <h2 className="text-2xl font-bold text-white">Our Divisions</h2>
-            <p className="text-base text-gray-400 max-w-2xl">
-              The Low Budget LCS has five separate divisions defined by both max
-              rank and a points system. Click below to view the stats.
+            <h2 className="text-2xl font-bold text-text-primary">Our Divisions</h2>
+            <p className="text-base text-text-secondary max-w-2xl">
+              We have many divisions defined by both max
+              rank and a point system. Click below to view each division's
+              spreadsheet
             </p>
           </div>
 
           <div className="flex flex-wrap justify-center gap-3 w-full max-w-4xl">
             {leagues.map((league) => (
               <NavLink target="_blank" to={league.sheet} key={league.title}>
-                <Button className="min-w-[140px]">{league.title}</Button>
+                <Button className="min-w-35">{league.title}</Button>
               </NavLink>
             ))}
           </div>
@@ -105,8 +106,8 @@ function About() {
         </div>
 
         {/* Footer */}
-        <div className="flex flex-col justify-center items-center text-center py-12 border-t border-white/10">
-          <p className="text-lg md:text-xl py-4 pb-8 text-gray-200">
+        <div className="flex flex-col justify-center items-center text-center py-12 border-t border-text-primary/10">
+          <p className="text-lg md:text-xl py-4 pb-8 text-text-primary">
             For more detailed information check out the rules document!
           </p>
           <NavLink

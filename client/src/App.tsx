@@ -56,7 +56,7 @@ function App() {
     );
   }
   return (
-    <div className=" relative font-serif bg-black">
+    <div className=" relative font-serif bg-bg-dark light:bg-bg-light">
       <ScrollToTop />
       {!isDraftRoute && <Twitch />}
       <SettingsProvider>
