@@ -3,7 +3,7 @@ import corianderVideo from "../../../assets/Coriander_Beer_Commercial.mp4";
 import Summary from "./Summary";
 
 function Hero() {
-  const num: number = Math.floor(Math.random() * 81);
+  const num: number = Math.floor(Math.random() * 420);
   let video: string;
   if (num === 69) {
     video = corianderVideo;
