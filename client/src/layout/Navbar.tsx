@@ -1,9 +1,10 @@
 import Logo from "../components/Logo";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import { useState } from "react";
 import SubdomainLink from "../components/SubdomainLink";
 import Theme from "./Theme";
+import { useLocalStorageState } from "../hooks/uselocalStorageState";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -82,6 +83,10 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isTop, setIsTop] = useState(true);
+  const [isLightMode, setIsLightMode] = useLocalStorageState<boolean>("lightMode", false);
+  const location = useLocation();
+  const isHome = location.pathname === "/";
+
   function toggleNavbar() {
     setIsOpen(!isOpen);
   }
@@ -97,7 +102,7 @@ function Navbar() {
   return (
     <header
       className={`fixed top-0 z-20 transition duration-500 mx-auto w-full h-20 ${
-        isTop ? "" : "bg-light-gray"
+        isTop ? "" : "bg-bg-light light:bg-bg-dark ring ring-border"
       }`}>
       <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
         <div
@@ -106,19 +111,25 @@ function Navbar() {
           <div
             className={`absolute ${
               isOpen ? "top-2 rotate-45" : "top-0"
-            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}></div>
+            } transition-all duration-500 ease-out px-3 py-0.5 rounded-xl ${
+              (isTop && isHome) || isOpen ? "bg-white" : "bg-text-primary"
+            }`}></div>
           <div
             className={`absolute ${
               isOpen ? "opacity-0" : "opacity-100"
-            } transition-all duration-300  top-2 px-3 py-0.5 rounded-xl bg-white`}></div>
+            } transition-all duration-500 ease-out top-2 px-3 py-0.5 rounded-xl ${
+              (isTop && isHome) || isOpen ? "bg-white" : "bg-text-primary"
+            }`}></div>
           <div
             className={`absolute ${
               isOpen ? "top-2 -rotate-45" : "top-4"
-            } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}></div>
+            } transition-all duration-500 ease-out px-3 py-0.5 rounded-xl ${
+              (isTop && isHome) || isOpen ? "bg-white" : "bg-text-primary"
+            }`}></div>
         </div>
         <div className="flex gap-4 items-center justify-center">
-          <Theme />
-          <Logo />
+          <Theme isLightMode={isLightMode} setIsLightMode={setIsLightMode} isHome={isTop && isHome} />
+          <Logo isHome={isTop && isHome} isLightMode={isLightMode} />
         </div>
       </div>
       <FullNav isOpen={isOpen} setIsOpen={setIsOpen} />

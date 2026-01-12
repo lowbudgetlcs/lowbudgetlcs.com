@@ -1,10 +1,15 @@
 import { useEffect } from "react";
-import { useLocalStorageState } from "../hooks/uselocalStorageState";
 import { FaMoon, FaSun } from "react-icons/fa";
 
-const Theme = () => {
-  const [isLightMode, setIsLightMode] = useLocalStorageState("lightMode", false);
-
+const Theme = ({
+  isLightMode,
+  setIsLightMode,
+  isHome,
+}: {
+  isLightMode: boolean;
+  setIsLightMode: React.Dispatch<React.SetStateAction<boolean>>;
+  isHome: boolean;
+}) => {
   useEffect(() => {
     const body = document.body;
     if (isLightMode) {
@@ -15,13 +20,22 @@ const Theme = () => {
   }, [isLightMode]);
 
   return (
-    <div className="themeSelect text-2xl flex items-center justify-center text-text-primary">
+    <div
+      className={`themeSelect text-2xl flex items-center justify-center ${
+        isHome ? "text-white" : "text-text-primary"
+      }`}>
       {isLightMode ? (
-        <button className="cursor-pointer p-2" onClick={() => setIsLightMode(false)} aria-label="Switch to dark mode">
-          <FaSun/>
+        <button
+          className="cursor-pointer p-2"
+          onClick={() => setIsLightMode(false)}
+          aria-label="Switch to dark mode">
+          <FaSun />
         </button>
       ) : (
-        <button className="cursor-pointer p-2" onClick={() => setIsLightMode(true)} aria-label="Switch to light mode">
+        <button
+          className="cursor-pointer p-2"
+          onClick={() => setIsLightMode(true)}
+          aria-label="Switch to light mode">
           <FaMoon />
         </button>
       )}
