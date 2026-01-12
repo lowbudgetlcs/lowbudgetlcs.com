@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
 import SubdomainLink from "../components/SubdomainLink";
+import Theme from "./Theme";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -37,18 +38,12 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           isOpen ? "" : "hidden"
         } text-white font-semibold text-3xl w-fit transition-all duration-100 flex flex-col gap-0 justify-around`}>
         <li className="text-left animate-slide-in-300 opacity-0">
-          <NavLink
-            onClick={closeToTop}
-            className="hover:text-orange transition duration-300"
-            to="/">
+          <NavLink onClick={closeToTop} className="hover:text-orange transition duration-300" to="/">
             <div className="navBox pl-14 py-10">Home</div>
           </NavLink>
         </li>
         <li className="text-left animate-slide-in-400 opacity-0">
-          <NavLink
-            onClick={closeToTop}
-            className="hover:text-orange transition duration-300"
-            to="/about">
+          <NavLink onClick={closeToTop} className="hover:text-orange transition duration-300" to="/about">
             <div className="navBox pl-14 py-10">About</div>
           </NavLink>
         </li>
@@ -61,18 +56,12 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           </NavLink>
         </li> */}
         <li className="animate-slide-in-600 opacity-0">
-          <NavLink
-            onClick={closeToTop}
-            className="hover:text-orange transition duration-300"
-            to="/rosters">
+          <NavLink onClick={closeToTop} className="hover:text-orange transition duration-300" to="/rosters">
             <div className="navBox pl-14 py-10">Rosters</div>
           </NavLink>
         </li>
         <li className="animate-slide-in-700 opacity-0">
-          <NavLink
-            onClick={closeToTop}
-            className="hover:text-orange transition duration-300"
-            to="/allstars">
+          <NavLink onClick={closeToTop} className="hover:text-orange transition duration-300" to="/allstars">
             <div className="navBox pl-14 py-10">All Stars</div>
           </NavLink>
         </li>
@@ -127,7 +116,10 @@ function Navbar() {
               isOpen ? "top-2 -rotate-45" : "top-4"
             } transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}></div>
         </div>
-        <Logo />
+        <div className="flex gap-4 items-center justify-center">
+          <Theme />
+          <Logo />
+        </div>
       </div>
       <FullNav isOpen={isOpen} setIsOpen={setIsOpen} />
     </header>

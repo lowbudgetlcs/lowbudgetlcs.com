@@ -49,14 +49,14 @@ function App() {
   // Redirect for old draft links
   if (!subdomain && pathname.startsWith("/draft")) {
     return (
-      <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
+      <div className="text-text-primary w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
         <p>Redirecting...</p>
         <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
       </div>
     );
   }
   return (
-    <div className=" relative font-serif bg-black">
+    <div className=" relative font-serif bg-bg-dark light:bg-bg-light">
       <ScrollToTop />
       {!isDraftRoute && <Twitch />}
       <SettingsProvider>
