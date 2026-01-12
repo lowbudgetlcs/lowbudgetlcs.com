@@ -13,7 +13,7 @@ function Hero() {
   return (
     <div id="hero" className="hero relative w-full h-screen overflow-hidden">
       <video
-        className="heroVideo absolute top-0 left-0 w-full h-full object-cover"
+        className="heroVideo absolute top-0 left-0 w-full h-full object-cover scale-125"
         autoPlay
         muted
         playsInline
