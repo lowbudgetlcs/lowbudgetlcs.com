@@ -27,7 +27,7 @@ function InfoCard({ title, text, link, btnText, image, reverse = false, newTab =
         bg-bg rounded-xl overflow-hidden shadow-xl
         transform transition-all duration-700 ease-out
         ${inView ? "translate-y-0 opacity-100" : "translate-y-12 opacity-0"}
-        border border-white/10
+        border border-border
       `}
     >
       <div
@@ -38,13 +38,13 @@ function InfoCard({ title, text, link, btnText, image, reverse = false, newTab =
       </div>
 
       <div className="w-full md:w-3/5 p-8 flex flex-col justify-center gap-4 bg-bg">
-        <h2 className="text-3xl font-bold text-white tracking-wide">
+        <h2 className="text-3xl font-bold text-text-primary tracking-wide">
           {title}
         </h2>
         
         <div className="w-20 h-1 bg-primary-light rounded-full" />
         
-        <p className="text-gray-300 text-lg leading-relaxed">
+        <p className="text-text-secondary text-lg leading-relaxed">
           {text}
         </p>
 
