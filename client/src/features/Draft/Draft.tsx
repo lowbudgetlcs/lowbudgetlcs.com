@@ -10,6 +10,7 @@ import FearlessLinks from "./pages/Create/FearlessLinks";
 import { redirect } from "react-router-dom";
 import { DraftLinkProps, FearlessInitializerProps } from "./interfaces/draftInterfaces";
 import Footer from "../../layout/Footer";
+import Updates from "./components/Updates";
 
 function Draft() {
   const [draftLinks, setDraftLinks] = useSessionStorageState<DraftLinkProps | undefined>(
@@ -94,13 +95,8 @@ function Draft() {
   };
 
   return (
-    <div className="text-white flex flex-col min-h-svh">
-      {/* Title */}
-      <div className="title m-20 text-center flex-none">
-        <h1 className="text-6xl text-white">Draft Tool</h1>
-      </div>
-      {/* Main Container */}
-      <div className="grow">
+    <div className="bg-bg-dark light:bg-bg-light text-text-primary min-h-screen flex flex-col pt-20 pb-8">
+      <div className="grow w-full max-w-7xl mx-auto px-4 sm:px-6">
         {draftLinks ? (
           <DraftCodes draftLinks={draftLinks} setDraftLinks={setDraftLinks} />
         ) : fearlessDraftLinks ? (
@@ -109,173 +105,170 @@ function Draft() {
             setFearlessDraftLinks={setFearlessDraftLinks}
           />
         ) : (
-          <div className="draftInput">
-            <h2 className="text-center text-2xl font-bold">Create Draft</h2>
-            <div className="draftMenu">
-              <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
+          <>
+            <div className="mb-12">
+              <h1 className="text-5xl font-bold tracking-tight mb-4 text-text-primary">Draft Tool</h1>
+              <div className="h-1 w-24 bg-primary-light rounded-full" />
             </div>
-            {activeLink === "Default Draft" ? (
-              <form
-                className="flex flex-col items-center gap-4 justify-center p-4"
-                onSubmit={handleFormSubmission}>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex flex-col">
-                    <p className="text-xl font-bold">Blue Side</p>
-                    <input
-                      type="text"
-                      placeholder="Blue Team"
-                      className="bg-gray/40 border-gray border-2 rounded-md p-2 text-blue"
-                      name="blueName"
-                      maxLength={28}></input>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-xl font-bold">Red Side</p>
-                    <input
-                      type="text"
-                      placeholder="Red Team"
-                      className="bg-gray/40 border-gray border-2 rounded-md p-2 text-red"
-                      name="redName"
-                      maxLength={28}></input>
-                  </div>
-                </div>
-                <button type="submit" className="">
-                  <Button>Create Draft</Button>
-                </button>
-              </form>
-            ) : activeLink === "LBLCS Tournament" ? (
-              <form
-                className="flex flex-col items-center gap-4 justify-center p-4"
-                onSubmit={handleFormSubmission}>
-                <input type="hidden" name="draftType" value="Tournament"></input>
-                <div className="flex flex-col">
-                  <p className="text-xl font-bold">Draft Count</p>
-                  <select
-                    name="draftAmount"
-                    className="bg-gray/60 border-2 border-gray text-white text-sm rounded-md focus:ring-gray focus:border-orange block w-full p-2.5 cursor-pointer"
-                    onChange={(e) => setDraftCount(Number(e.target.value))}
-                    defaultValue={3}>
-                    <option className={`bg-gray`} value={1}>
-                      1
-                    </option>
-                    <option className={`bg-gray`} value={2}>
-                      2
-                    </option>
-                    <option className={`bg-gray`} value={3}>
-                      3
-                    </option>
-                    <option className={`bg-gray`} value={4}>
-                      4
-                    </option>
-                    <option className={`bg-gray`} value={5}>
-                      5
-                    </option>
-                  </select>
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-xl font-bold">
-                    <span className="text-red">*</span> Tournament Code
-                  </p>
-                  <input
-                    type="text"
-                    placeholder="Tournament Code"
-                    className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
-                    name="tournamentID"
-                    required></input>
-                  <p className={`${hasBadCode ? "" : "opacity-0"} text-sm text-red p-1`}>
-                    Invalid Tournament Code!
-                  </p>
-                </div>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <div className="flex flex-col">
-                    <p className="text-xl font-bold">Team 1 Name</p>
-                    <input
-                      type="text"
-                      placeholder="Team 1"
-                      className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
-                      name="team1Name"
-                      maxLength={18}></input>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-xl font-bold">Team 2 Name</p>
-                    <input
-                      type="text"
-                      placeholder="Team 2"
-                      className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
-                      name="team2Name"
-                      maxLength={18}></input>
-                  </div>
-                </div>
-                <button type="submit" className="">
-                  <Button>Create Draft</Button>
-                </button>
-              </form>
-            ) : activeLink === "Fearless Draft" ? (
-              <form
-                className="flex flex-col items-center gap-4 justify-center p-4"
-                onSubmit={handleFormSubmission}>
-                <p className="text-orange text-center px-4">
-                  Currently in Beta. DM <span className="text-green">@thyduckylord</span> on Discord
-                  with bugs
-                </p>
-                <input type="hidden" name="draftType" value="Fearless"></input>
-                <div className="flex flex-col">
-                  <p className="text-xl font-bold">Draft Count</p>
-                  <select
-                    name="draftAmount"
-                    className="bg-gray/60 border-2 border-gray text-white text-sm rounded-md focus:ring-gray focus:border-orange block w-full p-2.5 cursor-pointer"
-                    onChange={(e) => setDraftCount(Number(e.target.value))}
-                    defaultValue={3}>
-                    <option className={`bg-gray`} value={1}>
-                      1
-                    </option>
-                    <option className={`bg-gray`} value={2}>
-                      2
-                    </option>
-                    <option className={`bg-gray`} value={3}>
-                      3
-                    </option>
-                    <option className={`bg-gray`} value={4}>
-                      4
-                    </option>
-                    <option className={`bg-gray`} value={5}>
-                      5
-                    </option>
-                  </select>
-                </div>
-                <p className="opacity-0 hover:cursor-default">LaChance Licks Toes</p>
-                <div className="flex flex-col sm:flex-row gap-4 items-center">
-                  <div className="flex flex-col">
-                    <p className="text-xl font-bold">Team 1 Name</p>
-                    <input
-                      type="text"
-                      placeholder="Team 1"
-                      className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
-                      name="team1Name"
-                      maxLength={18}></input>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-xl font-bold">Team 2 Name</p>
-                    <input
-                      type="text"
-                      placeholder="Team 2"
-                      className="bg-gray/40 border-gray border-2 rounded-md p-2 text-orange"
-                      name="team2Name"
-                      maxLength={18}></input>
-                  </div>
-                </div>
 
-                <button type="submit" className="">
-                  <Button>Create Draft</Button>
-                </button>
-              </form>
-            ) : (
-              ""
-            )}
-          </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+              <div className="lg:col-span-2 space-y-8">
+                <div className="bg-bg rounded-xl shadow-2xl border border-text-primary/10 overflow-hidden">
+                  <div className="p-6 sm:p-8 bg-bg border-b border-text-primary/10">
+                    <h2 className="text-2xl font-bold text-center mb-6">Create Draft</h2>
+                    <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} grow />
+                  </div>
+                  
+                  <div className="p-6 sm:p-8">
+                    {activeLink === "Default Draft" ? (
+                      <form
+                        className="flex flex-col items-center gap-6"
+                        onSubmit={handleFormSubmission}>
+                        <div className="flex flex-col sm:flex-row gap-6 w-full">
+                          <div className="flex flex-col w-full">
+                            <p className="mb-2 font-semibold">Blue Side</p>
+                            <input
+                              type="text"
+                              placeholder="Blue Team"
+                              className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-blue focus:ring-2 focus:ring-blue/50 outline-none transition-all w-full"
+                              name="blueName"
+                              maxLength={28}
+                            />
+                          </div>
+                          <div className="flex flex-col w-full">
+                            <p className="mb-2 font-semibold">Red Side</p>
+                            <input
+                              type="text"
+                              placeholder="Red Team"
+                              className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-red focus:ring-2 focus:ring-red/50 outline-none transition-all w-full"
+                              name="redName"
+                              maxLength={28}
+                            />
+                          </div>
+                        </div>
+                        <Button type="submit" className="w-full sm:w-auto px-12 py-3 mt-2">Create Draft</Button>
+                      </form>
+                    ) : activeLink === "LBLCS Tournament" ? (
+                      <form
+                        className="flex flex-col items-center gap-6"
+                        onSubmit={handleFormSubmission}>
+                        <input type="hidden" name="draftType" value="Tournament"></input>
+                        
+                        <div className="w-full">
+                          <p className="mb-2 font-semibold">Draft Count</p>
+                          <select
+                            name="draftAmount"
+                            className="bg-bg-light border border-text-primary/10 rounded-lg p-3 w-full cursor-pointer focus:ring-2 focus:ring-primary-light outline-none"
+                            onChange={(e) => setDraftCount(Number(e.target.value))}
+                            defaultValue={3}>
+                            {[1, 2, 3, 4, 5].map(num => (
+                                <option key={num} className="bg-bg-dark" value={num}>{num}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="w-full">
+                          <p className="mb-2 font-semibold">
+                            <span className="text-red mr-1">*</span>Tournament Code
+                          </p>
+                          <input
+                            type="text"
+                            placeholder="Tournament Code"
+                            className={`bg-bg-light border ${hasBadCode ? 'border-red' : 'border-text-primary/10'} rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full`}
+                            name="tournamentID"
+                            required
+                          />
+                           <p className={`${hasBadCode ? "" : "opacity-0"} text-sm text-red mt-1`}>
+                            Invalid Tournament Code!
+                          </p>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-6 w-full">
+                          <div className="flex flex-col w-full">
+                            <p className="mb-2 font-semibold">Team 1 Name</p>
+                            <input
+                              type="text"
+                              placeholder="Team 1"
+                              className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
+                              name="team1Name"
+                              maxLength={18}
+                            />
+                          </div>
+                          <div className="flex flex-col w-full">
+                            <p className="mb-2 font-semibold">Team 2 Name</p>
+                            <input
+                              type="text"
+                              placeholder="Team 2"
+                              className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
+                              name="team2Name"
+                              maxLength={18}
+                            />
+                          </div>
+                        </div>
+                        <Button type="submit" className="w-full sm:w-auto px-12 py-3 mt-2">Create Draft</Button>
+                      </form>
+                    ) : activeLink === "Fearless Draft" ? (
+                      <form
+                        className="flex flex-col items-center gap-6"
+                        onSubmit={handleFormSubmission}>
+                         <div className="bg-orange/10 border border-orange/20 rounded-lg p-3 text-center w-full">
+                            <p className="text-orange">
+                            Currently in Beta. DM <span className="text-green font-bold">@thyduckylord</span> on Discord with bugs
+                            </p>
+                        </div>
+                        <input type="hidden" name="draftType" value="Fearless"></input>
+                        
+                         <div className="w-full">
+                          <p className="mb-2 font-semibold">Draft Count</p>
+                          <select
+                            name="draftAmount"
+                            className="bg-bg-light border border-text-primary/10 rounded-lg p-3 w-full cursor-pointer focus:ring-2 focus:ring-primary-light outline-none"
+                            onChange={(e) => setDraftCount(Number(e.target.value))}
+                            defaultValue={3}>
+                            {[1, 2, 3, 4, 5].map(num => (
+                                <option key={num} className="bg-bg-dark" value={num}>{num}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                         <div className="flex flex-col sm:flex-row gap-6 w-full">
+                          <div className="flex flex-col w-full">
+                            <p className="mb-2 font-semibold">Team 1 Name</p>
+                            <input
+                              type="text"
+                              placeholder="Team 1"
+                              className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
+                              name="team1Name"
+                              maxLength={18}
+                            />
+                          </div>
+                          <div className="flex flex-col w-full">
+                            <p className="mb-2 font-semibold">Team 2 Name</p>
+                            <input
+                              type="text"
+                              placeholder="Team 2"
+                              className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
+                              name="team2Name"
+                              maxLength={18}
+                            />
+                          </div>
+                        </div>
+
+                        <Button type="submit" className="w-full sm:w-auto px-12 py-3 mt-2">Create Draft</Button>
+                      </form>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-1 h-full">
+                 <Updates />
+              </div>
+            </div>
+          </>
         )}
       </div>
-      {/* Footer */}
-      <div className="text-center flex-none">
+      <div className="mt-auto">
         <Footer />
       </div>
     </div>
