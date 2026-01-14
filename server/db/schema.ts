@@ -1,4 +1,4 @@
-import { pgTable, pgSchema, text, timestamp, unique, boolean, bigint, index, integer, varchar, foreignKey, serial, jsonb, date } from "drizzle-orm/pg-core"
+import { pgTable, pgSchema, text, timestamp, unique, boolean, serial, bigint, index, integer, varchar, foreignKey, jsonb, date } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const website = pgSchema("website");
@@ -52,6 +52,14 @@ export const authVerificationInWebsite = website.table("auth_verification", {
 	expiresAt: timestamp("expires_at", { mode: 'string' }).notNull(),
 	createdAt: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
 	updatedAt: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
+});
+
+export const draftUpdatesInWebsite = website.table("draft_updates", {
+	id: serial().notNull(),
+	date: timestamp({ withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
+	title: text().notNull(),
+	description: text().notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
 });
 
 export const allstarsTeamsInWebsite = website.table("allstars_teams", {
