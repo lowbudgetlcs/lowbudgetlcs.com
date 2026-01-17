@@ -6,6 +6,7 @@ import {
   currentSeasonDivisionsInWebsite,
   divisionsInWebsite,
   draftLobbiesInWebsite,
+  draftUpdatesInWebsite,
   fearlessDraftLobbiesInWebsite,
   matchesInWebsite,
   playersInWebsite,
@@ -497,3 +498,13 @@ export async function getChampionList() {
     return [];
   }
 }
+
+export const getUpdates = async () => {
+  try {
+    const updates = await db.select().from(draftUpdatesInWebsite).orderBy(desc(draftUpdatesInWebsite.date));
+    return updates;
+  } catch (error) {
+    console.error("Error fetching updates:", error);
+    return [];
+  }
+};

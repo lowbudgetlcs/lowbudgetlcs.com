@@ -6,6 +6,7 @@ import {
   getChampionList,
   getPastDraft,
   getPastFearlessSeries,
+  getUpdates,
 } from "../db/queries/select";
 import { DraftInitializeProps, initializeDraftState } from "../draftTool/states/draftState";
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
@@ -14,6 +15,16 @@ import ShortUniqueId from "short-unique-id";
 import { LolApi } from "twisted";
 import { RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
 const { randomUUID } = new ShortUniqueId({ length: 10 });
+
+draftRoutes.get("/api/updates", async (req: Request, res: Response) => {
+  try {
+    const updates = await getUpdates();
+    res.status(200).json(updates);
+  } catch (err) {
+    console.error("Error getting updates:", err);
+    res.status(500).json({ error: "Failed to fetch updates" });
+  }
+});
 
 draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Response) => {
   try {
