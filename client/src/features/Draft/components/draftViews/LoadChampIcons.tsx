@@ -144,7 +144,10 @@ export function LoadChampIcons({
     bannedChampions,
     dDragonIconLink,
     chosenChamp,
-    handlePick
+    handlePick,
+    smallIcons,
+    champNamesVisible,
+    animationToggle,
   ]);
 
   return <>{championRoleList}</>;
