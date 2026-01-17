@@ -73,7 +73,7 @@ export function LoadChampIcons({
             onClick={() => {
               handlePick(champion.name);
             }}
-            className={`border-2 border-gray rounded-md transition duration-75 ease-linear bg-black group
+            className={`border border-border rounded-md transition duration-75 ease-linear bg-bg-dark light:bg-bg-light group
               ${
                 (pickedChampions.includes(champion.name) ||
                   bannedChampions.includes(champion.name)) &&
@@ -81,7 +81,7 @@ export function LoadChampIcons({
                   ? ""
                   : "hover:scale-105"
               } 
-              ${chosenChamp === champion.name && "scale-105 border-orange"}
+              ${chosenChamp === champion.name && "scale-105 border-primary-light"}
               `}
           >
             <img
@@ -129,7 +129,7 @@ export function LoadChampIcons({
                   : "hover:cursor-pointer"
               } select-none ${smallIcons ? "text-xs" : "text-sm font-bold"} ${
                 champNamesVisible ? "" : "hidden"
-              }`}
+              } truncate w-20`}
             >
               {champion.displayName}
             </p>
