@@ -6,6 +6,8 @@
 //   };
 //   const navItems = [ [All Nav Items (ex: 'item1', 'item2', 'item3')] ]
 
+import { useEffect, useRef, useState } from "react";
+
 interface NavListProps {
   activeLink: string;
   toggleActive: (navItem: string) => void;
@@ -14,21 +16,38 @@ interface NavListProps {
 }
 
 const NavList: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, grow }) => {
+  const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });
+  const itemRefs = useRef<Map<string, HTMLLIElement | null>>(new Map());
+
+  useEffect(() => {
+    const activeItem = itemRefs.current.get(activeLink);
+    if (activeItem) {
+      setUnderlineStyle({
+        left: activeItem.offsetLeft,
+        width: activeItem.offsetWidth,
+      });
+    }
+  }, [activeLink, navItems]);
+
   return (
-    <div className="navList">
-      <ul className={`relative flex flex-wrap gap-4 text-sm sm:text-base md:text-2xl font-semibold p-4 ${grow ? 'grow justify-around' : 'justify-center'}`}>
+    <div className="navList flex justify-center w-full">
+      <ul className={`relative flex flex-wrap gap-4 text-lg font-semibold px-6 py-2 rounded-md bg-bg-light light:bg-bg-dark border-2 border-border ${grow ? 'grow justify-around' : 'justify-center'}`}>
+        <span
+          className="absolute bottom-1 h-1 bg-primary-light transition-all duration-300 rounded-full"
+          style={{ left: underlineStyle.left, width: underlineStyle.width }}
+        />
         {navItems.map((navItem) => (
           <li
+            ref={(el) => { itemRefs.current.set(navItem, el); }}
             key={navItem}
             onClick={() => toggleActive(navItem)}
-            className="relative active:text-orange hover:text-orange transition duration-300 cursor-pointer"
+            className={`relative transition duration-300 cursor-pointer z-10 ${
+              activeLink === navItem 
+                ? "text-primary-light font-bold" 
+                : "text-text-primary/60 hover:text-text-primary"
+            }`}
           >
             {navItem}
-            <span
-              className={`line absolute ${
-                activeLink === navItem ? "w-full" : "w-0"
-              } h-0 transition-all duration-200 border-b-4 border-orange rounded-md bg-orange -bottom-0.5 left-0`}
-            ></span>
           </li>
         ))}
       </ul>
