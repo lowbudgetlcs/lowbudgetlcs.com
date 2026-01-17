@@ -61,14 +61,10 @@ const FearlessSidePick = ({ teamDisplay }: { teamDisplay: string }) => {
       )}
       <div className="sideBtns flex gap-8">
         <div className="cursor-pointer">
-          <button onClick={() => handleValidationAndSideSelect("blue")}>
-            <Button>Blue Side</Button>
-          </button>
+            <Button onClick={() => handleValidationAndSideSelect("blue")}>Blue Side</Button>
         </div>
         <div className="cursor-pointer">
-          <button onClick={() => handleValidationAndSideSelect("red")}>
-            <Button>Red Side</Button>
-          </button>
+            <Button onClick={() => handleValidationAndSideSelect("red")}>Red Side</Button>
         </div>
       </div>
       {fearlessState.draftLobbyCodes && fearlessState.draftLobbyCodes.length > 0 && (
