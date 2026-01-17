@@ -1,38 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import getUpdates, { Update } from "../api/getUpdates";
-import { useMemo } from "react";
-
-const localUpdates: Update[] = [
-  {
-    id: 3,
-    date: "Jan 12, 2026",
-    title: "Fearless Draft Beta",
-    description: "Added support for Fearless Draft mode. Try it out and report bugs to @thyduckylord.",
-  },
-  {
-    id: 2,
-    date: "July 2024",
-    title: "Draft Tool Launch",
-    description: "The official LBLCS Draft Tool is live! Create standard tournament drafts easily.",
-  },
-];
 
 const Updates = () => {
-  const { data: remoteUpdates = [] } = useQuery({
+  const { data: updates = [] } = useQuery({
     queryKey: ["draftUpdates"],
     queryFn: getUpdates,
-    staleTime: 1000 * 60 * 60, // 1 hour
+    staleTime: Infinity
   });
-
-  const sortedUpdates = useMemo(() => {
-    const combined = [...remoteUpdates];
-    localUpdates.forEach((local) => {
-      if (!combined.some((remote) => remote.id === local.id)) {
-        combined.push(local);
-      }
-    });
-    return combined.sort((a, b) => b.id - a.id);
-  }, [remoteUpdates]);
 
   return (
     <div className="bg-bg rounded-xl p-6 border border-border h-full shadow-lg lg:bg-transparent lg:border-none lg:shadow-none lg:p-0 lg:h-auto">
@@ -48,7 +22,7 @@ const Updates = () => {
       </div>
 
       <div className="flex flex-col gap-6 lg:text-left">
-        {sortedUpdates.map((update) => {
+        {updates.map((update) => {
             const formattedDate = new Date(update.date).toLocaleDateString("en-US", {
               year: "numeric",
               month: "short",
