@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import getUpdates, { Update } from "../api/getUpdates";
+import getUpdates from "../api/getUpdates";
 
 const Updates = () => {
   const { data: updates = [] } = useQuery({
