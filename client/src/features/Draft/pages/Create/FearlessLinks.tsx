@@ -7,19 +7,10 @@ function FearlessLinks({
   setFearlessDraftLinks,
 }: {
   fearlessDraftLinks: FearlessInitializerProps;
-  setFearlessDraftLinks: React.Dispatch<
-    React.SetStateAction<FearlessInitializerProps | undefined>
-  >;
+  setFearlessDraftLinks: React.Dispatch<React.SetStateAction<FearlessInitializerProps | undefined>>;
 }) {
   // Save check for if the initial side is already chosen to session storage
-  const {
-    team1Name,
-    team2Name,
-    fearlessCode,
-    team1Code,
-    team2Code,
-    draftCount,
-  } = fearlessDraftLinks;
+  const { team1Name, team2Name, fearlessCode, team1Code, team2Code, draftCount } = fearlessDraftLinks;
 
   const team1Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team1Code}`;
   const team2Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team2Code}`;
@@ -38,17 +29,24 @@ ${team2Link}
 Spectator:
 ${specLink}`);
   };
+  const copySpecLinks = () => {
+    navigator.clipboard.writeText(`Spectator:
+${specLink}
+Stream:
+${streamLink}`);
+  };
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <h2 className="text-2xl font-bold">Fearless: Best of <span className="text-orange underline">{draftCount}</span></h2>
+      <h2 className="text-2xl font-bold">
+        Fearless: Best of <span className="text-orange underline">{draftCount}</span>
+      </h2>
       <div onClick={removeDraftLinks} className="button hover:cursor-pointer">
         <Button>Re-Create Draft Links</Button>
       </div>
       <div className="flex flex-col gap-2">
         <p className="text-red text-center px-4">
-          WARNING: Copy the links BEFORE closing the tab/browser or they will be
-          lost!
+          WARNING: Copy the links BEFORE closing the tab/browser or they will be lost!
         </p>
         {/* Blue Link */}
         <div className="BlueLinkDiv flex flex-col md:flex-row items-center justify-between gap-4 p-4 md:px-0">
@@ -58,15 +56,11 @@ ${specLink}`);
           <Link
             target="_blank"
             to={team1Link}
-            className="text-xl hover:text-blue transition duration-300 flex-1 underline underline-offset-2 text-right"
-          >
+            className="text-xl hover:text-blue transition duration-300 flex-1 underline underline-offset-2 text-right">
             Click Here (opens new tab)
           </Link>
 
-          <div
-            className="copy hover:cursor-pointer"
-            onClick={() => navigator.clipboard.writeText(team1Link)}
-          >
+          <div className="copy hover:cursor-pointer" onClick={() => navigator.clipboard.writeText(team1Link)}>
             <Button>Copy Link</Button>
           </div>
         </div>
@@ -78,15 +72,11 @@ ${specLink}`);
           <Link
             target="_blank"
             to={team2Link}
-            className="text-xl hover:text-red transition duration-300 flex-1 underline underline-offset-2 text-right"
-          >
+            className="text-xl hover:text-red transition duration-300 flex-1 underline underline-offset-2 text-right">
             Click Here (opens new tab)
           </Link>
 
-          <div
-            className="copy hover:cursor-pointer"
-            onClick={() => navigator.clipboard.writeText(team2Link)}
-          >
+          <div className="copy hover:cursor-pointer" onClick={() => navigator.clipboard.writeText(team2Link)}>
             <Button>Copy Link</Button>
           </div>
         </div>
@@ -98,15 +88,11 @@ ${specLink}`);
           <Link
             target="_blank"
             to={specLink}
-            className="text-xl hover:text-yellow transition duration-300 flex-1 underline underline-offset-2 text-right"
-          >
+            className="text-xl hover:text-yellow transition duration-300 flex-1 underline underline-offset-2 text-right">
             Click Here (opens new tab)
           </Link>
 
-          <div
-            className="copy hover:cursor-pointer"
-            onClick={() => navigator.clipboard.writeText(specLink)}
-          >
+          <div className="copy hover:cursor-pointer" onClick={() => navigator.clipboard.writeText(specLink)}>
             <Button>Copy Link</Button>
           </div>
         </div>
@@ -118,15 +104,11 @@ ${specLink}`);
           <Link
             target="_blank"
             to={streamLink}
-            className="text-xl hover:text-purple transition duration-300 flex-1 underline underline-offset-2"
-          >
+            className="text-xl hover:text-purple transition duration-300 flex-1 underline underline-offset-2">
             Click Here (opens new tab)
           </Link>
 
-          <div
-            className="copy hover:cursor-pointer"
-            onClick={() => navigator.clipboard.writeText("#")}
-          >
+          <div className="copy hover:cursor-pointer" onClick={() => navigator.clipboard.writeText("#")}>
             <Button>Copy Link</Button>
           </div>
         </div>
@@ -134,6 +116,9 @@ ${specLink}`);
       <div className="copyBtns flex gap-8">
         <div onClick={copyLinks} className="button hover:cursor-pointer pb-4">
           <Button>Copy All Links</Button>
+        </div>
+        <div onClick={copySpecLinks} className="button hover:cursor-pointer pb-4">
+          <Button>Copy Spectate Links</Button>
         </div>
       </div>
     </div>

@@ -29,7 +29,9 @@ ${specLink}`);
   };
   const copySpecLinks = () => {
     navigator.clipboard.writeText(`Spectator:
-${specLink}`);
+${specLink}
+Stream:
+${streamLink}`);
   };
 
   return (
