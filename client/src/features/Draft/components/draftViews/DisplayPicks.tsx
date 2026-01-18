@@ -77,7 +77,7 @@ const DisplayPicks = ({
                 sidePick === index
               ? "border-red transition-all "
               : "border-gray"
-          } bg-gray/60 rounded-md`}
+          } bg-bg rounded-xl`}
         >
           {shouldRender(index) && (
             <DisplayPickImage
@@ -125,7 +125,7 @@ const DisplayPicks = ({
                 sidePick === index
               ? "border-red transition-all delay-20 "
               : "border-gray"
-          } bg-gray/60 rounded-md`}
+          } bg-bg rounded-xl`}
         >
           {shouldRender(index) && (
             <DisplayPickImage
