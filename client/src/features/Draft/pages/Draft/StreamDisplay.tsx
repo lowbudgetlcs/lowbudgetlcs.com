@@ -66,43 +66,41 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
       <div className="absolute top-52 right-48 flex justify-between">
         <LogoBox />
       </div>
-      <div className="absolute w-full bottom-0 text-white flex flex-col">
-        <div className="teamTitles relative flex justify-between px-4">
-          <div
-            className={`blueTitle py-2 px-4 ${
-              draftState.blueReady || draftState.displayTurn === "blue"
-                ? "w-96"
-                : "w-52"
-            } bg-blue/60 ${
-              draftState.displayTurn === "blue" ? "animate-pulse" : ""
-            } transition-width duration-500 rounded-md`}
-          >
-            <h2
-              className={`text-right font-bold text-xl ${
-                teamNameVisible ? "" : "text-transparent"
-              }`}
-            >
-              {draftState.blueDisplayName}
-            </h2>
+      <div className="absolute w-full bottom-0 text-text-primary flex flex-col">
+          <div className="teamNames flex justify-between items-center z-10">
+            <div
+              className={`blueName relative w-full max-w-[39%] truncate py-2 px-4 ${
+                draftState.displayTurn === "blue" ? "animate-pulse" : ""
+              }`}>
+              <h2
+                className={`text-left flex gap-2 font-bold text-2xl w-full ${
+                  teamNameVisible ? "" : "text-transparent"
+                }`}>
+                <span className="truncate">{draftState.blueDisplayName}</span>
+              </h2>
+              <div
+                className={`timerLine h-1 rounded-xl bg-blue transition-width ${draftState.displayTurn === "blue" ? "duration-1000 ease-linear" : "duration-500 ease-out"}`}
+                style={{
+                  width: `${draftState.displayTurn === "blue" ? timerWidth : draftState.blueReady ? 100 : 20}%`,
+                }}></div>
+            </div>
+            <div
+              className={`redName relative flex flex-col items-end w-full max-w-[39%] truncate py-2 px-4 ${
+                draftState.displayTurn === "red" ? "animate-pulse" : ""
+              }`}>
+              <h2
+                className={`text-right flex gap-2 font-bold text-2xl w-full justify-end ${
+                  teamNameVisible ? "" : "text-transparent"
+                }`}>
+                <span className="truncate">{draftState.redDisplayName}</span>
+              </h2>
+              <div
+                className={`timerLine h-1 rounded-xl bg-red transition-width ${draftState.displayTurn === "red" ? "duration-1000 ease-linear" : "duration-500 ease-out"}`}
+                style={{
+                  width: `${draftState.displayTurn === "red" ? timerWidth : draftState.redReady ? 100 : 20}%`,
+                }}></div>
+            </div>
           </div>
-          <div
-            className={`redTitle py-2 px-4 ${
-              draftState.redReady || draftState.displayTurn === "red"
-                ? "w-96"
-                : "w-52"
-            } bg-red/60 ${
-              draftState.displayTurn === "red" ? "animate-pulse" : ""
-            } transition-width duration-500 rounded-md`}
-          >
-            <h2
-              className={`font-bold text-xl ${
-                teamNameVisible ? "" : "text-transparent"
-              }`}
-            >
-              {draftState.redDisplayName}
-            </h2>
-          </div>
-        </div>
         {/* Champion Bans*/}
         <div className="champBans flex w-full justify-between gap-8 items-center pt-4 px-4">
           {/* Blue Side Bans */}
