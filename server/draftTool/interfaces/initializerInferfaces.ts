@@ -34,6 +34,10 @@ export interface FearlessStateServerProps {
   currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
+  bluePicks: string[];
+  redPicks: string[];
+  blueBans: string[];
+  redBans: string[];
   draftLobbyCodes: string[];
   initialTournamentCode?: string;
 }
@@ -50,6 +54,10 @@ export interface FearlessStateClientProps {
   currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
+  bluePicks: string[];
+  redPicks: string[];
+  blueBans: string[];
+  redBans: string[];
   draftLobbyCodes: string[];
 }
 export interface DraftInitializerProps {

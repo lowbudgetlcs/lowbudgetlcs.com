@@ -171,11 +171,11 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     .from(draftLobbiesInWebsite)
     .where(eq(draftLobbiesInWebsite.fearlessCode, fearlessCode));
 
-  if (!series.fearlessComplete || !series.totalDrafts) return;
+  if (!series.totalDrafts) return;
 
   const clientState: FearlessStateClientProps = {
     fearlessCode: series.fearlessCode,
-    fearlessComplete: series.fearlessComplete,
+    fearlessComplete: series.fearlessComplete || false,
     team1Name: series.team1Name,
     team2Name: series.team2Name,
     draftCount: series.totalDrafts,
@@ -185,6 +185,10 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     currentRedSide: null,
     allPicks: [],
     allBans: [],
+    bluePicks: [],
+    redPicks: [],
+    blueBans: [],
+    redBans: [],
     draftLobbyCodes: drafts.map((draft) => draft.lobbyCode),
   };
   return clientState;
