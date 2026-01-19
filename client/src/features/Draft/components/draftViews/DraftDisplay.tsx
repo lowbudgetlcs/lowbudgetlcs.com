@@ -19,7 +19,7 @@ import FearlessBansBar from "../Navbars/FearlessBansBar";
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
-
+  const [timerWidth, setTimerWidth] = useState<number>(100);
   const { draftState, playerSide } = useDraftContext();
   const { teamNameVisible, champIconsVisible } = useSettingsContext();
 
@@ -58,80 +58,83 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
     draftState.redBans,
   ]);
 
+  useEffect(() => {
+    setTimerWidth((draftState.timer / 30) * 100);
+  }, [draftState.timer]);
+
   return (
-    <div className="draftContainer relative text-white h-screen max-h-screen flex flex-col">
-      <div className="teamTitles relative flex justify-between px-4 py-2">
-        <div className={`blueTitle flex items-center gap-4`}>
-          <div
-            className={`py-2 px-4 ${
-              draftState.blueReady || draftState.displayTurn === "blue" ? "w-96" : "w-52"
-            } bg-blue/60 ${
-              draftState.displayTurn === "blue" ? "animate-pulse" : ""
-            } transition-width duration-500 rounded-md`}>
-            <h2
-              className={`text-right font-bold text-xl truncate ${
-                teamNameVisible ? "" : "text-transparent"
-              }`}>
-              {draftState.blueDisplayName}
-            </h2>
-          </div>
-          <div
-            className={`sideIndicator flex gap-1 text-2xl items-center ${
-              playerSide !== "blue" && "hidden"
-            }`}>
-            <FaArrowLeft />
-            <p className="opacity-80">You</p>
-          </div>
-        </div>
-        <div className="timer absolute left-0 right-0 top-2 bottom-0 text-center text-2xl font-bold">
-          <Timer timer={draftState.timer} displayTurn={draftState.displayTurn} />
-        </div>
-        <div className={`redTitle flex items-center gap-4`}>
-          <div
-            className={`sideIndicator flex gap-1 text-2xl items-center ${
-              playerSide !== "red" && "hidden"
-            }`}>
-            <p className="opacity-80">You</p>
-            <FaArrowRight />
-          </div>
-          <div
-            className={`py-2 px-4 ${
-              draftState.redReady || draftState.displayTurn === "red" ? "w-96" : "w-52"
-            } bg-red/60 ${
-              draftState.displayTurn === "red" ? "animate-pulse" : ""
-            } transition-width duration-500 rounded-md`}>
-            <h2
-              className={`font-bold text-xl truncate ${teamNameVisible ? "" : "text-transparent"}`}>
-              {draftState.redDisplayName}
-            </h2>
-          </div>
-        </div>
+    <div className="draftContainer relative text-text-primary h-screen max-h-screen flex flex-col">
+      <div className="timer flex w-full justify-center items-center text-2xl font-bold mt-2">
+        <Timer timer={draftState.timer} displayTurn={draftState.displayTurn} />
       </div>
       {/* Main Container */}
-      <div className="relative mainDraftContainer flex flex-1 h-[70vh]">
+      <div className="mainDraftContainer relative flex flex-1 gap-4 h-[70vh]">
         {/* Blue Side Picks */}
         <div className="blueSidePicks flex flex-col gap-2 px-4 pt-4 flex-1 items-stretch">
           <DisplayPicks championRoles={championRoles} playerSide={"blue"} />
         </div>
         {/* Champion Pick Container */}
-        <div className="championPickContainer relative w-full min-[1922px]:w-360 flex flex-col">
+        <div className="championPickContainer relative w-full min-[1922px]:max-w-360 flex flex-col">
           <div
             className={`absolute top-2 left-0 right-0 bottom-0 w-full h-full rounded-3xl animate-pulse ${
               playerSide === draftState.displayTurn
                 ? draftState.phaseType === "ban"
                   ? "bg-red/25"
                   : draftState.phaseType === "pick"
-                  ? "bg-blue/25"
-                  : "hidden"
+                    ? "bg-blue/25"
+                    : "hidden"
                 : "hidden"
             } z-0 filter blur-lg`}></div>
+          <div className="teamNames flex justify-between items-center z-10">
+            <div
+              className={`blueName relative w-full max-w-[50%] truncate py-2 px-4 ${
+                draftState.displayTurn === "blue" ? "animate-pulse" : ""
+              }`}>
+              <h2
+                className={`text-left flex gap-2 font-bold text-2xl w-full ${
+                  teamNameVisible ? "" : "text-transparent"
+                }`}>
+                <span className="truncate">{draftState.blueDisplayName}</span>
+                <span
+                  className={`shrink-0 flex items-center font-normal text-text-secondary gap-2 ${playerSide !== "blue" && "hidden"}`}>
+                  <FaArrowLeft /> You
+                </span>
+              </h2>
+              <div
+                className={`timerLine h-1 rounded-xl bg-blue transition-width ${draftState.displayTurn === "blue" ? "duration-1000 ease-linear" : "duration-500 ease-out"}`}
+                style={{
+                  width: `${draftState.displayTurn === "blue" ? timerWidth : draftState.blueReady ? 100 : 20}%`,
+                }}></div>
+            </div>
+            <div
+              className={`redName relative flex flex-col items-end w-full max-w-[50%] truncate py-2 px-4 ${
+                draftState.displayTurn === "red" ? "animate-pulse" : ""
+              }`}>
+              <h2
+                className={`text-right flex gap-2 font-bold text-2xl w-full justify-end ${
+                  teamNameVisible ? "" : "text-transparent"
+                }`}>
+                <span
+                  className={`shrink-0 flex items-center font-normal text-text-secondary gap-2 ${playerSide !== "red" && "hidden"}`}>
+                  You <FaArrowRight />
+                </span>
+                <span className="truncate">{draftState.redDisplayName}</span>
+              </h2>
+              <div
+                className={`timerLine h-1 rounded-xl bg-red transition-width ${draftState.displayTurn === "red" ? "duration-1000 ease-linear" : "duration-500 ease-out"}`}
+                style={{
+                  width: `${draftState.displayTurn === "red" ? timerWidth : draftState.redReady ? 100 : 20}%`,
+                }}></div>
+            </div>
+          </div>
           {isFearless && (
             <div className="relative z-10">
               <FearlessNav />
             </div>
           )}
+          {/* Search and Role Filter */}
           <div
-            className={`relative searchFilter flex justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4 ${
+            className={`relative searchFilter flex gap-2 justify-between items-center px-6 py-4 max-[1100px]:flex-col-reverse max-[1100px]:gap-4 ${
               champIconsVisible ? "" : "hidden"
             }`}>
             <div className="relative champFilter flex gap-4">
@@ -151,16 +154,10 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             </form>
           </div>
           {/* List of Champion Images */}
-          <div
-            className={`relative overflow-y-scroll bg-transparent ${
-              champIconsVisible ? "" : "hidden"
-            }`}>
+          <div className={`relative overflow-y-scroll bg-transparent ${champIconsVisible ? "" : "hidden"}`}>
             <div className="relative">
               <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
-                <LoadChampIcons
-                  searchValue={searchValue}
-                  selectedRole={selectedRole}
-                />
+                <LoadChampIcons searchValue={searchValue} selectedRole={selectedRole} />
               </ul>
             </div>
           </div>
