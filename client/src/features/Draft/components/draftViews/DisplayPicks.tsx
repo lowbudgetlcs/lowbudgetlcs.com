@@ -65,7 +65,7 @@ const DisplayPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
@@ -76,7 +76,7 @@ const DisplayPicks = ({
                 currentPhase === "pickPhase1" &&
                 sidePick === index
               ? "border-red transition-all "
-              : "border-gray"
+              : "border-border"
           } bg-bg rounded-xl`}
         >
           {shouldRender(index) && (
@@ -113,7 +113,7 @@ const DisplayPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border-2 ${
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border ${ 
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
@@ -124,7 +124,7 @@ const DisplayPicks = ({
                 currentPhase === "pickPhase2" &&
                 sidePick === index
               ? "border-red transition-all delay-20 "
-              : "border-gray"
+              : "border-border"
           } bg-bg rounded-xl`}
         >
           {shouldRender(index) && (
