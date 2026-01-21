@@ -14,7 +14,6 @@ import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobb
 import ShortUniqueId from "short-unique-id";
 import { LolApi } from "twisted";
 import { RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
-import fillPicksAndBans from "../draftTool/draftHandlers/startHandlers/fillPicksAndBans";
 const { randomUUID } = new ShortUniqueId({ length: 10 });
 
 draftRoutes.get("/api/updates", async (req: Request, res: Response) => {
@@ -155,13 +154,9 @@ draftRoutes.get("/api/pastFearless/:fearlessCode", async (req: Request, res: Res
   try {
     const fearlessCode = req.params.fearlessCode;
     const response = await getPastFearlessSeries(fearlessCode);
-    if (!response) {
-      res.status(200).json({ isValid: false });
-      return;
-    }
-    const seededFearless = await fillPicksAndBans(response);
-    if (seededFearless) {
-      res.status(200).json(seededFearless);
+    console.log(response)
+    if (response) {
+      res.status(200).json(response);
     } else {
       res.status(200).json({ isValid: false });
     }

@@ -16,6 +16,7 @@ import {
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
+import { fearlessState } from "../../draftTool/initializers/fearlessLobbyInitializer";
 
 export const getDivisionsForSeason = async () => {
   const divisionsData = await db.select().from(currentSeasonDivisionsInWebsite);
@@ -38,7 +39,7 @@ export async function checkDBForURL(blueCode: string, redCode: string) {
     })
     .from(draftLobbiesInWebsite)
     .where(
-      sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`
+      sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`,
     );
   return matchingURL;
 }
@@ -173,9 +174,52 @@ export async function getPastFearlessSeries(fearlessCode: string) {
 
   if (!series.totalDrafts) return;
 
+  const team1FearlessPicks: string[] = [];
+  const team2FearlessPicks: string[] = [];
+  const team1FearlessBans: string[] = [];
+  const team2FearlessBans: string[] = [];
+
+  for (const draft of drafts) {
+    const bluePicks = [draft.bPick1, draft.bPick2, draft.bPick3, draft.bPick4, draft.bPick5];
+    const redPicks = [draft.rPick1, draft.rPick2, draft.rPick3, draft.rPick4, draft.rPick5];
+    const blueBans = [draft.bBan1, draft.bBan2, draft.bBan3, draft.bBan4, draft.bBan5];
+    const redBans = [draft.rBan1, draft.rBan2, draft.rBan3, draft.rBan4, draft.rBan5];
+    for (const pick of bluePicks) {
+      if (!pick) continue;
+      if (draft.blueCode === series.team1Code) {
+        team1FearlessPicks.push(pick);
+      } else if (draft.blueCode === series.team2Code) {
+        team2FearlessPicks.push(pick);
+      }
+    }
+    for (const pick of redPicks) {
+      if (!pick) continue;
+      if (draft.redCode === series.team1Code) {
+        team1FearlessPicks.push(pick);
+      } else if (draft.redCode === series.team2Code) {
+        team2FearlessPicks.push(pick);
+      }
+    }
+    for (const ban of blueBans) {
+      if (!ban) continue;
+      if (draft.blueCode === series.team1Code) {
+        team1FearlessBans.push(ban);
+      } else if (draft.blueCode === series.team2Code) {
+        team2FearlessBans.push(ban);
+      }
+    }
+    for (const ban of redBans) {
+      if (!ban) continue;
+      if (draft.redCode === series.team1Code) {
+        team1FearlessBans.push(ban);
+      } else if (draft.redCode === series.team2Code) {
+        team2FearlessBans.push(ban);
+      }
+    }
+  }
   const clientState: FearlessStateClientProps = {
     fearlessCode: series.fearlessCode,
-    fearlessComplete: series.fearlessComplete || false,
+    fearlessComplete: series.fearlessComplete || !fearlessState[series.fearlessCode] ? true : false,
     team1Name: series.team1Name,
     team2Name: series.team2Name,
     draftCount: series.totalDrafts,
@@ -183,13 +227,15 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     currentDraft: null,
     currentBlueSide: null,
     currentRedSide: null,
-    allPicks: [],
-    allBans: [],
-    bluePicks: [],
-    redPicks: [],
-    blueBans: [],
-    redBans: [],
-    draftLobbyCodes: drafts.map((draft) => draft.lobbyCode),
+    allPicks: [...team1FearlessPicks, ...team2FearlessPicks],
+    allBans: [...team1FearlessBans, ...team2FearlessBans],
+    team1Picks: team1FearlessPicks,
+    team2Picks: team2FearlessPicks,
+    team1Bans: team1FearlessBans,
+    team2Bans: team2FearlessBans,
+    draftLobbyCodes: drafts
+      .filter((draft) => draft.draftFinished)
+      .map((draft) => draft.lobbyCode),
   };
   return clientState;
 }
@@ -236,7 +282,7 @@ export const findOpenHistoryForPlayer = async (puuid: string) => {
       .select()
       .from(playerTeamHistoryInWebsite)
       .where(
-        and(eq(playerTeamHistoryInWebsite.playerPuuid, puuid), isNull(playerTeamHistoryInWebsite.endDate))
+        and(eq(playerTeamHistoryInWebsite.playerPuuid, puuid), isNull(playerTeamHistoryInWebsite.endDate)),
       )
       .orderBy(desc(playerTeamHistoryInWebsite.startDate))
       .limit(1);
@@ -285,8 +331,8 @@ export async function doesHistoryExist(puuid: string, teamId: number, startDate:
       and(
         eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
         eq(playerTeamHistoryInWebsite.teamId, teamId),
-        eq(playerTeamHistoryInWebsite.startDate, formattedStartDate)
-      )
+        eq(playerTeamHistoryInWebsite.startDate, formattedStartDate),
+      ),
     )
     .limit(1);
   return result.length > 0;
@@ -328,8 +374,8 @@ export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: num
       .where(
         and(
           inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
-          inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds)
-        )
+          inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds),
+        ),
       )
       .groupBy(playerTeamHistoryInWebsite.teamId)
       .orderBy(desc(sql`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`))
@@ -488,8 +534,7 @@ export async function getChampionList() {
       .orderBy(asc(championListInWebsite.name));
     // Move "Nothing" or "None" to the start
     const nothingIndex = championList.findIndex(
-      (c) =>
-        c.name.toLowerCase() === "nothing" || c.name.toLowerCase() === "none" || c.id === -1
+      (c) => c.name.toLowerCase() === "nothing" || c.name.toLowerCase() === "none" || c.id === -1,
     );
 
     if (nothingIndex > -1) {

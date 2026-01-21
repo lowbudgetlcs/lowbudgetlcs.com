@@ -34,10 +34,10 @@ export interface FearlessStateServerProps {
   currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
-  bluePicks: string[];
-  redPicks: string[];
-  blueBans: string[];
-  redBans: string[];
+  team1Picks: string[];
+  team2Picks: string[];
+  team1Bans: string[];
+  team2Bans: string[];
   draftLobbyCodes: string[];
   initialTournamentCode?: string;
 }
@@ -54,10 +54,10 @@ export interface FearlessStateClientProps {
   currentRedSide: string | null;
   allPicks: string[];
   allBans: string[];
-  bluePicks: string[];
-  redPicks: string[];
-  blueBans: string[];
-  redBans: string[];
+  team1Picks: string[];
+  team2Picks: string[];
+  team1Bans: string[];
+  team2Bans: string[];
   draftLobbyCodes: string[];
 }
 export interface DraftInitializerProps {
