@@ -104,7 +104,7 @@ ${streamLink}`);
           <Link
             target="_blank"
             to={streamLink}
-            className="text-xl hover:text-purple transition duration-300 flex-1 underline underline-offset-2">
+            className="text-xl hover:text-purple transition duration-300 flex-1 underline underline-offset-2 text-right">
             Click Here (opens new tab)
           </Link>
 
