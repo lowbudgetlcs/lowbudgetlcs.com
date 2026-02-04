@@ -154,7 +154,6 @@ draftRoutes.get("/api/pastFearless/:fearlessCode", async (req: Request, res: Res
   try {
     const fearlessCode = req.params.fearlessCode;
     const response = await getPastFearlessSeries(fearlessCode);
-    console.log(response)
     if (response) {
       res.status(200).json(response);
     } else {
