@@ -126,22 +126,24 @@ function Draft() {
                         onSubmit={handleFormSubmission}>
                         <div className="flex flex-col sm:flex-row gap-6 w-full">
                           <div className="flex flex-col w-full">
-                            <p className="mb-2 font-semibold">Blue Side</p>
+                            <label htmlFor="blueName" className="mb-2 font-semibold">Blue Side</label>
                             <input
                               type="text"
                               placeholder="Blue Team"
                               className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-blue focus:ring-2 focus:ring-blue/50 outline-none transition-all w-full"
                               name="blueName"
+                              id="blueName"
                               maxLength={28}
                             />
                           </div>
                           <div className="flex flex-col w-full">
-                            <p className="mb-2 font-semibold">Red Side</p>
+                            <label htmlFor="redName" className="mb-2 font-semibold">Red Side</label>
                             <input
                               type="text"
                               placeholder="Red Team"
                               className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-red focus:ring-2 focus:ring-red/50 outline-none transition-all w-full"
                               name="redName"
+                              id="redName"
                               maxLength={28}
                             />
                           </div>
@@ -155,9 +157,10 @@ function Draft() {
                         <input type="hidden" name="draftType" value="Tournament"></input>
                         
                         <div className="w-full">
-                          <p className="mb-2 font-semibold">Draft Count</p>
+                          <label htmlFor="draftAmount" className="mb-2 font-semibold">Draft Count</label>
                           <select
                             name="draftAmount"
+                            id="draftAmount"
                             className="bg-bg-light border border-text-primary/10 rounded-lg p-3 w-full cursor-pointer focus:ring-2 focus:ring-primary-light outline-none"
                             onChange={(e) => setDraftCount(Number(e.target.value))}
                             defaultValue={3}>
@@ -168,15 +171,17 @@ function Draft() {
                         </div>
 
                         <div className="w-full">
-                          <p className="mb-2 font-semibold">
+                          <label htmlFor="tournamentID" className="mb-2 font-semibold">
                             <span className="text-red mr-1">*</span>Tournament Code
-                          </p>
+                          </label>
                           <input
                             type="text"
                             placeholder="Tournament Code"
                             className={`bg-bg-light border ${hasBadCode ? 'border-red' : 'border-text-primary/10'} rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full`}
                             name="tournamentID"
+                            id="tournamentID"
                             required
+                            onChange={() => hasBadCode && setHasBadCode(false)}
                           />
                            <p className={`${hasBadCode ? "" : "opacity-0"} text-sm text-red mt-1`}>
                             Invalid Tournament Code!
@@ -185,22 +190,24 @@ function Draft() {
 
                         <div className="flex flex-col sm:flex-row gap-6 w-full">
                           <div className="flex flex-col w-full">
-                            <p className="mb-2 font-semibold">Team 1 Name</p>
+                            <label htmlFor="team1Name" className="mb-2 font-semibold">Team 1 Name</label>
                             <input
                               type="text"
                               placeholder="Team 1"
                               className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
                               name="team1Name"
+                              id="team1Name"
                               maxLength={18}
                             />
                           </div>
                           <div className="flex flex-col w-full">
-                            <p className="mb-2 font-semibold">Team 2 Name</p>
+                            <label htmlFor="team2Name" className="mb-2 font-semibold">Team 2 Name</label>
                             <input
                               type="text"
                               placeholder="Team 2"
                               className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
                               name="team2Name"
+                              id="team2Name"
                               maxLength={18}
                             />
                           </div>
@@ -219,9 +226,10 @@ function Draft() {
                         <input type="hidden" name="draftType" value="Fearless"></input>
                         
                          <div className="w-full">
-                          <p className="mb-2 font-semibold">Draft Count</p>
+                          <label htmlFor="draftAmount" className="mb-2 font-semibold">Draft Count</label>
                           <select
                             name="draftAmount"
+                            id="draftAmount"
                             className="bg-bg-light border border-text-primary/10 rounded-lg p-3 w-full cursor-pointer focus:ring-2 focus:ring-primary-light outline-none"
                             onChange={(e) => setDraftCount(Number(e.target.value))}
                             defaultValue={3}>
@@ -233,22 +241,24 @@ function Draft() {
 
                          <div className="flex flex-col sm:flex-row gap-6 w-full">
                           <div className="flex flex-col w-full">
-                            <p className="mb-2 font-semibold">Team 1 Name</p>
+                            <label htmlFor="team1Name" className="mb-2 font-semibold">Team 1 Name</label>
                             <input
                               type="text"
                               placeholder="Team 1"
                               className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
                               name="team1Name"
+                              id="team1Name"
                               maxLength={18}
                             />
                           </div>
                           <div className="flex flex-col w-full">
-                            <p className="mb-2 font-semibold">Team 2 Name</p>
+                            <label htmlFor="team2Name" className="mb-2 font-semibold">Team 2 Name</label>
                             <input
                               type="text"
                               placeholder="Team 2"
                               className="bg-bg-light border border-text-primary/10 rounded-lg p-3 text-orange focus:ring-2 focus:ring-orange/50 outline-none transition-all w-full"
                               name="team2Name"
+                              id="team2Name"
                               maxLength={18}
                             />
                           </div>
