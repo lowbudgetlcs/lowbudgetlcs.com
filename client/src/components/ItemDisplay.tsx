@@ -50,9 +50,8 @@ const ItemDisplay = ({ playerData }: { playerData: ParticipantDto }) => {
     const rawItem = itemsQuery.data.find((i) => i.id === playerData.item6);
     if (!rawItem) return null;
     const filename = rawItem.iconPath.split("/").pop();
-    // 3. Update the iconPath with the new format
-    rawItem.iconPath = `/latest/game/assets/items/Icons2D/${filename}`;
-    const correctedItem = rawItem.iconPath.replace(" ", "_").toLowerCase();
+    const iconPath = `/latest/game/assets/items/Icons2D/${filename}`;
+    const correctedItem = iconPath.replace(" ", "_").toLowerCase();
     const itemLink = `https://raw.communitydragon.org${correctedItem}`;
     return <img src={itemLink} className="w-6 h-6 md:w-8 md:h-8 border-2 border-border"></img>;
   };
