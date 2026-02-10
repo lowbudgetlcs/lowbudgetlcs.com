@@ -108,7 +108,7 @@ ${streamLink}`);
             Click Here (opens new tab)
           </Link>
 
-          <div className="copy hover:cursor-pointer" onClick={() => navigator.clipboard.writeText("#")}>
+          <div className="copy hover:cursor-pointer" onClick={() => navigator.clipboard.writeText(streamLink)}>
             <Button>Copy Link</Button>
           </div>
         </div>
