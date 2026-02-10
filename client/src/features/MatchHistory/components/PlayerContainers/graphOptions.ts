@@ -19,7 +19,7 @@ const graphOptions = {
     },
     datalabels: {
       display: true as const,
-      color: "white" as const,
+      color: "gray" as const,
       anchor: "end" as const,
       align: "end" as const,
       font: {
@@ -39,10 +39,11 @@ const graphOptions = {
     },
     y: {
       ticks: {
-        color: "#F5F5F5",
+        color: "gray",
         font: {
           size: 14,
-        },
+          weight: "bold",
+        } as const,
       },
       grid: {
         display: false,

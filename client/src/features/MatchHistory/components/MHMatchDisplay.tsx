@@ -20,13 +20,13 @@ const MHMatchDisplay = ({ matchData }: { matchData: MatchDto }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 mt-20 md:p-4 w-full">
-        <div className="topContainer flex flex-col md:flex-row gap-2 py-4 px-6 bg-gray rounded-md items-center md:items-start md:justify-between">
+      <div className="flex flex-col text-text-primary gap-2 mt-16 md:p-4 w-full">
+        <div className="topContainer flex flex-col md:flex-row gap-2 py-4 px-6 bg-bg border border-border rounded-md items-center md:items-start md:justify-between">
           <div className="title flex flex-col">
             <h1 className="text-2xl font-bold">Match Details</h1>
             <h2>{matchData.info.gameMode}</h2>
-            <p className="text-white/60"> {formatTime(matchData.info.gameDuration)}</p>
-            <p className="text-white/60">MatchID: {params.matchID}</p>
+            <p className="text-text-secondary"> {formatTime(matchData.info.gameDuration)}</p>
+            <p className="text-text-secondary">MatchID: {params.matchID}</p>
           </div>
           <div className="teamBans flex flex-col gap-4 items-center">
             <div className="flex flex-col md:flex-row gap-2 items-center">

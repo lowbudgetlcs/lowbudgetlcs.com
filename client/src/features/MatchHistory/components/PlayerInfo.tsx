@@ -7,7 +7,7 @@ const PlayerInfo = ({ playerData }: { playerData: ParticipantDto }) => {
     <div className="playerInfo relative flex gap-2 items-center shrink-0 lg:w-32 xl:w-48">
       <div className="champImage relative w-12 h-12 shrink-0">
         <img src={championLink} alt={` ${playerData.championName}`} />
-        <p className="absolute bottom-0 right-0 text-xs rounded-md bg-black px-0.5">{playerData.champLevel}</p>
+        <p className="absolute bottom-0 right-0 text-xs rounded-md bg-black text-white px-0.5">{playerData.champLevel}</p>
       </div>
       <div className="playerInfo flex flex-col text-sm truncate text-text-primary group">
         <p className="playerName cursor-pointer select-none truncate">{playerData.riotIdGameName}</p>
