@@ -6,7 +6,6 @@ import PickBox from "../../components/StreamView/PickBox";
 import BanBox from "../../components/StreamView/BanBox";
 import { useDraftContext } from "../../providers/DraftProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
-import LogoBox from "../../components/StreamView/LogoBox";
 import { useLocation } from "react-router-dom";
 import FearlessNav from "../../components/Navbars/FearlessNav";
 import { useFearlessContext } from "../../providers/FearlessProvider";
@@ -135,13 +134,6 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
         </>
       )}
 
-      {/* Logo Boxes */}
-      <div className="absolute top-52 left-48 flex justify-between">
-        <LogoBox />
-      </div>
-      <div className="absolute top-52 right-48 flex justify-between">
-        <LogoBox />
-      </div>
       <div className="absolute w-full bottom-0 text-text-primary flex flex-col">
         <div className="teamNames flex justify-between items-center z-10">
           <div className={`blueName relative w-full max-w-[39%] truncate py-2 px-4 ${draftState.displayTurn === "blue" ? "animate-pulse" : ""}`}>
