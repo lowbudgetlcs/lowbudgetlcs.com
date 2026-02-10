@@ -13,7 +13,6 @@ const fearlessConnectionHandler = (
   setLoading: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   // Initial connection
-  console.log(fearlessCode, ": ", teamCode);
   socket.emit("joinFearless", { fearlessCode, teamCode });
 
   // Error handling

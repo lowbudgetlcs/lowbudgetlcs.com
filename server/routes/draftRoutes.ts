@@ -34,7 +34,6 @@ draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Resp
     }
 
     const checkDBForTourneyCode = await checkDuplicateShortCode(shortCode);
-    console.log(checkDBForTourneyCode);
     if (checkDBForTourneyCode) {
       res.status(200).json({ valid: false });
       return;

@@ -50,7 +50,6 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
 
     return () => clearInterval(interval);
   }, [isTimerRunning]);
-  console.log(fearlessState);
   return (
     <div className="draftContainer relative text-white h-screen max-h-screen bg-black flex flex-col">
       {isFearless && fearlessState && (
@@ -100,7 +99,6 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
                   <p className="text-xl font-bold truncate">{fearlessState.team2Name}'s Picks</p>
                   <div className="flex flex-wrap justify-center max-w-xl">
                     {fearlessState.team2Picks.map((pick) => {
-                      console.log(pick);
                       return pick === "nothing" ? null : (
                         <img
                           key={pick}
