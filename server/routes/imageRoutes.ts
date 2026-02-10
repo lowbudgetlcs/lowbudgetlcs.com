@@ -7,8 +7,15 @@ const imageRoutes = express.Router();
 imageRoutes.get("/api/champion/:champion/:type", async (req, res) => {
   try {
     const championName = req.params.champion.toLowerCase();
+
     const imageType = req.params.type; // 'splashCentered', 'splashTile', 'square', or 'portrait'
-    const imageFind = await getAllImages(championName, imageType);
+    let imageFind = null;
+    if (!isNaN(Number(championName))) {
+      imageFind = await getAllImages(championName, imageType, Number(championName));
+    } else {
+      imageFind = await getAllImages(championName, imageType);
+    }
+
     if (imageFind) {
       res.set("Content-Type", imageFind.contentType);
       res.send(imageFind.buffer);

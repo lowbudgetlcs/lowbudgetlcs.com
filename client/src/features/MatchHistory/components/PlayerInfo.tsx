@@ -1,7 +1,8 @@
 import { ParticipantDto } from "../../../types/MatchV5";
 
 const PlayerInfo = ({ playerData }: { playerData: ParticipantDto }) => {
-  const championLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${playerData.championId}/square`;
+  console.log(playerData);
+  const championLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${playerData.championName}/square`;
 
   return (
     <div className="playerInfo flex gap-2 items-center shrink-0 w-72">
