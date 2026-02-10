@@ -12,7 +12,9 @@ import DefaultRoutes from "./routes/DefaultRoutes";
 import { useEffect } from "react";
 import StatRoutes from "./routes/StatRoutes";
 import StatsNavbar from "./features/Stats/components/StatsNavBar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 function App() {
   // Finds the subdomain (used for draft site)
   const getSubdomain = (host: string) => {
@@ -56,25 +58,27 @@ function App() {
     );
   }
   return (
-    <div className=" relative font-serif bg-bg-dark">
-      <ScrollToTop />
-      {!isDraftRoute && <Twitch />}
-      <SettingsProvider>
-        <DraftSettings />
-        {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <StatsNavbar /> : <Navbar />}
-        <LeagueDataProvider>
-          <Routes>
-            {subdomain === "draft" ? (
-              <Route path="/*" element={<DraftRoutes />} />
-            ) : (
-              <>
-                <Route path="/stats/*" element={<StatRoutes />} />
-                <Route path="/*" element={<DefaultRoutes />} />
-              </>
-            )}
-          </Routes>
-        </LeagueDataProvider>
-      </SettingsProvider>
+    <div className="relative font-serif bg-bg-dark">
+      <QueryClientProvider client={queryClient}>
+        <ScrollToTop />
+        {!isDraftRoute && <Twitch />}
+        <SettingsProvider>
+          <DraftSettings />
+          {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <StatsNavbar /> : <Navbar />}
+          <LeagueDataProvider>
+            <Routes>
+              {subdomain === "draft" ? (
+                <Route path="/*" element={<DraftRoutes />} />
+              ) : (
+                <>
+                  <Route path="/stats/*" element={<StatRoutes />} />
+                  <Route path="/*" element={<DefaultRoutes />} />
+                </>
+              )}
+            </Routes>
+          </LeagueDataProvider>
+        </SettingsProvider>
+      </QueryClientProvider>
     </div>
   );
 }
