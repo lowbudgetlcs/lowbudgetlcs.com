@@ -55,7 +55,7 @@ export const authVerificationInWebsite = website.table("auth_verification", {
 });
 
 export const draftUpdatesInWebsite = website.table("draft_updates", {
-	id: serial().notNull(),
+	id: serial().primaryKey().notNull(),
 	date: timestamp({ withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
 	title: text().notNull(),
 	description: text().notNull(),
