@@ -12,8 +12,7 @@ const MHMatchDisplay = ({ matchData }: { matchData: MatchDto }) => {
     const remainingSeconds = seconds % 60;
     return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
   };
-
-  console.log(matchData);
+  const season = matchData.info.gameVersion.split(".")[0];
   const blueTeamPlayers = matchData.info.participants.filter((participant) => participant.teamId === 100);
 
   const redTeamPlayers = matchData.info.participants.filter((participant) => participant.teamId === 200);
@@ -44,6 +43,7 @@ const MHMatchDisplay = ({ matchData }: { matchData: MatchDto }) => {
           redTeam={matchData.info.teams[1]}
           blueTeamPlayers={blueTeamPlayers}
           redTeamPlayers={redTeamPlayers}
+          season={season}
         />
       </div>
     </>

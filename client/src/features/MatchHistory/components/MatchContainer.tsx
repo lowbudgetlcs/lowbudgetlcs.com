@@ -8,11 +8,13 @@ const MatchContainer = ({
   redTeam,
   blueTeamPlayers,
   redTeamPlayers,
+  season,
 }: {
   blueTeam: TeamDto;
   redTeam: TeamDto;
   blueTeamPlayers: ParticipantDto[];
   redTeamPlayers: ParticipantDto[];
+  season: string;
 }) => {
   const [activeLink, setActiveLink] = useState<string>("Loadout/KDA");
 
@@ -29,8 +31,8 @@ const MatchContainer = ({
       </div>
 
       <div className="teamContainers flex flex-col lg:flex-row gap-4 w-full">
-        <TeamContainer team={blueTeam} teamPlayers={blueTeamPlayers} activeLink={activeLink} />
-        <TeamContainer team={redTeam} teamPlayers={redTeamPlayers} activeLink={activeLink} />
+        <TeamContainer team={blueTeam} teamPlayers={blueTeamPlayers} activeLink={activeLink} season={season} />
+        <TeamContainer team={redTeam} teamPlayers={redTeamPlayers} activeLink={activeLink} season={season} />
       </div>
     </div>
   );

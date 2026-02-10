@@ -8,7 +8,7 @@ const inhibitorIcon = `https://raw.communitydragon.org/latest/game/assets/ux/min
 const atakhanIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/atakhan_r.png`;
 const heraldIcon = `https://raw.communitydragon.org/latest/game/assets/ux/minimap/icons/riftherald.png`;
 
-const Objectives = ({ team }: { team: TeamDto }) => {
+const Objectives = ({ team, season }: { team: TeamDto, season: string }) => {
   return (
     <div className="objectives grid grid-cols-4 md:flex gap-4 items-center px-4 md:px-0">
       <h3>Objectives:</h3>
@@ -28,10 +28,10 @@ const Objectives = ({ team }: { team: TeamDto }) => {
         <img src={heraldIcon} className="h-8"></img>
         <p>{team.objectives.riftHerald.kills}</p>
       </div>
-      <div className="atakhan flex items-center">
+     { season === "15" && <div className="atakhan flex items-center">
         <img src={atakhanIcon} className="h-8"></img>
         <p>{team.objectives.atakhan.kills}</p>
-      </div>
+      </div>}
       <div className="tower flex items-center">
         <img src={towerIcon} className="h-8"></img>
         <p>{team.objectives.tower.kills}</p>
