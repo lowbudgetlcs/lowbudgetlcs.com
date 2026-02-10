@@ -23,11 +23,14 @@ const MatchContainer = ({
   const navItems = ["Loadout/KDA", "Graphs", "Stat List"];
 
   return (
-    <div className="stats flex flex-col bg-bg rounded-xl lg:p-4">
-      <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} grow={true} />
-      <div className="teamContainers flex flex-col lg:flex-row gap-4">
-      <TeamContainer team={blueTeam} teamPlayers={blueTeamPlayers} activeLink={activeLink} />
-      <TeamContainer team={redTeam} teamPlayers={redTeamPlayers} activeLink={activeLink} />
+    <div className="stats flex flex-col items-center rounded-xl gap-2">
+      <div className="w-full lg:w-1/2">
+        <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} grow={true} />
+      </div>
+
+      <div className="teamContainers flex flex-col lg:flex-row gap-4 w-full">
+        <TeamContainer team={blueTeam} teamPlayers={blueTeamPlayers} activeLink={activeLink} />
+        <TeamContainer team={redTeam} teamPlayers={redTeamPlayers} activeLink={activeLink} />
       </div>
     </div>
   );
