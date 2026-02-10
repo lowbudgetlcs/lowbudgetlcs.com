@@ -172,7 +172,7 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     .from(draftLobbiesInWebsite)
     .where(eq(draftLobbiesInWebsite.fearlessCode, fearlessCode));
 
-  if (!series.totalDrafts) return;
+  if (!series.totalDrafts) return null;
 
   const team1FearlessPicks: string[] = [];
   const team2FearlessPicks: string[] = [];
