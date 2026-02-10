@@ -47,7 +47,7 @@ function About() {
   };
 
   return (
-    <div className="about bg-bg-dark light:bg-bg-light text-text-primary pb-8 min-h-screen mt-16">
+    <div className="about bg-bg-dark text-text-primary pb-8 min-h-screen mt-16">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 py-12 lg:py-16">

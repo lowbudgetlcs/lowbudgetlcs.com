@@ -73,7 +73,7 @@ export function LoadChampIcons({
             onClick={() => {
               handlePick(champion.name);
             }}
-            className={`border border-border rounded-md transition duration-75 ease-linear bg-bg-dark light:bg-bg-light group
+            className={`border border-border rounded-md transition duration-75 ease-linear bg-bg-dark group
               ${
                 (pickedChampions.includes(champion.name) ||
                   bannedChampions.includes(champion.name)) &&

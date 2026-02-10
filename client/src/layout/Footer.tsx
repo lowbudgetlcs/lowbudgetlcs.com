@@ -4,7 +4,7 @@ import MainLink from "../components/MainLink";
 
 function Footer() {
   return (
-    <div className="footer w-full h-auto flex flex-col justify-around items-center text-text-primary bg-bg-dark light:bg-bg-light border-t-2 border-border">
+    <div className="footer w-full h-auto flex flex-col justify-around items-center text-text-primary bg-bg-dark border-t-2 border-border">
       <div className="footerText pt-4">
         <ul className="font-semibold text-xl flex flex-wrap gap-4 justify-around px-2">
           <li className="">

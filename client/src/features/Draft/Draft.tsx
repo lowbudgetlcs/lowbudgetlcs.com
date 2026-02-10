@@ -95,7 +95,7 @@ function Draft() {
   };
 
   return (
-    <div className="bg-bg-dark light:bg-bg-light text-text-primary min-h-screen flex flex-col pt-20 pb-8">
+    <div className="bg-bg-dark text-text-primary min-h-screen flex flex-col pt-20 pb-8">
       <div className="grow w-full max-w-7xl mx-auto px-4 sm:px-6">
         {draftLinks ? (
           <DraftCodes draftLinks={draftLinks} setDraftLinks={setDraftLinks} />

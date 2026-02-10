@@ -18,7 +18,7 @@ const PlayerContainer = ({ playerData, allPlayers, activeLink }: PlayerContainer
     killParticipation = Number(rawKP.toFixed(0));
   }
   return (
-    <div className="playerContainer bg-bg-light light:bg-bg-dark p-2 rounded-md border border-border">
+    <div className="playerContainer bg-bg-light p-2 rounded-md border border-border">
       <div className="champPlayerInfo flex items-center justify-between">
         <PlayerInfo playerData={playerData} />
         {activeLink === "Loadout/KDA" ? (
