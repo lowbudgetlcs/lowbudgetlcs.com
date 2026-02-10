@@ -7,14 +7,7 @@ export interface Champion {
 
 export interface DraftProps {
   draftStarted: boolean;
-  activePhase:
-    | "banPhase1"
-    | "pickPhase1"
-    | "banPhase2"
-    | "pickPhase2"
-    | "finished"
-    | null
-    | undefined;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | null | undefined;
   phaseType: "pick" | "ban" | null;
   blueDisplayName: string;
   redDisplayName: string;
@@ -66,7 +59,6 @@ export interface FearlessInitializerProps {
   draftCount: number;
 }
 
-
 export interface FearlessDraftLinkProps {
   fearlessCode: string;
   team1Code: string;
@@ -76,17 +68,21 @@ export interface FearlessDraftLinkProps {
 }
 
 export interface FearlessStateProps {
-fearlessCode: string;
-fearlessComplete: boolean;
-team1Name: string;
-team2Name: string;
-draftCount: number;
-completedDrafts: number;
-currentDraft: string | null;
-currentBlueSide: string | null;
-currentRedSide: string | null;
-allPicks: string[];
-allBans: string[];
-draftLobbyCodes: string[] | null;
-initialTournamentCode?: string;
+  fearlessCode: string;
+  fearlessComplete: boolean;
+  team1Name: string;
+  team2Name: string;
+  draftCount: number;
+  completedDrafts: number;
+  currentDraft: string | null;
+  currentBlueSide: string | null;
+  currentRedSide: string | null;
+  allPicks: string[];
+  allBans: string[];
+  team1Picks: string[];
+  team2Picks: string[];
+  team1Bans: string[];
+  team2Bans: string[];
+  draftLobbyCodes: string[] | null;
+  initialTournamentCode?: string;
 }

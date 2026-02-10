@@ -77,7 +77,7 @@ const StreamPicks = ({
       {[0, 1, 2].map((index) => (
         <div
           key={index}
-          className={`relative w-32 h-64 overflow-hidden border-2 ${
+          className={`relative w-32 h-64 overflow-hidden border ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase1" &&
@@ -88,8 +88,8 @@ const StreamPicks = ({
                 currentPhase === "pickPhase1" &&
                 sidePick === index
               ? "border-red transition-all"
-              : "border-gray"
-          } bg-gray/60 rounded-md flex items-center`}
+              : "border-border"
+          } bg-bg rounded-md flex items-center`}
         >
           {shouldRender(index) && (
             <StreamPickImage
@@ -124,7 +124,7 @@ const StreamPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-32 h-64 overflow-hidden border-2 ${
+          className={`relative w-32 h-64 overflow-hidden border ${
             playerTurn === playerSide &&
             playerSide === "blue" &&
             currentPhase === "pickPhase2" &&
@@ -135,8 +135,8 @@ const StreamPicks = ({
                 currentPhase === "pickPhase2" &&
                 sidePick === index
               ? "border-red transition-all delay-20"
-              : "border-gray"
-          } bg-gray/60 rounded-md flex items-center`}
+              : "border-border"
+          } bg-bg rounded-md flex items-center`}
         >
           {shouldRender(index) && (
             <StreamPickImage

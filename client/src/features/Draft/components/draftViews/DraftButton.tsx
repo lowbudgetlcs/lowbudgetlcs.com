@@ -3,6 +3,7 @@ import Button from "../../../../components/Button";
 import { Link } from "react-router-dom";
 import { useFearlessContext } from "../../providers/FearlessProvider";
 import { useDraftContext } from "../../providers/DraftProvider";
+import AltButton from "../../../../components/AltButton";
 
 // Checks if button is being used on a fearless draft
 // Fearless drafts are within the fearless providor, if not this will cause errors
@@ -88,7 +89,7 @@ function DraftButton() {
           fearlessState.fearlessCode
         }/${sessionStorage.getItem("activeSideCode")}`}
       >
-        <Button>Next Draft</Button>
+        <AltButton>Next Draft</AltButton>
       </Link>
     );
   }
@@ -107,7 +108,7 @@ function DraftButton() {
   // Display Ready Btn
   if (!draftState.activePhase) {
     return (
-      <button
+      <Button
         onClick={toggleReady}
         className={
           playerSide !== "spectator"
@@ -124,7 +125,7 @@ function DraftButton() {
         }
       >
         {ready ? "Waiting" : "Ready"}
-      </button>
+      </Button>
     );
   }
   // Display Pick/ban Btn
@@ -134,7 +135,7 @@ function DraftButton() {
     draftState.activePhase !== "finished"
   ) {
     return (
-      <button
+      <Button
         onClick={() => {
           if (chosenChamp) {
             sendPick(chosenChamp);
@@ -159,7 +160,7 @@ function DraftButton() {
         } transition duration-300`}
       >
         Lock In
-      </button>
+      </Button>
     );
   }
   // Display waiting turn btn by Default

@@ -6,6 +6,7 @@ import {
   getChampionList,
   getPastDraft,
   getPastFearlessSeries,
+  getUpdates,
 } from "../db/queries/select";
 import { DraftInitializeProps, initializeDraftState } from "../draftTool/states/draftState";
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
@@ -15,6 +16,16 @@ import { LolApi } from "twisted";
 import { RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
 const { randomUUID } = new ShortUniqueId({ length: 10 });
 
+draftRoutes.get("/api/updates", async (req: Request, res: Response) => {
+  try {
+    const updates = await getUpdates();
+    res.status(200).json(updates);
+  } catch (err) {
+    console.error("Error getting updates:", err);
+    res.status(500).json({ error: "Failed to fetch updates" });
+  }
+});
+
 draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Response) => {
   try {
     const shortCode = req.params.code;
@@ -23,7 +34,6 @@ draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Resp
     }
 
     const checkDBForTourneyCode = await checkDuplicateShortCode(shortCode);
-    console.log(checkDBForTourneyCode);
     if (checkDBForTourneyCode) {
       res.status(200).json({ valid: false });
       return;
@@ -143,7 +153,6 @@ draftRoutes.get("/api/pastFearless/:fearlessCode", async (req: Request, res: Res
   try {
     const fearlessCode = req.params.fearlessCode;
     const response = await getPastFearlessSeries(fearlessCode);
-
     if (response) {
       res.status(200).json(response);
     } else {

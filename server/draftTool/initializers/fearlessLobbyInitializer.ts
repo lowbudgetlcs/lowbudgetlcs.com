@@ -38,6 +38,10 @@ export const fearlessLobbyInitializer = async ({
         currentRedSide: null,
         allPicks: [],
         allBans: [],
+        team1Picks: [],
+        team2Picks: [],
+        team1Bans: [],
+        team2Bans: [],
         draftLobbyCodes: [],
         initialTournamentCode: initialTournamentCode,
       };
