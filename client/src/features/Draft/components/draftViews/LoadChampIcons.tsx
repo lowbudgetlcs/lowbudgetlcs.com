@@ -121,7 +121,7 @@ export function LoadChampIcons({
               alt={champion.name}
             />
             <p
-              className={`text-center ${
+              className={`text-center w-full ${
                 (pickedChampions.includes(champion.name) ||
                   bannedChampions.includes(champion.name)) &&
                 champion.name !== "nothing"
