@@ -12,7 +12,6 @@ const TeamContainer = ({team, teamPlayers, activeLink, season}: {team: TeamDto, 
         <p className="text-text-secondary text-sm">{team.teamId === 100 ? "Blue" : "Red"} Team</p>
       </div>
       <Objectives team={team} season={season} />
-      <div></div>
       {activeLink === "Loadout/KDA" ? (
         <div className="playerContainer flex flex-col gap-2 w-full overflow-x-scroll no-scrollbar">
           {teamPlayers.map((player) => (

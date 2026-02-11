@@ -39,7 +39,7 @@ const PlayerContainer = ({ playerData, allPlayers, activeLink }: PlayerContainer
               </div>
               <p
                 className={`font-bold text-sm ${
-                  killParticipation > 50 ? "text-green" : killParticipation < 50 && killParticipation > 30 ? "text-yellow" : "text-red"
+                  killParticipation >= 50 ? "text-green" : killParticipation >= 30 ? "text-yellow" : "text-red"
                 }`}>
                 {killParticipation}% KP
               </p>
