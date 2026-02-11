@@ -15,6 +15,7 @@ interface ChampionData {
 
 let championJson: ChampionData[] | null = null;
 let lastCache = 0;
+let fetchPromise: Promise<void> | null = null;
 
 export const getAllImages = async (championName: string, imageType: string, championId?: number) => {
   const currentTime = Date.now();
@@ -24,17 +25,26 @@ export const getAllImages = async (championName: string, imageType: string, cham
     championJson = null;
   }
 
-  if (championId) {
+  if (championId !== undefined) {
     if (!championJson || currentTime - lastCache >= cacheTtl) {
-      try {
-        const response = await fetch("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json");
-        if (response.ok) {
-          championJson = await response.json();
-          lastCache = currentTime;
-        }
-      } catch (error) {
-        console.error("[Get Images] Failed to fetch champion Json:", error);
+      if (!fetchPromise) {
+        fetchPromise = (async () => {
+          try {
+            const response = await fetch(
+              "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json",
+            );
+            if (response.ok) {
+              championJson = await response.json();
+              lastCache = Date.now();
+            }
+          } catch (error) {
+            console.error("[Get Images] Failed to fetch champion Json:", error);
+          } finally {
+            fetchPromise = null;
+          }
+        })();
       }
+      await fetchPromise;
     }
 
     if (championJson) {
