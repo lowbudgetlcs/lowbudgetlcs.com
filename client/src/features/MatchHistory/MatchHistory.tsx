@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import MHTitlePopup from "./components/MHTitlePopup";
 import { useParams } from "react-router-dom";
 import { useSessionStorageState } from "../../hooks/useSessionStorageState";
 import { MatchDto } from "../../types/MatchV5";
@@ -53,8 +52,6 @@ const MatchHistory = () => {
 
   return (
     <div className={`grow flex justify-center`}>
-      {popupShown && <MHTitlePopup />}
-
       {!popupShown && loading && (
         <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
           <p>Loading Match</p>

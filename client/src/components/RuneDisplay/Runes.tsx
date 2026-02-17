@@ -29,7 +29,7 @@ const Runes = ({ playerData }: { playerData: ParticipantDto }) => {
       className="runes relative flex flex-col items-center gap-2"
       onMouseEnter={() => setRunesShown(true)}
       onMouseLeave={() => setRunesShown(false)}>
-      <div className="relative">
+      <div className="relative rounded-md bg-black">
         <img src={primaryRuneLink} className="w-6 h-6"></img>
       </div>
       <div className="relative z-10">

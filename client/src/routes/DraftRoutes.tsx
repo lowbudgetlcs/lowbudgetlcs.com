@@ -5,13 +5,10 @@ import DraftPage from "../features/Draft/pages/Draft/DraftPage";
 import { FearlessProvider } from "../features/Draft/providers/FearlessProvider";
 import FearlessMain from "../features/Draft/pages/Fearless/FearlessMain";
 import FearlessDraftPage from "../features/Draft/pages/Fearless/FearlessDraftPage";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Draft from "../features/Draft/Draft";
-const queryClient = new QueryClient();
 
 const DraftRoutes = () => {
   return (
-    <QueryClientProvider client={queryClient}>
       <Routes>
         <Route element={<SocketProvider />}>
           <Route path="/" element={<Draft />} />
@@ -28,7 +25,6 @@ const DraftRoutes = () => {
           </Route>
         </Route>
       </Routes>
-    </QueryClientProvider>
   );
 };
 

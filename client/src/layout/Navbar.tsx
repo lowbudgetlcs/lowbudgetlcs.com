@@ -102,7 +102,7 @@ function Navbar() {
   return (
     <header
       className={`fixed top-0 z-20 transition duration-500 mx-auto w-full h-20 ${
-        isTop ? "" : "bg-bg-light light:bg-bg-dark ring ring-border"
+        isTop ? "" : "bg-bg-light ring ring-border"
       }`}>
       <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
         <div

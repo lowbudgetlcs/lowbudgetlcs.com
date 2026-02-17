@@ -245,7 +245,7 @@
   --color-bg-light: oklch(0.98 0 276);
   --color-bg: oklch(0.96 0 276);
   --color-bg-dark: oklch(0.92 0 276);
-  --color-bg-body: oklch(0.98 0 276);
+  --color-bg-body: oklch(0.92 0 276);
   /* Shadow/Border Colors */
   --color-border: oklch(0.86 0 276);
   /* Text Colors */
