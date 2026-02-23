@@ -1,11 +1,14 @@
+import { NavLink } from "react-router";
+
 interface NavListProps {
   activeLink: string | number | undefined;
   toggleActive: (navItem: string | number) => void;
   navItems: Array<string | number>;
   prefix?: string;
+  param: string;
 }
 
-const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, prefix }) => {
+const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, prefix, param }) => {
   let currentAnimationNum = 200;
   return (
     <div className="sidebar text-text-secondary pt-20 bg-bg transition duration-500 opacity-0 animate-slide-in-right text-nowrap border-r border-border">
@@ -14,7 +17,8 @@ const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems
           currentAnimationNum = currentAnimationNum + 100;
           const animationTiming = `animate-slide-in-${currentAnimationNum}`;
           return (
-            <li
+            <NavLink
+              to={{search: `?${param}=${navItem}`}}
               key={navItem}
               onClick={() => toggleActive(navItem)}
               className={`relative inline-flex w-fit pb-1 hover:cursor-pointer hover:text-orange transition duration-300 opacity-0 ${animationTiming}`}>
@@ -23,7 +27,7 @@ const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems
                 className={`line absolute ${
                   activeLink === navItem ? "w-full" : "w-0"
                 } transition-all duration-200 border-b-4 border-orange rounded-md bottom-0 left-0`}></span>
-            </li>
+            </NavLink>
           );
         })}
       </ul>
