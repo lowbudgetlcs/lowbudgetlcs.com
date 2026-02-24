@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import Button from "../../../components/Button";
 import { PlayerProps } from "../../../leagueData";
+import TeamDropdown from "./TeamDropdown";
 
 interface TeamProps {
   teamName: string;
@@ -12,13 +11,7 @@ interface TeamProps {
   onToggle: () => void;
 }
 
-function TeamCard({
-  teamName,
-  logo,
-  playerList,
-  isOpen,
-  onToggle,
-}: TeamProps) {
+function TeamCard({ teamName, logo, playerList, isOpen, onToggle }: TeamProps) {
   const [isMultiSelected, setIsMultiSelected] = useState(false);
   const multiArray: Array<string> = [];
   const multiPlayersArray: Array<string> = [];
@@ -28,11 +21,7 @@ function TeamCard({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        cardRef.current &&
-        !cardRef.current.contains(event.target as Node) &&
-        isOpen
-      ) {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node) && isOpen) {
         onToggle();
         setTimeout(() => {
           setIsMultiSelected(false);
@@ -97,238 +86,53 @@ function TeamCard({
 
   const displayLogo = () => {
     if (logo) {
-      return (
-        <img
-          src={logo}
-          className="logo shrink-0 w-37.5 text-center text-3xl h-37.5"
-        />
-      );
+      return <img src={logo} className="logo shrink-0 w-20 text-center text-3xl h-20" />;
     } else {
-      return (
-        <div className="logo shrink-0 w-37.5 text-center text-3xl h-37.5 bg-gray">
-          No logo 😢
-        </div>
-      );
+      return <div className="logo shrink-0 w-20 text-center text-3xl h-20 bg-bg">No logo 😢</div>;
     }
   };
 
-  const showMultiBtn = () => {
-    if (multi.length <= 0) {
-      return (
-        <p className="text-lg font-normal text-orange">
-          Select players to add to link
-        </p>
-      );
-    } else {
-      return (
-        <div className="flex flex-col">
-          <p className="text-white/60 text-sm font-normal pb-2">
-            click on a player listed to remove them
-          </p>
-          <Link
-            target="_blank"
-            to={`https://www.op.gg/multisearch/na?summoners=${multi.join(",")}`}
-            className="flex justify-center items-center hover:cursor-pointer"
-          >
-            <Button>To op.gg</Button>
-          </Link>
-        </div>
-      );
-    }
-  };
-  if (!isMultiSelected) {
-    // Single op.gg Select Dropdown
-    return (
-      <div
-        ref={cardRef}
-        className={`teamCard relative transition duration-300 ${
-          isOpen ? "rounded-t-lg" : "rounded-lg"
-        } bg-gray/80 dark:bg-gray/40`}
-      >
+  return (
+    <div
+      ref={cardRef}
+      className={`teamCard relative transition duration-300 ${isOpen ? "rounded-t-xl" : "rounded-xl"} bg-bg-light border-border border cursor-pointer group`}>
+      <div onClick={togglePlayerList} className="p-2">
         <div className="dropBtn absolute bottom-0 right-0 self-end">
-          <div
-            onClick={togglePlayerList}
-            className="burger cursor-pointer relative h-12 w-12 gap-1 hover:cursor-pointer self-baseline"
-          >
+          <div className="burger cursor-pointer relative h-12 w-12 gap-1 hover:cursor-pointer self-baseline">
             <div
               className={`absolute ${
                 isOpen ? "-rotate-45" : "rotate-45"
-              } top-4 left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-            ></div>
+              } top-4 left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-text-primary`}></div>
             <div
               className={`absolute ${
                 isOpen ? "rotate-45" : "-rotate-45"
-              } top-4 left-4 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-            ></div>
+              } top-4 left-4 transition-all duration-500 px-3 py-0.5 rounded-xl bg-text-primary`}></div>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row py-4 md:py-0 md:pl-4 gap-4 items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden">
+        <div className="flex flex-col md:flex-row py-4 md:py-0 gap-4 items-center min-h-20 overflow-hidden">
           <div className="logoContainer flex flex-col md:flex-row gap-4 w-full md:w-auto md:h-full items-center">
             {displayLogo()}
             <div className={`w-full h-3 md:w-3 md:h-full bg-orange`}></div>
           </div>
           <div className="flex flex-col md:flex-row flex-1 shrink md:ml-4 items-center">
-            <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
-              {teamName}
-            </h3>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div
-            className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              isOpen
-                ? "max-h-250 opacity-100 visible"
-                : "max-h-0 opacity-0 invisible"
-            }`}
-          >
-            <div className="titleText relative flex flex-col items-center justify-center gap-4">
-              <h3 className="text-2xl font-bold text-center">
-                Players: Single Select
-              </h3>
-              <div
-                onClick={toggleIsMultiSelected}
-                className="buttonContainer flex justify-center items-center hover:cursor-pointer"
-              >
-                <Button>To Multi op.gg Select</Button>
-              </div>
-            </div>
-
-            <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
-              {playerList.map((player) => {
-                const summonerName = player.name.split("#");
-                return (
-                  <Link
-                    target="_blank"
-                    to={`https://www.op.gg/summoners/na/${summonerName[0]}-${summonerName[1]}`}
-                    key={player.name}
-                    className="text-center hover:underline underline-offset-4"
-                  >
-                    {summonerName[0]}{" "}
-                    <span className="text-white/40">
-                      {"#" + summonerName[1]}
-                    </span>
-                  </Link>
-                );
-              })}
-            </div>
+            <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">{teamName}</h3>
           </div>
         </div>
       </div>
-    );
-  } else {
-    // Multi op.gg Select Dropdown
-    return (
-      <div
-        ref={cardRef}
-        className={`teamCard relative transition duration-300 ${
-          isOpen ? "rounded-t-lg" : "rounded-lg"
-        } bg-gray/80 dark:bg-gray/40`}
-      >
-        <div className="dropBtn absolute bottom-0 right-0 self-end">
-          <div
-            onClick={togglePlayerList}
-            className="burger cursor-pointer relative h-12 w-12 gap-1 hover:cursor-pointer self-baseline"
-          >
-            <div
-              className={`absolute ${
-                isOpen ? "-rotate-45" : "rotate-45"
-              } top-4 left-0 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-            ></div>
-            <div
-              className={`absolute ${
-                isOpen ? "rotate-45" : "-rotate-45"
-              } top-4 left-4 transition-all duration-500 px-3 py-0.5 rounded-xl bg-white`}
-            ></div>
-          </div>
-        </div>
-        <div className="flex flex-col md:flex-row py-4 md:py-0 md:pl-4 gap-4 items-center max-w-md md:max-w-full md:w-full min-h-32 md:h-40 overflow-hidden">
-          <div className="logoContainer flex flex-col md:flex-row gap-4 w-full md:w-auto md:h-full items-center">
-            {displayLogo()}
-            <div className={`w-full h-3 md:w-3 md:h-full bg-orange`}></div>
-          </div>
-          <div className="flex flex-col md:flex-row flex-1 shrink md:ml-4 items-center">
-            <h3 className="teamName text-xl text-center md:text-left font-semibold px-16 md:px-8">
-              {teamName}
-            </h3>
-          </div>
-        </div>
-
-        <div className="relative">
-          <div
-            className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
-              isOpen
-                ? "max-h-250 opacity-100"
-                : "max-h-0 opacity-0 invisible"
-            }`}
-          >
-            <div className="titleText relative flex flex-col items-center justify-center gap-4">
-              <h3 className="text-2xl font-bold text-center">
-                Players: Multi Select
-              </h3>
-              <div
-                onClick={toggleIsMultiSelected}
-                className="buttonContainer flex justify-center items-center hover:cursor-pointer"
-              >
-                <Button>Back to Single Select</Button>
-              </div>
-            </div>
-            <div className="players grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4 py-4">
-              {playerList.map((player) => {
-                const summonerName = player.name.split("#");
-                return (
-                  <div
-                    onClick={() => {
-                      //Grab player name, tag, and add "#" and "," for URL
-                      let player = encodeURIComponent(
-                        `${summonerName[0]}#${summonerName[1]}`
-                      );
-                      const unChangedPlayer = `${summonerName[0]} #${summonerName[1]}`;
-                      // Cut all whitespace from string
-                      player = player.replace(/\s+/g, "");
-                      if (multi.includes(player)) {
-                        removeFromMulti(multi.indexOf(player));
-                        return;
-                      }
-                      if (multi.length < 10) {
-                        addToMulti(player);
-                        addToDisplayMulti(unChangedPlayer);
-                      }
-                    }}
-                    key={player.name}
-                    className="text-center hover:underline underline-offset-4 cursor-pointer"
-                  >
-                    {summonerName[0]}{" "}
-                    <span className="text-white/40">
-                      {"#" + summonerName[1]}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="multi flex flex-col justify-center items-center px-2">
-              <h3 className="text-xl text-center font-semibold break-all">
-                {" "}
-                Multi with:
-                <span className="font-normal text-orange flex flex-wrap gap-2 p-2 justify-center items-center">
-                  {multiPlayers.map((player, index) => {
-                    return (
-                      <p
-                        key={index}
-                        className="cursor-pointer hover:underline underline-offset-4"
-                        onClick={() => removeFromMulti(index)}
-                      >{`${player}, `}</p>
-                    );
-                  })}
-                </span>
-              </h3>
-              <div className="">{showMultiBtn()}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+      <TeamDropdown
+        isOpen={isOpen}
+        isMultiSelected={isMultiSelected}
+        setIsMultiSelected={setIsMultiSelected}
+        toggleIsMultiSelected={toggleIsMultiSelected}
+        playerList={playerList}
+        addToDisplayMulti={addToDisplayMulti}
+        addToMulti={addToMulti}
+        removeFromMulti={removeFromMulti}
+        multi={multi}
+        multiPlayers={multiPlayers}
+      />
+    </div>
+  );
 }
 
 export default TeamCard;
