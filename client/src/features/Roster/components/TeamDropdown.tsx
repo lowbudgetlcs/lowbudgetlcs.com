@@ -46,7 +46,7 @@ const TeamDropdown = ({
   return isMultiSelected ? (
     <div className="relative">
       <div
-        className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-light-gray border-4 border-white/20 dark:bg-gray-800 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+        className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-bg border border-border shadow-2xl rounded-b-lg z-10 transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-250 opacity-100" : "max-h-0 opacity-0 invisible"
         }`}>
         <div className="titleText relative flex flex-col items-center justify-center gap-4">
@@ -105,11 +105,11 @@ const TeamDropdown = ({
     // Single op.gg Select Dropdown
     <div className="relative">
       <div
-        className={`teamMembers absolute left-0 p-4 right-0 overflow-hidden bg-light-gray dark:bg-gray-800 border-4 border-white/20 shadow-2xl rounded-b-lg z-10 transition-all duration-500 ease-in-out ${
+        className={`teamMembers absolute left-0 p-4 w-full overflow-hidden bg-bg border border-orange shadow-2xl shadow-black rounded-b-lg z-10 transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-250 opacity-100 visible" : "max-h-0 opacity-0 invisible"
         }`}>
         <div className="titleText relative flex flex-col items-center justify-center gap-4">
-          <h3 className="text-2xl font-bold text-center">Players: Single Select</h3>
+          <h3 className="text-2xl font-bold text-center text-text-primary">Players: Single Select</h3>
           <div onClick={toggleIsMultiSelected} className="buttonContainer flex justify-center items-center hover:cursor-pointer">
             <Button>To Multi op.gg Select</Button>
           </div>
@@ -124,7 +124,7 @@ const TeamDropdown = ({
                 to={`https://www.op.gg/summoners/na/${summonerName[0]}-${summonerName[1]}`}
                 key={player.name}
                 className="text-center hover:underline underline-offset-4">
-                {summonerName[0]} <span className="text-white/40">{"#" + summonerName[1]}</span>
+                {summonerName[0]} <span className="text-text-secondary">{"#" + summonerName[1]}</span>
               </Link>
             );
           })}
