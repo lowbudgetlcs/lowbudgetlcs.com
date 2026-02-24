@@ -1,19 +1,19 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useSearchParams } from "react-router-dom";
 import ErrorPage from "../Error/ErrorPage";
 import useRosterDataQuery from "../../api/useRosterDataQuery";
 import Title from "../../components/Title";
 import NavSideBar from "../../components/NavSideBar";
-import { useState } from "react";
 import LoadingIcon from "../../components/LoadingIcon";
 import Button from "../../components/Button";
 import DivisionDisplay from "./components/DivisionDisplay";
 
 function Roster() {
   const { data: rosterData, isLoading, isError } = useRosterDataQuery();
-  const [activeLink, setActiveLink] = useState<string | number | undefined>(undefined);
 
-  const toggleActive = (navItem: string | number) => {
-    setActiveLink(navItem);
+  const [params] = useSearchParams();
+  const activeLink = params.get("division") ?? undefined;
+  const toggleActive = () => {
+    // setActiveLink(navItem);
   };
   const navItems = rosterData?.divisions.map((division) => division) ?? [];
   const divisions = rosterData?.divisions ?? [];
@@ -41,7 +41,7 @@ function Roster() {
     <div className="bg-bg-dark text-text-primary flex flex-col md:flex-row grow">
       <NavSideBar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} param="division" />
       <div className="grow w-full max-w-7xl mx-auto px-4 sm:px-6 pt-20">
-        <Title title="Rosters" />
+        <Title title={activeLink !== undefined ? `Rosters: ${activeLink}` : "Rosters"} />
         {activeLink !== undefined ? (
           <DivisionDisplay teams={rosterData?.teams.filter((team) => team.division === activeLink) ?? []} />
         ) : (
@@ -51,7 +51,7 @@ function Roster() {
             </p>
             <div className="cardContainer flex flex-col md:grid grid-cols-4 w-full px-4 gap-8">
               {divisions.map((division) => (
-                <NavLink key={division} to={{ search: `?division=${division}` }} className="w-full" onClick={() => toggleActive(division)}>
+                <NavLink key={division} to={{ search: `?division=${division}` }} className="w-full">
                   <Button className="w-full">{division}</Button>
                 </NavLink>
               ))}

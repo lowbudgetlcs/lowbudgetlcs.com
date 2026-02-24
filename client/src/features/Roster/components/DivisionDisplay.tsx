@@ -9,7 +9,7 @@ const DivisionDisplay = ({ teams }: { teams: RosterData["teams"] }) => {
     setOpenCardId(openCardId === teamName ? null : teamName);
   };
   return (
-    <div className="flex flex-col lg:grid grid-cols-2 items-center gap-4 overflow-y-scroll max-h-[60vh]">
+    <div className="flex flex-col lg:grid grid-cols-2 items-center gap-4 overflow-y-scroll max-h-[60vh] pb-64">
       {teams.map((team) => (
         <TeamCard
           key={team.name}
