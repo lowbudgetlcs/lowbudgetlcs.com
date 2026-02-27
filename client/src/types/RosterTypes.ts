@@ -24,3 +24,17 @@ export interface TeamBySeason {
     teams: Team;
   }[];
 }
+export interface Player {
+  points: string;
+  name: string;
+}
+
+export interface RosterData {
+  divisions: string[];
+  teams: {
+    logo: string | null;
+    name: string;
+    division: string;
+    players: Player[];
+  }[];
+}
