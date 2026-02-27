@@ -42,7 +42,7 @@ function Roster() {
   return (
     <div className="bg-bg-dark text-text-primary flex flex-col md:flex-row grow">
       <NavSideBar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} param="division" />
-      <div className="grow w-full max-w-7xl mx-auto px-4 sm:px-6 pt-20">
+      <div className="grow w-full max-w-7xl mx-auto px-4 sm:px-6 pt-14">
         <p className="text-lg font-bold text-text-secondary">{seasonData?.[0]?.seasonName ?? ""}</p>
         <Title title={activeLink !== undefined ? `Rosters: ${activeLink}` : `Rosters`} />
         {activeLink !== undefined ? (
