@@ -90,7 +90,7 @@ const TeamDropdown = ({
               {multiPlayers.map((player, index) => {
                 return (
                   <p
-                    key={index}
+                    key={player}
                     className="cursor-pointer hover:underline underline-offset-4"
                     onClick={() => removeFromMulti(index)}>{`${player}, `}</p>
                 );
