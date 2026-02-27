@@ -1,24 +1,11 @@
 import express, { Request, Response } from "express";
-import {
-  getGamesForPlayer,
-  getGamesForTeam,
-  getPlayer,
-  getRecentGames,
-  getRecentGamesByDivision,
-  getSeasons,
-  getTeamsBySeason,
-  getAllAchievements,
-} from "../db/queries/statQueries/select";
+import { getPlayer, getSeasons, getTeamsBySeason, getAllAchievements } from "../db/queries/statQueries/select";
 import { getTeamIdByName } from "../db/queries/select";
 import playerStatsAggregation from "../stats/playerStatsAggregation";
 import teamStatsAggregation from "../stats/teamStatsAggregation";
 import { EventWithTeamsDto } from "./rosterRoutes";
-import {
-  getDivisionsForSeason,
-  getDivisionsForSelectedSeason,
-  getTeamSeasonsByName,
-  getPlayerSeasonsByPuuid,
-} from "../db/queries/select";
+import { getDivisionsForSeason, getDivisionsForSelectedSeason, getTeamSeasonsByName, getPlayerSeasonsByPuuid } from "../db/queries/select";
+import gamesController from "../features/stats/controllers/games.controller";
 
 const statRoutes = express.Router();
 
@@ -42,79 +29,16 @@ interface TeamResponse {
   } | null;
 }
 // Get recent game stats from db
-statRoutes.get("/api/games/recent/:amount", async (req: Request, res: Response) => {
-  try {
-    const amount: number = Number(req.params.amount);
-    if (isNaN(amount) || amount <= 0) {
-      return res.status(400).json({ error: "Invalid amount parameter" });
-    }
-    const response = await getRecentGames(amount);
-    if (response.length <= 0) {
-      return res.status(404).json({ error: "Matches Not Found" });
-    }
-    return res.json(response);
-  } catch (err: any) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+statRoutes.get("/api/games/recent/:amount", gamesController.getRecentGamesByAmount);
 
 // Get recent games for a division
-statRoutes.get("/api/games/division/:divisionId/:amount", async (req: Request, res: Response) => {
-  try {
-    const divisionId: number = Number(req.params.divisionId);
-    const amount: number = Number(req.params.amount);
-    if (isNaN(divisionId) || isNaN(amount) || divisionId <= 0 || amount <= 0) {
-      return res.status(400).json({ error: "Invalid parameters" });
-    }
-    const response = await getRecentGamesByDivision(amount, divisionId);
-    if (response.length <= 0) {
-      return res.status(404).json({ error: "Matches Not Found" });
-    }
-    return res.json(response);
-  } catch (err: any) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+statRoutes.get("/api/games/division/:divisionId/:amount", gamesController.getRecentGamesByDivisionAndAmount);
 
 // Get all games for a team
-statRoutes.get("/api/games/team/:teamId", async (req: Request, res: Response) => {
-  try {
-    const teamId: number = Number(req.params.teamId);
-    if (isNaN(teamId) || teamId <= 0) {
-      return res.status(400).json({ error: "Invalid team ID" });
-    }
-    const response = await getGamesForTeam(teamId);
-    if (response.length <= 0) {
-      return res.status(404).json({ error: "Matches Not Found" });
-    }
-    return res.json(response);
-  } catch (err: any) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+statRoutes.get("/api/games/team/:teamId", gamesController.getAllGamesForTeam);
 
 // Get all games for a player
-statRoutes.get("/api/games/player/:summonerName/:tagline", async (req: Request, res: Response) => {
-  try {
-    const summonerName: string = req.params.summonerName;
-    const tagline: string = req.params.tagline;
-    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
-
-    const puuidResponse = await getPlayer(summonerName, tagline);
-    if (!puuidResponse || !puuidResponse.players.puuid) {
-      return res.status(404).json({ error: "Player Not Found" });
-    }
-
-    const response = await getGamesForPlayer(puuidResponse.players.puuid, seasonId);
-    if (response.length <= 0) {
-      return res.status(404).json({ error: "Matches Not Found" });
-    }
-
-    return res.json(response);
-  } catch (err: any) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+statRoutes.get("/api/games/player/:summonerName/:tagline");
 
 // Get player overall stats by summonerID
 statRoutes.get("/api/player/summoner/:summonerName/:tagline", async (req: Request, res: Response) => {
@@ -167,7 +91,6 @@ statRoutes.get("/api/player/:puuid/seasons", async (req: Request, res: Response)
   }
 });
 
-
 // Get team overall stats
 statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
   try {
@@ -207,14 +130,10 @@ statRoutes.get("/api/team/name/:teamName", async (req: Request, res: Response) =
       for (const div of divisions) {
         if (!div.eventId) continue;
         try {
-          const dennysApiResponse = await fetch(
-            `https://dennys.lowbudgetlcs.com/api/v1/event/${div.eventId}/teams`
-          );
+          const dennysApiResponse = await fetch(`https://dennys.lowbudgetlcs.com/api/v1/event/${div.eventId}/teams`);
           if (!dennysApiResponse.ok) continue;
           const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
-          const matched = dennysApiEventData.teams.find(
-            (t) => t.name.toLowerCase() === teamName.toLowerCase()
-          );
+          const matched = dennysApiEventData.teams.find((t) => t.name.toLowerCase() === teamName.toLowerCase());
           if (matched?.logoName) {
             teamLogo = matched.logoName;
             break;
@@ -284,14 +203,10 @@ statRoutes.get("/api/seasons/:seasonId", async (req: Request, res: Response) => 
       for (const team of teamsResponse) {
         try {
           if (!team.teams) continue;
-          const dennysApiResponse = await fetch(
-            `https://dennys.lowbudgetlcs.com/api/v1/event/${team.divisions.eventId}/teams`
-          );
+          const dennysApiResponse = await fetch(`https://dennys.lowbudgetlcs.com/api/v1/event/${team.divisions.eventId}/teams`);
           if (dennysApiResponse) {
             const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
-            const matchedTeam = dennysApiEventData.teams.find(
-              (t) => t.name.toLowerCase() === team.teams?.teamName.toLowerCase()
-            );
+            const matchedTeam = dennysApiEventData.teams.find((t) => t.name.toLowerCase() === team.teams?.teamName.toLowerCase());
             if (matchedTeam) {
               team.teams.logo = matchedTeam.logoName;
             }
