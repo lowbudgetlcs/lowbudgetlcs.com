@@ -46,7 +46,7 @@ const TeamDropdown = ({
   return isMultiSelected ? (
     <div className="relative">
       <div
-        className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-bg border border-border shadow-2xl rounded-b-lg z-10 transition-all duration-300 ease-in-out ${
+        className={`teamMembers absolute left-0 right-0 p-4 overflow-hidden bg-bg border border-orange shadow-black shadow-2xl rounded-b-lg z-10 transition-all duration-300 ease-in-out ${
           isOpen ? "max-h-250 opacity-100" : "max-h-0 opacity-0 invisible"
         }`}>
         <div className="titleText relative flex flex-col items-center justify-center gap-4">
@@ -77,7 +77,7 @@ const TeamDropdown = ({
                 }}
                 key={player.name}
                 className="text-center hover:underline underline-offset-4 cursor-pointer">
-                {summonerName[0]} <span className="text-white/40">{"#" + summonerName[1]}</span>
+                {summonerName[0]} <span className="text-text-secondary">{"#" + summonerName[1]}</span>
               </div>
             );
           })}
