@@ -38,7 +38,7 @@ statRoutes.get("/api/games/division/:divisionId/:amount", gamesController.getRec
 statRoutes.get("/api/games/team/:teamId", gamesController.getAllGamesForTeam);
 
 // Get all games for a player
-statRoutes.get("/api/games/player/:summonerName/:tagline");
+statRoutes.get("/api/games/player/:summonerName/:tagline", gamesController.getAllGamesForPlayer);
 
 // Get player overall stats by summonerID
 statRoutes.get("/api/player/summoner/:summonerName/:tagline", async (req: Request, res: Response) => {
