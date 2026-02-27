@@ -86,9 +86,9 @@ function TeamCard({ teamName, logo, playerList, isOpen, onToggle }: TeamProps) {
 
   const displayLogo = () => {
     if (logo) {
-      return <img src={logo} className="logo shrink-0 w-20 text-center text-xl h-20" />;
+      return <img src={logo} alt={`${teamName} logo`} className="logo shrink-0 w-20 text-center text-xl h-20" />;
     } else {
-      return <img src={lblcsIcon} className="logo shrink-0 w-20 text-center grayscale opacity-60 text-xl h-20" />;
+      return <img src={lblcsIcon} alt="" className="logo shrink-0 w-20 text-center grayscale opacity-60 text-xl h-20" />;
     }
   };
 
