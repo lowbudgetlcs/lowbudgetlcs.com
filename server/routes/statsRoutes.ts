@@ -1,34 +1,11 @@
-import express, { Request, Response } from "express";
-import { getPlayer, getSeasons, getTeamsBySeason, getAllAchievements } from "../db/queries/statQueries/select";
-import { getTeamIdByName } from "../db/queries/select";
-import playerStatsAggregation from "../stats/playerStatsAggregation";
-import teamStatsAggregation from "../stats/teamStatsAggregation";
-import { EventWithTeamsDto } from "./rosterRoutes";
-import { getDivisionsForSeason, getDivisionsForSelectedSeason, getTeamSeasonsByName, getPlayerSeasonsByPuuid } from "../db/queries/select";
+import express from "express";
 import gamesController from "../features/stats/controllers/games.controller";
 import playerStatsController from "../features/stats/controllers/playerStats.controller";
+import teamsController from "../features/stats/controllers/teams.controller";
+import seasonsController from "../features/stats/controllers/seasons.controller";
+import achievementsController from "../features/stats/controllers/achievements.controller";
 
 const statRoutes = express.Router();
-
-interface TeamResponse {
-  divisions: {
-    id: number;
-    seasonId: number;
-    divisionName: string;
-    createdAt: string | null;
-    eventId: number | null;
-  };
-  teams: {
-    id: number;
-    divisionId: number | null;
-    teamName: string;
-    teamTag: string | null;
-    active: boolean;
-    createdAt: string | null;
-    formerTeam: number | null;
-    logo?: string;
-  } | null;
-}
 
 // Game Routes
 statRoutes.get("/api/games/recent/:amount", gamesController.getRecentGamesByAmount);
@@ -40,168 +17,15 @@ statRoutes.get("/api/games/player/:summonerName/:tagline", gamesController.getAl
 statRoutes.get("/api/player/summoner/:summonerName/:tagline", playerStatsController.getOverallStatsForPlayer);
 statRoutes.get("/api/player/puuid/:puuid", playerStatsController.getPlayerStatsByPuuid);
 statRoutes.get("/api/player/:puuid/seasons", playerStatsController.getPlayerSeasons);
+statRoutes.get("/api/player/check/:summonerName/:tagline", playerStatsController.checkPlayerExists);
 
 // Team Routes
-statRoutes.get("/api/team/:teamId", async (req: Request, res: Response) => {
-  try {
-    const teamId: number = Number(req.params.teamId);
-    if (isNaN(teamId) || teamId <= 0) {
-      return res.status(400).json({ error: "Invalid team ID" });
-    }
-    const overallStats = await teamStatsAggregation(teamId);
-    if (!overallStats) {
-      return res.status(404).json({ error: "Team Stats Not Found" });
-    }
-    return res.json(overallStats);
-  } catch (err: any) {
-    console.error("Error fetching team stats:", err);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+statRoutes.get("/api/team/:teamId", teamsController.getTeamStatsById);
+statRoutes.get("/api/teams/:teamName/seasons", teamsController.getTeamSeasons);
+statRoutes.get("/api/team/name/:teamName", teamsController.getTeamStatsByName);
 
-// Get team overall stats by team name (resolves active team id then aggregates)
-statRoutes.get("/api/team/name/:teamName", async (req: Request, res: Response) => {
-  try {
-    const teamName: string = decodeURIComponent(req.params.teamName);
-    if (!teamName) {
-      return res.status(400).json({ error: "Invalid team name" });
-    }
-    const teamId = await getTeamIdByName(teamName);
-    if (!teamId) {
-      return res.status(404).json({ error: "Team Not Found" });
-    }
-    const overallStats = await teamStatsAggregation(teamId);
-    if (!overallStats) {
-      return res.status(404).json({ error: "Team Stats Not Found" });
-    }
-    let teamLogo: string | null = null;
-    try {
-      const divisions = await getDivisionsForSeason();
-      for (const div of divisions) {
-        if (!div.eventId) continue;
-        try {
-          const dennysApiResponse = await fetch(`https://dennys.lowbudgetlcs.com/api/v1/event/${div.eventId}/teams`);
-          if (!dennysApiResponse.ok) continue;
-          const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
-          const matched = dennysApiEventData.teams.find((t) => t.name.toLowerCase() === teamName.toLowerCase());
-          if (matched?.logoName) {
-            teamLogo = matched.logoName;
-            break;
-          }
-        } catch (logoErr: any) {
-          console.warn("Error fetching logo from Dennys for division", div.eventId, logoErr.message);
-        }
-      }
-    } catch (err) {
-      console.warn("Error getting divisions or logos:", err);
-    }
-    return res.json({ teamId, overallStats, logo: teamLogo });
-  } catch (err: any) {
-    console.error("Error fetching team stats by name:", err);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// Check if a player is in the database
-statRoutes.get("/api/player/check/:summonerName/:tagline", async (req: Request, res: Response) => {
-  try {
-    const summonerName: string = req.params.summonerName;
-    const tagline: string = req.params.tagline;
-    const playerResponse = await getPlayer(summonerName, tagline);
-    if (!playerResponse) {
-      return res.status(404).json({ found: false });
-    }
-    return res.status(200).json({ found: true, puuid: playerResponse.players.puuid });
-  } catch (err: any) {
-    console.error("Error checking player existence:", err);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-statRoutes.get("/api/seasons", async (req: Request, res: Response) => {
-  try {
-    const response = await getSeasons();
-    if (response.length <= 0) {
-      return res.status(404).json({ error: "Seasons Not Found" });
-    }
-    return res.json(response);
-  } catch (err: any) {
-    console.error("Error getting all seasons:", err);
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// Cache map for teams and divisions for a season
-const seasonCache = new Map<number, any>();
-statRoutes.get("/api/seasons/:seasonId", async (req: Request, res: Response) => {
-  // 10 hours
-  const seasonCacheTTL = 10 * 60 * 60 * 1000;
-  if (seasonCache.has(Number(req.params.seasonId))) {
-    return res.status(200).json(seasonCache.get(Number(req.params.seasonId)));
-  } else {
-    try {
-      console.log(`Fetching season data for season ID ${req.params.seasonId} from DB.`);
-      const seasonId: number = Number(req.params.seasonId);
-      if (isNaN(seasonId) || seasonId <= 0) {
-        return res.status(400).json({ error: "Invalid season ID" });
-      }
-      const teamsResponse: TeamResponse[] = await getTeamsBySeason(seasonId);
-      if (teamsResponse.length <= 0) {
-        return res.status(404).json({ error: "Season Not Found" });
-      }
-      // Adds logos from dennys for each
-      for (const team of teamsResponse) {
-        try {
-          if (!team.teams) continue;
-          const dennysApiResponse = await fetch(`https://dennys.lowbudgetlcs.com/api/v1/event/${team.divisions.eventId}/teams`);
-          if (dennysApiResponse) {
-            const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
-            const matchedTeam = dennysApiEventData.teams.find((t) => t.name.toLowerCase() === team.teams?.teamName.toLowerCase());
-            if (matchedTeam) {
-              team.teams.logo = matchedTeam.logoName;
-            }
-          }
-        } catch (logoErr: any) {
-          console.warn(`Error getting logos: `, logoErr.message);
-        }
-      }
-      const divisionsResponse = await getDivisionsForSelectedSeason(seasonId);
-      if (divisionsResponse.length <= 0) {
-        return res.status(404).json({ error: "Season Not Found" });
-      }
-      // Set cache to avoid repeated calls within TTL
-      seasonCache.set(seasonId, { teams: teamsResponse, divisions: divisionsResponse });
-      setTimeout(() => {
-        seasonCache.delete(seasonId);
-      }, seasonCacheTTL);
-      console.log(`Cached season data for season ID ${seasonId} for 10 hours.`);
-      return res.json({ teams: teamsResponse, divisions: divisionsResponse });
-    } catch (err: any) {
-      console.error("Error getting season by ID:", err);
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
-});
-
-statRoutes.get("/api/teams/:teamName/seasons", async (req: Request, res: Response) => {
-  try {
-    const teamName = req.params.teamName;
-    const seasons = await getTeamSeasonsByName(teamName);
-    res.json(seasons);
-  } catch (error) {
-    console.error("Error fetching team seasons:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-statRoutes.get("/api/achievements", async (req: Request, res: Response) => {
-  try {
-    const achievements = await getAllAchievements();
-    res.json(achievements);
-  } catch (error) {
-    console.error("Error fetching achievements:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
+statRoutes.get("/api/seasons", seasonsController.getAllSeasons);
+statRoutes.get("/api/seasons/:seasonId", seasonsController.getSeasonById);
+statRoutes.get("/api/achievements", achievementsController.getAchievements);
 
 export default statRoutes;

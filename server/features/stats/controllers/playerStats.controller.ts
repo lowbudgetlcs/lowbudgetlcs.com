@@ -49,10 +49,25 @@ const getPlayerSeasons = async (req: Request, res: Response, next: Function) => 
   }
 };
 
+const checkPlayerExists = async (req: Request, res: Response, next: Function) => {
+  try {
+    const summonerName: string = req.params.summonerName;
+    const tagline: string = req.params.tagline;
+    const playerResponse = await getPlayer(summonerName, tagline);
+    if (!playerResponse) {
+      return res.status(404).json({ found: false });
+    }
+    return res.status(200).json({ found: true, puuid: playerResponse.players.puuid });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const playerStatsController = {
   getOverallStatsForPlayer,
   getPlayerStatsByPuuid,
   getPlayerSeasons,
+  checkPlayerExists,
 };
 
 export default playerStatsController;
