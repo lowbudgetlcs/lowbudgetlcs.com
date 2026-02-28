@@ -24,8 +24,11 @@ statRoutes.get("/api/team/:teamId", teamsController.getTeamStatsById);
 statRoutes.get("/api/teams/:teamName/seasons", teamsController.getTeamSeasons);
 statRoutes.get("/api/team/name/:teamName", teamsController.getTeamStatsByName);
 
+// Season Routes
 statRoutes.get("/api/seasons", seasonsController.getAllSeasons);
 statRoutes.get("/api/seasons/:seasonId", seasonsController.getSeasonById);
+
+// Achievement Route
 statRoutes.get("/api/achievements", achievementsController.getAchievements);
 
 export default statRoutes;
