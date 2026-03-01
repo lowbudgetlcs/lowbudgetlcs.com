@@ -1,9 +1,10 @@
 import { PlatformId, RiotAPI } from "@fightmegg/riot-api";
-import { Constants, LolApi } from "twisted";
+import { waitForRiotRateLimit } from "../utils/riotRateLimiter";
 
 const getPlayerPuuid = async (gameName: string, tagLine: string) => {
   try {
     const rAPI = new RiotAPI(process.env.RIOTAPI || "");
+    await waitForRiotRateLimit();
     const response = await rAPI.account.getByRiotId({
       region: PlatformId.AMERICAS,
       gameName: gameName,

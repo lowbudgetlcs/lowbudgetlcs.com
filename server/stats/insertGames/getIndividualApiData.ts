@@ -1,6 +1,7 @@
 import { PlatformId, RiotAPI } from "@fightmegg/riot-api";
 import { SheetGameData } from "./getGameDataFromSheets";
 import { checkForGameId } from "../../db/queries/select";
+import { waitForRiotRateLimit } from "../../utils/riotRateLimiter";
 
 const getIndividualApiMatchData = async (game: SheetGameData) => {
   try {
@@ -9,6 +10,7 @@ const getIndividualApiMatchData = async (game: SheetGameData) => {
     const dbGameCheck = await checkForGameId(matchId);
     if (dbGameCheck) return null;
 
+    await waitForRiotRateLimit();
     const apiResponse = await rAPI.matchV5.getMatchById({
       cluster: PlatformId.AMERICAS,
       matchId: matchId,

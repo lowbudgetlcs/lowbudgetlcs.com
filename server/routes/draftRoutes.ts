@@ -12,8 +12,8 @@ import { DraftInitializeProps, initializeDraftState } from "../draftTool/states/
 import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
 import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
 import ShortUniqueId from "short-unique-id";
-import { LolApi } from "twisted";
-import { RiotAPI, RiotAPITypes } from "@fightmegg/riot-api";
+import { RiotAPI } from "@fightmegg/riot-api";
+import { waitForRiotRateLimit } from "../utils/riotRateLimiter";
 const { randomUUID } = new ShortUniqueId({ length: 10 });
 
 draftRoutes.get("/api/updates", async (req: Request, res: Response) => {
@@ -39,6 +39,7 @@ draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Resp
       return;
     }
     const rAPI = new RiotAPI(process.env.RIOTAPI);
+    await waitForRiotRateLimit();
     const response = await rAPI.tournamentV5.getByTournamentCode({ tournamentCode: shortCode });
     if (response) {
       res.status(200).json({ valid: true });

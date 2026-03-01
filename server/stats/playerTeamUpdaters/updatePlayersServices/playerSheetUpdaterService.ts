@@ -5,7 +5,6 @@ import getPlayerPuuid from "../../getPlayerPuuid";
 import parseSimpleDateString from "../../utils/parseSimpleDateString";
 import teamHistoryUpdate from "../updateTeamServices/teamHistoryUpdater";
 import { DbPlayer } from "./playerDbNameUpdater";
-import delay from "../../utils/delay";
 
 const credentialsPath = path.join(__dirname, "../../../credentials.json");
 
@@ -17,10 +16,6 @@ const auth = new google.auth.GoogleAuth({
 export const playerSheetUpdaterService = async () => {
   try {
     console.log("🚀 [Sheet Player Reader] Starting daily player update from Google Sheets...");
-
-    let requestCount = 0;
-    const rateLimit = 400; // Riot API rate limit per 1 minute
-    const timeToWait = 60000; // 1 minute in milliseconds
 
     const sheets = google.sheets({ version: "v4", auth });
     const divisionsData = await getDivisionsForSeason();
@@ -99,15 +94,7 @@ export const playerSheetUpdaterService = async () => {
     // Step 2: call Riot API only for unique accounts and build players list.
     const uniqueAccounts = Array.from(accountsMap.values());
     for (const acc of uniqueAccounts) {
-      if (requestCount >= rateLimit) {
-        console.log(`⏱️ Rate limit of ${rateLimit} reached for Riot. Pausing for 2 minutes...`);
-        await delay(timeToWait);
-        requestCount = 0;
-        console.log("✅ Resuming API calls for Riot.");
-      }
-
       const getAccount = await getPlayerPuuid(acc.summonerName, acc.tagLine);
-      requestCount++;
       if (!getAccount) {
         console.warn(
           "[Sheet Player Reader] No Account found for summoner: ",
