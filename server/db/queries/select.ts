@@ -369,7 +369,10 @@ export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: num
   }
   try {
     const result = await db
-      .select({ teamId: playerTeamHistoryInWebsite.teamId })
+      .select({
+        teamId: playerTeamHistoryInWebsite.teamId,
+        matchedPlayers: sql<number>`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`,
+      })
       .from(playerTeamHistoryInWebsite)
       .where(
         and(
@@ -379,9 +382,24 @@ export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: num
       )
       .groupBy(playerTeamHistoryInWebsite.teamId)
       .orderBy(desc(sql`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`))
-      .limit(1);
+      .limit(2);
 
-    return result.length > 0 ? result[0].teamId : null;
+    if (result.length === 0) {
+      return null;
+    }
+
+    const bestMatch = Number(result[0].matchedPlayers);
+    const secondBestMatch = result.length > 1 ? Number(result[1].matchedPlayers) : -1;
+
+    if (bestMatch < 3) {
+      return null;
+    }
+
+    if (bestMatch === secondBestMatch) {
+      return null;
+    }
+
+    return result[0].teamId;
   } catch (error) {
     console.error("[Game Stats Updater] Error in findTeamIdByPlayers:", error);
     return null;

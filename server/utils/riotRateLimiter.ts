@@ -24,6 +24,7 @@ export const waitForRiotRateLimit = async () => {
 
     const waitShort = shortCount >= shortLimit ? timestamps[timestamps.length - shortCount] - cutoff + 5 : 0;
     const waitLong = timestamps.length >= longLimit ? timestamps[0] - (now - longMs) + 5 : 0;
+    console.warn(`[Riot API] ⏱️ rate limit reached. Waiting for ${Math.max(waitShort, waitLong)} ms...`);
     await sleep(Math.max(10, waitShort, waitLong));
   }
 };

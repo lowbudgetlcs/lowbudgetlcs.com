@@ -90,6 +90,7 @@ export const playerSheetUpdaterService = async () => {
     console.log(
       `[Sheet Player Reader] Found ${accountsMap.size} unique account(s).`
     );
+    console.log("[Sheet Player Reader] Starting Riot API lookups for unique accounts...");
 
     // Step 2: call Riot API only for unique accounts and build players list.
     const uniqueAccounts = Array.from(accountsMap.values());
