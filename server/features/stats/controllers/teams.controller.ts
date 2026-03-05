@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getDivisionsForSeason, getTeamIdByName, getTeamSeasonsByName } from "../../../db/queries/select";
 import { EventWithTeamsDto } from "../../../routes/rosterRoutes";
-import teamStatsAggregation from "../../../stats/teamStatsAggregation";
+import teamStatsAggregation from "../services/teamStatsAggregation.service";
 
 const getTeamStatsById = async (req: Request, res: Response, next: Function) => {
 	try {

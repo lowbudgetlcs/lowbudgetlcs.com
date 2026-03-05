@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getPlayer } from "../../../db/queries/statQueries/select";
-import playerStatsAggregation from "../../../stats/playerStatsAggregation";
+import playerStatsAggregation from "../services/playerStatAggregation.service";
 import { getPlayerSeasonsByPuuid } from "../../../db/queries/select";
 
 const getOverallStatsForPlayer = async (req: Request, res: Response, next: Function) => {
