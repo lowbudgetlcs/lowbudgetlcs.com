@@ -7,7 +7,10 @@ const getOverallStatsForPlayer = async (req: Request, res: Response, next: Funct
   try {
     const summonerName: string = req.params.summonerName;
     const tagline: string = req.params.tagline;
-    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
+    const seasonId = req.query.seasonId !== undefined ? Number(req.query.seasonId) : undefined;
+    if (seasonId !== undefined && (!Number.isInteger(seasonId) || seasonId <= 0)) {
+      return res.status(400).json({ error: "Invalid seasonId" });
+    }
 
     const playerResponse = await getPlayer(summonerName, tagline);
     if (!playerResponse) {
@@ -27,7 +30,10 @@ const getOverallStatsForPlayer = async (req: Request, res: Response, next: Funct
 const getPlayerStatsByPuuid = async (req: Request, res: Response, next: Function) => {
   try {
     const puuid: string = req.params.puuid;
-    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
+    const seasonId = req.query.seasonId !== undefined ? Number(req.query.seasonId) : undefined;
+    if (seasonId !== undefined && (!Number.isInteger(seasonId) || seasonId <= 0)) {
+      return res.status(400).json({ error: "Invalid seasonId" });
+    }
 
     const overallStats = await playerStatsAggregation(puuid, seasonId);
     if (!overallStats) {

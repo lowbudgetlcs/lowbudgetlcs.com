@@ -60,7 +60,10 @@ const getAllGamesForPlayer = async (req: Request, res: Response, next: NextFunct
   try {
     const summonerName: string = req.params.summonerName;
     const tagline: string = req.params.tagline;
-    const seasonId = req.query.seasonId ? Number(req.query.seasonId) : undefined;
+    const seasonId = req.query.seasonId !== undefined ? Number(req.query.seasonId) : undefined;
+    if (seasonId !== undefined && (!Number.isInteger(seasonId) || seasonId <= 0)) {
+      return res.status(400).json({ error: "Invalid seasonId" });
+    }
 
     const puuidResponse = await getPlayer(summonerName, tagline);
     if (!puuidResponse || !puuidResponse.players.puuid) {

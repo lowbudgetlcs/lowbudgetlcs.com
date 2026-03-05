@@ -64,7 +64,7 @@ const getTeamStatsByName = async (req: Request, res: Response, next: Function) =
 
 const getTeamSeasons = async (req: Request, res: Response, next: Function) => {
 	try {
-		const teamName = req.params.teamName;
+		const teamName = decodeURIComponent(req.params.teamName);
 		const seasons = await getTeamSeasonsByName(teamName);
 		res.json(seasons);
 	} catch (err) {
