@@ -5,6 +5,7 @@ import { useState } from "react";
 import SubdomainLink from "../components/SubdomainLink";
 import Theme from "./Theme";
 import { useLocalStorageState } from "../hooks/uselocalStorageState";
+import StatsSearchUI from "../features/Stats/components/StatsSearchUI";
 
 interface FullNavProps {
   isOpen: boolean;
@@ -27,9 +28,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
 
   return (
     <div
-      className={`fullNav fixed w-10/12 md:w-3/5 h-screen font-serif ${
-        isOpen ? "opacity-100" : "opacity-0"
-      } ${
+      className={`fullNav fixed w-10/12 md:w-3/5 h-screen font-serif ${isOpen ? "opacity-100" : "opacity-0"} ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } bg-linear-to-r from-black left-0 top-0 transition-all duration-500 ease-in-out flex flex-col
       `}>
@@ -67,11 +66,7 @@ function FullNav({ isOpen, setIsOpen }: FullNavProps) {
           </NavLink>
         </li>
         <li className="animate-slide-in-800 opacity-0">
-          <SubdomainLink
-            to="/"
-            subdomain="draft"
-            className="hover:text-orange transition duration-300"
-            onClick={closeToTop}>
+          <SubdomainLink to="/" subdomain="draft" className="hover:text-orange transition duration-300" onClick={closeToTop}>
             <div className="navBox pl-14 py-10">Draft Tool</div>
           </SubdomainLink>
         </li>
@@ -86,6 +81,7 @@ function Navbar() {
   const [isLightMode, setIsLightMode] = useLocalStorageState<boolean>("lightMode", false);
   const location = useLocation();
   const isHome = location.pathname === "/";
+  const isStats = location.pathname.startsWith("/stats");
 
   function toggleNavbar() {
     setIsOpen(!isOpen);
@@ -100,34 +96,25 @@ function Navbar() {
   });
 
   return (
-    <header
-      className={`fixed top-0 z-20 transition duration-500 mx-auto w-full h-20 ${
-        isTop ? "" : "bg-bg-light ring ring-border"
-      }`}>
+    <header className={`fixed top-0 z-20 transition duration-500 mx-auto w-full h-14 ${isTop ? "" : "bg-bg-light ring ring-border"}`}>
       <div className="flex items-center justify-between px-4 text-lg h-full overflow-hidden ">
-        <div
-          onClick={toggleNavbar}
-          className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10">
+        <div onClick={toggleNavbar} className="burger relative h-6 w-6 flex flex-col gap-1 hover:cursor-pointer z-10">
           <div
-            className={`absolute ${
-              isOpen ? "top-2 rotate-45" : "top-0"
-            } transition-all duration-500 ease-out px-3 py-0.5 rounded-xl ${
+            className={`absolute ${isOpen ? "top-2 rotate-45" : "top-0"} transition-all duration-500 ease-out px-3 py-0.5 rounded-xl ${
               (isTop && isHome) || isOpen ? "bg-white" : "bg-text-primary"
             }`}></div>
           <div
-            className={`absolute ${
-              isOpen ? "opacity-0" : "opacity-100"
-            } transition-all duration-500 ease-out top-2 px-3 py-0.5 rounded-xl ${
+            className={`absolute ${isOpen ? "opacity-0" : "opacity-100"} transition-all duration-500 ease-out top-2 px-3 py-0.5 rounded-xl ${
               (isTop && isHome) || isOpen ? "bg-white" : "bg-text-primary"
             }`}></div>
           <div
-            className={`absolute ${
-              isOpen ? "top-2 -rotate-45" : "top-4"
-            } transition-all duration-500 ease-out px-3 py-0.5 rounded-xl ${
+            className={`absolute ${isOpen ? "top-2 -rotate-45" : "top-4"} transition-all duration-500 ease-out px-3 py-0.5 rounded-xl ${
               (isTop && isHome) || isOpen ? "bg-white" : "bg-text-primary"
             }`}></div>
         </div>
+
         <div className="flex gap-4 items-center justify-center">
+          {isStats && <StatsSearchUI navbar={true} />}
           <Theme isLightMode={isLightMode} setIsLightMode={setIsLightMode} isHome={isTop && isHome} />
           <Logo isHome={isTop && isHome} isLightMode={isLightMode} />
         </div>

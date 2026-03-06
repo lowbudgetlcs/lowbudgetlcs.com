@@ -12,8 +12,8 @@ function Logo({isHome, isLightMode }: {isHome: boolean; isLightMode: boolean}) {
         <img
           src={isHome || (!isHome && !isLightMode) ? logo : altLogo}
           alt="logo"
-          width={140}
-          height={140}
+          width={100}
+          height={100}
         />
       </MainLink>
     </div>
