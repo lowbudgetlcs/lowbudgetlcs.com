@@ -3,6 +3,7 @@ import Button from "../../../components/Button";
 import { handlePlayerSearch } from "./StatsSearch";
 import { useNavigate } from "react-router-dom";
 import LoadingIcon from "../../../components/LoadingIcon";
+import AltButton from "../../../components/AltButton";
 
 function StatsSearchUI({ navbar }: { navbar?: boolean }) {
   const [summonerName, setSummonerName] = useState("");
@@ -19,7 +20,7 @@ function StatsSearchUI({ navbar }: { navbar?: boolean }) {
 
   if (navbar) {
     return (
-      <div className="search absolute right-48 hidden md:flex items-center bg-bg-primary">
+      <div className="search hidden md:flex items-center bg-bg-primary">
         <form onSubmit={handleFormSubmit} className="flex relative items-center">
           <input
             id="summonerName"
@@ -28,7 +29,7 @@ function StatsSearchUI({ navbar }: { navbar?: boolean }) {
             placeholder="JohnDoe#NA1"
             className="h-6 rounded-lg px-2 py-4 text-text-primary bg-bg placeholder:text-text-secondary focus:outline-none ring-border ring focus:ring focus:ring-orange focus:ring-offset-2 focus:ring-offset-bg"
           />
-          <Button className="scale-75">{loading ? <LoadingIcon /> : "Search"}</Button>
+          <AltButton className="scale-75">{loading ? <LoadingIcon /> : "Search"}</AltButton>
         </form>
         {error ? <p className="errorMessage absolute -bottom-10 text-orange text-sm">{error}</p> : <br />}
       </div>
@@ -47,7 +48,9 @@ function StatsSearchUI({ navbar }: { navbar?: boolean }) {
             className="h-12 w-full rounded-md text-2xl px-2 py-4 text-text-primary bg-bg placeholder:text-text-secondary focus:outline-none ring-border ring focus:ring focus:ring-orange focus:ring-offset-2 focus:ring-offset-bg"
           />
         </div>
-        <Button type="submit" className="w-24">{loading ? <LoadingIcon /> : "Submit"}</Button>
+        <Button type="submit" className="w-24">
+          {loading ? <LoadingIcon /> : "Submit"}
+        </Button>
       </form>
       {error ? <p className="error-message text-orange text-center">{error}</p> : <br />}
     </div>
