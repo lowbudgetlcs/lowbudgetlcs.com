@@ -1,26 +1,13 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
-import getRecentGames from "./api/getRecentGames";
-import { RecentGame } from "../../types/StatTypes";
 import StatsSearchUI from "./components/StatsSearchUI";
 import MiniGameCard from "./components/cards/MiniGameCard";
 import Title from "../../components/Title";
 import Button from "../../components/Button";
+import useRecentGamesQuery from "./api/queries/useRecentGamesQuery";
+import LoadingIcon from "../../components/LoadingIcon";
 const Stats = () => {
-  const [recentGames, setRecentGames] = useState<RecentGame[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: recentGames, isLoading: loading, error } = useRecentGamesQuery(4);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await getRecentGames(4);
-      if (response.length > 0) {
-        setRecentGames(response);
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
   return (
     <div className="text-text-primary grow pt-16 transition duration-300 w-full px-4 md:px-16 max-w-7xl mb-4">
       <Title title="Stats" />
@@ -46,12 +33,14 @@ const Stats = () => {
       </div>
       <div className={`bg-bg rounded-xl border p-4 border-border flex flex-col w-full transition text-text-primary`}>
         <h2 className="text-2xl text-center font-bold opacity-0 pb-2 animate-slide-in-left">Recent Games</h2>
+        {error && <p className="text-center text-red mt-4">Failed to load recent games. Please try again later.</p>}
+        {loading && (
+          <div className="flex justify-center py-8">
+            <LoadingIcon />
+          </div>
+        )}
         <div className="flex flex-col md:grid grid-cols-2 gap-2 items-center min-h-64">
-          {loading ? (
-            <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
-          ) : (
-            recentGames.map((game, index) => <MiniGameCard key={index} game={game} />)
-          )}
+          {loading ? null : error ? null : recentGames?.map((game, index) => <MiniGameCard key={index} game={game} />)}
         </div>
       </div>
     </div>
