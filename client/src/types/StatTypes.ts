@@ -289,3 +289,9 @@ export interface RecentGame {
   draftCode: string | null;
   fearlessCode: string | null;
 }
+
+export interface TeamByNameResponse {
+  teamId: number;
+  overallStats: TeamOverallStats;
+  logo?: string | null;
+}
