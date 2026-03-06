@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "../../../components/Button";
 import { handlePlayerSearch } from "./StatsSearch";
 import { useNavigate } from "react-router-dom";
+import LoadingIcon from "../../../components/LoadingIcon";
 
 function StatsSearchUI({ navbar }: { navbar?: boolean }) {
   const [summonerName, setSummonerName] = useState("");
@@ -18,51 +19,37 @@ function StatsSearchUI({ navbar }: { navbar?: boolean }) {
 
   if (navbar) {
     return (
-      <div className="search absolute right-48 hidden md:flex flex-col items-center">
+      <div className="search absolute right-48 hidden md:flex items-center bg-bg-primary">
         <form onSubmit={handleFormSubmit} className="flex relative items-center">
           <input
             id="summonerName"
             name="summonerName"
             onChange={(e) => setSummonerName(e.target.value)}
             placeholder="JohnDoe#NA1"
-            className="h-6 rounded-lg px-2 py-4 text-black"
+            className="h-6 rounded-lg px-2 py-4 text-text-primary bg-bg placeholder:text-text-secondary focus:outline-none ring-border ring focus:ring focus:ring-orange focus:ring-offset-2 focus:ring-offset-bg"
           />
-          <button type="submit" className="scale-75">
-            <Button>
-              {loading ? (
-                <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-3"></div>
-              ) : (
-                "Search"
-              )}
-            </Button>
-          </button>
-          {error ? <p className="errorMessage absolute -bottom-5 text-orange">{error}</p> : <br />}
+          <Button className="scale-75">{loading ? <LoadingIcon /> : "Search"}</Button>
         </form>
+        {error ? <p className="errorMessage absolute -bottom-10 text-orange text-sm">{error}</p> : <br />}
       </div>
     );
   }
   return (
-    <div className="search">
+    <div className="search mb-4">
       <h2 className="text-center text-xl font-bold">Search a Player</h2>
-      <form onSubmit={handleFormSubmit} className="flex flex-col p-2 items-center">
-        <input
-          id="summonerName"
-          name="summonerName"
-          onChange={(e) => setSummonerName(e.target.value)}
-          placeholder="JohnDoe#NA1"
-          className="h-12 rounded-lg text-2xl px-2 py-4 text-black"
-        />
-        {error ? <p className="error-message text-orange">{error}</p> : <br />}
-        <button type="submit">
-          <Button>
-            {loading ? (
-              <div className="animate-spin border-b-2 border-l-2 border-t-2 border-orange rounded-full p-3"></div>
-            ) : (
-              "Submit"
-            )}
-          </Button>
-        </button>
+      <form onSubmit={handleFormSubmit} className="flex flex-col md:flex-row p-2 items-center w-full gap-2">
+        <div className="flex flex-col gap-2 grow">
+          <input
+            id="summonerName"
+            name="summonerName"
+            onChange={(e) => setSummonerName(e.target.value)}
+            placeholder="JohnDoe#NA1"
+            className="h-12 w-full rounded-md text-2xl px-2 py-4 text-text-primary bg-bg placeholder:text-text-secondary focus:outline-none ring-border ring focus:ring focus:ring-orange focus:ring-offset-2 focus:ring-offset-bg"
+          />
+        </div>
+        <Button type="submit" className="w-24">{loading ? <LoadingIcon /> : "Submit"}</Button>
       </form>
+      {error ? <p className="error-message text-orange text-center">{error}</p> : <br />}
     </div>
   );
 }
