@@ -35,7 +35,7 @@ function StatsSearchUI({ navbar }: { navbar?: boolean }) {
     );
   }
   return (
-    <div className="search mb-4">
+    <div className="search">
       <h2 className="text-center text-xl font-bold">Search a Player</h2>
       <form onSubmit={handleFormSubmit} className="flex flex-col md:flex-row p-2 items-center w-full gap-2">
         <div className="flex flex-col gap-2 grow">

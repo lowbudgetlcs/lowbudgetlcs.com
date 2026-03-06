@@ -22,8 +22,8 @@ const Stats = () => {
     fetchData();
   }, []);
   return (
-    <div className="gap-2 bg-bg-dark text-text-primary grow pt-20 transition duration-300 w-full md:px-16 max-w-7xl">
-      <Title title="Stats" />
+    <div className="bg-bg-dark text-text-primary grow pt-16 transition duration-300 w-full px-4 md:px-16 max-w-7xl mb-4">
+        <Title title="Stats" />
       <div className="flex flex-col items-center justify-center">
         <ul className="flex flex-col lg:flex-row items-center gap-4">
           {/* <NavLink
@@ -40,13 +40,13 @@ const Stats = () => {
             <Button>Teams List</Button>
           </NavLink>
         </ul>
-        <div className="playerSearch opacity-0 pt-8 [animation-delay:400ms] animate-fadeIn w-full max-w-3xl">
+        <div className="playerSearch opacity-0 pt-4 [animation-delay:400ms] animate-fadeIn w-full max-w-3xl">
           <StatsSearchUI />
         </div>
       </div>
-      <div className={`bg-light-gray rounded-md md:w-md lg:w-lg border-2 p-4 border-gray flex flex-col transition text-white`}>
+      <div className={`bg-bg rounded-xl border p-4 border-border flex flex-col w-full transition text-text-primary`}>
         <h2 className="text-2xl text-center font-bold opacity-0 pb-2 animate-slide-in-left">Recent Games</h2>
-        <div className="flex flex-col gap-2 items-center min-h-64">
+        <div className="flex flex-col md:grid grid-cols-2 gap-2 items-center min-h-64">
           {loading ? (
             <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
           ) : (
