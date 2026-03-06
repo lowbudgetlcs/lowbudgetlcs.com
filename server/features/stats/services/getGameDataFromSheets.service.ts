@@ -1,6 +1,6 @@
 import { google } from "googleapis";
 import path from "path";
-import { getDivisionsForSeason } from "../../db/queries/select";
+import { getDivisionsForSeason } from "../../../db/queries/select";
 
 export interface SheetGameData {
   gameId: number;

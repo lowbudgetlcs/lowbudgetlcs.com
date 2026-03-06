@@ -1,7 +1,7 @@
 import { PlatformId, RiotAPI } from "@fightmegg/riot-api";
-import { SheetGameData } from "./getGameDataFromSheets";
-import { checkForGameId } from "../../db/queries/select";
-import { waitForRiotRateLimit } from "../../utils/riotRateLimiter";
+import { SheetGameData } from "./getGameDataFromSheets.service";
+import { checkForGameId } from "../../../db/queries/select";
+import { waitForRiotRateLimit } from "../../../utils/riotRateLimiter";
 
 const getIndividualApiMatchData = async (game: SheetGameData) => {
   try {

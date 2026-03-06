@@ -1,7 +1,7 @@
 import { RiotAPITypes } from "@fightmegg/riot-api";
-import { checkForGameId } from "../../db/queries/select";
-import { SheetGameData } from "./getGameDataFromSheets";
-import getIndividualApiMatchData from "./getIndividualApiData";
+import { checkForGameId } from "../../../db/queries/select";
+import { SheetGameData } from "./getGameDataFromSheets.service";
+import getIndividualApiMatchData from "./getIndividualApiData.service";
 export interface ApiMatchData {
   divisionId: number;
   gameId: string;

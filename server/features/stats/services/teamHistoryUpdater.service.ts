@@ -6,7 +6,7 @@ import {
   getSelectTeams,
 } from "../../../db/queries/select";
 import { closeHistoryRecord } from "../../../db/queries/update";
-import { DbPlayer } from "../updatePlayersServices/playerDbNameUpdater";
+import { DbPlayer } from "./playerDbNameUpdater.service";
 
 export interface DbTeamData {
   teamName: string;

@@ -15,10 +15,10 @@ import {
   FearlessFinishedProps,
   FearlessInitializerProps,
 } from "../../draftTool/interfaces/initializerInferfaces";
-import { DbTeamData } from "../../stats/playerTeamUpdaters/updateTeamServices/teamHistoryUpdater";
-import formatDate from "../../stats/utils/formatDate";
+import { DbTeamData } from "../../features/stats/services/teamHistoryUpdater.service";
+import formatDate from "../../features/stats/utils/formatDate";
 import { RiotAPITypes } from "@fightmegg/riot-api";
-import { ProcessedGameData } from "../../stats/insertGames/processApiGameData";
+import { ProcessedGameData } from "../../features/stats/services/processApiGameData.service";
 
 export async function insertDraft(draft: DraftInitializeProps) {
   try {

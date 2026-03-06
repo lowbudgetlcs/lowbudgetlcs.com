@@ -1,5 +1,5 @@
-import { ApiMatchData } from "./getGameDataFromApi";
-import { findTeamIdByPlayers, getHistoricalTeamIdsByName } from "../../db/queries/select";
+import { ApiMatchData } from "./getGameDataFromApi.service";
+import { findTeamIdByPlayers, getHistoricalTeamIdsByName } from "../../../db/queries/select";
 import { RiotAPITypes } from "@fightmegg/riot-api";
 
 export interface ProcessedGameData {

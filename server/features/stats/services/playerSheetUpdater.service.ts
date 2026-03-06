@@ -1,10 +1,10 @@
 import { google } from "googleapis";
 import path from "path";
 import { getDivisionsForSeason } from "../../../db/queries/select";
-import getPlayerPuuid from "../../getPlayerPuuid";
-import parseSimpleDateString from "../../utils/parseSimpleDateString";
-import teamHistoryUpdate from "../updateTeamServices/teamHistoryUpdater";
-import { DbPlayer } from "./playerDbNameUpdater";
+import getPlayerPuuid from "./getPlayerPuuid.service";
+import parseSimpleDateString from "../utils/parseSimpleDateString";
+import teamHistoryUpdate from "./teamHistoryUpdater.service";
+import { DbPlayer } from "./playerDbNameUpdater.service";
 
 const credentialsPath = path.join(__dirname, "../../../credentials.json");
 

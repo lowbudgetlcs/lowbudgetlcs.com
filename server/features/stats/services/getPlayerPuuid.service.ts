@@ -1,5 +1,5 @@
 import { PlatformId, RiotAPI } from "@fightmegg/riot-api";
-import { waitForRiotRateLimit } from "../utils/riotRateLimiter";
+import { waitForRiotRateLimit } from "../../../utils/riotRateLimiter";
 
 const getPlayerPuuid = async (gameName: string, tagLine: string) => {
   try {

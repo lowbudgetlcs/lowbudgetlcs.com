@@ -1,10 +1,10 @@
 // import functionToInsertDataIntoDB from './your-db-insert-function';
 
-import { insertFullMatchData } from "../db/queries/insert";
-import { getExistingMatchIds } from "../db/queries/select";
-import getGameDataFromApi from "./insertGames/getGameDataFromApi";
-import getGameDataFromSheets from "./insertGames/getGameDataFromSheets";
-import processApiGameData from "./insertGames/processApiGameData";
+import { insertFullMatchData } from "../../../db/queries/insert";
+import { getExistingMatchIds } from "../../../db/queries/select";
+import getGameDataFromApi from "../services/getGameDataFromApi.service";
+import getGameDataFromSheets from "../services/getGameDataFromSheets.service";
+import processApiGameData from "../services/processApiGameData.service";
 
 const runDailyGameUpdate = async () => {
   try {

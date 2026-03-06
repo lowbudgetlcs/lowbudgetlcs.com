@@ -1,5 +1,5 @@
 import nodeCron from "node-cron";
-import runDailyGameUpdate from "../stats/runDailyStatsUpdate";
+import runDailyGameUpdate from "../features/stats/controllers/dailyStatsUpdate.controller";
 
 const scheduleGameStatsUpdate = () => {
   const formatter = new Intl.DateTimeFormat("en-US", {
