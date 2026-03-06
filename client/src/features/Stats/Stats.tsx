@@ -22,8 +22,8 @@ const Stats = () => {
     fetchData();
   }, []);
   return (
-    <div className="bg-bg-dark text-text-primary grow pt-16 transition duration-300 w-full px-4 md:px-16 max-w-7xl mb-4">
-        <Title title="Stats" />
+    <div className="text-text-primary grow pt-16 transition duration-300 w-full px-4 md:px-16 max-w-7xl mb-4">
+      <Title title="Stats" />
       <div className="flex flex-col items-center justify-center">
         <ul className="flex flex-col lg:flex-row items-center gap-4">
           {/* <NavLink
