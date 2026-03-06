@@ -45,7 +45,7 @@ function StatsSearchUI({ navbar }: { navbar?: boolean }) {
             name="summonerName"
             onChange={(e) => setSummonerName(e.target.value)}
             placeholder="JohnDoe#NA1"
-            className="h-12 w-full rounded-md text-2xl px-2 py-4 text-text-primary bg-bg placeholder:text-text-secondary focus:outline-none ring-border ring focus:ring focus:ring-orange focus:ring-offset-2 focus:ring-offset-bg"
+            className="h-10 w-full rounded-md text-2xl px-2 py-4 text-text-primary bg-bg placeholder:text-text-secondary focus:outline-none ring-border ring focus:ring focus:ring-orange focus:ring-offset-2 focus:ring-offset-bg"
           />
         </div>
         <Button type="submit" className="w-24">
