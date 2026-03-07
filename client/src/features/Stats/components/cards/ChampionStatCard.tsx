@@ -10,8 +10,8 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
   return (
     <div
       key={champ.championName}
-      className="championContainer border-2 border-gray bg-gray rounded-md bg-opacity-20 p-4">
-      <div className="flex gap-2 border-gray pb-2">
+      className="championContainer border border-border bg-bg-light rounded-md p-4 text-text-primary">
+      <div className="flex gap-2 border-b border-border pb-2 mb-4">
         <img
           src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${champ.championName}/square`}
           width={"50px"}
@@ -20,7 +20,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         <div className="champText flex justify-between items-center w-full bg-">
           <div>
             <p className="font-bold">{champ.championName}</p>
-            <p className="opacity-55">{champ.games} Games</p>
+            <p className="text-text-secondary">{champ.games} Games</p>
           </div>
           <p>
             Win Rate:
@@ -35,7 +35,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         {/* KDA */}
         <IndividualStatCard
           icon={<LuSwords className="text-white w-6.25 h-6.25" />}
-          iconBgColor="bg-red bg-opacity-50"
+          iconBgColor="bg-green/70"
           title="KDA Ratio"
           value={champ.kda.toFixed(2)}
           valueColor={champ.kda >= 2 ? "text-blue" : champ.kda <= 1 ? "text-red" : "text-white"}
@@ -43,14 +43,14 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         {/* Damage/Min */}
         <IndividualStatCard
           icon={<GiMineExplosion className="text-white w-6.25 h-6.25" />}
-          iconBgColor="bg-purple bg-opacity-50"
+          iconBgColor="bg-purple/70"
           title="DMG/Min"
           value={champ.avgDamagePerMin.toFixed(0)}
         />
         {/* Deaths/Game */}
         <IndividualStatCard
           icon={<FaSkull className="text-white w-6.25 h-6.25" />}
-          iconBgColor="bg-slate-500 bg-opacity-50"
+          iconBgColor="bg-slate-500/70"
           title="Deaths/Game"
           value={champ.avgDeaths.toFixed(1)}
           valueColor={champ.avgDeaths <= 4 ? "text-blue" : "text-red"}
@@ -58,7 +58,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         {/* KP */}
         <IndividualStatCard
           icon={<FaHandshake className="text-white w-6.25 h-6.25" />}
-          iconBgColor="bg-pink-500 bg-opacity-50"
+          iconBgColor="bg-pink-500/70"
           title="Kill Participation"
           value={champ.avgKillParticipation.toFixed(0) + "%"}
           valueColor={champ.avgKillParticipation >= 49.5 ? "text-blue" : "text-red"}
@@ -66,7 +66,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         {/* CS/Game */}
         <IndividualStatCard
           icon={<BsGraphUp className="text-white w-6.25 h-6.25" />}
-          iconBgColor="bg-green bg-opacity-50"
+          iconBgColor="bg-green/70"
           title="CS/Min"
           value={champ.avgCsPerMin.toFixed(1)}
         />
@@ -74,7 +74,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
         {/* Gold/Game */}
         <IndividualStatCard
           icon={<MdAttachMoney className="text-white w-6.25 h-6.25" />}
-          iconBgColor="bg-yellow bg-opacity-50"
+          iconBgColor="bg-yellow/70"
           title="Gold/Min"
           value={champ.avgGoldPerMin.toFixed(1)}
         />

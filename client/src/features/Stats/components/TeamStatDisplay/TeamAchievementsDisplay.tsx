@@ -20,6 +20,16 @@ const iconMap: { [key: string]: React.ElementType } = {
   FaCrown: FaCrown,
 };
 
+const achievementColorClasses: Record<string, string> = {
+  green: "border-green bg-green/40",
+  red: "border-red bg-red/40",
+  gray: "border-gray bg-gray/40",
+  purple: "border-purple bg-purple/40",
+  blue: "border-blue bg-blue/40",
+  orange: "border-orange bg-orange/40",
+  yellow: "border-yellow bg-yellow/40",
+};
+
 const TeamAchievementsDisplay = ({ teamData }: TeamAchievementsDisplayProps) => {
   const { data: customAchievementsDef } = useQuery({
     queryKey: ["achievements"],
@@ -46,7 +56,7 @@ const TeamAchievementsDisplay = ({ teamData }: TeamAchievementsDisplayProps) => 
           return (
             <div
               key={`custom-${ach.id}`}
-              className={`achievement flex gap-2 border-2 border-${ach.color} bg-${ach.color}/40 items-center px-2 py-1 rounded-md`}
+              className={`achievement flex gap-2 border-2 items-center px-2 py-1 rounded-md ${achievementColorClasses[ach.color] ?? "border-border bg-border/40"}`}
               title={ach.description}>
               <IconComponent />
               <p>{ach.name}</p>

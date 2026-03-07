@@ -22,6 +22,16 @@ const iconMap: { [key: string]: React.ElementType } = {
   FaCrown: FaCrown,
 };
 
+const achievementColorClasses: Record<string, string> = {
+  green: "border-green bg-green/40",
+  red: "border-red bg-red/40",
+  gray: "border-gray bg-gray/40",
+  purple: "border-purple bg-purple/40",
+  blue: "border-blue bg-blue/40",
+  orange: "border-orange bg-orange/40",
+  yellow: "border-yellow bg-yellow/40",
+};
+
 const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
   const { data: customAchievementsDef } = useQuery({
     queryKey: ["achievements"],
@@ -30,9 +40,7 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
 
   const customAchievementsIds = playerData?.customAchievements || [];
 
-  const displayedCustomAchievements = customAchievementsDef
-    ? customAchievementsDef.filter((ach) => customAchievementsIds.includes(ach.id))
-    : [];
+  const displayedCustomAchievements = customAchievementsDef ? customAchievementsDef.filter((ach) => customAchievementsIds.includes(ach.id)) : [];
 
   const displayedCommonAchievements = playerData
     ? commonAchievements.filter((ach) => {
@@ -51,19 +59,18 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
 
   return (
     <div className="achievements">
-      <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Achievements</h2>
-      <div className="achievementContainer flex flex-col sm:flex-row flex-wrap gap-4 text-white/95 items-center md:items-start">
+      <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Achievements</h2>
+      <div className="achievementContainer flex flex-col sm:flex-row flex-wrap gap-4 text-text-primary items-center md:items-start">
         {/* Custom Achievements */}
         {displayedCustomAchievements.map((ach) => {
           const IconComponent = iconMap[ach.icon] || FaCrown;
           return (
             <div
               key={`custom-${ach.id}`}
-              className={`achievement group relative flex gap-2 border-2 border-${ach.color} bg-${ach.color} bg-opacity-40 items-center px-2 py-1 rounded-md cursor-context-menu select-none`}
-            >
+              className={`achievement group relative flex gap-2 border-2 items-center px-2 py-1 rounded-md cursor-context-menu select-none ${achievementColorClasses[ach.color] ?? "border-border bg-border/40"}`}>
               <IconComponent />
               <p>{ach.name}</p>
-              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-50 bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn text-center pointer-events-none">
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-50 bg-bg border border-border text-text-primary text-xs px-2 py-1 rounded-md z-50 animate-fadeIn text-center pointer-events-none shadow-lg">
                 {ach.description}
               </div>
             </div>
@@ -76,11 +83,10 @@ const AchievementsDisplay = ({ playerData }: AchievementsDisplayProps) => {
           return (
             <div
               key={`common-${index}`}
-              className={`achievement group relative flex gap-2 border-2 border-${ach.color} bg-${ach.color} bg-opacity-40 items-center px-2 py-1 rounded-md cursor-context-menu select-none`}
-            >
+              className={`achievement group relative flex gap-2 border-2 items-center px-2 py-1 rounded-md cursor-context-menu select-none ${achievementColorClasses[ach.color] ?? "border-border bg-border/40"}`}>
               {IconComponent && <IconComponent />}
               <p>{ach.name}</p>
-              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-37.5 bg-gray text-white text-xs px-2 py-1 rounded-sm z-50 animate-fadeIn-300ms text-center pointer-events-none">
+              <div className="hidden group-hover:block absolute top-full mt-2 left-1/2 -translate-x-1/2 w-max max-w-37.5 bg-bg border border-border text-text-primary text-xs px-2 py-1 rounded-md z-50 animate-fadeIn-300ms text-center pointer-events-none shadow-lg">
                 {ach.desc}
               </div>
             </div>

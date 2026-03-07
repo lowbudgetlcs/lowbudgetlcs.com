@@ -15,8 +15,11 @@ const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) =>
           width={900}
           height={400}
         />
-        <div className="absolute top-0 w-full h-full bg-linear-to-b from-black via-transparent to-black"></div>
-        <div className="absolute top-0 w-full h-full bg-linear-to-r from-black via-transparent to-black"></div>
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: "radial-gradient(ellipse 50% 50% at center, transparent 30%, transparent 45%, var(--color-bg-dark) 100%)",
+          }}></div>
       </div>
     </div>
   );
