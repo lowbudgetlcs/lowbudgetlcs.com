@@ -6,9 +6,10 @@ interface NavListProps {
   navItems: Array<string | number>;
   prefix?: string;
   param: string;
+  replaceHistory?: boolean;
 }
 
-const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, prefix, param }) => {
+const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, prefix, param, replaceHistory = false }) => {
   let currentAnimationNum = 200;
   return (
     <div className="sidebar text-text-secondary pt-20 bg-bg transition duration-500 opacity-0 animate-slide-in-right text-nowrap border-r border-border">
@@ -19,6 +20,7 @@ const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems
           return (
             <NavLink
               to={{search: `?${param}=${navItem}`}}
+              replace={replaceHistory}
               key={navItem}
               onClick={() => toggleActive(navItem)}
               className={`relative inline-flex w-fit pb-1 hover:cursor-pointer hover:text-orange transition duration-300 opacity-0 ${animationTiming}`}>
