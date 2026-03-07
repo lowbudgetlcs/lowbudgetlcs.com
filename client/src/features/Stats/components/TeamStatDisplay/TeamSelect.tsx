@@ -32,8 +32,7 @@ const TeamSelect = () => {
   }
 
   return (
-    <div className="grow w-full">
-      <div className="flex flex-col md:flex-row grow">
+      <div className="flex flex-col md:flex-row grow h-full w-full">
         <NavSideBar
           activeLink={activeLink}
           toggleActive={toggleActive}
@@ -43,7 +42,6 @@ const TeamSelect = () => {
           replaceHistory
         />
         <TeamList activeSeason={selectedSeason} />
-      </div>
     </div>
   );
 };

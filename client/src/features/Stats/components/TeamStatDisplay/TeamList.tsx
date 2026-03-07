@@ -47,7 +47,7 @@ const TeamList = ({ activeSeason }: { activeSeason: number }) => {
   }
 
   return (
-    <div className="flex flex-col teamList items-center text-white mt-14 grow min-h-[80vh]">
+    <div className="flex flex-col teamList items-center text-white mt-14 grow h-full">
       <div className="w-full">
         <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
       </div>
