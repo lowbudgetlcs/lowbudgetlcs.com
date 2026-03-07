@@ -1,33 +1,24 @@
-import { useEffect, useState } from "react";
-import TeamSidebar from "./TeamSidebar";
-import getSeasons from "../../api/getSeasons";
-import { Seasons } from "../../../../types/Seasons";
+import NavSideBar from "../../../../components/NavSideBar";
 import TeamList from "./TeamList";
 import LoadingIcon from "../../../../components/LoadingIcon";
-import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
+import useSeasonsQuery from "../../api/queries/useSeasonsQuery";
 
 const TeamSelect = () => {
-  const [activeLink, setActiveLink] = useState<number>();
-  const [navItems, setNavItems] = useState<number[]>([]);
+  const { isPending, data, error, isError } = useSeasonsQuery();
+  const [params] = useSearchParams();
 
-  const toggleActive = (navItem: number) => {
-    setActiveLink(navItem);
+  const activeLinkParam = params.get("season");
+  const activeLink = activeLinkParam ? Number(activeLinkParam) : undefined;
+  const navItems = data?.map((season) => season.id) ?? [];
+  const fallbackSeason = navItems[navItems.length - 1] ?? 15;
+  const selectedSeason = activeLink ?? fallbackSeason;
+
+  const toggleActive = () => {
+    // URL search params handle active state
   };
 
-  useEffect(() => {
-    if (navItems.length > 0 && !activeLink) {
-      setActiveLink(navItems[navItems.length - 1]);
-    }
-    return () => {};
-  }, [navItems, activeLink]);
-
-  const { isPending, data, error, isError, isSuccess } = useQuery({
-    queryKey: ["seasons"],
-    queryFn: getSeasons,
-  });
-
   if (isPending) {
-    console.log("loading");
     return (
       <div className="loading min-w-64 flex items-center justify-center h-screen">
         <LoadingIcon />
@@ -40,20 +31,18 @@ const TeamSelect = () => {
     return <div>Error loading seasons.</div>;
   }
 
-  if (isSuccess && navItems.length === 0) {
-    console.log("checked for nav items");
-    const gotNavItems: number[] = [];
-    data.forEach((season: Seasons) => {
-      gotNavItems.push(season.id);
-    });
-    setNavItems(gotNavItems);
-  }
-
   return (
     <div className="grow w-full">
       <div className="flex flex-col md:flex-row grow">
-        <TeamSidebar activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
-        <TeamList activeSeason={activeLink ? activeLink : 15} />
+        <NavSideBar
+          activeLink={activeLink}
+          toggleActive={toggleActive}
+          navItems={navItems}
+          param="season"
+          prefix="Season"
+          replaceHistory
+        />
+        <TeamList activeSeason={selectedSeason} />
       </div>
     </div>
   );
