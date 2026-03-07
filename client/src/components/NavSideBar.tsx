@@ -12,7 +12,7 @@ interface NavListProps {
 const NavSideBar: React.FC<NavListProps> = ({ activeLink, toggleActive, navItems, prefix, param, replaceHistory = false }) => {
   let currentAnimationNum = 200;
   return (
-    <div className="sidebar text-text-secondary pt-20 bg-bg transition duration-500 opacity-0 animate-slide-in-right text-nowrap border-r border-border">
+    <div className="sidebar text-text-secondary pt-14 bg-bg transition duration-500 opacity-0 animate-slide-in-right text-nowrap border-r border-border">
       <ul className="flex flex-row md:flex-col md:justify-center md:px-8 gap-8 md:text-2xl overflow-x-scroll overflow-y-hidden md:overflow-y-scroll font-bold no-scrollbar p-2">
         {navItems.map((navItem) => {
           currentAnimationNum = currentAnimationNum + 100;
