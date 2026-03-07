@@ -38,8 +38,8 @@ const TeamAchievementsDisplay = ({ teamData }: TeamAchievementsDisplayProps) => 
 
   return (
     <div className="achievements">
-      <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Achievements</h2>
-      <div className="achievementContainer flex flex-col sm:flex-row flex-wrap gap-4 text-white/95 items-center md:items-start">
+      <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Achievements</h2>
+      <div className="achievementContainer flex flex-col sm:flex-row flex-wrap gap-4 text-text-primary items-center md:items-start">
         {/* Custom Achievements */}
         {displayedCustomAchievements.map((ach) => {
           const IconComponent = iconMap[ach.icon] || FaCrown;

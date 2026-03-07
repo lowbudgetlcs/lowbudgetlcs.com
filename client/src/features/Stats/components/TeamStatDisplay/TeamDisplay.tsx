@@ -12,7 +12,7 @@ import { FaCrown, FaCoins } from "react-icons/fa";
 import { LuSwords } from "react-icons/lu";
 import { IoLogoGameControllerA } from "react-icons/io";
 import { GiMineExplosion } from "react-icons/gi";
-import { IoPieChart } from "react-icons/io5";
+import { IoEye, IoPieChart } from "react-icons/io5";
 import IndividualStatCard from "../cards/IndividualStatCard";
 import MiniGameCard from "../cards/MiniGameCard";
 import useTeamByNameQuery from "../../api/queries/useTeamByNameQuery";
@@ -61,12 +61,12 @@ function TeamDisplay() {
 
   const teamPayload = teamQuery.data;
   const teamData = shouldFetchStatsById ? statsByIdQuery.data : (teamPayload?.overallStats as TeamOverallStats);
-  const teamLogo = teamPayload?.logo || null;
+  const teamLogo = teamPayload?.logo ?? null;
   const teamGames = teamGamesQuery.data;
 
-  const goldDistribution = teamData?.goldDistribution || {};
-  const damageDistribution = teamData?.damageDistribution || {};
-  const visionDistribution = teamData?.visionDistribution || {};
+  const goldDistribution = teamData?.goldDistribution ?? {};
+  const damageDistribution = teamData?.damageDistribution ?? {};
+  const visionDistribution = teamData?.visionDistribution ?? {};
 
   if (error) {
     console.error(error);
@@ -103,20 +103,20 @@ function TeamDisplay() {
                 <div className="smallStatBoxes grid lg:grid-cols-3 gap-4">
                   <IndividualStatCard
                     icon={<FaCrown className="text-white w-6.25 h-6.25" />}
-                    iconBgColor="bg-purple/50"
+                    iconBgColor="bg-purple/70"
                     title="Win Rate"
                     value={`${teamData.winrate.toFixed(0)}%`}
                     valueColor={teamData.winrate >= 50 ? "text-blue" : "text-red"}
                   />
                   <IndividualStatCard
                     icon={<LuSwords className="text-white w-6.25 h-6.25" />}
-                    iconBgColor="bg-green/50"
+                    iconBgColor="bg-green/70"
                     title="Avg Game Length (min)"
                     value={(teamData.avgGameDuration / 60).toFixed(1)}
                   />
                   <IndividualStatCard
                     icon={<IoLogoGameControllerA className="text-white w-6.25 h-6.25" />}
-                    iconBgColor="bg-cyan-500/50"
+                    iconBgColor="bg-cyan-500/70"
                     title="Games Played"
                     value={teamData.totalGames}
                   />
@@ -124,19 +124,19 @@ function TeamDisplay() {
                 <div className="objectiveStats grid lg:grid-cols-3 gap-4 my-4">
                   <IndividualStatCard
                     icon={<GiMineExplosion className="text-white w-6.25 h-6.25" />}
-                    iconBgColor="bg-red/50"
+                    iconBgColor="bg-red/70"
                     title="Avg Dragons"
                     value={teamData.avgDragons.toFixed(2)}
                   />
                   <IndividualStatCard
                     icon={<FaCoins className="text-white w-6.25 h-6.25" />}
-                    iconBgColor="bg-orange/50"
+                    iconBgColor="bg-orange/70"
                     title="Avg Barons"
                     value={teamData.avgBarons.toFixed(2)}
                   />
                   <IndividualStatCard
                     icon={<IoPieChart className="text-white w-6.25 h-6.25" />}
-                    iconBgColor="bg-slate-500/50"
+                    iconBgColor="bg-slate-500/70"
                     title="Avg Towers"
                     value={teamData.avgTowers.toFixed(2)}
                   />
@@ -144,9 +144,9 @@ function TeamDisplay() {
 
                 <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Stat Distribution</h2>
                 <div className="distributionGrid grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <DistributionCard title="Gold" icon={<FaCoins />} iconBgColor="bg-yellow/50" data={goldDistribution} />
-                  <DistributionCard title="Damage" icon={<GiMineExplosion />} iconBgColor="bg-red/50" data={damageDistribution} />
-                  <DistributionCard title="Vision" icon={<IoPieChart />} iconBgColor="bg-cyan/50" data={visionDistribution} />
+                  <DistributionCard title="Gold" icon={<FaCoins />} iconBgColor="bg-yellow/70" data={goldDistribution} />
+                  <DistributionCard title="Damage" icon={<GiMineExplosion />} iconBgColor="bg-red/70" data={damageDistribution} />
+                  <DistributionCard title="Vision" icon={<IoEye />} iconBgColor="bg-cyan-500/70" data={visionDistribution} />
                 </div>
                 <div className="flex flex-col md:flex-row gap-4">
                   <div className="grow">

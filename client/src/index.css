@@ -75,10 +75,17 @@
   --animate-largeScreenScaleBounce: largeScreenScaleBounce 0.5s linear;
   --animate-expandWidth-5s: expandWidth 5s linear;
   --animate-slideOut: slideOut 0.5s linear forwards;
+  --animate-growBar: grow-bar 1s ease forwards;
 
   --font-serif: Roboto, Helvetica, Arial, sans-serif;
 
   --transition-property-width: width;
+
+  @keyframes grow-bar {
+    from {
+      transform: scaleX(0);
+    }
+  }
 
   @keyframes slide-in {
     0% {

@@ -12,10 +12,10 @@ const IndividualStatCard = ({
   valueColor?: string;
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row items-center px-4 border-gray border-2 bg-gray bg-opacity-20 rounded-md truncate">
+    <div className="flex flex-col sm:flex-row items-center px-4 border border-border bg-bg-light bg-opacity-20 rounded-md truncate">
       <div className={`${iconBgColor} p-1 rounded-md`}>{icon}</div>
       <div className="text flex flex-col p-2 items-center sm:items-start truncate">
-        <h2 className="opacity-55">{title}</h2>
+        <h2 className="text-text-secondary">{title}</h2>
         <p className={`text-2xl ${valueColor}`}>{value}</p>
       </div>
     </div>

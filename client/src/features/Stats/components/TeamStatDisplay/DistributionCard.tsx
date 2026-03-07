@@ -1,5 +1,3 @@
-// Chart rendering removed — use CSS bars only to avoid extra chart area
-
 const laneOrder = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "SUPPORT"];
 
 const DistributionCard = ({
@@ -30,9 +28,9 @@ const DistributionCard = ({
   });
 
   return (
-    <div className="distributionCard bg-gray/20 border-2 border-gray rounded-md p-4 text-white">
+    <div className="distributionCard bg-bg-light border border-border rounded-md p-4 text-text-primary">
       <div className="flex items-center gap-3 mb-2">
-        <div className={`${iconBgColor} p-1 rounded-md flex items-center justify-center`}>{icon}</div>
+        <div className={`${iconBgColor} p-1 rounded-md flex items-center justify-center text-white`}>{icon}</div>
         <h3 className="text-lg font-semibold">{title}</h3>
       </div>
 
@@ -45,11 +43,11 @@ const DistributionCard = ({
             <div key={label} className="mb-3">
               <div className="flex justify-between items-baseline mb-1">
                 <div className="text-sm">{laneName}</div>
-                <div className="text-sm text-white">{display}%</div>
+                <div className="text-sm text-text-secondary">{display}%</div>
               </div>
-              <div className="w-full bg-white/20 rounded-sm h-4">
+              <div className="w-full bg-bg-dark rounded-sm h-4">
                 <div
-                  className="h-4 rounded-sm bg-white"
+                  className="h-4 rounded-sm bg-text-primary light:bg-text-secondary origin-left animate-growBar"
                   style={{ width: `${Math.max(0, Math.min(100, v))}%` }}
                 />
               </div>
@@ -57,7 +55,6 @@ const DistributionCard = ({
           );
         })}
       </div>
-
     </div>
   );
 };
