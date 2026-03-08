@@ -1,7 +1,7 @@
 import nodeCron from "node-cron";
 import runDailyGameUpdate from "../features/stats/controllers/dailyStatsUpdate.controller";
 
-const scheduleGameStatsUpdate = () => {
+const scheduleGameStatsUpdate = async () => {
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Chicago",
     hour: "numeric",
@@ -14,7 +14,7 @@ const scheduleGameStatsUpdate = () => {
   } else {
     // Run on startup
     console.log("--- Running Initial Game Stats Update ---");
-    runDailyGameUpdate();
+    await runDailyGameUpdate();
   }
 
   const task = nodeCron.schedule(

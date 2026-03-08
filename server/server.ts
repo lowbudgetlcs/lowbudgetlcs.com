@@ -94,11 +94,11 @@ fearlessSocket(fearlessNamespace);
 // Cron Jobs
 schedulePlayerDbUpdate()
   .then(() => {
-    scheduleGameStatsUpdate();
+    return scheduleGameStatsUpdate();
   })
   .catch((error) => {
     console.error("[schedulePlayerDbUpdate] ❌ Failed to schedule player DB update:", error);
-    scheduleGameStatsUpdate();
+    return scheduleGameStatsUpdate();
   });
 scheduleImageFetch();
 
