@@ -38,7 +38,7 @@ const ChampionStatCard = ({ champ }: { champ: ChampionStat }) => {
           iconBgColor="bg-green/70"
           title="KDA Ratio"
           value={champ.kda.toFixed(2)}
-          valueColor={champ.kda >= 2 ? "text-blue" : champ.kda <= 1 ? "text-red" : "text-white"}
+          valueColor={champ.kda >= 2 ? "text-blue" : champ.kda <= 1 ? "text-red" : "text-text-primary"}
         />
         {/* Damage/Min */}
         <IndividualStatCard
