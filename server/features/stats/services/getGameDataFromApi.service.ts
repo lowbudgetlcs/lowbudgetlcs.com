@@ -1,5 +1,4 @@
 import { RiotAPITypes } from "@fightmegg/riot-api";
-import { checkForGameId } from "../../../db/queries/select";
 import { SheetGameData } from "./getGameDataFromSheets.service";
 import getIndividualApiMatchData from "./getIndividualApiData.service";
 export interface ApiMatchData {
@@ -14,9 +13,6 @@ const getGameDataFromApi = async (sheetGames: SheetGameData[]) => {
   try {
     const allMatchData: ApiMatchData[] = [];
     for (const game of sheetGames) {
-      const dbGameCheck = await checkForGameId(`NA1_${game.gameId}`);
-      if (dbGameCheck) continue;
-      
       const checkGameId = await getIndividualApiMatchData(game);
       if (!checkGameId) continue;
       allMatchData.push(checkGameId);

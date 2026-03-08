@@ -348,6 +348,20 @@ export const checkForGameId = async (matchId: string) => {
   }
 };
 
+export const getHistoriesForPlayers = async (puuids: string[]) => {
+  if (puuids.length === 0) return [];
+  try {
+    const histories = await db
+      .select()
+      .from(playerTeamHistoryInWebsite)
+      .where(inArray(playerTeamHistoryInWebsite.playerPuuid, puuids));
+    return histories;
+  } catch (err) {
+    console.error("Error fetching histories for players: ", err);
+    return [];
+  }
+};
+
 // Bulk fetch existing match IDs from the DB. Returns an array of matchId strings that exist.
 export const getExistingMatchIds = async (matchIds: string[]) => {
   if (!matchIds || matchIds.length === 0) return [];
@@ -423,62 +437,18 @@ export const getTeamIdByName = async (name: string) => {
   }
 };
 export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]> => {
-  const historicalIds: number[] = [];
-  const visitedIds = new Set<number>();
-  let currentTeamName: string | null = name;
-  let nextFormerTeamId: number | null = null;
-
-  const maxIterations = 100; // Safety limit
-  let iterations = 0;
-
   try {
-    // First, finds the starting team by its name
-    const initialTeam = await db
-      .select({
-        id: teamsInWebsite.id,
-        formerTeamId: teamsInWebsite.formerTeam,
-      })
-      .from(teamsInWebsite)
-      .where(eq(teamsInWebsite.teamName, currentTeamName))
-      .limit(1);
-
-    if (initialTeam.length === 0) {
-      return []; // No team found with that name
-    }
-
-    historicalIds.push(initialTeam[0].id);
-    visitedIds.add(initialTeam[0].id);
-    nextFormerTeamId = initialTeam[0].formerTeamId;
-
-    // Iteratively walks down the 'former_team' chain
-    while (nextFormerTeamId && iterations < maxIterations) {
-      // Cycle detection
-      if (visitedIds.has(nextFormerTeamId)) {
-        console.warn("[Game Stats Updater] Cycle detected in former_team chain");
-        break;
-      }
-      iterations++;
-
-      const formerTeam = await db
-        .select({
-          id: teamsInWebsite.id,
-          formerTeamId: teamsInWebsite.formerTeam,
-        })
-        .from(teamsInWebsite)
-        .where(eq(teamsInWebsite.id, nextFormerTeamId))
-        .limit(1);
-
-      if (formerTeam.length > 0) {
-        historicalIds.push(formerTeam[0].id);
-        visitedIds.add(formerTeam[0].id);
-        nextFormerTeamId = formerTeam[0].formerTeamId;
-      } else {
-        // No more former teams in the chain
-        nextFormerTeamId = null;
-      }
-    }
-
-    return historicalIds;
+    // Uses a recursive CTE to walk the former_team chain in a single query
+    const result = await db.execute<{ id: number }>(sql`
+      WITH RECURSIVE team_chain AS (
+        SELECT id, former_team FROM website.teams WHERE team_name = ${name}
+        UNION
+        SELECT t.id, t.former_team FROM website.teams t
+        INNER JOIN team_chain tc ON t.id = tc.former_team
+      )
+      SELECT id FROM team_chain
+    `);
+    return Array.from(result).map((r: any) => r.id as number);
   } catch (error) {
     console.error("[Game Stats Updater] Error in getHistoricalTeamIdsByName:", error);
     return [];

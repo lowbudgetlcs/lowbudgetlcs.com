@@ -142,46 +142,39 @@ export const insertTeams = async (teams: DbTeamData[]) => {
 export const insertPlayerTeamHistory = async (puuid: string, teamId: number, date: Date) => {
   try {
     const formattedDate = date.toISOString().split("T")[0];
-    await db.insert(playerTeamHistoryInWebsite).values({
+    const [inserted] = await db.insert(playerTeamHistoryInWebsite).values({
       playerPuuid: puuid,
       teamId: teamId,
       startDate: formattedDate,
-    });
+    }).returning({ id: playerTeamHistoryInWebsite.id });
+    return inserted?.id ?? null;
   } catch (err) {
     console.error("Error inserting with insertPlayerTeamHistory: ", err);
+    return null;
   }
 };
 
-const insertMatch = async (gameData: ProcessedGameData) => {
-  try {
-    const { info: matchInfo } = gameData.matchData;
-    const insertMatch = await db.insert(matchesInWebsite).values({
-      matchId: gameData.gameId,
-      divisionId: gameData.divisionId,
-      gameVersion: matchInfo.gameVersion,
-      gameCreation: matchInfo.gameCreation,
-      gameDuration: matchInfo.gameDuration,
-      gameStartTimeStamp: matchInfo.gameStartTimestamp,
-      gameEndTimeStamp: matchInfo.gameEndTimestamp,
-      endOfGameResult: matchInfo.endOfGameResult,
-      queueId: matchInfo.queueId,
-      tournamentCode: matchInfo.tournamentCode,
-    });
-    return true;
-  } catch (err) {
-    console.error("Error inserting with insertMatch: ", err);
-    return false;
-  }
+const buildMatchValues = (gameData: ProcessedGameData) => {
+  const { info: matchInfo } = gameData.matchData;
+  return {
+    matchId: gameData.gameId,
+    divisionId: gameData.divisionId,
+    gameVersion: matchInfo.gameVersion,
+    gameCreation: matchInfo.gameCreation,
+    gameDuration: matchInfo.gameDuration,
+    gameStartTimeStamp: matchInfo.gameStartTimestamp,
+    gameEndTimeStamp: matchInfo.gameEndTimestamp,
+    endOfGameResult: matchInfo.endOfGameResult,
+    queueId: matchInfo.queueId,
+    tournamentCode: matchInfo.tournamentCode,
+  };
 };
 
-const insertMatchTeamStats = async (game: ProcessedGameData) => {
-  const teamsData = game.matchData.info.teams;
-
-  for (const team of teamsData) {
+const buildTeamStatsValues = (game: ProcessedGameData) => {
+  return game.matchData.info.teams.map((team) => {
     // This is specifically for grubs and atakhan since the ObjectivesDTO is outdated 😢
     const objectives = team.objectives as any;
-
-    await db.insert(matchTeamStatsInWebsite).values({
+    return {
       matchId: game.gameId,
       teamId: team.win ? game.winningTeamId : game.losingTeamId,
       riotTeamId: team.teamId,
@@ -193,17 +186,17 @@ const insertMatchTeamStats = async (game: ProcessedGameData) => {
       towerKills: team.objectives.tower.kills,
       hordeKills: objectives.horde.kills,
       atakhanKills: objectives.atakhan.kills,
-    });
-  }
+    };
+  });
 };
 
-const insertMatchParticipants = async (game: ProcessedGameData) => {
+const buildParticipantValues = (game: ProcessedGameData) => {
   const participants = game.matchData.info.participants;
   const winningRiotTeamId = game.matchData.info.teams.find((t) => t.win)?.teamId;
 
-  for (const p of participants) {
+  return participants.map((p) => {
     const participant = p as any;
-    await db.insert(matchParticipantsInWebsite).values({
+    return {
       matchId: game.gameId,
       playerPuuid: p.puuid,
       participantId: p.participantId,
@@ -321,8 +314,8 @@ const insertMatchParticipants = async (game: ProcessedGameData) => {
       teamEarlySurrendered: p.teamEarlySurrendered,
       perks: p.perks,
       challenges: p.challenges,
-    });
-  }
+    };
+  });
 };
 
 export const insertFullMatchData = async (processedGames: ProcessedGameData[]) => {
@@ -336,9 +329,9 @@ export const insertFullMatchData = async (processedGames: ProcessedGameData[]) =
         continue;
       }
       await db.transaction(async (tx) => {
-        await insertMatch(game);
-        await insertMatchTeamStats(game);
-        await insertMatchParticipants(game);
+        await tx.insert(matchesInWebsite).values(buildMatchValues(game));
+        await tx.insert(matchTeamStatsInWebsite).values(buildTeamStatsValues(game));
+        await tx.insert(matchParticipantsInWebsite).values(buildParticipantValues(game));
       });
       successCount++;
     } catch (error) {
