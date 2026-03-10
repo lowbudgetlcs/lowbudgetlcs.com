@@ -104,11 +104,6 @@ schedulePlayerDbUpdate()
   });
 scheduleImageFetch();
 
-server
-  .listen(port, () => {
-    console.log("Server started on port " + port);
-  })
-  .on("error", (err) => {
-    console.error("Failed to start server:", err.message);
-    process.exit(1);
-  });
+server.listen(port, () => {
+  console.log("Server started on port " + port);
+});
