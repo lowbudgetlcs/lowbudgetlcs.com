@@ -11,7 +11,6 @@ import DraftRoutes from "./routes/DraftRoutes";
 import DefaultRoutes from "./routes/DefaultRoutes";
 import { useEffect } from "react";
 import StatRoutes from "./routes/StatRoutes";
-import StatsNavbar from "./features/Stats/components/StatsNavBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
@@ -64,7 +63,7 @@ function App() {
         {!isDraftRoute && <Twitch />}
         <SettingsProvider>
           <DraftSettings />
-          {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <StatsNavbar /> : <Navbar />}
+          {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <Navbar /> : <Navbar />}
           <LeagueDataProvider>
             <Routes>
               {subdomain === "draft" ? (

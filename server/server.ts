@@ -19,6 +19,8 @@ import imageRoutes from "./routes/imageRoutes";
 import adminRoutes from "./routes/adminRoutes";
 import { auth } from "./utils/auth";
 import { toNodeHandler } from "better-auth/node";
+import helmet from "helmet";
+import { errorHandler, notFoundHandler } from "./middleware/errors";
 const app = express();
 const port = 8080;
 const isProduction = process.env.PRODUCTION === "production";
@@ -26,13 +28,7 @@ const isProduction = process.env.PRODUCTION === "production";
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: isProduction
-      ? [
-          "https://lowbudgetlcs.com",
-          "https://draft.lowbudgetlcs.com",
-          "https://dennys.lowbudgetlcs.com",
-        ]
-      : "*",
+    origin: isProduction ? ["https://lowbudgetlcs.com", "https://draft.lowbudgetlcs.com", "https://dennys.lowbudgetlcs.com"] : "*",
   },
 });
 
@@ -58,8 +54,12 @@ const apiLimiter = rateLimit({
 });
 
 app.use(cors(corsOptions));
-app.all("/admin/api/auth/*", toNodeHandler(auth))
+app.use(helmet());
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.all("/admin/api/auth/*", toNodeHandler(auth));
 app.use("/api/", apiLimiter);
 
 // Forces website to be https on production
@@ -82,6 +82,8 @@ app.use("/stats", statRoutes);
 app.use("/images", imageRoutes);
 app.use("/admin", adminRoutes);
 
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // Set up namespaces
 const draftNamespace = io.of("/draft");
@@ -94,11 +96,11 @@ fearlessSocket(fearlessNamespace);
 // Cron Jobs
 schedulePlayerDbUpdate()
   .then(() => {
-    scheduleGameStatsUpdate();
+    return scheduleGameStatsUpdate();
   })
   .catch((error) => {
     console.error("[schedulePlayerDbUpdate] ❌ Failed to schedule player DB update:", error);
-    scheduleGameStatsUpdate();
+    return scheduleGameStatsUpdate();
   });
 scheduleImageFetch();
 

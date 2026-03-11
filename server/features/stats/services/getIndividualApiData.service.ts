@@ -1,14 +1,14 @@
-import { PlatformId, RiotAPI } from "@fightmegg/riot-api";
-import { SheetGameData } from "./getGameDataFromSheets";
-import { checkForGameId } from "../../db/queries/select";
+import { PlatformId } from "@fightmegg/riot-api";
+import { SheetGameData } from "./getGameDataFromSheets.service";
+import { waitForRiotRateLimit } from "../../../utils/riotRateLimiter";
+import { getRiotApiClient } from "../../../utils/riotApiClient";
 
 const getIndividualApiMatchData = async (game: SheetGameData) => {
   try {
-    const rAPI = new RiotAPI(process.env.RIOTAPI || "");
+    const rAPI = getRiotApiClient();
     const matchId = `NA1_${game.gameId}`;
-    const dbGameCheck = await checkForGameId(matchId);
-    if (dbGameCheck) return null;
 
+    await waitForRiotRateLimit();
     const apiResponse = await rAPI.matchV5.getMatchById({
       cluster: PlatformId.AMERICAS,
       matchId: matchId,

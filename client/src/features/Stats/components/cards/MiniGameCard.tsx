@@ -29,44 +29,38 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
 
   const gameDurationMs = game.gameDuration * 1000;
   const getPlayerKey = (player: any, idx: number) =>
-    player.riotIdGameName ||
-    player.summonerName ||
-    `${player.championName}-${player.teamPosition}-${player.teamId}-${idx}`;
+    player.riotIdGameName || player.summonerName || `${player.championName}-${player.teamPosition}-${player.teamId}-${idx}`;
   return (
     <div
-      className={`flex flex-col justify-center ${
+      className={`flex flex-col justify-center box-border border-l-4 ${
         !teamName
           ? team1Stats.win
-            ? "bg-blue/30"
-            : "bg-red/30"
+            ? "bg-blue/20 border-blue"
+            : "bg-red/20 border-red"
           : team1Info.teamName === teamName
-          ? team1Stats.win
-            ? "bg-blue/30"
-            : "bg-red/30"
-          : team2Stats.win
-          ? "bg-blue/30"
-          : "bg-red/30"
+            ? team1Stats.win
+              ? "bg-blue/20 border-blue"
+              : "bg-red/20 border-red"
+            : team2Stats.win
+              ? "bg-blue/20 border-blue"
+              : "bg-red/20 border-red"
       } rounded-md p-2 w-full`}>
       <div className="flex flex-col border-b-2 justify-center truncate mb-2">
         <h3 className="font-bold min-w-0 truncate flex gap-2">
-          <Link
-            className="truncate hover:underline flex gap-1 items-center"
-            to={`/stats/team/${encodeURIComponent(team1Info.teamName)}`}>
-            {team1Stats.win && <FaCrown />}
+          <Link className="truncate hover:underline flex gap-1 items-center" to={`/stats/team/${encodeURIComponent(team1Info.teamName)}`}>
+            {team1Stats.win && <FaCrown className="shrink-0" />}
             {team1Info.teamName}
           </Link>{" "}
-          <span className="text-white/80">vs.</span>{" "}
-          <Link
-            className="truncate hover:underline flex gap-1 items-center"
-            to={`/stats/team/${encodeURIComponent(team2Info.teamName)}`}>
-            {team2Stats.win && <FaCrown />}
+          <span className="text-text-secondary">vs.</span>{" "}
+          <Link className="truncate hover:underline flex gap-1 items-center" to={`/stats/team/${encodeURIComponent(team2Info.teamName)}`}>
+            {team2Stats.win && <FaCrown className="shrink-0" />}
             {team2Info.teamName}
           </Link>
         </h3>
 
         <div className="flex gap-2 items-center lg:hidden">
           <p className="text-sm font-bold">{formatDuration(gameDurationMs)}</p>
-          <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
+          <p className="text-xs text-text-secondary">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
       </div>
       <div className="btns flex items-center gap-2 mb-1">
@@ -74,27 +68,27 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
           <SubdomainLink
             subdomain="draft"
             to={`/fearless/${game.fearlessCode}`}
-            className="bg-gray hover:bg-orange transition duration-300 rounded-md px-2 py-0.5 text-sm">
+            className="bg-bg border border-border hover:border-primary-light hover:bg-primary-dark hover:text-white transition duration-300 rounded-md px-2 py-1 text-sm">
             Fearless
           </SubdomainLink>
         ) : game.draftCode ? (
           <SubdomainLink
             subdomain="draft"
             to={`/draft/${game.draftCode}`}
-            className="bg-gray hover:bg-orange transition duration-300 rounded-md px-2 py-0.5 text-sm">
+            className="bg-bg border border-border hover:border-primary-light hover:bg-primary-dark hover:text-white transition duration-300 rounded-md px-2 py-1 text-sm">
             Draft
           </SubdomainLink>
         ) : null}
         <MainLink
           to={`/mh/${game.matchId.split("_")[1]}`}
-          className="bg-gray hover:bg-orange transition duration-300 rounded-md px-2 py-1 text-sm">
+          className="bg-bg border border-border hover:border-primary-light hover:bg-primary-dark hover:text-white transition duration-300 rounded-md px-2 py-1 text-sm">
           Match
         </MainLink>
       </div>
       <div className="flex items-center gap-32">
         <div className="hidden lg:flex flex-col">
-          <p className="text-xs font-bold border-b-2">{formatDuration(gameDurationMs)}</p>
-          <p className="text-xs text-white/80">{formatTimeAgo(timeSinceGamePlayed)}</p>
+          <p className="text-xs font-bold border-b-2 border-text-primary">{formatDuration(gameDurationMs)}</p>
+          <p className="text-xs text-text-secondary">{formatTimeAgo(timeSinceGamePlayed)}</p>
         </div>
         <div className="players flex items-center gap-2">
           <div className="flex flex-col items-start gap-0.5">
@@ -103,7 +97,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName || ""}
-                  className="w-4 h-4 border-[0.5px] border-black mr-2"
+                  className="w-4 h-4 mr-2"
                 />
                 <Link
                   to={(() => {
@@ -114,7 +108,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                     }
                     return `/stats/player/${encodeURIComponent(gameName)}`;
                   })()}
-                  className="flex truncate  hover:text-white hover:underline text-white/80">
+                  className="flex truncate  hover:text-text-primary hover:underline text-text-secondary">
                   <span className="text-xs">{player.riotIdGameName}</span>
                 </Link>
               </div>
@@ -126,7 +120,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName || ""}
-                  className="w-4 h-4 border-[0.5px] border-black mr-2"
+                  className="w-4 h-4 mr-2"
                 />
                 <Link
                   to={(() => {
@@ -137,7 +131,7 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                     }
                     return `/stats/player/${encodeURIComponent(gameName)}`;
                   })()}
-                  className="flex truncate hover:text-white hover:underline text-white/80">
+                  className="flex truncate hover:text-text-primary hover:underline text-text-secondary">
                   <span className="text-xs">{player.riotIdGameName}</span>
                 </Link>
               </div>

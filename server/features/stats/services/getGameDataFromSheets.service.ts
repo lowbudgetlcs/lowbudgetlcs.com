@@ -1,6 +1,5 @@
 import { google } from "googleapis";
-import path from "path";
-import { getDivisionsForSeason } from "../../db/queries/select";
+import { getDivisionsForSeason } from "../../../db/queries/select";
 
 export interface SheetGameData {
   gameId: number;
@@ -10,7 +9,7 @@ export interface SheetGameData {
   losingTeam: string;
 }
 
-const credentialsPath = path.join(__dirname, "../../credentials.json");
+const credentialsPath = "./credentials.json";
 
 const auth = new google.auth.GoogleAuth({
   keyFile: credentialsPath,

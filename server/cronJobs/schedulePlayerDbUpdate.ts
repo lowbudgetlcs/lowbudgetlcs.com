@@ -1,9 +1,9 @@
 import nodeCron from "node-cron";
 import playerDbNameUpdater, {
   DbPlayer,
-} from "../stats/playerTeamUpdaters/updatePlayersServices/playerDbNameUpdater";
-import { playerSheetUpdaterService } from "../stats/playerTeamUpdaters/updatePlayersServices/playerSheetUpdaterService";
-import teamHistoryUpdate from "../stats/playerTeamUpdaters/updateTeamServices/teamHistoryUpdater";
+} from "../features/stats/services/playerDbNameUpdater.service";
+import { playerSheetUpdaterService } from "../features/stats/services/playerSheetUpdater.service";
+import teamHistoryUpdate from "../features/stats/services/teamHistoryUpdater.service";
 
 interface PlayerTypeProps {
   players: DbPlayer[];

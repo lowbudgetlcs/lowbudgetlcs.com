@@ -1,8 +1,7 @@
 import nodeCron from "node-cron";
-import runDailyGameUpdate from "../stats/runDailyStatsUpdate";
+import runDailyGameUpdate from "../features/stats/controllers/dailyStatsUpdate.controller";
 
-const scheduleGameStatsUpdate = () => {
-  // Check time in Chicago (Target: 4:00 AM)
+const scheduleGameStatsUpdate = async () => {
   const formatter = new Intl.DateTimeFormat("en-US", {
     timeZone: "America/Chicago",
     hour: "numeric",
@@ -10,15 +9,12 @@ const scheduleGameStatsUpdate = () => {
   });
   const currentHour = parseInt(formatter.format(new Date()));
 
-  // Skip if it's 3 AM (3:00-3:59), as the 4 AM cron will run soon
   if (currentHour === 3) {
-    console.log(
-      "--- Skipping Initial Game Stats Update (Close to scheduled 4:00 AM run) ---"
-    );
+    console.log("--- Skipping Initial Game Stats Update (Close to scheduled 4:00 AM run) ---");
   } else {
     // Run on startup
     console.log("--- Running Initial Game Stats Update ---");
-    runDailyGameUpdate();
+    await runDailyGameUpdate();
   }
 
   const task = nodeCron.schedule(
@@ -33,7 +29,7 @@ const scheduleGameStatsUpdate = () => {
     },
     {
       timezone: "America/Chicago",
-    }
+    },
   );
 
   console.log("👍 Game stats update job scheduled to run daily at 4:00 AM.");

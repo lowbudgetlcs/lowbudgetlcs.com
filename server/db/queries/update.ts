@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "..";
-import { DbPlayer } from "../../stats/playerTeamUpdaters/updatePlayersServices/playerDbNameUpdater";
+import { DbPlayer } from "../../features/stats/services/playerDbNameUpdater.service";
 import { playersInWebsite, playerTeamHistoryInWebsite } from "../schema";
-import formatDate from "../../stats/utils/formatDate";
+import formatDate from "../../features/stats/utils/formatDate";
 
 export const updateSummonerNames = async (
   playersToUpdate: DbPlayer[],

@@ -1,6 +1,6 @@
 import { getPlayersByPuuid } from "../../../db/queries/select";
 import { updateSummonerNames } from "../../../db/queries/update";
-import { playerSheetUpdaterService } from "./playerSheetUpdaterService";
+import { playerSheetUpdaterService } from "./playerSheetUpdater.service";
 
 export interface DbPlayer {
   summonerName: string;

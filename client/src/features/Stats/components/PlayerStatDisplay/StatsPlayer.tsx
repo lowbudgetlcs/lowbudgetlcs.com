@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import getPlayerOverallStats from "../../api/getPlayerOverallStats";
+import { useNavigate, useParams } from "react-router-dom";
 import PlayerStatSidebar from "./PlayerStatSidebar";
 import AchievementsDisplay from "./AchievementsDisplay";
 import PerformanceOverview from "./PerformanceOverview";
 import CombatPerformance from "./CombatPerformance";
 import EconPerformance from "./EconPerformance";
 import NavList from "../../../../layout/NavList";
-import getPlayerGames from "../../api/getPlayerGames";
 import LoadingIcon from "../../../../components/LoadingIcon";
-import { useQuery } from "@tanstack/react-query";
 import ChampionTopImage from "./ChampionTopImage";
-import getPlayerSeasons from "../../api/getPlayerSeasons";
 import ChampionStatCard from "../cards/ChampionStatCard";
 import PlayerGameCard from "../cards/PlayerGameCard";
+import usePlayerOverallStatsQuery from "../../api/queries/usePlayerOverallStatsQuery";
+import usePlayerGamesQuery from "../../api/queries/usePlayerGamesQuery";
+import usePlayerSeasonsQuery from "../../api/queries/usePlayerSeasonsQuery";
 
 function StatsPlayer() {
   const params = useParams();
@@ -38,37 +37,14 @@ function StatsPlayer() {
   const summonerName = fullSummonerName.split("-")[0];
   const tagLine = fullSummonerName.split("-")[1];
 
-  const playerStatsQuery = useQuery({
-    queryKey: ["playerData", summonerName, tagLine, selectedSeasonId],
-    queryFn: () =>
-      getPlayerOverallStats(summonerName, tagLine, selectedSeasonId ? selectedSeasonId : undefined),
-  });
-  const playerGamesQuery = useQuery({
-    queryKey: ["playerGames", summonerName, tagLine, selectedSeasonId],
-    queryFn: () =>
-      getPlayerGames(summonerName, tagLine, selectedSeasonId ? selectedSeasonId : undefined),
-  });
+  const playerStatsQuery = usePlayerOverallStatsQuery(summonerName, tagLine, selectedSeasonId ?? undefined);
+  const playerGamesQuery = usePlayerGamesQuery(summonerName, tagLine, selectedSeasonId ?? undefined);
 
-  const seasonsQuery = useQuery({
-    queryKey: ["playerSeasons", summonerName, tagLine],
-    queryFn: async () => {
-      // We need puuid to fetch seasons.
-      // We can get it from playerStatsQuery data if available, or we might need a separate call.
-      // However, playerStatsQuery returns PlayerOverallStats which has puuid.
-      // But playerStatsQuery depends on this query potentially? No.
-      // Let's wait for playerStatsQuery to succeed once to get PUUID.
-      // Or we can fetch player info first.
-      // Actually, getPlayerOverallStats returns puuid.
-      if (playerStatsQuery.data?.puuid) {
-        return getPlayerSeasons(playerStatsQuery.data.puuid);
-      }
-      return [];
-    },
+  const seasonsQuery = usePlayerSeasonsQuery(playerStatsQuery.data?.puuid ?? "", {
     enabled: !!playerStatsQuery.data?.puuid,
   });
 
-  const loading =
-    playerStatsQuery.isPending || playerGamesQuery.isPending || (seasonsQuery.isPending && !!playerStatsQuery.data?.puuid);
+  const loading = playerStatsQuery.isPending || playerGamesQuery.isPending || (seasonsQuery.isPending && !!playerStatsQuery.data?.puuid);
   const error = playerStatsQuery.error || playerGamesQuery.error;
 
   const playerData = playerStatsQuery.data;
@@ -89,20 +65,7 @@ function StatsPlayer() {
   }
 
   return (
-    <div className="relative bg-white text-black dark:bg-black dark:text-white font-serif pt-20 max-w-360 w-full mx-auto">
-      <Link
-        to="/stats"
-        className="fixed flex z-50 my-2 px-2 rounded-lg top-1 left-16 text-2xl font-semibold cursor-pointer w-fit h-fit justify-center items-center group">
-        <div className="burger cursor-pointer relative h-12 w-6 gap-1 hover:cursor-pointer self-baseline">
-          <div
-            className={`absolute -rotate-45 top-5 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
-          />
-          <div
-            className={`absolute rotate-45 top-7 left-0 transition-all duration-300 px-2 py-0.5 rounded-xl bg-white group-hover:bg-orange`}
-          />
-        </div>
-        <p className="group-hover:text-orange underline transition duration-300 ">Back</p>
-      </Link>
+    <div className="relative bg-bg-dark text-text-primary font-serif pt-14 max-w-360 w-full mx-auto">
       <div className="relative flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
         {/* Top Champion Image */}
         <ChampionTopImage playerData={playerData} />
@@ -116,7 +79,7 @@ function StatsPlayer() {
           onSeasonChange={setSelectedSeasonId}
         />
         {/* Extended Stats */}
-        <div className="extendedStatsContainer flex flex-col gap-4 grow md:mt-48 px-2 py-4 md:px-4 border-2 border-gray rounded-md min-h-64 z-10 bg-black">
+        <div className="extendedStatsContainer flex flex-col gap-4 grow md:mt-48 px-2 py-4 md:px-4 border border-border bg-bg rounded-xl min-h-64 z-10">
           <>
             {/* Achievements */}
             <AchievementsDisplay playerData={playerData} />
@@ -131,7 +94,7 @@ function StatsPlayer() {
                 </div>
                 {/* Champion Stats */}
                 <div className="specificChampStats">
-                  <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Champion Stats</h2>
+                  <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Champion Stats</h2>
                   <div className="champStats grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto">
                     {/* Champion Box */}
                     {/* Make it autofill with information from data */}
@@ -146,14 +109,12 @@ function StatsPlayer() {
               </>
             ) : activeLink === "Recent Games" ? (
               <div className="recentGames">
-                <h2 className="text-2xl font-bold border-b-2 border-white/60 mb-4">Games</h2>
+                <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Games</h2>
                 <div className="flex flex-col gap-2 items-center min-h-64">
                   {playerGames.length > 0 ? (
-                    playerGames.map((game, index) => (
-                      <PlayerGameCard key={index} game={game} puuid={playerData.puuid} />
-                    ))
+                    playerGames.map((game, index) => <PlayerGameCard key={index} game={game} puuid={playerData.puuid} />)
                   ) : (
-                    <p className="text-xl text-white">No recent games found.</p>
+                    <p className="text-xl text-text-primary">No recent games found.</p>
                   )}
                 </div>
               </div>

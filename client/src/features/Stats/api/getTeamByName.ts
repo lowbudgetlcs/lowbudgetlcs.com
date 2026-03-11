@@ -1,10 +1,5 @@
-import { TeamOverallStats } from "../../../types/StatTypes";
+import { TeamByNameResponse } from "../../../types/StatTypes";
 
-interface TeamByNameResponse {
-  teamId: number;
-  overallStats: TeamOverallStats;
-  logo?: string | null;
-}
 
 const getTeamByName = async (teamName: string): Promise<TeamByNameResponse | null> => {
   try {
