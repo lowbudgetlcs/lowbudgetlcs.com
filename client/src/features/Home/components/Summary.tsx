@@ -25,14 +25,13 @@ function Summary() {
         </h1>
         <div className="px-1.5">
           <p className="text-wrap text-gray-300 text-lg opacity-0 animate-slide-in-600">
-            We are a free, and friendly amateur rec league that mirrors what would happen if Riot Games
-            suffered a catastrophic financial disaster
+            We are a free, and friendly amateur rec league that mirrors what would happen if Riot Games suffered a catastrophic financial disaster
           </p>
         </div>
 
         <div className="flex gap-4 justify-center opacity-0 animate-slide-in-900">
           <NavLink to="https://discord.com/invite/XfsEEq4aPC" target="_blank">
-          <Button className="discord">Join The Discord</Button>
+            <Button className="discord">Join The Discord</Button>
           </NavLink>
           <Link to="/about">
             <AltButton>About Us</AltButton>
@@ -44,8 +43,12 @@ function Summary() {
           <SubdomainLink subdomain="draft" to="/" className="w-full h-full">
             <Button className="mb-4 w-full h-full">Draft Tool</Button>
           </SubdomainLink>
-          <Button className="mb-4">Rosters</Button>
-          <Button className="mb-4">Stats</Button>
+          <Link to="/rosters" className="w-full h-full">
+            <Button className="mb-4 w-full">Rosters</Button>
+          </Link>
+          <Link to="/stats" className="w-full h-full">
+            <Button className="mb-4 w-full">Stats</Button>
+          </Link>
           <div className="socials grid grid-cols-2 items-center place-items-center gap-2">
             <NavLink
               aria-label="Instagram Profile"
@@ -57,32 +60,17 @@ function Summary() {
                 <FaInstagram />
               </Button>
             </NavLink>
-            <NavLink
-                aria-label="Discord Server"
-                target="_blank"
-              to="https://discord.com/invite/XfsEEq4aPC"
-              rel="noopener"
-              className={``}>
+            <NavLink aria-label="Discord Server" target="_blank" to="https://discord.com/invite/XfsEEq4aPC" rel="noopener" className={``}>
               <Button className="text-2xl">
                 <FaDiscord />
               </Button>
             </NavLink>
-            <NavLink
-              aria-label="Twitch Channel"
-              target="_blank"
-              to="https://www.twitch.tv/lowbudgetlcs"
-              rel="noopener"
-              className={``}>
+            <NavLink aria-label="Twitch Channel" target="_blank" to="https://www.twitch.tv/lowbudgetlcs" rel="noopener" className={``}>
               <Button className="text-2xl">
                 <FaTwitch />
               </Button>
             </NavLink>
-            <NavLink
-              aria-label="Youtube Channel"
-              target="_blank"
-              to="https://www.youtube.com/@lowbudgetlcs9513"
-              rel="noopener"
-              className={``}>
+            <NavLink aria-label="Youtube Channel" target="_blank" to="https://www.youtube.com/@lowbudgetlcs9513" rel="noopener" className={``}>
               <Button className="text-2xl">
                 <FaYoutube />
               </Button>

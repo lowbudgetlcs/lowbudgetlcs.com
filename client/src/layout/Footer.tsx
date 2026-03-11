@@ -25,21 +25,21 @@ function Footer() {
               <div className="">Rules</div>
             </NavLink>
           </li>
-          {/* <li className="">
+          <li className="">
             <NavLink className="hover:text-primary-light transition" to="/stats">
               <div className="">Stats</div>
             </NavLink>
-          </li> */}
+          </li>
           <li className="">
             <MainLink className="hover:text-primary-light transition" to="/rosters">
               <div className="">Rosters</div>
             </MainLink>
           </li>
-          <li className="">
+          {/* <li className="">
             <MainLink className="hover:text-primary-light transition" to="/allstars">
               <div className="">All Stars</div>
             </MainLink>
-          </li>
+          </li> */}
           <li className="">
             <DraftLink className="hover:text-primary-light transition" to="/">
               <div className="">Draft Tool</div>
