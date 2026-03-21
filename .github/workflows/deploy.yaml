@@ -78,6 +78,8 @@ jobs:
             echo RIOTAPI="${{ secrets.RIOT_API_TOKEN }}" >> .env
             echo BETTER_AUTH_SECRET="${{ secrets.BETTER_AUTH_SECRET }}" >> .env
             echo BETTER_AUTH_URL="${{ secrets.BETTER_AUTH_URL }}" >> .env
+            echo RIOT_RATE_LIMIT_SHORT="${{ secrets.RIOT_RATE_LIMIT_SHORT }}" >> .env
+            echo RIOT_RATE_LIMIT_LONG="${{ secrets.RIOT_RATE_LIMIT_LONG }}" >> .env
             docker compose down
             docker compose pull
             docker compose up -d
