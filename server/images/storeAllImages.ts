@@ -33,9 +33,7 @@ export const storeAllImages = async () => {
 
   const championData = async () => {
     try {
-      const response = await fetch(
-        "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json"
-      );
+      const response = await fetch("https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json");
       if (!response.ok) {
         throw new Error("Failed to fetch champion data");
       }
@@ -70,6 +68,8 @@ export const storeAllImages = async () => {
             const splashCenteredUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.${lowerCaseName}.jpg`;
             const splashCenteredUrlWithRework = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}rework_splash_centered_0.${lowerCaseName}rework.jpg`;
             const splashCenteredUrlWithVgu = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.${lowerCaseName}vgu.jpg`;
+            const splashCenteredUrlWithReworkAndUnderscore = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.${lowerCaseName}_rework.jpg`;
+            const splashCenteredUrlWithAsu = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.asu_${lowerCaseName}.jpg`;
             const splashCenteredUrlWithDomina = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_centered_0.domina.jpg`;
 
             const splashTileUrlBase = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.jpg`;
@@ -77,6 +77,8 @@ export const storeAllImages = async () => {
             const splashTileUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.${lowerCaseName}.jpg`;
             const splashTileUrlWithRework = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}rework_splash_tile_0.${lowerCaseName}rework.jpg`;
             const splashTileUrlWithVgu = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.${lowerCaseName}vgu.jpg`;
+            const splashTileUrlWithReworkAndUnderscore = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.${lowerCaseName}_rework.jpg`;
+            const splashTileUrlWithAsu = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.asu_${lowerCaseName}.jpg`;
             const splashTileUrlWithDomina = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/images/${lowerCaseName}_splash_tile_0.domina.jpg`;
 
             const portraitUrlBase = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen.jpg`;
@@ -85,6 +87,8 @@ export const storeAllImages = async () => {
             const portraitUrlBaseWithExtraNameOnImage = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.${lowerCaseName}.jpg`;
             const portraitUrlWithRework = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}reworkloadscreen_0.${lowerCaseName}rework.jpg`;
             const portraitUrlWithVgu = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.${lowerCaseName}vgu.jpg`;
+            const portraitUrlWithReworkAndUnderscore = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.${lowerCaseName}_rework.jpg`;
+            const portraitUrlWithAsu = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.asu_${lowerCaseName}.jpg`;
             const portraitUrlWithDomina = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/assets/characters/${lowerCaseName}/skins/base/${lowerCaseName}loadscreen_0.domina.jpg`;
 
             const squareUrl = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-icons/${id}.png`;
@@ -95,12 +99,16 @@ export const storeAllImages = async () => {
                 .then((res) => res || fetchAndCreateUrl(splashCenteredUrlBaseWithExtraNameOnImage))
                 .then((res) => res || fetchAndCreateUrl(splashCenteredUrlWithRework))
                 .then((res) => res || fetchAndCreateUrl(splashCenteredUrlWithVgu))
+                .then((res) => res || fetchAndCreateUrl(splashCenteredUrlWithReworkAndUnderscore))
+                .then((res) => res || fetchAndCreateUrl(splashCenteredUrlWithAsu))
                 .then((res) => res || fetchAndCreateUrl(splashCenteredUrlWithDomina)),
               fetchAndCreateUrl(splashTileUrlBase)
                 .then((res) => res || fetchAndCreateUrl(splashTileUrlSkin0))
                 .then((res) => res || fetchAndCreateUrl(splashTileUrlBaseWithExtraNameOnImage))
                 .then((res) => res || fetchAndCreateUrl(splashTileUrlWithRework))
                 .then((res) => res || fetchAndCreateUrl(splashTileUrlWithVgu))
+                .then((res) => res || fetchAndCreateUrl(splashTileUrlWithReworkAndUnderscore))
+                .then((res) => res || fetchAndCreateUrl(splashTileUrlWithAsu))
                 .then((res) => res || fetchAndCreateUrl(splashTileUrlWithDomina)),
               fetchAndCreateUrl(squareUrl),
               fetchAndCreateUrl(portraitUrlBase)
@@ -109,6 +117,8 @@ export const storeAllImages = async () => {
                 .then((res) => res || fetchAndCreateUrl(portraitUrlBaseWithExtraNameOnImage))
                 .then((res) => res || fetchAndCreateUrl(portraitUrlWithRework))
                 .then((res) => res || fetchAndCreateUrl(portraitUrlWithVgu))
+                .then((res) => res || fetchAndCreateUrl(portraitUrlWithReworkAndUnderscore))
+                .then((res) => res || fetchAndCreateUrl(portraitUrlWithAsu))
                 .then((res) => res || fetchAndCreateUrl(portraitUrlWithDomina)),
             ]);
 
