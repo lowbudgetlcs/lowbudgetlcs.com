@@ -8,7 +8,7 @@ import processApiGameData from "../services/processApiGameData.service";
 
 const runDailyGameUpdate = async () => {
   try {
-    console.log("[Game Stats Updater] 1/4 Getting game data from Sheets");
+    console.log("[Game Stats Updater] 1/5 Getting game data from Sheets");
 
     // Step 1: Gets raw series data from Sheets
     const sheetData = await getGameDataFromSheets();
@@ -18,7 +18,7 @@ const runDailyGameUpdate = async () => {
     }
 
     // Step 2: Checks for games already within the DB by gameID
-    console.log("[Game Stats Updater] 2/4 Checking DB for existing games before calling Riot API...");
+    console.log("[Game Stats Updater] 2/5 Checking DB for existing games before calling Riot API...");
     const allMatchIds = sheetData.map((g) => `NA1_${g.gameId}`);
     const existingIds = await getExistingMatchIds(allMatchIds);
     const existingSet = new Set(existingIds);

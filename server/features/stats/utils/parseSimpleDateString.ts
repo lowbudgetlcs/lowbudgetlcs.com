@@ -6,7 +6,7 @@ const parseSimpleDateString = (dateString: string | null | undefined, fallbackDa
   const datePart = dateString.split(" ")[0];
   let month: number;
   let day: number;
-  const year = new Date().getFullYear(); //Assumes Current Year
+  let year = new Date().getFullYear();
 
   if (datePart.includes("/")) {
     const dateComponents = datePart.split("/");
@@ -31,10 +31,20 @@ const parseSimpleDateString = (dateString: string | null | undefined, fallbackDa
     return fallbackDate;
   }
 
-  // Validate day count for the specific month
   const testDate = new Date(year, month, day);
   if (testDate.getMonth() !== month || testDate.getDate() !== day) {
     return fallbackDate;
+  }
+
+  const now = new Date();
+  const twoMonthsFromNow = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
+  if (testDate > twoMonthsFromNow) {
+    year -= 1;
+    // Leap year check
+    const adjusted = new Date(year, month, day);
+    if (adjusted.getMonth() !== month || adjusted.getDate() !== day) {
+      return fallbackDate;
+    }
   }
 
   return new Date(year, month, day);

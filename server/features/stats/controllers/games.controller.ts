@@ -1,11 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import {
-  getGamesForPlayer,
-  getGamesForTeam,
-  getPlayer,
-  getRecentGames,
-  getRecentGamesByDivision,
-} from "../../../db/queries/statQueries/select";
+import { getGamesForPlayer, getGamesForTeam, getPlayer, getRecentGames, getRecentGamesByDivision } from "../../../db/queries/statQueries/select";
 
 const getRecentGamesByAmount = async (req: Request, res: Response, next: NextFunction) => {
   try {

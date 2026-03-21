@@ -28,7 +28,7 @@ const getGameDataFromSheets = async () => {
 
       const sheetDataResponse = await sheets.spreadsheets.values.get({
         spreadsheetId: spreadsheetId,
-        range: "'Hidden Match Forms'!A:Z",
+        range: "'Hidden Match Reporting'!A:Z",
       });
 
       const rows = sheetDataResponse.data.values;

@@ -130,6 +130,7 @@ export const playerSheetUpdaterService = async () => {
         teamName: event.teamName,
         date: parseSimpleDateString(event.dateRaw || null),
         divisionId: event.divisionId,
+        hasSheetDate: !!event.dateRaw,
       });
     }
 
@@ -148,7 +149,7 @@ export const playerSheetUpdaterService = async () => {
       uniquePlayers,
     };
   } catch (err: any) {
-    console.error("❌ [Sheet Player Reader] ERROR during daily player update:", err.message);
+    console.error("❌ [Sheet Player Reader] ERROR during daily player update:", err);
     return null;
   }
 };

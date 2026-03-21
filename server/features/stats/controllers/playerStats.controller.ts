@@ -12,7 +12,7 @@ const getOverallStatsForPlayer = async (req: Request, res: Response, next: Funct
       return res.status(400).json({ error: "Invalid seasonId" });
     }
 
-    const playerResponse = await getPlayer(summonerName, tagline);
+    const playerResponse = await getPlayer(summonerName, tagline, seasonId);
     if (!playerResponse) {
       return res.status(404).json({ error: "Player Not Found" });
     }

@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray, isNull, lte, or, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   allstarsTeamsInWebsite,
@@ -362,6 +362,19 @@ export const getHistoriesForPlayers = async (puuids: string[]) => {
   }
 };
 
+export const getAllOpenHistories = async () => {
+  try {
+    const histories = await db
+      .select()
+      .from(playerTeamHistoryInWebsite)
+      .where(isNull(playerTeamHistoryInWebsite.endDate));
+    return histories;
+  } catch (err) {
+    console.error("Error fetching all open histories: ", err);
+    return [];
+  }
+};
+
 // Bulk fetch existing match IDs from the DB. Returns an array of matchId strings that exist.
 export const getExistingMatchIds = async (matchIds: string[]) => {
   if (!matchIds || matchIds.length === 0) return [];
@@ -377,23 +390,33 @@ export const getExistingMatchIds = async (matchIds: string[]) => {
   }
 };
 
-export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[]) => {
+export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[], gameDate?: string) => {
   if (!puuids || puuids.length < 3 || !possibleTeamIds || possibleTeamIds.length === 0) {
     return null;
   }
   try {
+    const conditions = [
+      inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
+      inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds),
+    ];
+
+    if (gameDate) {
+      conditions.push(lte(playerTeamHistoryInWebsite.startDate, gameDate));
+      conditions.push(
+        or(
+          isNull(playerTeamHistoryInWebsite.endDate),
+          gte(playerTeamHistoryInWebsite.endDate, gameDate),
+        )!
+      );
+    }
+
     const result = await db
       .select({
         teamId: playerTeamHistoryInWebsite.teamId,
         matchedPlayers: sql<number>`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`,
       })
       .from(playerTeamHistoryInWebsite)
-      .where(
-        and(
-          inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
-          inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds),
-        ),
-      )
+      .where(and(...conditions))
       .groupBy(playerTeamHistoryInWebsite.teamId)
       .orderBy(desc(sql`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`))
       .limit(2);
@@ -427,7 +450,8 @@ export const getTeamIdByName = async (name: string) => {
         id: teamsInWebsite.id,
       })
       .from(teamsInWebsite)
-      .where(and(eq(teamsInWebsite.teamName, name), eq(teamsInWebsite.active, true)))
+      .where(eq(teamsInWebsite.teamName, name))
+      .orderBy(desc(teamsInWebsite.active), desc(teamsInWebsite.id))
       .limit(1);
 
     return result.length > 0 ? result[0].id : null;
@@ -535,6 +559,26 @@ export async function getChampionList() {
     return [];
   }
 }
+
+export const getAllDivisions = async () => {
+  try {
+    const divisions = await db.select().from(divisionsInWebsite);
+    return divisions;
+  } catch (err) {
+    console.error("Error fetching all divisions: ", err);
+    return [];
+  }
+};
+
+export const getAllSeasons = async () => {
+  try {
+    const seasons = await db.select().from(seasonsInWebsite).orderBy(asc(seasonsInWebsite.id));
+    return seasons;
+  } catch (err) {
+    console.error("Error fetching all seasons: ", err);
+    return [];
+  }
+};
 
 export const getUpdates = async () => {
   try {

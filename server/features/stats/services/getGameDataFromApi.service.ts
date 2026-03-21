@@ -20,6 +20,7 @@ const getGameDataFromApi = async (sheetGames: SheetGameData[]) => {
     return allMatchData;
   } catch (err) {
     console.error("[Game ID Grabber]Error getting Game Ids From Api: ", err);
+    return [];
   }
 };
 

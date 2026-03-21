@@ -67,7 +67,6 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
   const rosterStats: Record<string, RosterAccumulator> = {};
   const rosterByPuuid = new Map<string, string>();
   const rosterByRiotId = new Map<string, string>();
-  const hasSeededRoster = !!rosterFromDb?.length;
 
   (rosterFromDb ?? []).forEach((player) => {
     const key = player.puuid || `${player.summonerName}-${player.tagLine}`;
@@ -152,10 +151,9 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
       }
 
       const riotIdKey = normalizeRiotId(player.riotIdGameName, player.riotIdTagLine);
-      const knownRosterKey = player.playerPuuid ? rosterByPuuid.get(player.playerPuuid) : rosterByRiotId.get(riotIdKey);
+      let rosterKey = player.playerPuuid ? rosterByPuuid.get(player.playerPuuid) : rosterByRiotId.get(riotIdKey);
 
-      if (!knownRosterKey) {
-        if (hasSeededRoster) return;
+      if (!rosterKey) {
         const fallbackName = player.riotIdGameName ?? "Unknown";
         const fallbackTag = player.riotIdTagLine ?? "Unknown";
         const fallbackKey = player.playerPuuid || `${fallbackName}-${fallbackTag}`;
@@ -164,10 +162,8 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
           if (player.playerPuuid) rosterByPuuid.set(player.playerPuuid, fallbackKey);
           rosterByRiotId.set(normalizeRiotId(fallbackName, fallbackTag), fallbackKey);
         }
+        rosterKey = fallbackKey;
       }
-
-      const rosterKey = knownRosterKey || (player.playerPuuid ? undefined : rosterByRiotId.get(riotIdKey));
-      if (!rosterKey) return;
 
       const rosterPlayer = acc.rosterStats[rosterKey];
       rosterPlayer.gamesPlayed += 1;

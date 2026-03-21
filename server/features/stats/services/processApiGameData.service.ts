@@ -60,11 +60,15 @@ const processApiGameData = async (apiMatches: ApiMatchData[]) => {
       continue;
     }
 
+    // Derive the game date string (YYYY-MM-DD) for filtering team history by active period
+    const gameTimestamp = match.matchData.info.gameStartTimestamp;
+    const gameDate = new Date(gameTimestamp).toISOString().split("T")[0];
+
     const [team1IsWinnerId, team2IsWinnerId, team1IsLoserId, team2IsLoserId] = await Promise.all([
-      findTeamIdByPlayers(winningPlayerPuuids, team1Candidates),
-      findTeamIdByPlayers(winningPlayerPuuids, team2Candidates),
-      findTeamIdByPlayers(losingPlayerPuuids, team1Candidates),
-      findTeamIdByPlayers(losingPlayerPuuids, team2Candidates),
+      findTeamIdByPlayers(winningPlayerPuuids, team1Candidates, gameDate),
+      findTeamIdByPlayers(winningPlayerPuuids, team2Candidates, gameDate),
+      findTeamIdByPlayers(losingPlayerPuuids, team1Candidates, gameDate),
+      findTeamIdByPlayers(losingPlayerPuuids, team2Candidates, gameDate),
     ]);
 
     let finalWinningTeamId: number | null = null;

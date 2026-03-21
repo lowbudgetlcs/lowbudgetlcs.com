@@ -10,6 +10,7 @@ export interface DbPlayer {
   teamName: string;
   date: Date;
   divisionId: number | null;
+  hasSheetDate: boolean;
 }
 
 const playerDbNameUpdater = async (playersFromSheet: DbPlayer[]) => {
