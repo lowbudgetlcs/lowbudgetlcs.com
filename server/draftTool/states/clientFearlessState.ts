@@ -18,6 +18,10 @@ export const setFearlessClientState = (state: FearlessStateServerProps) => {
     allPicks: state.allPicks,
     allBans: state.allBans,
     draftLobbyCodes: state.draftLobbyCodes,
+    team1Picks: state.team1Picks,
+    team2Picks: state.team2Picks,
+    team1Bans: state.team1Bans,
+    team2Bans: state.team2Bans,
   };
   return clientState;
 };

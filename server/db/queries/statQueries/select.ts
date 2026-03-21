@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNotNull, isNull, sql } from "drizzle-orm";
 import { db } from "../..";
 import {
   divisionsInWebsite,
@@ -25,11 +25,7 @@ export const getAllAchievements = async () => {
 
 export const getRecentGames = async (amount: number) => {
   try {
-    const recentMatches = await db
-      .select()
-      .from(matchesInWebsite)
-      .orderBy(desc(matchesInWebsite.gameEndTimeStamp))
-      .limit(amount);
+    const recentMatches = await db.select().from(matchesInWebsite).where(isNotNull(matchesInWebsite.divisionId)).orderBy(desc(matchesInWebsite.gameEndTimeStamp)).limit(amount);
 
     if (recentMatches.length === 0) {
       return [];
@@ -43,10 +39,7 @@ export const getRecentGames = async (amount: number) => {
       .leftJoin(teamsInWebsite, eq(matchTeamStatsInWebsite.teamId, teamsInWebsite.id)) // Join to get team names/tags
       .where(inArray(matchTeamStatsInWebsite.matchId, matchIds));
 
-    const allParticipants = await db
-      .select()
-      .from(matchParticipantsInWebsite)
-      .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
+    const allParticipants = await db.select().from(matchParticipantsInWebsite).where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
     const finalResult = recentMatches.map((match) => {
       const teamsForMatch = allTeamStats.filter((ts) => ts.match_team_stats.matchId === match.matchId);
@@ -71,8 +64,8 @@ export const getGamesForTeam = async (teamId: number) => {
     const teamMatchStats = await db
       .select({ matchId: matchTeamStatsInWebsite.matchId, tournamentCodes: matchesInWebsite.tournamentCode })
       .from(matchTeamStatsInWebsite)
-      .where(eq(matchTeamStatsInWebsite.teamId, teamId))
-      .leftJoin(matchesInWebsite, eq(matchTeamStatsInWebsite.matchId, matchesInWebsite.matchId));
+      .leftJoin(matchesInWebsite, eq(matchTeamStatsInWebsite.matchId, matchesInWebsite.matchId))
+      .where(and(eq(matchTeamStatsInWebsite.teamId, teamId), isNotNull(matchesInWebsite.divisionId)));
 
     if (teamMatchStats.length === 0) {
       return [];
@@ -91,14 +84,9 @@ export const getGamesForTeam = async (teamId: number) => {
       .leftJoin(teamsInWebsite, eq(matchTeamStatsInWebsite.teamId, teamsInWebsite.id))
       .where(inArray(matchTeamStatsInWebsite.matchId, matchIds));
 
-    const allParticipants = await db
-      .select()
-      .from(matchParticipantsInWebsite)
-      .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
+    const allParticipants = await db.select().from(matchParticipantsInWebsite).where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
-    const tournamentCodes: string[] = Array.from(
-      new Set(teamMatches.map((match) => match.tournamentCode).filter((c): c is string => !!c))
-    );
+    const tournamentCodes: string[] = Array.from(new Set(teamMatches.map((match) => match.tournamentCode).filter((c): c is string => !!c)));
     const draftCodes = await db
       .select({
         draftCode: draftLobbiesInWebsite.lobbyCode,
@@ -129,8 +117,39 @@ export const getGamesForTeam = async (teamId: number) => {
   }
 };
 
-export const getPlayer = async (summonerName: string, tagline: string) => {
+export const getPlayer = async (summonerName: string, tagline: string, seasonId?: number) => {
   try {
+    const nameCondition = and(
+      eq(sql`lower(${playersInWebsite.summonerName})`, summonerName.toLowerCase()),
+      eq(sql`lower(${playersInWebsite.tagLine})`, tagline.toLowerCase()),
+    );
+
+    if (seasonId) {
+      // Return the team the player was on for the specific season
+      const player = await db
+        .select({
+          players: playersInWebsite,
+          team: teamsInWebsite,
+        })
+        .from(playersInWebsite)
+        .leftJoin(playerTeamHistoryInWebsite, eq(playersInWebsite.puuid, playerTeamHistoryInWebsite.playerPuuid))
+        .leftJoin(teamsInWebsite, eq(playerTeamHistoryInWebsite.teamId, teamsInWebsite.id))
+        .leftJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
+        .where(and(nameCondition, eq(divisionsInWebsite.seasonId, seasonId)))
+        .orderBy(desc(playerTeamHistoryInWebsite.startDate))
+        .limit(1);
+      if (player[0]) return player[0];
+
+      // Player exists but wasn't on a team this season — return without team
+      const playerOnly = await db
+        .select({ players: playersInWebsite })
+        .from(playersInWebsite)
+        .where(nameCondition)
+        .limit(1);
+      return playerOnly[0] ? { players: playerOnly[0].players, team: null } : null;
+    }
+
+    // Default: return current team (open history with no end date)
     const player = await db
       .select({
         players: playersInWebsite,
@@ -139,18 +158,10 @@ export const getPlayer = async (summonerName: string, tagline: string) => {
       .from(playersInWebsite)
       .leftJoin(
         playerTeamHistoryInWebsite,
-        and(
-          eq(playersInWebsite.puuid, playerTeamHistoryInWebsite.playerPuuid),
-          isNull(playerTeamHistoryInWebsite.endDate)
-        )
+        and(eq(playersInWebsite.puuid, playerTeamHistoryInWebsite.playerPuuid), isNull(playerTeamHistoryInWebsite.endDate)),
       )
       .leftJoin(teamsInWebsite, eq(playerTeamHistoryInWebsite.teamId, teamsInWebsite.id))
-      .where(
-        and(
-          eq(sql`lower(${playersInWebsite.summonerName})`, summonerName.toLowerCase()),
-          eq(sql`lower(${playersInWebsite.tagLine})`, tagline.toLowerCase())
-        )
-      )
+      .where(and(nameCondition))
       .limit(1);
     return player[0] || null;
   } catch (err) {
@@ -180,10 +191,7 @@ export const getRecentGamesByDivision = async (amount: number, divisionId: numbe
       .leftJoin(teamsInWebsite, eq(matchTeamStatsInWebsite.teamId, teamsInWebsite.id)) // Join to get team names/tags
       .where(inArray(matchTeamStatsInWebsite.matchId, matchIds));
 
-    const allParticipants = await db
-      .select()
-      .from(matchParticipantsInWebsite)
-      .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
+    const allParticipants = await db.select().from(matchParticipantsInWebsite).where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
     const finalResult = recentMatches.map((match) => {
       const teamsForMatch = allTeamStats.filter((ts) => ts.match_team_stats.matchId === match.matchId);
@@ -216,12 +224,7 @@ export const getGamesForPlayer = async (puuid: string, seasonId?: number) => {
         .from(matchParticipantsInWebsite)
         .leftJoin(matchesInWebsite, eq(matchParticipantsInWebsite.matchId, matchesInWebsite.matchId))
         .leftJoin(divisionsInWebsite, eq(matchesInWebsite.divisionId, divisionsInWebsite.id))
-        .where(
-          and(
-            eq(matchParticipantsInWebsite.playerPuuid, puuid),
-            eq(divisionsInWebsite.seasonId, seasonId)
-          )
-        );
+        .where(and(eq(matchParticipantsInWebsite.playerPuuid, puuid), eq(divisionsInWebsite.seasonId, seasonId)));
     } else {
       playerMatches = await db
         .select({
@@ -229,8 +232,8 @@ export const getGamesForPlayer = async (puuid: string, seasonId?: number) => {
           tournamentCodes: matchesInWebsite.tournamentCode,
         })
         .from(matchParticipantsInWebsite)
-        .where(eq(matchParticipantsInWebsite.playerPuuid, puuid))
-        .leftJoin(matchesInWebsite, eq(matchParticipantsInWebsite.matchId, matchesInWebsite.matchId));
+        .leftJoin(matchesInWebsite, eq(matchParticipantsInWebsite.matchId, matchesInWebsite.matchId))
+        .where(and(eq(matchParticipantsInWebsite.playerPuuid, puuid), isNotNull(matchesInWebsite.divisionId)));
     }
 
     const matchIds = playerMatches.map((ts) => ts.matchId);
@@ -241,9 +244,7 @@ export const getGamesForPlayer = async (puuid: string, seasonId?: number) => {
       .where(inArray(matchesInWebsite.matchId, matchIds))
       .orderBy(desc(matchesInWebsite.gameEndTimeStamp)); // Order by most recent
 
-    const tournamentCodes: string[] = Array.from(
-      new Set(teamMatches.map((m) => m.tournamentCode).filter((c): c is string => !!c))
-    );
+    const tournamentCodes: string[] = Array.from(new Set(teamMatches.map((m) => m.tournamentCode).filter((c): c is string => !!c)));
 
     const allTeamStats = await db
       .select()
@@ -251,10 +252,7 @@ export const getGamesForPlayer = async (puuid: string, seasonId?: number) => {
       .leftJoin(teamsInWebsite, eq(matchTeamStatsInWebsite.teamId, teamsInWebsite.id))
       .where(inArray(matchTeamStatsInWebsite.matchId, matchIds));
 
-    const allParticipants = await db
-      .select()
-      .from(matchParticipantsInWebsite)
-      .where(inArray(matchParticipantsInWebsite.matchId, matchIds));
+    const allParticipants = await db.select().from(matchParticipantsInWebsite).where(inArray(matchParticipantsInWebsite.matchId, matchIds));
 
     const draftCodes = await db
       .select({
@@ -331,11 +329,7 @@ export const getCurrentRosterForTeam = async (teamId: number) => {
 
 export const getTeamDetails = async (teamId: number) => {
   try {
-    const team = await db
-      .select()
-      .from(teamsInWebsite)
-      .where(eq(teamsInWebsite.id, teamId))
-      .limit(1);
+    const team = await db.select().from(teamsInWebsite).where(eq(teamsInWebsite.id, teamId)).limit(1);
     return team[0];
   } catch (err) {
     console.error("Error in getTeamDetails: ", err);

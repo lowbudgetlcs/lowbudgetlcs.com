@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 const rosterRoutes = express.Router();
-import path from "path";
 import { google } from "googleapis";
 import { getDivisionsForSeason } from "../db/queries/select";
 
@@ -36,7 +35,7 @@ export interface EventWithTeamsDto {
 const cache = new Map();
 const CACHE_TTL = 36000000; // 10 hours
 
-const credentialsPath = path.join(__dirname, "../credentials.json");
+const credentialsPath = "./credentials.json";
 
 const auth = new google.auth.GoogleAuth({
   keyFile: credentialsPath,

@@ -1,4 +1,4 @@
-import { and, asc, count, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, inArray, isNull, lte, or, sql } from "drizzle-orm";
 import { db } from "../index";
 import {
   allstarsTeamsInWebsite,
@@ -6,6 +6,7 @@ import {
   currentSeasonDivisionsInWebsite,
   divisionsInWebsite,
   draftLobbiesInWebsite,
+  draftUpdatesInWebsite,
   fearlessDraftLobbiesInWebsite,
   matchesInWebsite,
   playersInWebsite,
@@ -15,6 +16,7 @@ import {
 } from "../schema";
 import { ClientDraftStateProps } from "../../draftTool/states/draftState";
 import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
+import { fearlessState } from "../../draftTool/initializers/fearlessLobbyInitializer";
 
 export const getDivisionsForSeason = async () => {
   const divisionsData = await db.select().from(currentSeasonDivisionsInWebsite);
@@ -37,7 +39,7 @@ export async function checkDBForURL(blueCode: string, redCode: string) {
     })
     .from(draftLobbiesInWebsite)
     .where(
-      sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`
+      sql`${draftLobbiesInWebsite.blueCode} = ${blueCode} or ${draftLobbiesInWebsite.redCode} = ${redCode}`,
     );
   return matchingURL;
 }
@@ -170,11 +172,54 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     .from(draftLobbiesInWebsite)
     .where(eq(draftLobbiesInWebsite.fearlessCode, fearlessCode));
 
-  if (!series.fearlessComplete || !series.totalDrafts) return;
+  if (!series.totalDrafts) return null;
 
+  const team1FearlessPicks: string[] = [];
+  const team2FearlessPicks: string[] = [];
+  const team1FearlessBans: string[] = [];
+  const team2FearlessBans: string[] = [];
+
+  for (const draft of drafts) {
+    const bluePicks = [draft.bPick1, draft.bPick2, draft.bPick3, draft.bPick4, draft.bPick5];
+    const redPicks = [draft.rPick1, draft.rPick2, draft.rPick3, draft.rPick4, draft.rPick5];
+    const blueBans = [draft.bBan1, draft.bBan2, draft.bBan3, draft.bBan4, draft.bBan5];
+    const redBans = [draft.rBan1, draft.rBan2, draft.rBan3, draft.rBan4, draft.rBan5];
+    for (const pick of bluePicks) {
+      if (!pick) continue;
+      if (draft.blueCode === series.team1Code) {
+        team1FearlessPicks.push(pick);
+      } else if (draft.blueCode === series.team2Code) {
+        team2FearlessPicks.push(pick);
+      }
+    }
+    for (const pick of redPicks) {
+      if (!pick) continue;
+      if (draft.redCode === series.team1Code) {
+        team1FearlessPicks.push(pick);
+      } else if (draft.redCode === series.team2Code) {
+        team2FearlessPicks.push(pick);
+      }
+    }
+    for (const ban of blueBans) {
+      if (!ban) continue;
+      if (draft.blueCode === series.team1Code) {
+        team1FearlessBans.push(ban);
+      } else if (draft.blueCode === series.team2Code) {
+        team2FearlessBans.push(ban);
+      }
+    }
+    for (const ban of redBans) {
+      if (!ban) continue;
+      if (draft.redCode === series.team1Code) {
+        team1FearlessBans.push(ban);
+      } else if (draft.redCode === series.team2Code) {
+        team2FearlessBans.push(ban);
+      }
+    }
+  }
   const clientState: FearlessStateClientProps = {
     fearlessCode: series.fearlessCode,
-    fearlessComplete: series.fearlessComplete,
+    fearlessComplete: series.fearlessComplete || !fearlessState[series.fearlessCode] ? true : false,
     team1Name: series.team1Name,
     team2Name: series.team2Name,
     draftCount: series.totalDrafts,
@@ -182,9 +227,15 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     currentDraft: null,
     currentBlueSide: null,
     currentRedSide: null,
-    allPicks: [],
-    allBans: [],
-    draftLobbyCodes: drafts.map((draft) => draft.lobbyCode),
+    allPicks: [...team1FearlessPicks, ...team2FearlessPicks],
+    allBans: [...team1FearlessBans, ...team2FearlessBans],
+    team1Picks: team1FearlessPicks,
+    team2Picks: team2FearlessPicks,
+    team1Bans: team1FearlessBans,
+    team2Bans: team2FearlessBans,
+    draftLobbyCodes: drafts
+      .filter((draft) => draft.draftFinished)
+      .map((draft) => draft.lobbyCode),
   };
   return clientState;
 }
@@ -231,7 +282,7 @@ export const findOpenHistoryForPlayer = async (puuid: string) => {
       .select()
       .from(playerTeamHistoryInWebsite)
       .where(
-        and(eq(playerTeamHistoryInWebsite.playerPuuid, puuid), isNull(playerTeamHistoryInWebsite.endDate))
+        and(eq(playerTeamHistoryInWebsite.playerPuuid, puuid), isNull(playerTeamHistoryInWebsite.endDate)),
       )
       .orderBy(desc(playerTeamHistoryInWebsite.startDate))
       .limit(1);
@@ -280,8 +331,8 @@ export async function doesHistoryExist(puuid: string, teamId: number, startDate:
       and(
         eq(playerTeamHistoryInWebsite.playerPuuid, puuid),
         eq(playerTeamHistoryInWebsite.teamId, teamId),
-        eq(playerTeamHistoryInWebsite.startDate, formattedStartDate)
-      )
+        eq(playerTeamHistoryInWebsite.startDate, formattedStartDate),
+      ),
     )
     .limit(1);
   return result.length > 0;
@@ -294,6 +345,33 @@ export const checkForGameId = async (matchId: string) => {
   } catch (err) {
     console.error("[Game ID Grabber] Error checking for gameId in DB: ", err);
     return false;
+  }
+};
+
+export const getHistoriesForPlayers = async (puuids: string[]) => {
+  if (puuids.length === 0) return [];
+  try {
+    const histories = await db
+      .select()
+      .from(playerTeamHistoryInWebsite)
+      .where(inArray(playerTeamHistoryInWebsite.playerPuuid, puuids));
+    return histories;
+  } catch (err) {
+    console.error("Error fetching histories for players: ", err);
+    return [];
+  }
+};
+
+export const getAllOpenHistories = async () => {
+  try {
+    const histories = await db
+      .select()
+      .from(playerTeamHistoryInWebsite)
+      .where(isNull(playerTeamHistoryInWebsite.endDate));
+    return histories;
+  } catch (err) {
+    console.error("Error fetching all open histories: ", err);
+    return [];
   }
 };
 
@@ -312,25 +390,53 @@ export const getExistingMatchIds = async (matchIds: string[]) => {
   }
 };
 
-export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[]) => {
+export const findTeamIdByPlayers = async (puuids: string[], possibleTeamIds: number[], gameDate?: string) => {
   if (!puuids || puuids.length < 3 || !possibleTeamIds || possibleTeamIds.length === 0) {
     return null;
   }
   try {
+    const conditions = [
+      inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
+      inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds),
+    ];
+
+    if (gameDate) {
+      conditions.push(lte(playerTeamHistoryInWebsite.startDate, gameDate));
+      conditions.push(
+        or(
+          isNull(playerTeamHistoryInWebsite.endDate),
+          gte(playerTeamHistoryInWebsite.endDate, gameDate),
+        )!
+      );
+    }
+
     const result = await db
-      .select({ teamId: playerTeamHistoryInWebsite.teamId })
+      .select({
+        teamId: playerTeamHistoryInWebsite.teamId,
+        matchedPlayers: sql<number>`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`,
+      })
       .from(playerTeamHistoryInWebsite)
-      .where(
-        and(
-          inArray(playerTeamHistoryInWebsite.playerPuuid, puuids),
-          inArray(playerTeamHistoryInWebsite.teamId, possibleTeamIds)
-        )
-      )
+      .where(and(...conditions))
       .groupBy(playerTeamHistoryInWebsite.teamId)
       .orderBy(desc(sql`COUNT(DISTINCT ${playerTeamHistoryInWebsite.playerPuuid})`))
-      .limit(1);
+      .limit(2);
 
-    return result.length > 0 ? result[0].teamId : null;
+    if (result.length === 0) {
+      return null;
+    }
+
+    const bestMatch = Number(result[0].matchedPlayers);
+    const secondBestMatch = result.length > 1 ? Number(result[1].matchedPlayers) : -1;
+
+    if (bestMatch < 3) {
+      return null;
+    }
+
+    if (bestMatch === secondBestMatch) {
+      return null;
+    }
+
+    return result[0].teamId;
   } catch (error) {
     console.error("[Game Stats Updater] Error in findTeamIdByPlayers:", error);
     return null;
@@ -344,7 +450,8 @@ export const getTeamIdByName = async (name: string) => {
         id: teamsInWebsite.id,
       })
       .from(teamsInWebsite)
-      .where(and(eq(teamsInWebsite.teamName, name), eq(teamsInWebsite.active, true)))
+      .where(eq(teamsInWebsite.teamName, name))
+      .orderBy(desc(teamsInWebsite.active), desc(teamsInWebsite.id))
       .limit(1);
 
     return result.length > 0 ? result[0].id : null;
@@ -354,62 +461,18 @@ export const getTeamIdByName = async (name: string) => {
   }
 };
 export const getHistoricalTeamIdsByName = async (name: string): Promise<number[]> => {
-  const historicalIds: number[] = [];
-  const visitedIds = new Set<number>();
-  let currentTeamName: string | null = name;
-  let nextFormerTeamId: number | null = null;
-
-  const maxIterations = 100; // Safety limit
-  let iterations = 0;
-
   try {
-    // First, finds the starting team by its name
-    const initialTeam = await db
-      .select({
-        id: teamsInWebsite.id,
-        formerTeamId: teamsInWebsite.formerTeam,
-      })
-      .from(teamsInWebsite)
-      .where(eq(teamsInWebsite.teamName, currentTeamName))
-      .limit(1);
-
-    if (initialTeam.length === 0) {
-      return []; // No team found with that name
-    }
-
-    historicalIds.push(initialTeam[0].id);
-    visitedIds.add(initialTeam[0].id);
-    nextFormerTeamId = initialTeam[0].formerTeamId;
-
-    // Iteratively walks down the 'former_team' chain
-    while (nextFormerTeamId && iterations < maxIterations) {
-      // Cycle detection
-      if (visitedIds.has(nextFormerTeamId)) {
-        console.warn("[Game Stats Updater] Cycle detected in former_team chain");
-        break;
-      }
-      iterations++;
-
-      const formerTeam = await db
-        .select({
-          id: teamsInWebsite.id,
-          formerTeamId: teamsInWebsite.formerTeam,
-        })
-        .from(teamsInWebsite)
-        .where(eq(teamsInWebsite.id, nextFormerTeamId))
-        .limit(1);
-
-      if (formerTeam.length > 0) {
-        historicalIds.push(formerTeam[0].id);
-        visitedIds.add(formerTeam[0].id);
-        nextFormerTeamId = formerTeam[0].formerTeamId;
-      } else {
-        // No more former teams in the chain
-        nextFormerTeamId = null;
-      }
-    }
-
-    return historicalIds;
+    // Uses a recursive CTE to walk the former_team chain in a single query
+    const result = await db.execute<{ id: number }>(sql`
+      WITH RECURSIVE team_chain AS (
+        SELECT id, former_team FROM website.teams WHERE team_name = ${name}
+        UNION
+        SELECT t.id, t.former_team FROM website.teams t
+        INNER JOIN team_chain tc ON t.id = tc.former_team
+      )
+      SELECT id FROM team_chain
+    `);
+    return Array.from(result).map((r: any) => r.id as number);
   } catch (error) {
     console.error("[Game Stats Updater] Error in getHistoricalTeamIdsByName:", error);
     return [];
@@ -483,8 +546,7 @@ export async function getChampionList() {
       .orderBy(asc(championListInWebsite.name));
     // Move "Nothing" or "None" to the start
     const nothingIndex = championList.findIndex(
-      (c) =>
-        c.name.toLowerCase() === "nothing" || c.name.toLowerCase() === "none" || c.id === -1
+      (c) => c.name.toLowerCase() === "nothing" || c.name.toLowerCase() === "none" || c.id === -1,
     );
 
     if (nothingIndex > -1) {
@@ -497,3 +559,33 @@ export async function getChampionList() {
     return [];
   }
 }
+
+export const getAllDivisions = async () => {
+  try {
+    const divisions = await db.select().from(divisionsInWebsite);
+    return divisions;
+  } catch (err) {
+    console.error("Error fetching all divisions: ", err);
+    return [];
+  }
+};
+
+export const getAllSeasons = async () => {
+  try {
+    const seasons = await db.select().from(seasonsInWebsite).orderBy(asc(seasonsInWebsite.id));
+    return seasons;
+  } catch (err) {
+    console.error("Error fetching all seasons: ", err);
+    return [];
+  }
+};
+
+export const getUpdates = async () => {
+  try {
+    const updates = await db.select().from(draftUpdatesInWebsite).orderBy(desc(draftUpdatesInWebsite.date));
+    return updates;
+  } catch (error) {
+    console.error("Error fetching updates:", error);
+    return [];
+  }
+};

@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import Home from "../components/HomePage/Home";
-import About from "../components/AboutPage/About";
-import Roster from "../components/RosterPage/Roster";
-import LeaguePlayers from "../components/RosterPage/LeaguePlayers";
-import ASMain from "../components/AllStarsPage/ASMain";
-import ErrorPage from "../components/ErrorPage";
-import Footer from "../components/Footer";
-import MHHome from "../components/MatchHistoryPage/MHHome";
+import About from "../features/About/About";
+import Roster from "../features/Roster/Roster";
+import LeaguePlayers from "../features/Roster/components/LeaguePlayers";
+import AllStars from "../features/AllStars/AllStars";
+import ErrorPage from "../features/Error/ErrorPage";
+import Footer from "../layout/Footer";
+import Home from "../features/Home/Home";
+import MatchHistory from "../features/MatchHistory/MatchHistory";
 
 const DefaultRoutes = () => {
   return (
@@ -17,9 +17,9 @@ const DefaultRoutes = () => {
           <Route path="about" element={<About />} />
           <Route path="rosters" element={<Roster />} />
           <Route path="rosters/:league" element={<LeaguePlayers />} />
-          <Route path="allstars" element={<ASMain />} />
-          <Route path="mh" element={<MHHome />} />
-          <Route path="mh/:matchID" element={<MHHome />} />
+          <Route path="allstars" element={<AllStars />} />
+          <Route path="mh" element={<MatchHistory />} />
+          <Route path="mh/:matchID" element={<MatchHistory />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

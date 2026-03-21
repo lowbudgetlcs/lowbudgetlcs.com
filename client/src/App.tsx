@@ -1,18 +1,19 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar";
-import ScrollToTop from "./components/ScrollToTop";
-import Twitch from "./components/Twitch";
-import { LeagueDataProvider } from "./components/leagueDataContext";
-import DraftNavbar from "./components/DraftTool/draftNavbars/DraftNavbar";
-import { SettingsProvider } from "./components/DraftTool/providers/SettingsProvider";
-import DraftSettings from "./components/DraftTool/DraftSettings";
+import Navbar from "./layout/Navbar";
+import ScrollToTop from "./layout/ScrollToTop";
+import Twitch from "./features/Twitch/Twitch";
+import { LeagueDataProvider } from "./features/Roster/providers/leagueDataContext";
+import DraftNavbar from "./features/Draft/components/Navbars/DraftNavbar";
+import { SettingsProvider } from "./features/Draft/providers/SettingsProvider";
+import DraftSettings from "./features/Draft/components/DraftSettings";
 import DraftRoutes from "./routes/DraftRoutes";
 import DefaultRoutes from "./routes/DefaultRoutes";
 import { useEffect } from "react";
 import StatRoutes from "./routes/StatRoutes";
-import StatsNavbar from "./components/StatsPage/StatsNavBar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient();
 function App() {
   // Finds the subdomain (used for draft site)
   const getSubdomain = (host: string) => {
@@ -49,32 +50,34 @@ function App() {
   // Redirect for old draft links
   if (!subdomain && pathname.startsWith("/draft")) {
     return (
-      <div className="text-white w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
+      <div className="text-text-primary w-screen h-screen flex flex-col items-center justify-center gap-8 text-6xl">
         <p>Redirecting...</p>
         <div className="animate-spin border-b-2 border-r-2 border-t-2 border-orange rounded-full p-4 w-24 h-24"></div>
       </div>
     );
   }
   return (
-    <div className=" relative font-serif bg-black">
-      <ScrollToTop />
-      {!isDraftRoute && <Twitch />}
-      <SettingsProvider>
-        <DraftSettings />
-        {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <StatsNavbar /> : <Navbar />}
-        <LeagueDataProvider>
-          <Routes>
-            {subdomain === "draft" ? (
-              <Route path="/*" element={<DraftRoutes />} />
-            ) : (
-              <>
-                <Route path="/stats/*" element={<StatRoutes />} />
-                <Route path="/*" element={<DefaultRoutes />} />
-              </>
-            )}
-          </Routes>
-        </LeagueDataProvider>
-      </SettingsProvider>
+    <div className="relative font-serif bg-bg-dark">
+      <QueryClientProvider client={queryClient}>
+        <ScrollToTop />
+        {!isDraftRoute && <Twitch />}
+        <SettingsProvider>
+          <DraftSettings />
+          {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <Navbar /> : <Navbar />}
+          <LeagueDataProvider>
+            <Routes>
+              {subdomain === "draft" ? (
+                <Route path="/*" element={<DraftRoutes />} />
+              ) : (
+                <>
+                  <Route path="/stats/*" element={<StatRoutes />} />
+                  <Route path="/*" element={<DefaultRoutes />} />
+                </>
+              )}
+            </Routes>
+          </LeagueDataProvider>
+        </SettingsProvider>
+      </QueryClientProvider>
     </div>
   );
 }
