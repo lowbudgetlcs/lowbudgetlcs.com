@@ -1,5 +1,5 @@
-import { draftState } from "../states/draftState";
-import { FearlessDraftInitializerProps } from "../interfaces/initializerInferfaces";
+import { draftState } from "../models/draftState";
+import { FearlessDraftInitializerProps } from "../types/initializerInferfaces";
 import { fearlessState } from "./fearlessLobbyInitializer";
 const twentyFourHours = 60 * 60 * 24000; // 24 hours in milliseconds
 

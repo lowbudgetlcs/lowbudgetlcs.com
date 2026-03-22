@@ -1,5 +1,5 @@
 import EventEmitter from "events";
-import { DraftStateProps } from "../../states/draftState";
+import { DraftStateProps } from "../../models/draftState";
 import { Socket } from "socket.io";
 
 interface banHandlerProps {

@@ -1,5 +1,5 @@
 import { Namespace, Socket } from "socket.io";
-import { DraftStateProps } from "../../states/draftState";
+import { DraftStateProps } from "../../models/draftState";
 
 interface HoverHandlerProps {
   lobbyCode: string;

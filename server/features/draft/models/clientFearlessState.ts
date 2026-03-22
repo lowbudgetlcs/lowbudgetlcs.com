@@ -2,7 +2,7 @@ import { fearlessState } from "../initializers/fearlessLobbyInitializer";
 import {
   FearlessStateClientProps,
   FearlessStateServerProps,
-} from "../interfaces/initializerInferfaces";
+} from "../types/initializerInferfaces";
 
 export const setFearlessClientState = (state: FearlessStateServerProps) => {
   const clientState: FearlessStateClientProps = {

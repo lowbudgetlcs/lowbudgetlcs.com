@@ -14,9 +14,9 @@ import {
   seasonsInWebsite,
   teamsInWebsite,
 } from "../schema";
-import { ClientDraftStateProps } from "../../draftTool/states/draftState";
-import { FearlessStateClientProps } from "../../draftTool/interfaces/initializerInferfaces";
-import { fearlessState } from "../../draftTool/initializers/fearlessLobbyInitializer";
+import { ClientDraftStateProps } from "../../features/draft/models/draftState";
+import { FearlessStateClientProps } from "../../features/draft/types/initializerInferfaces";
+import { fearlessState } from "../../features/draft/initializers/fearlessLobbyInitializer";
 
 export const getDivisionsForSeason = async () => {
   const divisionsData = await db.select().from(currentSeasonDivisionsInWebsite);

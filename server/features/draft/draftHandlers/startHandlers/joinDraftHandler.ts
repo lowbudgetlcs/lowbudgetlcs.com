@@ -1,7 +1,7 @@
 import EventEmitter from "events";
 import { Namespace, Socket } from "socket.io";
-import { DraftStateProps } from "../../states/draftState";
-import { updateClientState } from "../../states/clientDraftState";
+import { DraftStateProps } from "../../models/draftState";
+import { updateClientState } from "../../models/clientDraftState";
 
 interface JoinDraftHandlerProps {
   lobbyCode: string;

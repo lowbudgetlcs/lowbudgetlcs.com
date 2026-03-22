@@ -1,34 +1,36 @@
-import { HandlerVarsProps } from "../../states/draftState";
-import { updateClientState } from "../../states/clientDraftState";
+import { HandlerVarsProps } from "../../models/draftState";
+import { updateClientState } from "../../models/clientDraftState";
 
-export const pickPhase2Handler = async ({
+export const banPhase1Handler = async ({
   io,
   lobbyCode,
   state,
   emitter,
 }: HandlerVarsProps): Promise<boolean> => {
-  if (state.activePhase !== "pickPhase2") {
+  if (state.activePhase !== "banPhase1") {
     return false;
   }
 
   return new Promise((resolve, reject) => {
-    const picksPhase2 = [
+    const bansPhase1 = [
+      state.blueUser,
       state.redUser,
       state.blueUser,
+      state.redUser,
       state.blueUser,
       state.redUser,
     ];
 
-    const startPickPhase = async () => {
-      io.to(lobbyCode).emit("pickPhase", updateClientState(lobbyCode));
-      state.phaseType = "pick";
+    const startBanPhase = async () => {
+      io.to(lobbyCode).emit("banPhase", updateClientState(lobbyCode));
+      state.phaseType = "ban";
 
       for (
-        state.pickIndex;
-        state.pickIndex < picksPhase2.length;
-        state.pickIndex++
+        state.banIndex;
+        state.banIndex < bansPhase1.length;
+        state.banIndex++
       ) {
-        const currentSide = picksPhase2[state.pickIndex];
+        const currentSide = bansPhase1[state.banIndex];
         state.currentTurn = currentSide;
         try {
           // Display Current Turn in Client
@@ -46,8 +48,9 @@ export const pickPhase2Handler = async ({
           return;
         }
       }
-      state.pickIndex = 0;
-      io.to(lobbyCode).emit("endPickPhase", true);
+      //   resets banIndex to be used in ban phase 2
+      state.banIndex = 0;
+      io.to(lobbyCode).emit("endBanPhase", true);
       resolve(true);
     };
 
@@ -61,67 +64,66 @@ export const pickPhase2Handler = async ({
           io.to(lobbyCode).emit("timer", timer);
           if (timer <= 0) {
             clearInterval(interval);
-            emitter.off("bluePick", bluePickListener);
-            emitter.off("redPick", redPickListener);
+            emitter.off("bluePick", blueBanListener);
+            emitter.off("redPick", redBanListener);
 
             const pick =
               currentSide === state.blueUser ? state.bluePick : state.redPick;
             const finalPick = pick || "nothing";
 
-            // Add nothing pick to side array
             if (currentSide === state.blueUser) {
-              state.bluePicks.push(finalPick);
-              state.picksArray.push(finalPick);
-              state.currentBluePick++;
+              state.blueBans.push(finalPick);
+              state.bansArray.push(finalPick);
+              state.currentBlueBan++;
             } else if (currentSide === state.redUser) {
-              state.redPicks.push(finalPick);
-              state.picksArray.push(finalPick);
-              state.currentRedPick++;
+              state.redBans.push(finalPick);
+              state.bansArray.push(finalPick);
+              state.currentRedBan++;
             }
             state.bluePick = null;
             state.redPick = null;
             state.currentHover = null;
-            io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
+            io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
             resolve();
           }
         }, 1000);
 
-        const bluePickListener = (pickedChamp: string) => {
+        const blueBanListener = (bannedChamp: string) => {
           if (currentSide === state.blueUser) {
             clearInterval(interval);
-            state.bluePicks.push(pickedChamp);
-            state.picksArray.push(pickedChamp);
-            state.currentBluePick++;
+            state.blueBans.push(bannedChamp);
+            state.bansArray.push(bannedChamp);
+            state.currentBlueBan++;
             state.bluePick = null;
             state.redPick = null;
             state.currentHover = null;
-            io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
-            emitter.off("redPick", redPickListener);
+            io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
+            emitter.off("redPick", redBanListener);
             resolve();
           }
         };
 
-        const redPickListener = (pickedChamp: string) => {
+        const redBanListener = (bannedChamp: string) => {
           if (currentSide === state.redUser) {
             clearInterval(interval);
-            state.redPicks.push(pickedChamp);
-            state.picksArray.push(pickedChamp);
-            state.currentRedPick++;
+            state.redBans.push(bannedChamp);
+            state.bansArray.push(bannedChamp);
+            state.currentRedBan++;
             state.bluePick = null;
             state.redPick = null;
             state.currentHover = null;
-            io.to(lobbyCode).emit("setPick", updateClientState(lobbyCode));
-            emitter.off("bluePick", bluePickListener);
+            io.to(lobbyCode).emit("setBan", updateClientState(lobbyCode));
+            emitter.off("bluePick", blueBanListener);
             resolve();
           }
         };
-        emitter.once("bluePick", bluePickListener);
-        emitter.once("redPick", redPickListener);
+        emitter.once("bluePick", blueBanListener);
+        emitter.once("redPick", redBanListener);
       });
     };
 
-    startPickPhase().catch((err) => {
-      console.error("Error during pick phase:", err);
+    startBanPhase().catch((err) => {
+      console.error("Error during ban phase:", err);
       reject(err);
     });
   });
