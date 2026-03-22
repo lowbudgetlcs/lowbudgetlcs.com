@@ -2,11 +2,11 @@ import { randomUUID } from "crypto";
 import {
   insertFinalFearlessLobby,
   insertInitialFearlessLobby,
-} from "../../db/queries/insert";
+} from "../../../db/queries/insert";
 import {
   FearlessInitializerProps,
   FearlessStateServerProps,
-} from "../interfaces/initializerInferfaces";
+} from "../types/initializerInferfaces";
 const twentyFourHours = 60 * 60 * 24000; // 24 hours in milliseconds
 
 // Holds EVERY active fearless lobby (for 24 hours)

@@ -1,10 +1,10 @@
 import { Namespace, Socket } from "socket.io";
 import { fearlessState } from "../initializers/fearlessLobbyInitializer";
-import { updateFearlessClientState } from "../states/clientFearlessState";
+import { updateFearlessClientState } from "../models/clientFearlessState";
 import fearlessSideAssignment from "../initializers/fearlessSideAssignment";
-import { draftState } from "../states/draftState";
+import { draftState } from "../models/draftState";
 import EventEmitter from "events";
-import { insertFinalFearlessLobby } from "../../db/queries/insert";
+import { insertFinalFearlessLobby } from "../../../db/queries/insert";
 
 export const fearlessEmitters: Map<string, EventEmitter> = new Map();
 export const fearlessSocket = (io: Namespace) => {

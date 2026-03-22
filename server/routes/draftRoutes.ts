@@ -1,178 +1,19 @@
 import express, { Request, Response } from "express";
 const draftRoutes = express.Router();
-import { insertDraft } from "../db/queries/insert";
-import {
-  checkDuplicateShortCode,
-  getChampionList,
-  getPastDraft,
-  getPastFearlessSeries,
-  getUpdates,
-} from "../db/queries/select";
-import { DraftInitializeProps, initializeDraftState } from "../draftTool/states/draftState";
-import { FearlessInitializerProps } from "../draftTool/interfaces/initializerInferfaces";
-import { fearlessLobbyInitializer } from "../draftTool/initializers/fearlessLobbyInitializer";
-import ShortUniqueId from "short-unique-id";
-import { RiotAPI } from "@fightmegg/riot-api";
-import { waitForRiotRateLimit } from "../utils/riotRateLimiter";
-const { randomUUID } = new ShortUniqueId({ length: 10 });
+import draftDataController from "../features/draft/controllers/draftData.controller";
+import historyController from "../features/draft/controllers/history.controller";
+import initializeController from "../features/draft/controllers/initialize.controller";
 
-draftRoutes.get("/api/updates", async (req: Request, res: Response) => {
-  try {
-    const updates = await getUpdates();
-    res.status(200).json(updates);
-  } catch (err) {
-    console.error("Error getting updates:", err);
-    res.status(500).json({ error: "Failed to fetch updates" });
-  }
-});
+// Initialization routes
+draftRoutes.get("/api/checkTournamentCode/:code", initializeController.checkTournamentCode);
+draftRoutes.post("/api/createDraft", initializeController.createDraft);
+draftRoutes.post("/api/createFearlessDraft", initializeController.createFearlessDraft);
 
-draftRoutes.get("/api/checkTournamentCode/:code", async (req: Request, res: Response) => {
-  try {
-    const shortCode = req.params.code;
-    if (!process.env.RIOTAPI) {
-      throw new Error("No API KEY");
-    }
+// Past draft routes
+draftRoutes.get("/api/pastDraft/:lobbyCode", historyController.getPastDraftByLobbyCode);
+draftRoutes.get("/api/pastFearless/:fearlessCode", historyController.getPastFearlessByCode);
 
-    const checkDBForTourneyCode = await checkDuplicateShortCode(shortCode);
-    if (checkDBForTourneyCode) {
-      res.status(200).json({ valid: false });
-      return;
-    }
-    const rAPI = new RiotAPI(process.env.RIOTAPI);
-    await waitForRiotRateLimit();
-    const response = await rAPI.tournamentV5.getByTournamentCode({ tournamentCode: shortCode });
-    if (response) {
-      res.status(200).json({ valid: true });
-    } else {
-      res.status(200).json({ valid: false });
-    }
-  } catch (err: any) {
-    res.status(404).json({ valid: false });
-  }
-});
-
-draftRoutes.post("/api/createDraft", async (req: Request, res: Response) => {
-  try {
-    // Pull nick names and tournament ID from request (if there is one)
-    const { redName, blueName, tournamentID }: { redName: string; blueName: string; tournamentID?: string } =
-      req.body;
-
-    // Generate unique URLs for the draft
-    const lobbyCode = tournamentID ? tournamentID : randomUUID();
-    const blueCode = randomUUID();
-    const redCode = randomUUID();
-
-    // Create the draft object
-    const draft: DraftInitializeProps = {
-      lobbyCode: lobbyCode,
-      blueUser: blueCode,
-      redUser: redCode,
-      tournamentID: tournamentID || null,
-      redDisplayName: redName,
-      blueDisplayName: blueName,
-    };
-
-    // Initialize Draft
-    initializeDraftState(draft);
-
-    // Save Draft to Database
-    await insertDraft(draft);
-
-    // Success Response
-    res.status(201).json({
-      draft: {
-        lobbyCode,
-        blueCode,
-        redCode,
-      },
-    });
-  } catch (err) {
-    console.error("Error in Draft Creation:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-draftRoutes.post("/api/createFearlessDraft", async (req: Request, res: Response) => {
-  try {
-    // Pull nick names and tournament ID from request (if there is one)
-    const {
-      team1Name,
-      team2Name,
-      draftCount,
-      tournamentID,
-    }: { team1Name: string; team2Name: string; draftCount: number; tournamentID?: string | null } = req.body;
-    // Generate unique URLs for the draft
-    const team1Code = randomUUID();
-    const team2Code = randomUUID();
-    const fearlessCode = randomUUID();
-
-    const fearlessLobby: FearlessInitializerProps = {
-      fearlessCode: fearlessCode,
-      team1Code: team1Code,
-      team2Code: team2Code,
-      team1Name: team1Name,
-      team2Name: team2Name,
-      draftCount: draftCount,
-      initialTournamentCode: tournamentID || undefined,
-    };
-
-    // Initialize Fearless Lobby
-    const fearlessData = await fearlessLobbyInitializer(fearlessLobby);
-
-    // Success Response
-    res.status(201).json({
-      fearlessCode: fearlessData.fearlessCode,
-      team1Code: fearlessData.team1Code,
-      team2Code: fearlessData.team2Code,
-      team1Name: fearlessData.team1Name,
-      team2Name: fearlessData.team2Name,
-      draftCount: fearlessData.draftCount,
-    });
-  } catch (err) {
-    console.error("Error in Draft Creation:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-draftRoutes.get("/api/pastDraft/:lobbyCode", async (req: Request, res: Response) => {
-  try {
-    const lobbyCode = req.params.lobbyCode;
-    const response = await getPastDraft(lobbyCode);
-
-    if (response && response.draftFinished) {
-      res.status(200).json({ isValid: true, draftState: response.clientState });
-    } else {
-      res.status(200).json({ isValid: false });
-    }
-  } catch (err) {
-    console.error("Error in Finding Past Game:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-draftRoutes.get("/api/pastFearless/:fearlessCode", async (req: Request, res: Response) => {
-  try {
-    const fearlessCode = req.params.fearlessCode;
-    const response = await getPastFearlessSeries(fearlessCode);
-    if (response) {
-      res.status(200).json(response);
-    } else {
-      res.status(200).json({ isValid: false });
-    }
-  } catch (err) {
-    console.error("Error in Finding Past Game:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
-// Get champion data from database
-draftRoutes.get("/api/championData", async (req: Request, res: Response) => {
-  try {
-    const championData = await getChampionList();
-    res.status(200).json(championData);
-  } catch (err) {
-    console.error("Error in fetching champion data:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+// Misc. draft data routes
+draftRoutes.get("/api/updates", draftDataController.getUpdatesData);
+draftRoutes.get("/api/championData", draftDataController.getChampionData);
 export default draftRoutes;

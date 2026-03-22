@@ -1,5 +1,5 @@
-import { updateClientState } from "../../states/clientDraftState";
-import { HandlerVarsProps } from "../../states/draftState";
+import { updateClientState } from "../../models/clientDraftState";
+import { HandlerVarsProps } from "../../models/draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
 import { endDraftHandler } from "./endDraftHandler";

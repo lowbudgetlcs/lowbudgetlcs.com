@@ -1,9 +1,9 @@
 import { Namespace, Socket } from "socket.io";
-import { DraftStateProps, HandlerVarsProps } from "../../states/draftState";
+import { DraftStateProps, HandlerVarsProps } from "../../models/draftState";
 import EventEmitter from "events";
 import { read } from "fs";
 import { readyHandler } from "../phaseHandlers/readyHandler";
-import { updateClientState } from "../../states/clientDraftState";
+import { updateClientState } from "../../models/clientDraftState";
 import phaseTransition from "../phaseHandlers/phaseTransition";
 
 interface ReadyHandlerProps {

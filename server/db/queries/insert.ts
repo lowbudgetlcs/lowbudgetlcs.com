@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { DraftInitializeProps, DraftStateProps } from "../../draftTool/states/draftState";
+import { DraftInitializeProps, DraftStateProps } from "../../features/draft/models/draftState";
 import { db } from "../index";
 import { checkForGameId } from "./select";
 import {
@@ -14,7 +14,7 @@ import {
 import {
   FearlessFinishedProps,
   FearlessInitializerProps,
-} from "../../draftTool/interfaces/initializerInferfaces";
+} from "../../features/draft/types/initializerInferfaces";
 import { DbTeamData } from "../../features/stats/services/teamHistoryUpdater.service";
 import formatDate from "../../features/stats/utils/formatDate";
 import { RiotAPITypes } from "@fightmegg/riot-api";

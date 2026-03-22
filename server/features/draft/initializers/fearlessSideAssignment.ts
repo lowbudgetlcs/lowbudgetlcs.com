@@ -1,6 +1,6 @@
-import { FearlessStateServerProps } from "../interfaces/initializerInferfaces";
+import { FearlessStateServerProps } from "../types/initializerInferfaces";
 import fearlessDraftStateInitializer from "./fearlessDraftStateInitializer";
-import { insertDraft } from "../../db/queries/insert";
+import { insertDraft } from "../../../db/queries/insert";
 import ShortUniqueId from "short-unique-id";
 
 // Runs for every new fearless draft initialized in the series

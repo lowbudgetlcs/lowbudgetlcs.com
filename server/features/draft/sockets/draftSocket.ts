@@ -1,5 +1,5 @@
 import { Namespace } from "socket.io";
-import { draftState } from "../states/draftState";
+import { draftState } from "../models/draftState";
 import EventEmitter from "events";
 import banHandler from "../draftHandlers/pickBanHandlers/banHandler";
 import pickHandler from "../draftHandlers/pickBanHandlers/pickHandler";
