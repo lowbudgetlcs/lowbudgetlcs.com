@@ -10,8 +10,8 @@ interface SettingsContextProps {
   setPickBanSplit: React.Dispatch<React.SetStateAction<boolean>>;
   teamNameVisible: boolean;
   setTeamNameVisible: React.Dispatch<React.SetStateAction<boolean>>;
-  smallIcons: boolean;
-  setSmallIcons: React.Dispatch<React.SetStateAction<boolean>>;
+  iconSize: number;
+  setIconSize: React.Dispatch<React.SetStateAction<number>>;
   champNamesVisible: boolean;
   setChampNamesVisible: React.Dispatch<React.SetStateAction<boolean>>;
   volume: number;
@@ -33,7 +33,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) 
   const [animationToggle, setAnimationToggle] = useLocalStorageState<boolean>("animationToggle", false);
   const [pickBanSplit, setPickBanSplit] = useLocalStorageState<boolean>("pickBanSplit", true);
   const [teamNameVisible, setTeamNameVisible] = useLocalStorageState<boolean>("teamNameVisible", true);
-  const [smallIcons, setSmallIcons] = useLocalStorageState<boolean>("smallIcons", true);
+  const [iconSize, setIconSize] = useLocalStorageState<number>("iconSize", 80);
   const [champNamesVisible, setChampNamesVisible] = useLocalStorageState<boolean>("champNamesVisible", true);
   const [volume, setVolume] = useLocalStorageState<number>("volume", 30);
   const [champIconsVisible, setChampIconsVisible] = useLocalStorageState<boolean>("champIconsVisible", true);
@@ -50,8 +50,8 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({children}) 
         setPickBanSplit,
         teamNameVisible,
         setTeamNameVisible,
-        smallIcons,
-        setSmallIcons,
+        iconSize,
+        setIconSize,
         champNamesVisible,
         setChampNamesVisible,
         volume,
