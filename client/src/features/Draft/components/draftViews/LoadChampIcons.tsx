@@ -15,7 +15,7 @@ export function LoadChampIcons({
     useDraftContext();
   const pickedChampions = draftState.picksArray;
   const bannedChampions = draftState.bansArray;
-  const { smallIcons, champNamesVisible } = useSettingsContext();
+  const { iconSize, champNamesVisible } = useSettingsContext();
   const dDragonIconLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/`;
   const nothingIconLink =
     "https://raw.communitydragon.org/10.1/plugins/rcp-fe-lol-item-sets/global/default/icon-helmet.png";
@@ -108,9 +108,8 @@ export function LoadChampIcons({
                   }`
                 : ""
             }
-            ${
-              smallIcons ? "w-20" : "w-28"
-            } object-contain max-[1100px]:w-24 select-none rounded-md ${champion.name === "nothing" && 'border-4 border-black'}`}
+            object-contain select-none rounded-md ${champion.name === "nothing" && 'border-4 border-black'}`}
+              style={{ width: `${iconSize}px` }}
               src={
                 champion.name === "nothing"
                   ? nothingIconLink
@@ -127,9 +126,10 @@ export function LoadChampIcons({
                 champion.name !== "nothing"
                   ? ""
                   : "hover:cursor-pointer"
-              } select-none ${smallIcons ? "text-xs" : "text-sm font-bold"} ${
+              } select-none ${iconSize <= 80 ? "text-xs" : "text-sm font-bold"} ${
                 champNamesVisible ? "" : "hidden"
-              } truncate w-20`}
+              } truncate`}
+              style={{ width: `${iconSize}px` }}
             >
               {champion.displayName}
             </p>
@@ -145,7 +145,7 @@ export function LoadChampIcons({
     dDragonIconLink,
     chosenChamp,
     handlePick,
-    smallIcons,
+    iconSize,
     champNamesVisible,
     animationToggle,
   ]);
