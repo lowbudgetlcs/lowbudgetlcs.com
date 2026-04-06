@@ -185,35 +185,31 @@ export async function getPastFearlessSeries(fearlessCode: string) {
     const blueBans = [draft.bBan1, draft.bBan2, draft.bBan3, draft.bBan4, draft.bBan5];
     const redBans = [draft.rBan1, draft.rBan2, draft.rBan3, draft.rBan4, draft.rBan5];
     for (const pick of bluePicks) {
-      if (!pick) continue;
       if (draft.blueCode === series.team1Code) {
-        team1FearlessPicks.push(pick);
+        team1FearlessPicks.push(pick ?? "nothing");
       } else if (draft.blueCode === series.team2Code) {
-        team2FearlessPicks.push(pick);
+        team2FearlessPicks.push(pick ?? "nothing");
       }
     }
     for (const pick of redPicks) {
-      if (!pick) continue;
       if (draft.redCode === series.team1Code) {
-        team1FearlessPicks.push(pick);
+        team1FearlessPicks.push(pick ?? "nothing");
       } else if (draft.redCode === series.team2Code) {
-        team2FearlessPicks.push(pick);
+        team2FearlessPicks.push(pick ?? "nothing");
       }
     }
     for (const ban of blueBans) {
-      if (!ban) continue;
       if (draft.blueCode === series.team1Code) {
-        team1FearlessBans.push(ban);
+        team1FearlessBans.push(ban ?? "nothing");
       } else if (draft.blueCode === series.team2Code) {
-        team2FearlessBans.push(ban);
+        team2FearlessBans.push(ban ?? "nothing");
       }
     }
     for (const ban of redBans) {
-      if (!ban) continue;
       if (draft.redCode === series.team1Code) {
-        team1FearlessBans.push(ban);
+        team1FearlessBans.push(ban ?? "nothing");
       } else if (draft.redCode === series.team2Code) {
-        team2FearlessBans.push(ban);
+        team2FearlessBans.push(ban ?? "nothing");
       }
     }
   }
