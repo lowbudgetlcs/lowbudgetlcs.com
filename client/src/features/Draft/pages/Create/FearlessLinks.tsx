@@ -12,10 +12,10 @@ function FearlessLinks({
   // Save check for if the initial side is already chosen to session storage
   const { team1Name, team2Name, fearlessCode, team1Code, team2Code, draftCount } = fearlessDraftLinks;
 
-  const team1Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team1Code}`;
-  const team2Link = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/${team2Code}`;
-  const specLink = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/spectator`;
-  const streamLink = `https://draft.lowbudgetlcs.com/fearless/${fearlessCode}/stream`;
+  const team1Link = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}/fearless/${fearlessCode}/${team1Code}`;
+  const team2Link = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}/fearless/${fearlessCode}/${team2Code}`;
+  const specLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}/fearless/${fearlessCode}/spectator`;
+  const streamLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}/fearless/${fearlessCode}/stream`;
 
   const removeDraftLinks = () => {
     setFearlessDraftLinks(undefined);
