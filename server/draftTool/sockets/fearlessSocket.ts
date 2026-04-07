@@ -43,14 +43,22 @@ export const fearlessSocket = (io: Namespace) => {
 
               // Update the fearless state with the completed draft's data
               // Extract picks and bans
-              series.allPicks.push(
-                ...completedDraft.bluePicks,
-                ...completedDraft.redPicks
-              );
-              series.allBans.push(
-                ...completedDraft.blueBans,
-                ...completedDraft.redBans
-              );
+              series.allPicks.push(...completedDraft.bluePicks, ...completedDraft.redPicks);
+              series.allBans.push(...completedDraft.redBans, ...completedDraft.blueBans);
+              if (series.team1Code === completedDraft.blueUser) {
+                series.team1Picks.push(...completedDraft.bluePicks);
+                series.team1Bans.push(...completedDraft.blueBans);
+              } else {
+                series.team1Picks.push(...completedDraft.redPicks);
+                series.team1Bans.push(...completedDraft.redBans);
+              }
+              if (series.team2Code === completedDraft.blueUser) {
+                series.team2Picks.push(...completedDraft.bluePicks);
+                series.team2Bans.push(...completedDraft.blueBans);
+              } else {
+                series.team2Picks.push(...completedDraft.redPicks);
+                series.team2Bans.push(...completedDraft.redBans);
+              }
 
               // Increment completed drafts counter
               series.completedDrafts++;
@@ -69,26 +77,15 @@ export const fearlessSocket = (io: Namespace) => {
                 insertFinalFearlessHandler();
                 console.log("FearlessCompleted: ", fearlessCode);
                 // Notify all clients that the series is complete
-                io.to(fearlessCode).emit(
-                  "fearlessCompleted",
-                  updateFearlessClientState(fearlessCode)
-                );
+                io.to(fearlessCode).emit("fearlessCompleted", updateFearlessClientState(fearlessCode));
                 fearlessEmitters.delete(fearlessCode);
               } else {
                 console.log("Moving to next draft");
                 // Notify clients to move to the next draft
-                io.to(fearlessCode).emit(
-                  "nextDraft",
-                  updateFearlessClientState(fearlessCode)
-                );
+                io.to(fearlessCode).emit("nextDraft", updateFearlessClientState(fearlessCode));
               }
-              io.to(fearlessCode).emit(
-                "fearlessState",
-                updateFearlessClientState(fearlessCode)
-              );
-              console.log(
-                `Draft completed for fearless series ${fearlessCode}: ${series.completedDrafts}/${series.draftCount}`
-              );
+              io.to(fearlessCode).emit("fearlessState", updateFearlessClientState(fearlessCode));
+              console.log(`Draft completed for fearless series ${fearlessCode}: ${series.completedDrafts}/${series.draftCount}`);
             } catch (error) {
               console.error("Error handling draft completion:", error);
               socket.emit("error", { message: "Internal server error" });
@@ -121,9 +118,7 @@ export const fearlessSocket = (io: Namespace) => {
         // Send current state to client
         socket.emit("fearlessState", updateFearlessClientState(fearlessCode));
 
-        console.log(
-          `User joined fearless series ${fearlessCode} as ${teamDisplay}`
-        );
+        console.log(`User joined fearless series ${fearlessCode} as ${teamDisplay}`);
       } catch (error) {
         console.error("Error joining fearless series:", error);
         socket.emit("error", { message: "Internal server error" });
@@ -147,29 +142,16 @@ export const fearlessSocket = (io: Namespace) => {
         }
 
         // sets sides according to user input
-        await fearlessSideAssignment(
-          socket.data.teamCode,
-          series,
-          selectedSide,
-          tournamentID
-        );
+        await fearlessSideAssignment(socket.data.teamCode, series, selectedSide, tournamentID);
 
         // The current draft should now be set
         if (series.currentDraft) {
           // Notify all clients in the series
-          io.to(fearlessCode).emit(
-            "sideSelected",
-            updateFearlessClientState(fearlessCode)
-          );
+          io.to(fearlessCode).emit("sideSelected", updateFearlessClientState(fearlessCode));
         }
-        socket.emit(
-          "newFearlessState",
-          updateFearlessClientState(fearlessCode)
-        );
+        socket.emit("newFearlessState", updateFearlessClientState(fearlessCode));
 
-        console.log(
-          `Side selected for fearless series ${fearlessCode}: ${selectedSide}`
-        );
+        console.log(`Side selected for fearless series ${fearlessCode}: ${selectedSide}`);
       } catch (error) {
         console.error("Error in side selection:", error);
         socket.emit("error", { message: "Internal server error" });
