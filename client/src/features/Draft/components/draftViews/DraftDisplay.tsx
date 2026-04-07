@@ -17,6 +17,7 @@ import { useSettingsContext } from "../../providers/SettingsProvider";
 import DraftTurnAudio from "../DraftAudio";
 import FearlessBansBar from "../Navbars/FearlessBansBar";
 import { IoMdRefresh } from "react-icons/io";
+import { FaMinus, FaPlus } from "react-icons/fa6";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
@@ -145,11 +146,11 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
                   onChange={handleSearchChange}></input>
               </form>
               <div className={`iconSizeButtons flex gap-2 ${champIconsVisible ? "" : "hidden"}`}>
-                <Button className={`addButton text-2xl px-4! py-0.5!`} onClick={() => setIconSize(iconSize + 10)}>
-                  +
+                <Button className={`addButton text-xl flex items-center justify-center px-2! py-0.5!`} onClick={() => setIconSize(iconSize + 10)}>
+                  <FaPlus />
                 </Button>
-                <Button className={`subtractButton text-2xl px-4! py-0.5!`} onClick={() => setIconSize(iconSize - 10)}>
-                  -
+                <Button className={`subtractButton text-xl flex items-center justify-center px-2! py-0.5!`} onClick={() => setIconSize(iconSize - 10)}>
+                  <FaMinus />
                 </Button>
                 <Button className={`resetButton text-2xl flex items-center justify-center px-2! py-0.5!`} onClick={() => setIconSize(60)}>
                   <IoMdRefresh />
