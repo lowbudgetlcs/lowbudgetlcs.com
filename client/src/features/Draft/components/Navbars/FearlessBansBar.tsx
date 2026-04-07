@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { useDraftContext } from "../../providers/DraftProvider";
 import { useFearlessContext } from "../../providers/FearlessProvider";
 import lblcsIcon from "../../../../assets/icons/lblcsIcon.svg";
 interface FearlessBansBarProps {
@@ -7,6 +8,7 @@ interface FearlessBansBarProps {
 }
 
 const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
+  const { draftState } = useDraftContext();
   const { fearlessState } = useFearlessContext();
 
   const FearlessBarRef = useRef<any>(null);
@@ -37,6 +39,12 @@ const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
     }
     return picksByGame;
   };
+
+  const team1IsBlueSide = fearlessState.team1Name === draftState.blueDisplayName;
+  const leftTeamName = team1IsBlueSide ? fearlessState.team1Name : fearlessState.team2Name;
+  const rightTeamName = team1IsBlueSide ? fearlessState.team2Name : fearlessState.team1Name;
+  const getLeftSidePicks = (gamePicks: string[]) => (team1IsBlueSide ? gamePicks.slice(0, 5) : gamePicks.slice(5, 10));
+  const getRightSidePicks = (gamePicks: string[]) => (team1IsBlueSide ? gamePicks.slice(5, 10) : gamePicks.slice(0, 5));
   return (
     <>
       <div
@@ -46,12 +54,12 @@ const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
         <p className={`text-xl select-none font-bold w-full px-2 py-1`}>Champions Used<div className={`${barIsOpen ? "block" : "hidden"} w-full h-1 rounded-full bg-border`}></div></p>
         <div className={`${barIsOpen ? "" : "hidden"} flex justify-between w-full xl:px-4 pt-2`}>
           <p className="font-bold">
-            {fearlessState.team1Name}
+            {leftTeamName}
             <div className={`${barIsOpen ? "block" : "hidden"} w-16 h-1 rounded-full bg-orange`}></div>
           </p>
 
           <p className="font-bold relative">
-            {fearlessState.team2Name}
+            {rightTeamName}
             <div className={`${barIsOpen ? "block" : "hidden"} w-16 h-1 rounded-full bg-orange right-0 absolute`}></div>
           </p>
         </div>
@@ -62,7 +70,7 @@ const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
                 key={`Game` + index}
                 className={`${!barIsOpen ? "hidden" : ""} flex justify-between gap-4 items-center  w-full text-text-primary lg:px-4`}>
                 <div className="blueSide flex flex-wrap gap-2 justify-center">
-                  {gamePicks.slice(0, 5).map((pick, index) => {
+                  {getLeftSidePicks(gamePicks).map((pick, index) => {
                     return pick === "nothing" ? (
                       <img
                         key={pick + index}
@@ -86,7 +94,7 @@ const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
                 </div>
                 <p className="text-lg text-text-secondary font-bold text-nowrap">Game {index + 1}</p>
                 <div className="redSide flex flex-wrap gap-2 justify-center">
-                  {gamePicks.slice(5, 10).map((pick, index) => {
+                  {getRightSidePicks(gamePicks).map((pick, index) => {
                     return pick === "nothing" ? (
                       <img
                         key={pick + index}
