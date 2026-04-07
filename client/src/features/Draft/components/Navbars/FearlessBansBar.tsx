@@ -42,42 +42,66 @@ const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
       <div
         ref={FearlessBarRef}
         onClick={() => setBarIsOpen(!barIsOpen)}
-        className={`previousFearlessPicks select-none w-full flex flex-col justify-center-center cursor-pointer ${barIsOpen ? "text-text-primary" : "text-text-secondary hover:text-text-primary hover:bg-bg-light"} transition-all duration-150`}>
-        <p className={`text-xl select-none font-bold pl-2`}>Previous Fearless Picks</p>
-        <div
-          className={`w-full ${barIsOpen ? "h-full py-4" : "h-0"} z-20 rounded-md shadow-2xl flex flex-col gap-6 items-center justify-center transition-height duration-300`}>
+        className={`previousFearlessPicks select-none w-full h-full flex flex-col justify-center-center cursor-pointer ${barIsOpen ? "text-text-primary" : "text-text-secondary hover:text-text-primary hover:bg-bg-light"} transition-all duration-150`}>
+        <p className={`text-xl select-none font-bold w-full px-2 py-1`}>Champions Used<div className={`${barIsOpen ? "block" : "hidden"} w-full h-1 rounded-full bg-border`}></div></p>
+        <div className={`${barIsOpen ? "" : "hidden"} flex justify-between w-full xl:px-4 pt-2`}>
+          <p className="font-bold">
+            {fearlessState.team1Name}
+            <div className={`${barIsOpen ? "block" : "hidden"} w-16 h-1 rounded-full bg-orange`}></div>
+          </p>
+
+          <p className="font-bold relative">
+            {fearlessState.team2Name}
+            <div className={`${barIsOpen ? "block" : "hidden"} w-16 h-1 rounded-full bg-orange right-0 absolute`}></div>
+          </p>
+        </div>
+        <div className={`w-full ${barIsOpen ? "h-full py-4" : "h-0"} z-20 rounded-md shadow-2xl flex flex-col gap-10 items-center justify-center`}>
           {loopThroughCompletedDrafts().map((gamePicks, index) => {
             return (
-              <div key={`Game` + index} className={`${!barIsOpen ? "hidden" : ""} flex gap-4 items-center justify-center w-full text-text-primary`}>
-                <div className="blueSide flex gap-2">
+              <div
+                key={`Game` + index}
+                className={`${!barIsOpen ? "hidden" : ""} flex justify-between gap-4 items-center  w-full text-text-primary lg:px-4`}>
+                <div className="blueSide flex flex-wrap gap-2 justify-center">
                   {gamePicks.slice(0, 5).map((pick, index) => {
                     return pick === "nothing" ? (
-                      <img key={pick + index} src={lblcsIcon} alt={`${pick}`} className="w-12 h-12 border border-border grayscale opacity-50" />
+                      <img
+                        key={pick + index}
+                        src={lblcsIcon}
+                        alt={`${pick}`}
+                        className={`w-8 h-8 xl:h-12 xl:w-12 border border-border grayscale opacity-50`}
+                      />
                     ) : (
-                      <div key={pick + index} className="w-12 h-12 relative border border-border group">
+                      <div key={pick + index} className="w-8 h-8 xl:h-12 xl:w-12 relative border border-border group">
                         <img
                           src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
                           alt={`${pick}`}
+                          className="grayscale-75"
                         />
-                        <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2">
+                        <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2 top-full mt-1">
                           <p className="text-sm text-text-primary px-2 bg-bg-light border border-border rounded-md">{pick}</p>
                         </div>
                       </div>
                     );
                   })}
                 </div>
-                <p className="text-lg text-text-secondary font-bold">Game {index + 1}</p>
-                <div className="redSide flex gap-2">
+                <p className="text-lg text-text-secondary font-bold text-nowrap">Game {index + 1}</p>
+                <div className="redSide flex flex-wrap gap-2 justify-center">
                   {gamePicks.slice(5, 10).map((pick, index) => {
                     return pick === "nothing" ? (
-                      <img key={pick + index} src={lblcsIcon} alt={`${pick}`} className="w-12 h-12 border border-border grayscale opacity-50" />
+                      <img
+                        key={pick + index}
+                        src={lblcsIcon}
+                        alt={`${pick}`}
+                        className="w-8 h-8 xl:h-12 xl:w-12 border border-border grayscale opacity-50"
+                      />
                     ) : (
-                      <div key={pick + index} className="w-12 h-12 relative border border-border group">
+                      <div key={pick + index} className="w-8 h-8 xl:h-12 xl:w-12 relative border border-border group">
                         <img
                           src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
                           alt={`${pick}`}
+                          className="grayscale-75"
                         />
-                        <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2">
+                        <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2 top-full mt-1">
                           <p className="text-sm text-text-primary px-2 bg-bg-light border border-border rounded-md">{pick}</p>
                         </div>
                       </div>
