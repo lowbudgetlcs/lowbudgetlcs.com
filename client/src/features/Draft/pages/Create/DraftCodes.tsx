@@ -14,10 +14,10 @@ function DraftCodes({
   const removeDraftLinks = () => {
     setDraftLinks(undefined);
   };
-  const blueLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
-  const redLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}${draftLinks.lobbyCode}/${draftLinks.redCode}`;
-  const specLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}${draftLinks.lobbyCode}`;
-  const streamLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL}${draftLinks.lobbyCode}/stream`;
+  const blueLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL ?? "https://draft.lowbudgetlcs.com/"}${draftLinks.lobbyCode}/${draftLinks.blueCode}`;
+  const redLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL ?? "https://draft.lowbudgetlcs.com/"}${draftLinks.lobbyCode}/${draftLinks.redCode}`;
+  const specLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL ?? "https://draft.lowbudgetlcs.com/"}${draftLinks.lobbyCode}`;
+  const streamLink = `${import.meta.env.VITE_FRONTEND_DRAFT_URL ?? "https://draft.lowbudgetlcs.com/"}${draftLinks.lobbyCode}/stream`;
 
   const copyLinks = () => {
     navigator.clipboard.writeText(`Blue:
