@@ -151,7 +151,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
                 <Button className={`subtractButton text-2xl px-4! py-0.5!`} onClick={() => setIconSize(iconSize - 10)}>
                   -
                 </Button>
-                <Button className={`resetButton text-2xl flex items-center justify-center px-2! py-0.5!`} onClick={() => setIconSize(100)}>
+                <Button className={`resetButton text-2xl flex items-center justify-center px-2! py-0.5!`} onClick={() => setIconSize(60)}>
                   <IoMdRefresh />
                 </Button>
               </div>
