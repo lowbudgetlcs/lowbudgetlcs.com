@@ -23,8 +23,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [timerWidth, setTimerWidth] = useState<number>(100);
   const { draftState, playerSide } = useDraftContext();
-  const [barIsOpen, setBarIsOpen] = useState<boolean>(false);
-  const { teamNameVisible, champIconsVisible, iconSize, setIconSize } = useSettingsContext();
+  const { teamNameVisible, champIconsVisible, iconSize, setIconSize, barIsOpen, setBarIsOpen } = useSettingsContext();
 
   const location = useLocation();
   const isFearless = location.pathname.includes("/fearless");
@@ -167,7 +166,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             </div>
           </div>
           {isFearless && (
-            <div className="sticky bottom-0 left-0 right-0 z-10 border border-border rounded-md">
+            <div className="sticky bottom-0 left-0 right-0 border border-border rounded-md">
               <FearlessBansBar barIsOpen={barIsOpen} setBarIsOpen={setBarIsOpen} />
             </div>
           )}
