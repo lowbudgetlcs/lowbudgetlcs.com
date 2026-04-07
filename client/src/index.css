@@ -80,6 +80,7 @@
   --font-serif: Roboto, Helvetica, Arial, sans-serif;
 
   --transition-property-width: width;
+  --transition-property-height: height;
 
   @keyframes grow-bar {
     from {

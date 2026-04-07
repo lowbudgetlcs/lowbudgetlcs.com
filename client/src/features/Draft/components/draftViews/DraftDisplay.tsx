@@ -23,6 +23,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [searchValue, setSearchValue] = useState<string>("");
   const [timerWidth, setTimerWidth] = useState<number>(100);
   const { draftState, playerSide } = useDraftContext();
+  const [barIsOpen, setBarIsOpen] = useState<boolean>(false);
   const { teamNameVisible, champIconsVisible, iconSize, setIconSize } = useSettingsContext();
 
   const location = useLocation();
@@ -158,16 +159,16 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
             </div>
           </div>
           {/* List of Champion Images */}
-          <div className={`relative overflow-y-scroll bg-transparent ${champIconsVisible ? "" : "hidden"}`}>
+          <div className={`relative overflow-y-scroll h-full bg-transparent ${champIconsVisible ? "" : "hidden"}`}>
             <div className="relative">
-              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
+              <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2 transition-height duration-300">
                 <LoadChampIcons searchValue={searchValue} selectedRole={selectedRole} />
               </ul>
             </div>
           </div>
           {isFearless && (
-            <div className="absolute bottom-0 left-0 right-0 z-10">
-              <FearlessBansBar />
+            <div className="sticky bottom-0 left-0 right-0 z-10 border border-border rounded-md">
+              <FearlessBansBar barIsOpen={barIsOpen} setBarIsOpen={setBarIsOpen} />
             </div>
           )}
         </div>
