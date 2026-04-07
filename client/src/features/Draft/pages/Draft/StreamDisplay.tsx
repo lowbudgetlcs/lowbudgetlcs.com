@@ -9,6 +9,7 @@ import { useSettingsContext } from "../../providers/SettingsProvider";
 import { useLocation } from "react-router-dom";
 import FearlessNav from "../../components/Navbars/FearlessNav";
 import { useFearlessContext } from "../../providers/FearlessProvider";
+import lblcsIcon from "../../../../assets/icons/lblcsIcon.svg";
 
 function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const { draftState } = useDraftContext();
@@ -50,6 +51,22 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
 
     return () => clearInterval(interval);
   }, [isTimerRunning]);
+
+  const loopThroughCompletedDrafts = () => {
+    if (!fearlessState || fearlessState.completedDrafts === 0) return [];
+    const picksByGame: Array<Array<string>> = [];
+    for (let i = 1; i <= fearlessState.completedDrafts; i++) {
+      const picksToGet = i * 5;
+      const team1Picks = fearlessState.team1Picks.slice(picksToGet - 5, picksToGet);
+      const team2Picks = fearlessState.team2Picks.slice(picksToGet - 5, picksToGet);
+      if (team1Picks.every((pick) => pick === "nothing") && team2Picks.every((pick) => pick === "nothing")) {
+        continue;
+      }
+      picksByGame.push([...team1Picks, ...team2Picks]);
+    }
+    return picksByGame;
+  };
+
   return (
     <div className="draftContainer relative text-white h-screen max-h-screen bg-black flex flex-col">
       {isFearless && fearlessState && (
@@ -61,32 +78,72 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
             <div className={"blueSidePicks p-2 bg-bg border-border border rounded-xl shadow-md m-4"}>
               {fearlessState.team1Name === draftState.blueDisplayName ? (
                 <>
-                  <p className="text-xl font-bold truncate">{fearlessState.team1Name}'s Picks</p>
-                  <div className="flex flex-wrap justify-center max-w-xl">
-                    {fearlessState.team1Picks.map((pick) => {
-                      return pick === "nothing" ? null : (
-                        <img
-                          key={pick}
-                          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
-                          alt={`${pick}`}
-                          className="w-12 h-12 m-1"
-                        />
+                  <p className="text-xl font-bold truncate px-2">{fearlessState.team1Name}'s Picks</p>
+                  <div className="flex flex-col gap-6 max-w-xl">
+                    {loopThroughCompletedDrafts().map((gamePicks, index) => {
+                      return (
+                        <div key={`Game` + index} className={`flex gap-4 items-center w-full text-text-primary lg:px-4`}>
+                          <p className="text-lg text-text-secondary font-bold text-nowrap">Game {index + 1}</p>
+                          <div className="blueSide flex flex-wrap gap-2">
+                            {gamePicks.slice(0, 5).map((pick, index) => {
+                              return pick === "nothing" ? (
+                                <img
+                                  key={pick + index}
+                                  src={lblcsIcon}
+                                  alt={`${pick}`}
+                                  className={`w-8 h-8 xl:h-12 xl:w-12 border border-border grayscale opacity-50`}
+                                />
+                              ) : (
+                                <div key={pick + index} className="w-8 h-8 xl:h-12 xl:w-12 relative border border-border group">
+                                  <img
+                                    src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
+                                    alt={`${pick}`}
+                                    className="grayscale-75"
+                                  />
+                                  <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2 top-full mt-1">
+                                    <p className="text-sm text-text-primary px-2 bg-bg-light border border-border rounded-md">{pick}</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
                       );
                     })}
                   </div>
                 </>
               ) : (
                 <>
-                  <p className="text-xl font-bold truncate">{fearlessState.team2Name}'s Picks</p>
-                  <div className="flex flex-wrap justify-center max-w-xl">
-                    {fearlessState.team2Picks.map((pick) => {
-                      return pick === "nothing" ? null : (
-                        <img
-                          key={pick}
-                          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
-                          alt={`${pick}`}
-                          className="w-12 h-12 m-1"
-                        />
+                  <p className="text-xl font-bold truncate px-2">{fearlessState.team2Name}'s Picks</p>
+                  <div className="flex flex-col gap-6 max-w-xl">
+                    {loopThroughCompletedDrafts().map((gamePicks, index) => {
+                      return (
+                        <div key={`Game` + index} className={`flex gap-4 items-center w-full text-text-primary lg:px-4`}>
+                          <p className="text-lg text-text-secondary font-bold text-nowrap">Game {index + 1}</p>
+                          <div className="blueSide flex flex-wrap gap-2">
+                            {gamePicks.slice(5, 10).map((pick, index) => {
+                              return pick === "nothing" ? (
+                                <img
+                                  key={pick + index}
+                                  src={lblcsIcon}
+                                  alt={`${pick}`}
+                                  className={`w-8 h-8 xl:h-12 xl:w-12 border border-border grayscale opacity-50`}
+                                />
+                              ) : (
+                                <div key={pick + index} className="w-8 h-8 xl:h-12 xl:w-12 relative border border-border group">
+                                  <img
+                                    src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
+                                    alt={`${pick}`}
+                                    className="grayscale-75"
+                                  />
+                                  <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2 top-full mt-1">
+                                    <p className="text-sm text-text-primary px-2 bg-bg-light border border-border rounded-md">{pick}</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
                       );
                     })}
                   </div>
@@ -96,32 +153,72 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
             <div className={`redSidePicks p-2 bg-bg border-border border rounded-xl shadow-md m-4`}>
               {fearlessState.team2Name === draftState.redDisplayName ? (
                 <>
-                  <p className="text-xl font-bold truncate">{fearlessState.team2Name}'s Picks</p>
-                  <div className="flex flex-wrap justify-center max-w-xl">
-                    {fearlessState.team2Picks.map((pick) => {
-                      return pick === "nothing" ? null : (
-                        <img
-                          key={pick}
-                          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
-                          alt={`${pick}`}
-                          className="w-12 h-12 m-1"
-                        />
+                  <p className="text-xl font-bold truncate px-2 text-right">{fearlessState.team2Name}'s Picks</p>
+                  <div className="flex flex-col gap-6 max-w-xl">
+                    {loopThroughCompletedDrafts().map((gamePicks, index) => {
+                      return (
+                        <div key={`Game` + index} className={`flex gap-4 items-center w-full text-text-primary lg:px-4`}>
+                          <div className="blueSide flex flex-wrap gap-2">
+                            {gamePicks.slice(5, 10).map((pick, index) => {
+                              return pick === "nothing" ? (
+                                <img
+                                  key={pick + index}
+                                  src={lblcsIcon}
+                                  alt={`${pick}`}
+                                  className={`w-8 h-8 xl:h-12 xl:w-12 border border-border grayscale opacity-50`}
+                                />
+                              ) : (
+                                <div key={pick + index} className="w-8 h-8 xl:h-12 xl:w-12 relative border border-border group">
+                                  <img
+                                    src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
+                                    alt={`${pick}`}
+                                    className="grayscale-75"
+                                  />
+                                  <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2 top-full mt-1">
+                                    <p className="text-sm text-text-primary px-2 bg-bg-light border border-border rounded-md">{pick}</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <p className="text-lg text-text-secondary font-bold text-nowrap">Game {index + 1}</p>
+                        </div>
                       );
                     })}
                   </div>
                 </>
               ) : (
                 <>
-                  <p className="text-xl font-bold truncate">{fearlessState.team1Name}'s Picks</p>
-                  <div className="flex flex-wrap justify-center max-w-xl">
-                    {fearlessState.team1Picks.map((pick) => {
-                      return pick === "nothing" ? null : (
-                        <img
-                          key={pick}
-                          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
-                          alt={`${pick}`}
-                          className="w-12 h-12 m-1"
-                        />
+                  <p className="text-xl font-bold truncate text-right px-2">{fearlessState.team1Name}'s Picks</p>
+                  <div className="flex flex-col gap-6 max-w-xl">
+                    {loopThroughCompletedDrafts().map((gamePicks, index) => {
+                      return (
+                        <div key={`Game` + index} className={`flex gap-4 items-center w-full text-text-primary lg:px-4`}>
+                          <div className="blueSide flex flex-wrap gap-2">
+                            {gamePicks.slice(0, 5).map((pick, index) => {
+                              return pick === "nothing" ? (
+                                <img
+                                  key={pick + index}
+                                  src={lblcsIcon}
+                                  alt={`${pick}`}
+                                  className={`w-8 h-8 xl:h-12 xl:w-12 border border-border grayscale opacity-50`}
+                                />
+                              ) : (
+                                <div key={pick + index} className="w-8 h-8 xl:h-12 xl:w-12 relative border border-border group">
+                                  <img
+                                    src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${pick === "Wukong" ? "MonkeyKing" : pick}/square`}
+                                    alt={`${pick}`}
+                                    className="grayscale-75"
+                                  />
+                                  <div className="absolute hidden group-hover:block left-1/2 transform -translate-x-1/2 top-full mt-1">
+                                    <p className="text-sm text-text-primary px-2 bg-bg-light border border-border rounded-md">{pick}</p>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <p className="text-lg text-text-secondary font-bold text-nowrap">Game {index + 1}</p>
+                        </div>
                       );
                     })}
                   </div>
