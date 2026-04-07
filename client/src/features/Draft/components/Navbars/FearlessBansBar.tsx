@@ -51,17 +51,17 @@ const FearlessBansBar = ({ barIsOpen, setBarIsOpen }: FearlessBansBarProps) => {
         ref={FearlessBarRef}
         onClick={() => setBarIsOpen(!barIsOpen)}
         className={`previousFearlessPicks select-none w-full h-full flex flex-col justify-center-center cursor-pointer ${barIsOpen ? "text-text-primary" : "text-text-secondary hover:text-text-primary hover:bg-bg-light"} transition-all duration-150`}>
-        <p className={`text-xl select-none font-bold w-full px-2 py-1`}>Champions Used<div className={`${barIsOpen ? "block" : "hidden"} w-full h-1 rounded-full bg-border`}></div></p>
+        <div className={`text-xl select-none font-bold w-full px-2 py-1`}>Champions Used<div className={`${barIsOpen ? "block" : "hidden"} w-full h-1 rounded-full bg-border`}></div></div>
         <div className={`${barIsOpen ? "" : "hidden"} flex justify-between w-full xl:px-4 pt-2`}>
-          <p className="font-bold">
+          <div className="font-bold">
             {leftTeamName}
             <div className={`${barIsOpen ? "block" : "hidden"} w-16 h-1 rounded-full bg-orange`}></div>
-          </p>
+          </div>
 
-          <p className="font-bold relative">
+          <div className="font-bold relative">
             {rightTeamName}
             <div className={`${barIsOpen ? "block" : "hidden"} w-16 h-1 rounded-full bg-orange right-0 absolute`}></div>
-          </p>
+          </div>
         </div>
         <div className={`w-full ${barIsOpen ? "h-full py-4" : "h-0"} z-20 rounded-md shadow-2xl flex flex-col gap-10 items-center justify-center`}>
           {loopThroughCompletedDrafts().map((gamePicks, index) => {
