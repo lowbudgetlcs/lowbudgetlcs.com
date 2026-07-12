@@ -13,11 +13,13 @@ import lblcsIcon from "../../../../assets/icons/lblcsIcon.svg";
 
 function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const { draftState } = useDraftContext();
-  const { fearlessState } = useFearlessContext();
+  const location = useLocation();
+  const fearlessContext = location.pathname.includes("/fearless") ? useFearlessContext() : null;
+  const fearlessState = fearlessContext?.fearlessState;
   const { teamNameVisible } = useSettingsContext();
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [timeLeft, setTimeLeft] = useState(Math.max(draftState.timer - 4, 0) || 30);
-  const location = useLocation();
+
   const isFearless = location.pathname.includes("/fearless");
 
   // calculate width of timer bar
