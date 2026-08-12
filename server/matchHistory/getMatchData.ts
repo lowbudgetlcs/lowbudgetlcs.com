@@ -8,7 +8,7 @@ const getMatchData = async (matchId: string) => {
     const response = await rAPI.MatchV5.get(matchId, Constants.RegionGroups.AMERICAS);
     return response.response;
   } catch (error) {
-    console.error("Error getting match data within getMatchData", error);
+    console.error("match data could not be found for: ", matchId);
   }
 };
 

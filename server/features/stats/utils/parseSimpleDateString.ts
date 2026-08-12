@@ -3,16 +3,25 @@ const parseSimpleDateString = (dateString: string | null | undefined, fallbackDa
     return fallbackDate;
   }
 
-  const datePart = dateString.split(" ")[0];
+  // Trim first so a leading/extra space doesn't turn the date token into an empty string
+  const datePart = dateString.trim().split(" ")[0];
   let month: number;
   let day: number;
   let year = new Date().getFullYear();
+  let yearWasExplicit = false;
 
   if (datePart.includes("/")) {
     const dateComponents = datePart.split("/");
     if (dateComponents.length < 2) return fallbackDate;
     month = parseInt(dateComponents[0], 10) - 1;
     day = parseInt(dateComponents[1], 10);
+    if (dateComponents[2]) {
+      const parsedYear = parseInt(dateComponents[2], 10);
+      if (!isNaN(parsedYear)) {
+        year = parsedYear < 100 ? 2000 + parsedYear : parsedYear;
+        yearWasExplicit = true;
+      }
+    }
   } else {
     if (datePart.length === 4) {
       // MMDD
@@ -38,7 +47,7 @@ const parseSimpleDateString = (dateString: string | null | undefined, fallbackDa
 
   const now = new Date();
   const twoMonthsFromNow = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
-  if (testDate > twoMonthsFromNow) {
+  if (!yearWasExplicit && testDate > twoMonthsFromNow) {
     year -= 1;
     // Leap year check
     const adjusted = new Date(year, month, day);
