@@ -7,24 +7,32 @@ import discordImage from "../../assets/smilingGamer.jpg";
 const leagues = [
   {
     title: "Economy",
-    sheet: `https://docs.google.com/spreadsheets/d/1UrJs45Gi8d82wQhRY6gsanrLHc0UzBKeJx_PJHMcYLk/edit?usp=sharing`,
+    sheet: `https://docs.google.com/spreadsheets/d/18FJ6GxIBaFXblNrRGDHgHDvOxMgZUN_QTL84iCdgEDU/edit?usp=sharing`,
   },
   {
     title: "Commercial",
-    sheet: "https://docs.google.com/spreadsheets/d/1I0oUEWldXPoC2IbjlAa5cmm_x3C1M07Y3u6Wvk2uucA/edit?usp=sharing",
+    sheet: "https://docs.google.com/spreadsheets/d/1k40AWw2pA4X6_UgNiGFatVM2ORnHobqmaNG74a8HcWs/edit?usp=sharing",
   },
   {
     title: "Financial",
-    sheet: "https://docs.google.com/spreadsheets/d/15G-v2bcnOnuJWRRHlRDetPaKqNqwaNo7tXMhXT5gWRw/edit?usp=sharing",
+    sheet: "https://docs.google.com/spreadsheets/d/1FiOymNzbVMfxhR346IRzJfXCTYx8Vp95JPIRdr4QrMU/edit?usp=sharing",
+  },
+  {
+    title: "Audit",
+    sheet: "https://docs.google.com/spreadsheets/d/1tGi18fMzET49s1t9C7g8CzNZVgESSATFRACW6zRjB4E/edit?usp=sharing",
   },
   {
     title: "Executive",
-    sheet: "https://docs.google.com/spreadsheets/d/1XGm7WEBEvns_0QeyKzMzF6kiaUfYfLf39ZpCqntkVAI/edit?usp=sharing",
+    sheet: "https://docs.google.com/spreadsheets/d/1rtekZyXLEynm_rJkjXJZkEHzSOiBKgWpu4E7V6l9R8k/edit?usp=sharing",
   },
   {
     title: "CEO",
-    sheet: "https://docs.google.com/spreadsheets/d/1Htqg10TNDqLZ4D6paAKF1zAN4H6A2hoYfyn1eLTjApo/edit?usp=sharing",
+    sheet: "https://docs.google.com/spreadsheets/d/1VAxC-qoesxBcKuuKYwKiOvMFXI_MRZQSbzfnQzZcHts/edit?usp=sharing",
   },
+  {
+    title: "Shareholders",
+    sheet: "https://docs.google.com/spreadsheets/d/1knS5xCutFjf0Qfw9W6qacBh_ViCnmnEEgF0fikBZ6vc/edit?usp=sharing",
+  }
 ];
 
 function About() {
