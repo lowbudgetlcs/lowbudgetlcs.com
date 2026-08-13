@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Navbar from "./layout/Navbar";
 import ScrollToTop from "./layout/ScrollToTop";
-import Twitch from "./features/Twitch/Twitch";
 import { LeagueDataProvider } from "./features/Roster/providers/leagueDataContext";
 import DraftNavbar from "./features/Draft/components/Navbars/DraftNavbar";
 import { SettingsProvider } from "./features/Draft/providers/SettingsProvider";
@@ -60,7 +59,6 @@ function App() {
     <div className="relative font-serif bg-bg-dark">
       <QueryClientProvider client={queryClient}>
         <ScrollToTop />
-        {!isDraftRoute && <Twitch />}
         <SettingsProvider>
           <DraftSettings />
           {isDraftRoute ? <DraftNavbar /> : pathname.includes("stats") ? <Navbar /> : <Navbar />}
