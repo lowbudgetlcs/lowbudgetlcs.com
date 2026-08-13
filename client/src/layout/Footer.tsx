@@ -21,7 +21,7 @@ function Footer() {
             <NavLink
               className="hover:text-primary-light transition"
               target="_blank"
-              to="https://docs.google.com/document/d/1gwZpciwnRG8nao42zNZCKxwXf7fgdFXQm-tDAaQ6T1I/edit?usp=sharing">
+              to="https://docs.google.com/document/d/14lfdqVrN_gZLiQgYL9hjeACxVVYMWokXxzsIIoyF5Tw">
               <div className="">Rules</div>
             </NavLink>
           </li>

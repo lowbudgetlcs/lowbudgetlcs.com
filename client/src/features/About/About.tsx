@@ -114,7 +114,7 @@ function About() {
             target="_blank"
             rel="noopener noreferrer"
             to={
-              "https://docs.google.com/document/d/1gwZpciwnRG8nao42zNZCKxwXf7fgdFXQm-tDAaQ6T1I/edit?usp=sharing"
+              "https://docs.google.com/document/d/14lfdqVrN_gZLiQgYL9hjeACxVVYMWokXxzsIIoyF5Tw"
             }
           >
             <Button>Rules Document</Button>
