@@ -14,6 +14,10 @@ interface SocketContextProps {
   setShowReconnectPopup: React.Dispatch<React.SetStateAction<boolean>>;
   showErrorPopup: boolean;
   setShowErrorPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  showFixPopup: boolean;
+  setShowFixPopup: React.Dispatch<React.SetStateAction<boolean>>;
+  fixAccepted: boolean | null;
+  setFixAccepted: React.Dispatch<React.SetStateAction<boolean | null>>;
 }
 
 const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -23,6 +27,8 @@ export const SocketProvider: React.FC = () => {
   const [showReconnectPopup, setShowReconnectPopup] = useState<boolean>(false);
   const [showErrorPopup, setShowErrorPopup] = useState<boolean>(false);
   const [showConnectedPopup, setShowConnectedPopup] = useState<boolean>(false);
+  const [showFixPopup, setShowFixPopup] = useState<boolean>(false);
+  const [fixAccepted, setFixAccepted] = useState<boolean | null>(null);
 
   const clientId = getClientId();
 
@@ -80,7 +86,7 @@ export const SocketProvider: React.FC = () => {
       activeSocketMap.set(newSocket, namespace);
       return newSocket;
     },
-    [clientId]
+    [clientId],
   );
 
   // Disconnects socket
@@ -102,6 +108,10 @@ export const SocketProvider: React.FC = () => {
         setShowReconnectPopup,
         showErrorPopup,
         setShowErrorPopup,
+        showFixPopup,
+        setShowFixPopup,
+        fixAccepted,
+        setFixAccepted,
       }}>
       <Outlet />
     </SocketContext.Provider>
