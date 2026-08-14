@@ -1,173 +1,63 @@
 import { HandlerVarsProps } from "../../models/draftState";
 import { updateClientState } from "../../models/clientDraftState";
 
-const fixPhaseHandler = async ({
-  io,
-  lobbyCode,
-  state,
-  emitter,
-}: HandlerVarsProps): Promise<boolean> => {
-  if (state.activePhase !== "fix") {
-    return false;
-  }
+const fixPhaseHandler = async ({ io, lobbyCode, state, emitter }: HandlerVarsProps) => {
+  while (state.activePhase !== "finished") {
+    let fixPhaseStarted: boolean = false;
+    let currentChampToFix: string | null = null;
+    let currentPickedChampion: string | null = null;
 
-  return new Promise((resolve, reject) => {
-    const startFixPhase = async () => {
-      try {
-        io.to(lobbyCode).emit("fixPhase", updateClientState(lobbyCode));
-        state.phaseType = "fix";
-        let timer = 64;
-
-        const interval = setInterval(() => {
-          timer--;
-          state.timer = timer;
-          io.to(lobbyCode).emit("timer", timer);
-
-          if (timer <= 0) {
-            clearInterval(interval);
-            emitter.off("blueFixPick", blueFixListener);
-            emitter.off("redFixPick", redFixListener);
-            emitter.off("blueAccept", blueAcceptListener);
-            emitter.off("redAccept", redAcceptListener);
-            io.to(lobbyCode).emit("endFixPhase", true);
-            resolve(true);
-          }
-        }, 1000);
-
-        const blueAcceptListener = (accepted: boolean) => {
-          if (accepted) {
-            if (!state.redFixPick) return;
-
-            // Find the index of the old pick in the pick arrays
-            const foundChampFullPicks = state.picksArray.indexOf(
-              state.redFixPick[0]
-            );
-            const foundChampPicks = state.redPicks.indexOf(state.redFixPick[0]);
-
-            // Find the index of the old pick in the ban arrays
-            const foundChampFullBans = state.bansArray.indexOf(
-              state.redFixPick[0]
-            );
-            const foundChampBans = state.redBans.indexOf(state.redFixPick[0]);
-
-            if (foundChampFullPicks !== -1 && foundChampPicks !== -1) {
-              // The champion was a pick. Replaces it in both pick arrays.
-              state.picksArray[foundChampFullPicks] = state.redFixPick[1];
-              state.redPicks[foundChampPicks] = state.redFixPick[1];
-              console.log("Replaced champion pick.");
-              io.to(lobbyCode).emit(
-                "redFixAccepted",
-                updateClientState(lobbyCode)
-              );
-            } else if (foundChampFullBans !== -1 && foundChampBans !== -1) {
-              // The champion was a ban. Replaces it in both ban arrays.
-              state.bansArray[foundChampFullBans] = state.redFixPick[1];
-              state.redBans[foundChampBans] = state.redFixPick[1];
-              console.log("Replaced champion ban.");
-              io.to(lobbyCode).emit(
-                "redFixAccepted",
-                updateClientState(lobbyCode)
-              );
-            } else {
-              console.error(
-                "Old pick not found in any array in blue accept: ",
-                lobbyCode
-              );
-              io.to(lobbyCode).emit(
-                "redFixDenied",
-                updateClientState(lobbyCode)
-              );
-            }
-            state.redFixPick = undefined;
-            state.blueAcceptPick = undefined;
-          } else {
-            state.redFixPick = undefined;
-            io.to(lobbyCode).emit("redFixDenied", updateClientState(lobbyCode));
-          }
-        };
-
-        const redAcceptListener = (accepted: boolean) => {
-          if (accepted) {
-            if (!state.blueFixPick) return;
-
-            // Find the index of the old pick in the pick arrays
-            const foundChampFullPicks = state.picksArray.indexOf(
-              state.blueFixPick[0]
-            );
-            const foundChampPicks = state.bluePicks.indexOf(
-              state.blueFixPick[0]
-            );
-
-            // Find the index of the old pick in the ban arrays
-            const foundChampFullBans = state.bansArray.indexOf(
-              state.blueFixPick[0]
-            );
-            const foundChampBans = state.blueBans.indexOf(state.blueFixPick[0]);
-
-            if (foundChampFullPicks !== -1 && foundChampPicks !== -1) {
-              // The champion was a pick. Replaces it in both pick arrays.
-              state.picksArray[foundChampFullPicks] = state.blueFixPick[1];
-              state.bluePicks[foundChampPicks] = state.blueFixPick[1];
-              console.log("Replaced champion pick.");
-              io.to(lobbyCode).emit(
-                "blueFixAccepted",
-                updateClientState(lobbyCode)
-              );
-            } else if (foundChampFullBans !== -1 && foundChampBans !== -1) {
-              // The champion was a ban. Replaces it in both ban arrays.
-              state.bansArray[foundChampFullBans] = state.blueFixPick[1];
-              state.blueBans[foundChampBans] = state.blueFixPick[1];
-              console.log("Replaced champion ban.");
-              io.to(lobbyCode).emit(
-                "blueFixAccepted",
-                updateClientState(lobbyCode)
-              );
-            } else {
-              console.error(
-                "Old pick not found in any array in red accept: ",
-                lobbyCode
-              );
-              io.to(lobbyCode).emit(
-                "blueFixDenied",
-                updateClientState(lobbyCode)
-              );
-            }
-            state.blueFixPick = undefined;
-            state.redAcceptPick = undefined;
-          } else {
-            state.blueFixPick = undefined;
-            io.to(lobbyCode).emit(
-              "blueFixDenied",
-              updateClientState(lobbyCode)
-            );
-          }
-        };
-
-        const blueFixListener = () => {
-          io.to(lobbyCode).emit(
-            "askRedToAcceptPick",
-            updateClientState(lobbyCode)
-          );
-          emitter.once("redAccept", redAcceptListener);
-        };
-
-        const redFixListener = () => {
-          io.to(lobbyCode).emit(
-            "askBlueToAcceptPick",
-            updateClientState(lobbyCode)
-          );
-          emitter.once("blueAccept", blueAcceptListener);
-        };
-
-        emitter.on("blueFixPick", blueFixListener);
-        emitter.on("redFixPick", redFixListener);
-      } catch (err) {
-        console.error("Error during fix phase:", err);
-        reject(err);
+    // Starts the fix phase when a side identifies a champion to fix
+    const startFixPhase = (side: string, champToFix: string, pickedChampion: string) => {
+      if (!fixPhaseStarted || !currentChampToFix || !currentPickedChampion || (side !== state.blueUser && side !== state.redUser)) {
+        fixPhaseStarted = true;
+        currentChampToFix = champToFix;
+        currentPickedChampion = pickedChampion;
+        io.to(lobbyCode).emit("startFixPhase", { side, champToFix, pickedChampion });
       }
     };
-    startFixPhase();
-  });
+
+    // Ends the phase if opposite side gives input
+    const endFixPhase = (side: string, response: boolean) => {
+      if (fixPhaseStarted && currentChampToFix && currentPickedChampion && (side === state.blueUser || side === state.redUser)) {
+        findAndReplaceChampion(currentChampToFix, currentPickedChampion);
+
+        fixPhaseStarted = false;
+        currentChampToFix = null;
+        currentPickedChampion = null;
+        io.to(lobbyCode).emit("endFixPhase");
+      }
+    };
+
+    const findAndReplaceChampion = (champToFix: string, pickedChampion: string) => {
+      const inBluePicks = state.bluePicks.includes(champToFix);
+      const inRedPicks = state.redPicks.includes(champToFix);
+      const inBlueBans = state.blueBans.includes(champToFix);
+      const inRedBans = state.redBans.includes(champToFix);
+
+      // Find and replace the champion in the appropriate array
+      switch (true) {
+        case inBluePicks:
+          state.bluePicks = state.bluePicks.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          state.picksArray = state.picksArray.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          break;
+        case inRedPicks:
+          state.redPicks = state.redPicks.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          state.picksArray = state.picksArray.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          break;
+        case inBlueBans:
+          state.blueBans = state.blueBans.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          state.bansArray = state.bansArray.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          break;
+        case inRedBans:
+          state.redBans = state.redBans.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          state.bansArray = state.bansArray.map((champ) => (champ === champToFix ? pickedChampion : champ));
+          break;
+      }
+    };
+    emitter.on("startFixPhase", startFixPhase);
+    emitter.on("endFixPhase", endFixPhase);
+  }
 };
 
 export default fixPhaseHandler;
