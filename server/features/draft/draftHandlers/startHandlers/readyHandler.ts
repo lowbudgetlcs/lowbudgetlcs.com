@@ -5,6 +5,7 @@ import { read } from "fs";
 import { readyHandler } from "../phaseHandlers/readyHandler";
 import { updateClientState } from "../../models/clientDraftState";
 import phaseTransition from "../phaseHandlers/phaseTransition";
+import fixPhaseHandler from "../phaseHandlers/fixPhaseHandler";
 
 interface ReadyHandlerProps {
   lobbyCode: string;
@@ -78,6 +79,8 @@ const readySocketHandler = async ({
       state: state,
       emitter: emitter,
     };
+
+    fixPhaseHandler(handlerVars);
 
     // Handles all draft phases in order
     for (const phase of draftPhases()) {
