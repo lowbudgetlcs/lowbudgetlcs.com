@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 const rosterRoutes = express.Router();
 import { google } from "googleapis";
 import { getDivisionsForSeason } from "../db/queries/select";
+import { getTeamLogoLookupKey, getTeamLogosFromSheets } from "../features/stats/services/getTeamLogosFromSheets.service";
 
 interface Player {
   points: string;
@@ -13,23 +14,6 @@ interface Team {
   logo?: string | null;
   players: Player[];
   division: string;
-}
-
-interface TeamDto {
-  id: number;
-  name: string;
-  logoName: string;
-  eventId: number;
-}
-export interface EventWithTeamsDto {
-  id: number;
-  name: string;
-  description: string;
-  startDate: string;
-  endDate: string;
-  tournamentId: number;
-  status: string;
-  teams: TeamDto[];
 }
 
 const cache = new Map();
@@ -70,6 +54,13 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
     const allTeams: Team[] = [];
     const divisionsData = await getDivisionsForSeason();
     const divisionNames = divisionsData.map((d) => d.name);
+    let teamLogos = new Map<string, string>();
+
+    try {
+      teamLogos = await getTeamLogosFromSheets();
+    } catch (logoErr: any) {
+      console.warn("Error getting logos from Sheets:", logoErr.message);
+    }
 
     for (const division of divisionsData) {
       const { name: divisionName, spreadSheetId: spreadsheetId, folderId } = division;
@@ -99,20 +90,6 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
         spreadsheetId: spreadsheetId,
         ranges: rangeNames,
       });
-      const teamsFromDennys = []
-      try {
-        const idForSeason = division.eventId;
-        const dennysApiResponse = await fetch(
-          `https://dennys.lowbudgetlcs.com/api/v1/event/${idForSeason}/teams`
-        );
-        if (dennysApiResponse) {
-          const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
-          teamsFromDennys.push(...dennysApiEventData.teams);
-
-        }
-      } catch (logoErr: any) {
-        console.warn(`Error getting logos: `, logoErr.message);
-      }
 
       const valueRanges = batchResponse.data.valueRanges || [];
 
@@ -122,16 +99,7 @@ rosterRoutes.get("/api/rosterdata", async (req: Request, res: Response) => {
 
         if (rows && rows.length > 0) {
           const teamName = rows[0][1] || "Team Name Don't Work";
-          let teamLogo = null;
-
-          if (teamsFromDennys.length > 0) {
-            const teamFromDennys = teamsFromDennys.find(
-              (team) => team.name.toLowerCase() === teamName.toLowerCase()
-            );
-            if (teamFromDennys?.logoName) {
-              teamLogo = teamFromDennys.logoName;
-            }
-          }
+          const teamLogo = teamLogos.get(getTeamLogoLookupKey(divisionName, teamName)) ?? null;
 
           const team: Team = {
             logo: teamLogo,

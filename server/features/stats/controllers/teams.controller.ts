@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getDivisionsForSeason, getTeamIdByName, getTeamSeasonsByName } from "../../../db/queries/select";
-import { EventWithTeamsDto } from "../../../routes/rosterRoutes";
 import teamStatsAggregation from "../services/teamStatsAggregation.service";
+import { getTeamLogoLookupKey, getTeamLogosFromSheets } from "../services/getTeamLogosFromSheets.service";
 
 const getTeamStatsById = async (req: Request, res: Response, next: Function) => {
 	try {
@@ -37,23 +37,16 @@ const getTeamStatsByName = async (req: Request, res: Response, next: Function) =
 		let teamLogo: string | null = null;
 		try {
 			const divisions = await getDivisionsForSeason();
+			const teamLogos = await getTeamLogosFromSheets();
 			for (const div of divisions) {
-				if (!div.eventId) continue;
-				try {
-					const dennysApiResponse = await fetch(`https://dennys.lowbudgetlcs.com/api/v1/event/${div.eventId}/teams`);
-					if (!dennysApiResponse.ok) continue;
-					const dennysApiEventData: EventWithTeamsDto = await dennysApiResponse.json();
-					const matched = dennysApiEventData.teams.find((team) => team.name.toLowerCase() === teamName.toLowerCase());
-					if (matched?.logoName) {
-						teamLogo = matched.logoName;
-						break;
-					}
-				} catch (logoErr: any) {
-					console.warn("Error fetching logo from Dennys for division", div.eventId, logoErr.message);
+				const logo = teamLogos.get(getTeamLogoLookupKey(div.name, teamName));
+				if (logo) {
+					teamLogo = logo;
+					break;
 				}
 			}
 		} catch (err) {
-			console.warn("Error getting divisions or logos:", err);
+			console.warn("Error getting divisions or logos from Sheets:", err);
 		}
 
 		return res.json({ teamId, overallStats, logo: teamLogo });

@@ -9,6 +9,7 @@ import { TeamOverallStats } from "../../../../types/StatTypes";
 import { useFetchData } from "../../../../leagueData";
 import { TeamSeason } from "../../api/getTeamSeasons";
 import lblcsIcon from "../../../../assets/icons/lblcsIcon.svg";
+import getTeamLogoUrl from "../../../../utils/getTeamLogoUrl";
 
 interface TeamStatSidebarProps {
   teamName: string;
@@ -39,7 +40,7 @@ const TeamStatSidebar = ({
       <div className="flex flex-col p-4 gap-2 bg-bg border border-border rounded-xl grow md:min-w-64 max-h-fit">
         <div className="flex flex-col items-center justify-center">
           {logo ? (
-            <img src={logo} alt={`${teamName} logo`} className="w-28 h-28 object-contain mb-2" />
+            <img src={getTeamLogoUrl(logo)} alt={`${teamName} logo`} className="w-28 h-28 object-contain mb-2" />
           ) : (
             <img src={lblcsIcon} alt="LBLCS logo" className="w-24 h-24 bg-bg-light rounded-full mb-2 grayscale border border-border" />
           )}

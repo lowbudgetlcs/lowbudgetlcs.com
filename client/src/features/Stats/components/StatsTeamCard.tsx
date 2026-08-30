@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import getTeamLogoUrl from "../../../utils/getTeamLogoUrl";
 
 
 const commercialGradient =
@@ -46,7 +47,7 @@ function StatsTeamCard({
     if (logo) {
       return (
         <img
-          src={logo}
+          src={getTeamLogoUrl(logo)}
           className="logo shrink-0 w-37.5 text-center text-3xl h-37.5"
         />
       );

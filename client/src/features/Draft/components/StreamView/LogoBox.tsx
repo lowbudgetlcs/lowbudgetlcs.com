@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLeagueData } from "../../../Roster/providers/leagueDataContext";
 import tempImage from "../../../../assets/lblcsLogo.svg";
+import getTeamLogoUrl from "../../../../utils/getTeamLogoUrl";
 const LogoBox = () => {
   const { teams } = useLeagueData();
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -68,13 +69,13 @@ const LogoBox = () => {
                   <div
                     key={team.name}
                     onClick={() => {
-                      setChosenLogo(team.logo ? team.logo : tempImage);
+                      setChosenLogo(team.logo ? getTeamLogoUrl(team.logo) : tempImage);
                       setIsOpen(!isOpen);
                     }}
                     className="logo hover:scale-110 hover:brightness-110 transition duration-200 
                     flex justify-center items-center hover:bg-gray rounded-md cursor-pointer w-16 h-16 "
                   >
-                    <img src={team.logo || tempImage} />
+                    <img src={team.logo ? getTeamLogoUrl(team.logo) : tempImage} />
                   </div>
                 );
             })}
