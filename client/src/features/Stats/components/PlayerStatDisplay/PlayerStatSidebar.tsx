@@ -69,7 +69,7 @@ const PlayerStatSidebar = ({ summonerName, tagLine, playerData, seasons, selecte
                   value={selectedSeasonId || ""}
                   onChange={(e) => onSeasonChange(Number(e.target.value))}>
                   {seasons.map((season) => (
-                    <option key={season.teamId} value={season.teamId}>
+                    <option key={`${season.seasonId}-${season.teamId}`} value={season.seasonId}>
                       {season.seasonName}
                     </option>
                   ))}

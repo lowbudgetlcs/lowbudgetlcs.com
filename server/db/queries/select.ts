@@ -23,6 +23,16 @@ export const getDivisionsForSeason = async () => {
   return divisionsData;
 };
 
+export const getLatestSeasonMatchesSpreadsheet = async () => {
+  const [latestSeason] = await db
+    .select({ matchesSpreadsheet: seasonsInWebsite.matchesSpreadsheet })
+    .from(seasonsInWebsite)
+    .orderBy(desc(seasonsInWebsite.id))
+    .limit(1);
+
+  return latestSeason?.matchesSpreadsheet ?? null;
+};
+
 export async function getPlayersByPuuid(puuids: string[]) {
   if (puuids.length === 0) {
     return [];

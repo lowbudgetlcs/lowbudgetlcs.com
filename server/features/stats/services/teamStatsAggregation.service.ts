@@ -62,8 +62,6 @@ const createEmptyAccumulator = (rosterStats: Record<string, RosterAccumulator>):
 const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | null> => {
   const [games, teamDetails, rosterFromDb] = await Promise.all([getGamesForTeam(teamId), getTeamDetails(teamId), getCurrentRosterForTeam(teamId)]);
 
-  if (!games?.length) return null;
-
   const rosterStats: Record<string, RosterAccumulator> = {};
   const rosterByPuuid = new Map<string, string>();
   const rosterByRiotId = new Map<string, string>();

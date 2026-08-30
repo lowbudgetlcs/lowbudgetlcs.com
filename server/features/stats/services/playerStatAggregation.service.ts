@@ -94,7 +94,6 @@ const normalizeRole = (role: string) => (role === "UTILITY" ? "SUPPORT" : role);
 
 const playerStatsAggregation = async (puuid: string, seasonId?: number): Promise<PlayerOverallStats | null> => {
   const games = await getGamesForPlayer(puuid, seasonId);
-  if (!games?.length) return null;
 
   const stats = games.reduce<PlayerAggregationAccumulator>((acc, game) => {
     const player = game.participants.find((participant) => participant.playerPuuid === puuid);

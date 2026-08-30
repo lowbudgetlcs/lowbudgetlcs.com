@@ -1,7 +1,8 @@
 import { PlayerOverallStats } from "../../../../types/StatTypes";
 
 const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) => {
-  const championName = playerData.championPool[0].championName.toLowerCase();
+  const topChampion = playerData.championPool[0];
+  const championName = topChampion?.championName.toLowerCase();
   if (!championName) {
     return null;
   }
@@ -9,7 +10,7 @@ const ChampionTopImage = ({ playerData }: { playerData: PlayerOverallStats }) =>
     <div className="absolute top-0 left-0 w-full h-64 hidden md:block">
       <div className="w-full relative h-64">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${playerData.championPool[0].championName}/splashCentered`}
+          src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${topChampion.championName}/splashCentered`}
           alt="Champion Splash Art"
           className="w-full h-full object-cover object-[50%_20%]"
           width={900}

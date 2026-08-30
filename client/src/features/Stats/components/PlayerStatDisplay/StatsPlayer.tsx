@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import PlayerStatSidebar from "./PlayerStatSidebar";
 import AchievementsDisplay from "./AchievementsDisplay";
@@ -44,7 +44,18 @@ function StatsPlayer() {
     enabled: !!playerStatsQuery.data?.puuid,
   });
 
-  const loading = playerStatsQuery.isPending || playerGamesQuery.isPending || (seasonsQuery.isPending && !!playerStatsQuery.data?.puuid);
+  useEffect(() => {
+    if (selectedSeasonId === null && seasonsQuery.data?.[0]) {
+      setSelectedSeasonId(seasonsQuery.data[0].seasonId);
+    }
+  }, [selectedSeasonId, seasonsQuery.data]);
+
+  const awaitingInitialSeason = selectedSeasonId === null && (seasonsQuery.data?.length ?? 0) > 0;
+  const loading =
+    playerStatsQuery.isPending ||
+    playerGamesQuery.isPending ||
+    (seasonsQuery.isPending && !!playerStatsQuery.data?.puuid) ||
+    awaitingInitialSeason;
   const error = playerStatsQuery.error || playerGamesQuery.error;
 
   const playerData = playerStatsQuery.data;

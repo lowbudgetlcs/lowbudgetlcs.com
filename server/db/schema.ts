@@ -175,6 +175,7 @@ export const currentSeasonDivisionsInWebsite = website.table("current_season_div
 export const seasonsInWebsite = website.table("seasons", {
 	id: serial().primaryKey().notNull(),
 	seasonName: text("season_name").notNull(),
+	matchesSpreadsheet: text("matches_spreadsheet"),
 	createdAt: timestamp("created_at", { withTimezone: true, mode: 'string' }).default(sql`CURRENT_TIMESTAMP`),
 }, (table) => [
 	unique("seasons_season_name_key").on(table.seasonName),
