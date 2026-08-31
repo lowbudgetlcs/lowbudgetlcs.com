@@ -42,7 +42,6 @@ const readySocketHandler = async ({
     "pickPhase1",
     "banPhase2",
     "pickPhase2",
-    "fix",
     "finished",
   ];
 
@@ -79,8 +78,6 @@ const readySocketHandler = async ({
       state: state,
       emitter: emitter,
     };
-
-    fixPhaseHandler(handlerVars);
 
     // Handles all draft phases in order
     for (const phase of draftPhases()) {
