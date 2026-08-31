@@ -1,0 +1,23 @@
+import { Namespace } from "socket.io";
+import { fixProps, requestFixProps } from "../../types/draftInterfaces";
+
+
+
+// Sends a request to fix a champion pick and waits for the response from the other side.
+const requestFix = async ({ sideRequesting, requestSource, replacementChampion, replacementSource, io, lobbyCode }: requestFixProps) => {
+    io.to(lobbyCode).emit("requestFix", {
+        sideRequesting,
+        requestSource,
+        replacementChampion,
+        replacementSource
+    });
+
+    // Returns the above & status: boolean (true if the fix was accepted, false otherwise)
+    return new Promise((resolve) => {
+        io.once("fixResponse", (response: fixProps) => {
+            resolve(response);
+        });
+    });
+};
+
+export default requestFix;
