@@ -1,4 +1,3 @@
-import { Namespace } from "socket.io";
 import { fixProps, requestFixProps } from "../../types/draftInterfaces";
 
 
@@ -13,7 +12,7 @@ const requestFix = async ({ sideRequesting, requestSource, replacementChampion, 
     });
 
     // Returns the above & status: boolean (true if the fix was accepted, false otherwise)
-    return new Promise((resolve) => {
+    return new Promise<fixProps>((resolve) => {
         io.once("fixResponse", (response: fixProps) => {
             resolve(response);
         });
