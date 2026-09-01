@@ -10,7 +10,7 @@ const handleFixes = async (io: Namespace, getDraftState: (lobbyCode: string) => 
   let didRedRequestFix = false;
   let didBlueRequestFix = false;
 
-  io.on("requestFix", async (data: requestFixProps) => {
+  io.on("fixRequest", async (data: requestFixProps) => {
 
     const currentDraftState = getDraftState(data.lobbyCode);
 
