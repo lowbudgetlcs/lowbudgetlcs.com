@@ -3,9 +3,9 @@ import { HandlerVarsProps } from "../../models/draftState";
 import { banPhase1Handler } from "./banPhase1Handler";
 import { banPhase2Handler } from "./banPhase2Handler";
 import { endDraftHandler } from "./endDraftHandler";
-import fixPhaseHandler from "./fixPhaseHandler";
 import { pickPhase1Handler } from "./pickPhase1Handler";
 import { pickPhase2Handler } from "./pickPhase2Handler";
+import fixTimer from "../fixHandlers/fixTimer";
 
 const phaseTransition = async (handlerVars: HandlerVarsProps, activePhase: string) => {
   const { io, lobbyCode, state } = handlerVars;
@@ -36,13 +36,8 @@ const phaseTransition = async (handlerVars: HandlerVarsProps, activePhase: strin
       io.to(lobbyCode).emit("startPickPhase2", updateClientState(lobbyCode));
       await pickPhase2Handler(handlerVars);
       break;
-    case "fix":
-      state.currentHover = null;
-      state.activePhase = "fix";
-      io.to(lobbyCode).emit("startFixPhase", updateClientState(lobbyCode));
-      await fixPhaseHandler(handlerVars)
-      break;
     case "finished":
+      await fixTimer(handlerVars);
       await endDraftHandler(handlerVars);
       if (state.fearlessCode) {
         const draftSockets = await io.in(lobbyCode).fetchSockets();
