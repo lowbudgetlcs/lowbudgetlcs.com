@@ -8,6 +8,7 @@ import readySocketHandler from "../draftHandlers/startHandlers/readyHandler";
 import joinDraftHandler from "../draftHandlers/startHandlers/joinDraftHandler";
 import fixPickHandler from "../draftHandlers/pickBanHandlers/fixPickHandler";
 import acceptFixPickHandler from "../draftHandlers/pickBanHandlers/acceptFixPickHandler";
+import handleFixes from "../draftHandlers/fixHandlers/handleFixes";
 export interface DraftUsersProps {
   blue: string;
   red: string;
@@ -35,7 +36,7 @@ export const draftSocket = (io: Namespace) => {
         getDraftState,
         lobbyEmitters,
         socket,
-      })
+      }),
     );
 
     // Ready socket listener
@@ -49,12 +50,12 @@ export const draftSocket = (io: Namespace) => {
         lobbyEmitters,
         socket,
         io,
-      })
+      }),
     );
 
     // Socket listeners for client input
 
-    // Client Champion Hover listener 
+    // Client Champion Hover listener
     // Used in pick and ban phases
     socket.on("clientHover", ({ lobbyCode, sideCode, chosenChamp }) =>
       clientHoverHandler({
@@ -64,28 +65,21 @@ export const draftSocket = (io: Namespace) => {
         getDraftState,
         socket,
         io,
-      })
+      }),
     );
 
     // Ban phase listener
     socket.on("ban", ({ lobbyCode, sideCode, chosenChamp }) =>
-      banHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket })
+      banHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket }),
     );
 
     // Pick Phase listener
     socket.on("pick", ({ lobbyCode, sideCode, chosenChamp }) =>
-      pickHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket })
+      pickHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket }),
     );
 
-    // Fix Phase listener
-    socket.on("fixPick", ({ lobbyCode, sideCode, oldChamp, chosenChamp }) =>
-      fixPickHandler({ lobbyCode, sideCode, oldChamp, chosenChamp, getDraftState, lobbyEmitters, socket })
-    );
-
-    // Accept/Deny Fix listener
-    socket.on("acceptFixPick", ({ lobbyCode, sideCode, accepted }) =>
-      acceptFixPickHandler({ lobbyCode, sideCode, accepted, getDraftState, lobbyEmitters, socket })
-    );
+    // Handles all fix requests and responses throughout the draft
+    handleFixes(io, getDraftState);
 
     // Listens for disconnections for logging
     socket.on("disconnect", () => {
