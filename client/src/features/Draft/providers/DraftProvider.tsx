@@ -242,6 +242,10 @@ export const DraftProvider: React.FC = () => {
       }));
     };
 
+    const handleFixRequest = () => {}
+
+    const handleFixResponse = () => {}
+
     // All the beautiful socket event listeners
     draftSocket.on("state", handleStateUpdate);
     draftSocket.on("currentTurn", handleCurrentTurn);
@@ -255,6 +259,10 @@ export const DraftProvider: React.FC = () => {
     draftSocket.on("setPick", handleStateUpdate);
     draftSocket.on("setBan", handleStateUpdate);
     draftSocket.on("timer", handleTimerUpdate);
+    draftSocket.on("fixTimerStarted", handleStateUpdate);
+    draftSocket.on("endFixTime", handleStateUpdate); 
+    draftSocket.on("requestFix", handleFixRequest);
+    draftSocket.on("fixResponse", handleFixResponse);
 
     // Clean up every. event. listener.
     return () => {
@@ -270,6 +278,10 @@ export const DraftProvider: React.FC = () => {
       draftSocket.off("setPick", handleStateUpdate);
       draftSocket.off("setBan", handleStateUpdate);
       draftSocket.off("timer", handleTimerUpdate);
+      draftSocket.off("fixTimerStarted", handleStateUpdate);
+      draftSocket.off("endFixTime", handleStateUpdate);
+      draftSocket.off("requestFix", handleFixRequest);
+      draftSocket.off("fixResponse", handleFixResponse);
     };
   }, [draftSocket]);
 
