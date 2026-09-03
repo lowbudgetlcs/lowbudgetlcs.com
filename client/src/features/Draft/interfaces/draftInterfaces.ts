@@ -33,8 +33,6 @@ export interface DraftProps {
   redPick: string;
   draftComplete: boolean;
   fearlessCode: string | null;
-  blueChampionFixRequest: string | null;
-  redChampionFixRequest: string | null;
   blueTimeToFix: number | null;
   redTimeToFix: number | null;
   blueChampionReplacementRequest: ReplacementChampProps | null;
@@ -43,7 +41,10 @@ export interface DraftProps {
 
 export interface ReplacementChampProps {
   replacementChampion: string;
-  championToReplace: string;
+  championToReplace: {
+    currentSlot: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    championName: string;
+  };
 }
 
 export interface DraftExportObjectProps {

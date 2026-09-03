@@ -28,8 +28,6 @@ export const defaultDraftState: DraftProps = {
   redPick: "nothing",
   draftComplete: false,
   fearlessCode: null,
-  redChampionFixRequest: null,
-  blueChampionFixRequest: null,
   redTimeToFix: null,
   blueTimeToFix: null,
   blueChampionReplacementRequest: null,
