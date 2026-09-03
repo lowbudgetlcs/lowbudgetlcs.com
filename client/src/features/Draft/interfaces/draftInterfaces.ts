@@ -33,6 +33,17 @@ export interface DraftProps {
   redPick: string;
   draftComplete: boolean;
   fearlessCode: string | null;
+  blueChampionFixRequest: string | null;
+  redChampionFixRequest: string | null;
+  blueTimeToFix: number | null;
+  redTimeToFix: number | null;
+  blueChampionReplacementRequest: ReplacementChampProps | null;
+  redChampionReplacementRequest: ReplacementChampProps | null;
+}
+
+export interface ReplacementChampProps {
+  replacementChampion: string;
+  championToReplace: string;
 }
 
 export interface DraftExportObjectProps {
@@ -85,4 +96,11 @@ export interface FearlessStateProps {
   team2Bans: string[];
   draftLobbyCodes: string[] | null;
   initialTournamentCode?: string;
+}
+
+export interface FixRequestProps {
+  sideRequesting: string;
+  requestSource: string;
+  replacementChampion: string;
+  replacementSource: string;
 }
