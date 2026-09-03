@@ -42,8 +42,8 @@ export interface DraftProps {
 export interface ReplacementChampProps {
   replacementChampion: string;
   championToReplace: {
-    currentSlot: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
-    championName: string;
+    replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    replacementChampion: string;
   };
 }
 
