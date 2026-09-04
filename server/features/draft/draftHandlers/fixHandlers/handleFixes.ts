@@ -24,7 +24,7 @@ const handleFixes = async (io: Namespace, getDraftState: (lobbyCode: string) => 
     if (data.sideRequesting === currentDraftState.redUser && !didRedRequestFix) {
       didRedRequestFix = true;
 
-      const response = await requestFix(data);
+      const response = await requestFix({ ...data, io });
 
       //   Changes sideRequesting to "red" instead of the sideCode
       //   Emits answer from opposing side
@@ -36,7 +36,7 @@ const handleFixes = async (io: Namespace, getDraftState: (lobbyCode: string) => 
     } else if (data.sideRequesting === currentDraftState.blueUser && !didBlueRequestFix) {
       didBlueRequestFix = true;
 
-      const response = await requestFix(data);
+      const response = await requestFix({ ...data, io });
 
       //   Changes sideRequesting to "blue" instead of the sideCode
       //   Emits answer from opposing side
