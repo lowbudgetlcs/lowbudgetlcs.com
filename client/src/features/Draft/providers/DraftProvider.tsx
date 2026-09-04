@@ -1,7 +1,7 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { Champion, DraftProps } from "../interfaces/draftInterfaces";
+import { Champion, DraftProps, FixRequestProps, FixResponseProps } from "../interfaces/draftInterfaces";
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
@@ -63,7 +63,7 @@ export const DraftProvider: React.FC = () => {
       setChampionList(championQuery.data);
     }
   }, [championQuery.data]);
-  
+
   const initializeDraft = async (lobbyCode: string, sideCode?: string) => {
     if (isInitializing.current || currentLobbyCode.current === lobbyCode) {
       return;
@@ -242,9 +242,48 @@ export const DraftProvider: React.FC = () => {
       }));
     };
 
-    const handleFixRequest = () => {}
+    // Handles incominng fix requests and displays popup
+    const handleFixRequest = (fixProps: FixRequestProps) => {
+      if (fixProps.sideRequesting === "blue") {
+        setDraftState((prevState) => ({
+          ...prevState,
+          blueChampionReplacementRequest: {
+            replacementChampion: fixProps.replacementChampion,
+            championToReplace: {
+              replacementSource: fixProps.replacementSource,
+              replacementChampion: fixProps.replacementChampion,
+            },
+          },
+        }));
+      } else if (fixProps.sideRequesting === "red") {
+        setDraftState((prevState) => ({
+          ...prevState,
+          redChampionReplacementRequest: {
+            replacementChampion: fixProps.replacementChampion,
+            championToReplace: {
+              replacementSource: fixProps.replacementSource,
+              replacementChampion: fixProps.replacementChampion,
+            },
+          },
+        }));
+      }
+    };
 
-    const handleFixResponse = () => {}
+    const handleFixResponse = (fixResponseProps: FixResponseProps) => {
+      if (fixResponseProps.sideRequesting === "blue") {
+        setDraftState((prevState) => ({
+          ...prevState,
+          blueChampionReplacementRequest: null,
+          blueTimeToFix: null,
+        }));
+      } else if (fixResponseProps.sideRequesting === "red") {
+        setDraftState((prevState) => ({
+          ...prevState,
+          redChampionReplacementRequest: null,
+          redTimeToFix: null,
+        }));
+      }
+    };
 
     // All the beautiful socket event listeners
     draftSocket.on("state", handleStateUpdate);
@@ -260,9 +299,10 @@ export const DraftProvider: React.FC = () => {
     draftSocket.on("setBan", handleStateUpdate);
     draftSocket.on("timer", handleTimerUpdate);
     draftSocket.on("fixTimerStarted", handleStateUpdate);
-    draftSocket.on("endFixTime", handleStateUpdate); 
+    draftSocket.on("endFixTime", handleStateUpdate);
     draftSocket.on("requestFix", handleFixRequest);
     draftSocket.on("fixResponse", handleFixResponse);
+    draftSocket.on("fixTimer", handleStateUpdate);
 
     // Clean up every. event. listener.
     return () => {
@@ -282,6 +322,7 @@ export const DraftProvider: React.FC = () => {
       draftSocket.off("endFixTime", handleStateUpdate);
       draftSocket.off("requestFix", handleFixRequest);
       draftSocket.off("fixResponse", handleFixResponse);
+      draftSocket.off("fixTimer", handleStateUpdate);
     };
   }, [draftSocket]);
 
