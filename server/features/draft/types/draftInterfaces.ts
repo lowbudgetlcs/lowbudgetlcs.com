@@ -10,9 +10,9 @@ export interface fixProps {
 
 export interface requestFixProps {
   sideRequesting: string;
-  requestSource: string;
+  sourceChampion: string;
   replacementChampion: string;
   replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
-  io: Namespace;
   lobbyCode: string;
+  io: Namespace,
 }
