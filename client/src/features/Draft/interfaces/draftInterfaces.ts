@@ -99,9 +99,17 @@ export interface FearlessStateProps {
   initialTournamentCode?: string;
 }
 
+export interface FixResponseProps {
+  status: string;
+  sideRequesting: string;
+  requestSource: string;
+  replacementChampion: string;
+  replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+}
+
 export interface FixRequestProps {
   sideRequesting: string;
   requestSource: string;
   replacementChampion: string;
-  replacementSource: string;
+  replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
 }
