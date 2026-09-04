@@ -3,10 +3,10 @@ import { fixProps, requestFixProps } from "../../types/draftInterfaces";
 
 
 // Sends a request to fix a champion pick and waits for the response from the other side.
-const requestFix = async ({ sideRequesting, requestSource, replacementChampion, replacementSource, io, lobbyCode }: requestFixProps) => {
+const requestFix = async ({ sideRequesting, sourceChampion, replacementChampion, replacementSource, io, lobbyCode }: requestFixProps) => {
     io.to(lobbyCode).emit("requestFix", {
         sideRequesting,
-        requestSource,
+        sourceChampion,
         replacementChampion,
         replacementSource
     });
