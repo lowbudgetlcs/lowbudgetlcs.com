@@ -1,4 +1,4 @@
-import { Namespace } from "socket.io";
+import { Namespace, Socket } from "socket.io";
 
 export interface fixProps {
   status: boolean;
@@ -15,5 +15,5 @@ export interface requestFixProps {
   replacementChampion: string;
   replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
   lobbyCode: string;
-  io: Namespace,
+  socket: Socket,
 }
