@@ -27,6 +27,15 @@ interface DraftContextProps {
   initializeDraft: (lobbyCode: string, sideCode?: string) => Promise<void>;
   readyHandler: (ready: boolean) => void;
   pickHandler: (championName: string, isPickPhase: boolean, isBanPhase: boolean) => void;
+  sendFixRequest: (sideRequesting: string, sourceChampion: string, replacementChampion: string, replacementSource: string, lobbyCode: string) => void;
+  sendFixResponse: (
+    status: boolean,
+    sideRequesting: string,
+    sourceChampion: string,
+    replacementChampion: string,
+    replacementSource: string,
+    lobbyCode: string,
+  ) => void;
   championList: Champion[];
 }
 
@@ -51,7 +60,7 @@ export const DraftProvider: React.FC = () => {
   const connectionAttempts = useRef(0);
 
   // Socket context
-  const { createSocket, disconnectSocket, clientId } = useSocketContext();
+  const { createSocket, disconnectSocket, clientId, setFixAccepted, setShowFixPopup } = useSocketContext();
 
   const championQuery = useQuery({
     queryKey: ["championList"],
@@ -185,6 +194,29 @@ export const DraftProvider: React.FC = () => {
     }
   };
 
+  const sendFixRequest = (
+    sideRequesting: string,
+    sourceChampion: string,
+    replacementChampion: string,
+    replacementSource: string,
+    lobbyCode: string,
+  ): void => {
+    if (!draftSocket) return;
+    draftSocket.emit("fixRequest", { sideRequesting, sourceChampion, replacementChampion, replacementSource, lobbyCode });
+  };
+
+  const sendFixResponse = (
+    status: boolean,
+    sideRequesting: string,
+    sourceChampion: string,
+    replacementChampion: string,
+    replacementSource: string,
+    lobbyCode: string,
+  ): void => {
+    if (!draftSocket) return;
+    draftSocket.emit("fixResponse", { status, sideRequesting, sourceChampion, replacementChampion, replacementSource, lobbyCode });
+  };
+
   // Socket event listeners for draft state updates
   useEffect(() => {
     if (!draftSocket) return;
@@ -244,6 +276,7 @@ export const DraftProvider: React.FC = () => {
 
     // Handles incominng fix requests and displays popup
     const handleFixRequest = (fixProps: FixRequestProps) => {
+      setShowFixPopup(true);
       if (fixProps.sideRequesting === "blue") {
         setDraftState((prevState) => ({
           ...prevState,
@@ -251,7 +284,7 @@ export const DraftProvider: React.FC = () => {
             replacementChampion: fixProps.replacementChampion,
             championToReplace: {
               replacementSource: fixProps.replacementSource,
-              replacementChampion: fixProps.replacementChampion,
+              replacementChampion: fixProps.sourceChampion,
             },
           },
         }));
@@ -262,7 +295,7 @@ export const DraftProvider: React.FC = () => {
             replacementChampion: fixProps.replacementChampion,
             championToReplace: {
               replacementSource: fixProps.replacementSource,
-              replacementChampion: fixProps.replacementChampion,
+              replacementChampion: fixProps.sourceChampion,
             },
           },
         }));
@@ -270,6 +303,7 @@ export const DraftProvider: React.FC = () => {
     };
 
     const handleFixResponse = (fixResponseProps: FixResponseProps) => {
+      setFixAccepted(fixResponseProps.status);
       if (fixResponseProps.sideRequesting === "blue") {
         setDraftState((prevState) => ({
           ...prevState,
@@ -378,6 +412,8 @@ export const DraftProvider: React.FC = () => {
         initializeDraft,
         readyHandler,
         pickHandler,
+        sendFixRequest,
+        sendFixResponse,
         championList,
       }}>
       <Outlet />
