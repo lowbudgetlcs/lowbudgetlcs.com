@@ -1,74 +1,83 @@
 import { useSocketContext } from "../../providers/SocketProvider";
 import { useDraftContext } from "../../providers/DraftProvider";
 import Button from "../../../../components/Button";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 const FixPopup = () => {
-  const { showFixPopup, setShowFixPopup, setFixAccepted } = useSocketContext();
-  const { draftState, playerSide } = useDraftContext();
-  if (!showFixPopup) return null;
+  const { showFixPopup, setShowFixPopup, setFixAccepted, fixAccepted } = useSocketContext();
+  const { draftState, playerSide, sendFixResponse } = useDraftContext();
+  const { lobbyCode } = useParams();
 
-  const blueSideRequesting = draftState.blueChampionReplacementRequest && playerSide == "red";
-  const redSideRequesting = draftState.redChampionReplacementRequest && playerSide == "blue";
+  const incomingRequest =
+    playerSide === "red" && draftState.blueChampionReplacementRequest
+      ? { requestingSide: "blue", request: draftState.blueChampionReplacementRequest }
+      : playerSide === "blue" && draftState.redChampionReplacementRequest
+        ? { requestingSide: "red", request: draftState.redChampionReplacementRequest }
+        : null;
   const iconLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/`;
 
-  if (!draftState.blueChampionReplacementRequest && !draftState.redChampionReplacementRequest) return null;
-  if (!blueSideRequesting && !redSideRequesting) return null;
+  useEffect(() => {
+    if (showFixPopup) {
+      setFixAccepted(null);
+    }
+
+    if (fixAccepted !== null) {
+      setShowFixPopup(false);
+    }
+  }, [fixAccepted, setFixAccepted, setShowFixPopup, showFixPopup]);
+
+  if (!showFixPopup || !incomingRequest || !lobbyCode) return null;
+
+  const { requestingSide, request } = incomingRequest;
+  const respondToRequest = (accepted: boolean) => {
+    setFixAccepted(accepted);
+    sendFixResponse(
+      accepted,
+      requestingSide,
+      request.championToReplace.replacementChampion,
+      request.replacementChampion,
+      request.championToReplace.replacementSource ?? "",
+      lobbyCode,
+    );
+  };
+
   return (
     <div className="fix-popup w-full">
       <div className="fixHeader">
         <h3>
-          <span className={`${playerSide == "blue" ? "text-red" : "text-blue"}`}>
-            {blueSideRequesting ? "Blue Side" : redSideRequesting ? "Red Side" : "Not a Real"}
+          <span className={`${requestingSide === "blue" ? "text-blue" : "text-red"}`}>
+            {requestingSide === "blue" ? "Blue Side" : "Red Side"}
           </span>
           Swap Request
         </h3>
       </div>
       <div className="fixChampion flex gap-4 items-center justify-center">
-        <p>
-          {blueSideRequesting
-            ? "Blue Side is requesting to swap"
-            : redSideRequesting
-              ? "Red Side is requesting to swap"
-              : "This is some sort of error"}
-        </p>
+        <p>{requestingSide === "blue" ? "Blue Side" : "Red Side"} is requesting to swap</p>
         <img
-          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.championToReplace.replacementChampion : redSideRequesting ? draftState.redChampionReplacementRequest?.championToReplace.replacementChampion : ""}`}
-          alt={
-            blueSideRequesting
-              ? draftState.blueChampionReplacementRequest?.championToReplace.replacementChampion
-              : redSideRequesting
-                ? draftState.redChampionReplacementRequest?.championToReplace.replacementChampion
-                : ""
-          }
+          src={`${iconLink}${request.championToReplace.replacementChampion}`}
+          alt={request.championToReplace.replacementChampion}
         />
         <p>With</p>
         <img
-          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.replacementChampion : redSideRequesting ? draftState.redChampionReplacementRequest?.replacementChampion : ""}`}
-          alt={
-            blueSideRequesting
-              ? draftState.blueChampionReplacementRequest?.replacementChampion
-              : redSideRequesting
-                ? draftState.redChampionReplacementRequest?.replacementChampion
-                : ""
-          }
+          src={`${iconLink}${request.replacementChampion}`}
+          alt={request.replacementChampion}
         />
       </div>
 
       <div className="fixActions flex gap-4 justify-center">
         <Button
-          className="acceptBtn bg-blue"
+          className="acceptBtn bg-green"
           onClick={() => {
-            setFixAccepted(true);
-            setShowFixPopup(false);
+            respondToRequest(true);
           }}
         >
           Accept
         </Button>
         <Button
-          className="declineBtn bg-red"
+          className="declineBtn"
           onClick={() => {
-            setFixAccepted(false);
-            setShowFixPopup(false);
+            respondToRequest(false);
           }}
         >
           Decline
