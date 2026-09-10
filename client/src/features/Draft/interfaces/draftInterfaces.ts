@@ -100,16 +100,16 @@ export interface FearlessStateProps {
 }
 
 export interface FixResponseProps {
-  status: string;
+  status: boolean;
   sideRequesting: string;
-  requestSource: string;
+  sourceChampion: string;
   replacementChampion: string;
   replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
 }
 
 export interface FixRequestProps {
   sideRequesting: string;
-  requestSource: string;
+  sourceChampion: string;
   replacementChampion: string;
   replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
 }

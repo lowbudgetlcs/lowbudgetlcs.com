@@ -77,9 +77,8 @@ export const draftSocket = (io: Namespace) => {
     socket.on("pick", ({ lobbyCode, sideCode, chosenChamp }) =>
       pickHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket }),
     );
-
-    // Handles all fix requests and responses throughout the draft
-    handleFixes(io, getDraftState);
+// Handles all fix requests and responses throughout the draft
+    handleFixes(socket, (lobbyCode) => draftState[lobbyCode] ?? null);
 
     // Listens for disconnections for logging
     socket.on("disconnect", () => {

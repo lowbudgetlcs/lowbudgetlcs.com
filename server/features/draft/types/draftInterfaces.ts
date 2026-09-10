@@ -1,11 +1,12 @@
 import { Namespace } from "socket.io";
 
 export interface fixProps {
-  status: string;
+  status: boolean;
   sideRequesting: string;
-  requestSource: string;
+  sourceChampion: string;
   replacementChampion: string;
   replacementSource: string;
+  lobbyCode: string;
 }
 
 export interface requestFixProps {
