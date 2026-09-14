@@ -1,7 +1,15 @@
-import { requestFixProps } from "../../types/draftInterfaces";
 import requestFix from "./requestFix";
-import { Namespace, Socket } from "socket.io";
+import { Socket } from "socket.io";
 import { DraftStateProps } from "../../models/draftState";
+import findSourceForChampion from "../../services/findSourceForChampion";
+
+interface RequestDataProps {
+  sideRequesting: string;
+  sourceChampion: string;
+  replacementChampion: string;
+  replacementSource: string;
+  lobbyCode: string;
+}
 
 // Handles fix requests AND responses from both sides and keeps track of which side has requested a fix.
 // If a fix request is open for one side, this should not allow another one come in from the same side.
@@ -10,8 +18,7 @@ const handleFixes = async (socket: Socket, getDraftState: (lobbyCode: string) =>
   let didRedRequestFix = false;
   let didBlueRequestFix = false;
 
-  socket.on("fixRequest", async (data: requestFixProps) => {
-
+  socket.on("fixRequest", async (data: RequestDataProps) => {
     const currentDraftState = getDraftState(data.lobbyCode);
 
     // This should never get hit
@@ -23,25 +30,49 @@ const handleFixes = async (socket: Socket, getDraftState: (lobbyCode: string) =>
     // Checks if red side is requesting a fix and there isn't one pending
     if (data.sideRequesting === currentDraftState.redUser && !didRedRequestFix) {
       didRedRequestFix = true;
+      currentDraftState.redChampionReplacementRequest = {
+        replacementChampion: {
+          source: findSourceForChampion(currentDraftState, data.replacementChampion),
+          champion: data.replacementChampion,
+        },
+        championToReplace: {
+          source: findSourceForChampion(currentDraftState, data.sourceChampion),
+          champion: data.sourceChampion,
+        },
+      };
 
-      const response = await requestFix({ ...data, socket });
+      const response = await requestFix({
+        lobbyCode: data.lobbyCode,
+        socket,
+        currentDraftState,
+        sideRequesting: data.sideRequesting,
+        sideCodeForResponse: currentDraftState.redUser,
+      });
 
       //   Changes sideRequesting to "red" instead of the sideCode
       //   Emits answer from opposing side
-      response.sideRequesting = "red";
-      socket.to(data.lobbyCode).emit("fixResponse", response);
+      socket.to(data.lobbyCode).emit("fixResponse", currentDraftState);
       didRedRequestFix = false;
 
       //   Checks if blue side is requesting a fix and there isn't one pending
     } else if (data.sideRequesting === currentDraftState.blueUser && !didBlueRequestFix) {
       didBlueRequestFix = true;
+      currentDraftState.blueChampionReplacementRequest = {
+        replacementChampion: { source: findSourceForChampion(currentDraftState, data.replacementChampion), champion: data.replacementChampion },
+        championToReplace: { source: findSourceForChampion(currentDraftState, data.sourceChampion), champion: data.sourceChampion },
+      };
 
-      const response = await requestFix({ ...data, socket });
+      const response = await requestFix({
+        lobbyCode: data.lobbyCode,
+        socket,
+        currentDraftState,
+        sideRequesting: data.sideRequesting,
+        sideCodeForResponse: currentDraftState.blueUser,
+      });
 
       //   Changes sideRequesting to "blue" instead of the sideCode
       //   Emits answer from opposing side
-      response.sideRequesting = "blue";
-      socket.to(data.lobbyCode).emit("fixResponse", response);
+      socket.to(data.lobbyCode).emit("fixResponse", currentDraftState);
       didBlueRequestFix = false;
     }
   });

@@ -2,7 +2,7 @@ import { Namespace, Socket } from "socket.io";
 
 export interface fixProps {
   status: boolean;
-  sideRequesting: string;
+  sideResponding: string;
   sourceChampion: string;
   replacementChampion: string;
   replacementSource: string;
