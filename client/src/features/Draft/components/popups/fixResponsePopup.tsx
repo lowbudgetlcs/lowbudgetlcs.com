@@ -3,7 +3,7 @@ import { useDraftContext } from "../../providers/DraftProvider";
 import { useEffect, useState } from "react";
 
 const FixResponsePopup = () => {
-  const { fixAccepted } = useSocketContext();
+  const { fixAccepted, setFixAccepted } = useSocketContext();
   const { draftState, playerSide } = useDraftContext();
   const [hidden, setHidden] = useState(true);
   const [hideAnimation, setHideAnimation] = useState(false);
@@ -19,7 +19,10 @@ const FixResponsePopup = () => {
         return () => clearTimeout(hideTimer);
       }, 1500);
 
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        setFixAccepted(null);
+      };
     }
   }, [fixAccepted]);
 
@@ -43,23 +46,23 @@ const FixResponsePopup = () => {
       <h3 className="text-lg font-bold text-white">{fixAccepted ? "Fix Accepted!" : "Fix Rejected!"}</h3>
       <div className="flex gap-2 items-center">
         <img
-          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.championToReplace.replacementChampion : redSideRequesting ? draftState.redChampionReplacementRequest?.championToReplace.replacementChampion : ""}`}
+          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.championToReplace.champion : redSideRequesting ? draftState.redChampionReplacementRequest?.championToReplace.champion : ""}`}
           alt={
             blueSideRequesting
-              ? draftState.blueChampionReplacementRequest?.championToReplace.replacementChampion
+              ? draftState.blueChampionReplacementRequest?.championToReplace.champion
               : redSideRequesting
-                ? draftState.redChampionReplacementRequest?.championToReplace.replacementChampion
+                ? draftState.redChampionReplacementRequest?.championToReplace.champion
                 : ""
           }
         />
         <p>With</p>
         <img
-          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.replacementChampion : redSideRequesting ? draftState.redChampionReplacementRequest?.replacementChampion : ""}`}
+          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.replacementChampion.champion : redSideRequesting ? draftState.redChampionReplacementRequest?.replacementChampion.champion : ""}`}
           alt={
             blueSideRequesting
-              ? draftState.blueChampionReplacementRequest?.replacementChampion
+              ? draftState.blueChampionReplacementRequest?.replacementChampion.champion
               : redSideRequesting
-                ? draftState.redChampionReplacementRequest?.replacementChampion
+                ? draftState.redChampionReplacementRequest?.replacementChampion.champion
                 : ""
           }
         />
