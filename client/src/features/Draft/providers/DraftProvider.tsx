@@ -1,7 +1,7 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { Champion, DraftProps, FixRequestProps, FixResponseProps } from "../interfaces/draftInterfaces";
+import { Champion, DraftProps } from "../interfaces/draftInterfaces";
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
@@ -275,48 +275,20 @@ export const DraftProvider: React.FC = () => {
     };
 
     // Handles incominng fix requests and displays popup
-    const handleFixRequest = (fixProps: FixRequestProps) => {
+    const handleFixRequest = (state: DraftProps) => {
       setShowFixPopup(true);
-      if (fixProps.sideRequesting === "blue") {
-        setDraftState((prevState) => ({
-          ...prevState,
-          blueChampionReplacementRequest: {
-            replacementChampion: fixProps.replacementChampion,
-            championToReplace: {
-              replacementSource: fixProps.replacementSource,
-              replacementChampion: fixProps.sourceChampion,
-            },
-          },
-        }));
-      } else if (fixProps.sideRequesting === "red") {
-        setDraftState((prevState) => ({
-          ...prevState,
-          redChampionReplacementRequest: {
-            replacementChampion: fixProps.replacementChampion,
-            championToReplace: {
-              replacementSource: fixProps.replacementSource,
-              replacementChampion: fixProps.sourceChampion,
-            },
-          },
-        }));
-      }
+      setDraftState((prevState) => ({
+        ...prevState,
+        ...state,
+      }));
     };
 
-    const handleFixResponse = (fixResponseProps: FixResponseProps) => {
-      setFixAccepted(fixResponseProps.status);
-      if (fixResponseProps.sideRequesting === "blue") {
-        setDraftState((prevState) => ({
-          ...prevState,
-          blueChampionReplacementRequest: null,
-          blueTimeToFix: null,
-        }));
-      } else if (fixResponseProps.sideRequesting === "red") {
-        setDraftState((prevState) => ({
-          ...prevState,
-          redChampionReplacementRequest: null,
-          redTimeToFix: null,
-        }));
-      }
+    const handleFixResponse = (status: boolean, state: DraftProps) => {
+      setFixAccepted(status);
+      setDraftState((prevState) => ({
+        ...prevState,
+        ...state,
+      }));
     };
 
     // All the beautiful socket event listeners
