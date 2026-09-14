@@ -10,6 +10,7 @@ import { useSettingsContext } from "../../providers/SettingsProvider";
 import ReconnectPopup from "../../components/popups/ReconnectPopup";
 import ConnectPopup from "../../components/popups/ConnectPopup";
 import ErrorPopup from "../../components/popups/ErrorPopup";
+import FixPopup from "../../components/popups/FixPopup";
 
 function DraftPage() {
   const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft, championList } =
@@ -79,6 +80,7 @@ function DraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
+        <FixPopup />
         <StreamDisplay championRoles={championList} />
       </>
     );
@@ -88,6 +90,7 @@ function DraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
+        <FixPopup />
         <DraftDisplay championRoles={championList} />
       </>
     ) : (
@@ -95,6 +98,7 @@ function DraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
+        <FixPopup />
         <MobileDraftDisplay championRoles={championList} />
       </>
     );
