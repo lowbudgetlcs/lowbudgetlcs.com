@@ -35,9 +35,9 @@ const FixPopup = () => {
     sendFixResponse(
       accepted,
       requestingSide,
-      request.championToReplace.replacementChampion,
-      request.replacementChampion,
-      request.championToReplace.replacementSource ?? "",
+      request.championToReplace.champion,
+      request.replacementChampion.champion,
+      request.championToReplace.source ?? "",
       lobbyCode,
     );
   };
@@ -55,13 +55,13 @@ const FixPopup = () => {
       <div className="fixChampion flex gap-4 items-center justify-center">
         <p>{requestingSide === "blue" ? "Blue Side" : "Red Side"} is requesting to swap</p>
         <img
-          src={`${iconLink}${request.championToReplace.replacementChampion}`}
-          alt={request.championToReplace.replacementChampion}
+          src={`${iconLink}${request.championToReplace.champion}`}
+          alt={request.championToReplace.champion}
         />
         <p>With</p>
         <img
-          src={`${iconLink}${request.replacementChampion}`}
-          alt={request.replacementChampion}
+          src={`${iconLink}${request.replacementChampion.champion}`}
+          alt={request.replacementChampion.champion}
         />
       </div>
 
