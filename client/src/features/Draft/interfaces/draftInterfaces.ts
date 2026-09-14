@@ -40,10 +40,13 @@ export interface DraftProps {
 }
 
 export interface ReplacementChampProps {
-  replacementChampion: string;
+  replacementChampion: {
+    source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    champion: string;
+  }
   championToReplace: {
-    replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
-    replacementChampion: string;
+    source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    champion: string;
   };
 }
 
@@ -99,17 +102,3 @@ export interface FearlessStateProps {
   initialTournamentCode?: string;
 }
 
-export interface FixResponseProps {
-  status: boolean;
-  sideRequesting: string;
-  sourceChampion: string;
-  replacementChampion: string;
-  replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
-}
-
-export interface FixRequestProps {
-  sideRequesting: string;
-  sourceChampion: string;
-  replacementChampion: string;
-  replacementSource: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
-}

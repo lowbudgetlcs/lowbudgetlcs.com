@@ -35,12 +35,23 @@ export interface DraftStateProps {
   redPick: string | null;
   draftComplete: boolean;
   fearlessCode?: string;
-  addedPhases: string[];
-  blueFixPick?: string[];
-  redFixPick?: string[];
-  blueAcceptPick?: boolean;
-  redAcceptPick?: boolean;
+  blueTimeToFix: number | null;
+  redTimeToFix: number | null;
+  blueChampionReplacementRequest: ReplacementChampProps | null;
+  redChampionReplacementRequest: ReplacementChampProps | null;
 }
+
+export interface ReplacementChampProps {
+  replacementChampion: {
+    source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    champion: string;
+  };
+  championToReplace: {
+    source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    champion: string;
+  };
+}
+
 export const draftState: Record<string, DraftStateProps> = {};
 
 export interface DraftInitializeProps {
@@ -62,15 +73,7 @@ export interface HandlerVarsProps {
 
 export interface ClientDraftStateProps {
   draftStarted: boolean;
-  activePhase:
-    | "banPhase1"
-    | "pickPhase1"
-    | "banPhase2"
-    | "pickPhase2"
-    | "finished"
-    | "fix"
-    | null
-    | undefined;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | "fix" | null | undefined;
   phaseType: "pick" | "ban" | "fix" | null;
   blueDisplayName: string;
   redDisplayName: string;
@@ -101,14 +104,7 @@ export interface ClientDraftStateProps {
   blueAcceptPick?: boolean;
   redAcceptPick?: boolean;
 }
-export const initializeDraftState = ({
-  lobbyCode,
-  blueUser,
-  redUser,
-  blueDisplayName,
-  redDisplayName,
-  tournamentID,
-}: DraftInitializeProps) => {
+export const initializeDraftState = ({ lobbyCode, blueUser, redUser, blueDisplayName, redDisplayName, tournamentID }: DraftInitializeProps) => {
   if (!draftState[lobbyCode]) {
     draftState[lobbyCode] = {
       draftStarted: false,
@@ -142,7 +138,10 @@ export const initializeDraftState = ({
       redPick: null,
       draftComplete: false,
       fearlessCode: undefined,
-      addedPhases: [],
+      blueTimeToFix: null,
+      redTimeToFix: null,
+      blueChampionReplacementRequest: null,
+      redChampionReplacementRequest: null,
     };
 
     setTimeout(() => {
