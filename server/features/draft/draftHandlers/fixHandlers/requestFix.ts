@@ -11,10 +11,24 @@ interface RequestFixProps {
 }
 // Sends a request to fix a champion pick and waits for the response from the other side.
 const requestFix = async ({ socket, lobbyCode, currentDraftState, sideRequesting, sideCodeForResponse }: RequestFixProps) => {
+  const phaseEndsAt = Date.now() + 30000; // 30 seconds from now
+
+  if (sideRequesting === currentDraftState.blueUser) {
+    currentDraftState.blueTimeToFix = phaseEndsAt;
+  } else if (sideRequesting === currentDraftState.redUser) {
+    currentDraftState.redTimeToFix = phaseEndsAt;
+  }
   socket.to(lobbyCode).emit("requestFix", currentDraftState);
 
   // Returns the above & status: boolean (true if the fix was accepted, false otherwise)
   return new Promise<fixProps>((resolve) => {
+    const finish = (response: fixProps) => {
+      clearTimeout(timeout);
+      resolve(response);
+    };
+
+    const timeout = setTimeout(() => finish({ status: false } as fixProps), Math.max(0, phaseEndsAt - Date.now()));
+
     socket.on("fixResponse", (response: fixProps) => {
       if (response.sideResponding === sideCodeForResponse) {
         if (response.status) {
@@ -60,6 +74,7 @@ const requestFix = async ({ socket, lobbyCode, currentDraftState, sideRequesting
             }
           }
         }
+        clearTimeout(timeout);
         resolve(response);
       }
     });
