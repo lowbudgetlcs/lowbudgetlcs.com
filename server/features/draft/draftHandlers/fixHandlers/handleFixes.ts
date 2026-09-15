@@ -2,12 +2,12 @@ import requestFix from "./requestFix";
 import { Socket } from "socket.io";
 import { DraftStateProps } from "../../models/draftState";
 import findSourceForChampion from "../../services/findSourceForChampion";
+import { getChampionList } from "../../../../db/queries/select";
 
 interface RequestDataProps {
   sideRequesting: string;
   sourceChampion: string;
   replacementChampion: string;
-  replacementSource: string;
   lobbyCode: string;
 }
 
@@ -17,13 +17,26 @@ interface RequestDataProps {
 const handleFixes = async (socket: Socket, getDraftState: (lobbyCode: string) => DraftStateProps | null) => {
   let didRedRequestFix = false;
   let didBlueRequestFix = false;
+  const championList = await getChampionList();
 
   socket.on("fixRequest", async (data: RequestDataProps) => {
     const currentDraftState = getDraftState(data.lobbyCode);
 
     // This should never get hit
-    if (!currentDraftState) {
-      console.error("Draft state not found for lobby when requesting fix: ", data.lobbyCode);
+    if (!currentDraftState || !championList) {
+      console.error("Draft state or champion list not found for lobby when requesting fix: ", data.lobbyCode);
+      return;
+    }
+    
+    // This should also never get hit
+    if(!championList.find(champion => champion.name === data.replacementChampion)) {
+      console.error("Replacement champion not found in champion list: ", data.replacementChampion);
+      return;
+    }
+
+    // This should also ALSO never get hit
+    if(!championList.find(champion => champion.name === data.sourceChampion)) {
+      console.error("Source champion not found in champion list: ", data.sourceChampion);
       return;
     }
 
