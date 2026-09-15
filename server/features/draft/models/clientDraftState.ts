@@ -33,6 +33,10 @@ export const setClientDraftState = (state: DraftStateProps) => {
     redPick: state.redPick,
     draftComplete: state.draftComplete,
     fearlessCode: state.fearlessCode,
+    blueTimeToFix: state.blueTimeToFix,
+    redTimeToFix: state.redTimeToFix,
+    blueChampionReplacementRequest: state.blueChampionReplacementRequest,
+    redChampionReplacementRequest: state.redChampionReplacementRequest,
   };
   return clientState;
 };

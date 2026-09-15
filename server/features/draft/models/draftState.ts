@@ -99,10 +99,10 @@ export interface ClientDraftStateProps {
   redPick: string | null;
   draftComplete: boolean;
   fearlessCode?: string;
-  blueFixPick?: string[];
-  redFixPick?: string[];
-  blueAcceptPick?: boolean;
-  redAcceptPick?: boolean;
+  blueTimeToFix: number | null;
+  redTimeToFix: number | null;
+  blueChampionReplacementRequest: ReplacementChampProps | null;
+  redChampionReplacementRequest: ReplacementChampProps | null;
 }
 export const initializeDraftState = ({ lobbyCode, blueUser, redUser, blueDisplayName, redDisplayName, tournamentID }: DraftInitializeProps) => {
   if (!draftState[lobbyCode]) {
