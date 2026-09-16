@@ -22,12 +22,19 @@ const requestFix = async ({ socket, lobbyCode, currentDraftState, sideRequesting
 
   // Returns the above & status: boolean (true if the fix was accepted, false otherwise)
   return new Promise<fixProps>((resolve) => {
+    const timeout = setTimeout(() => finish({ status: false } as fixProps), Math.max(0, phaseEndsAt - Date.now()));
+
+    // Handles the completion of the fix request, either due to a response or a timeout.
     const finish = (response: fixProps) => {
       clearTimeout(timeout);
+      response.status = false;
+      if (sideRequesting === currentDraftState.blueUser) {
+        currentDraftState.blueTimeToFix = null;
+      } else if (sideRequesting === currentDraftState.redUser) {
+        currentDraftState.redTimeToFix = null;
+      }
       resolve(response);
     };
-
-    const timeout = setTimeout(() => finish({ status: false } as fixProps), Math.max(0, phaseEndsAt - Date.now()));
 
     socket.on("fixResponse", (response: fixProps) => {
       if (response.sideResponding === sideCodeForResponse) {
@@ -74,8 +81,7 @@ const requestFix = async ({ socket, lobbyCode, currentDraftState, sideRequesting
             }
           }
         }
-        clearTimeout(timeout);
-        resolve(response);
+        finish(response);
       }
     });
   });
