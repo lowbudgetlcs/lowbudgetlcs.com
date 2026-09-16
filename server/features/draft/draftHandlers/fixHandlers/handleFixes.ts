@@ -27,15 +27,15 @@ const handleFixes = async (socket: Socket, getDraftState: (lobbyCode: string) =>
       console.error("Draft state or champion list not found for lobby when requesting fix: ", data.lobbyCode);
       return;
     }
-    
+
     // This should also never get hit
-    if(!championList.find(champion => champion.name === data.replacementChampion)) {
+    if (!championList.find((champion) => champion.name === data.replacementChampion)) {
       console.error("Replacement champion not found in champion list: ", data.replacementChampion);
       return;
     }
 
     // This should also ALSO never get hit
-    if(!championList.find(champion => champion.name === data.sourceChampion)) {
+    if (!championList.find((champion) => champion.name === data.sourceChampion)) {
       console.error("Source champion not found in champion list: ", data.sourceChampion);
       return;
     }
@@ -64,7 +64,7 @@ const handleFixes = async (socket: Socket, getDraftState: (lobbyCode: string) =>
 
       //   Changes sideRequesting to "red" instead of the sideCode
       //   Emits answer from opposing side
-      socket.to(data.lobbyCode).emit("fixResponse", currentDraftState);
+      socket.to(data.lobbyCode).emit("fixResponse", { currentDraftState, response });
       didRedRequestFix = false;
 
       //   Checks if blue side is requesting a fix and there isn't one pending
@@ -85,7 +85,7 @@ const handleFixes = async (socket: Socket, getDraftState: (lobbyCode: string) =>
 
       //   Changes sideRequesting to "blue" instead of the sideCode
       //   Emits answer from opposing side
-      socket.to(data.lobbyCode).emit("fixResponse", currentDraftState);
+      socket.to(data.lobbyCode).emit("fixResponse", { currentDraftState, response });
       didBlueRequestFix = false;
     }
   });
