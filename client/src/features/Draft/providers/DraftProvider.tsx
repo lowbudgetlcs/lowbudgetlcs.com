@@ -1,7 +1,7 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { Champion, DraftProps } from "../interfaces/draftInterfaces";
+import { Champion, DraftProps, RequestDataProps } from "../interfaces/draftInterfaces";
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
@@ -27,6 +27,8 @@ interface DraftContextProps {
   initializeDraft: (lobbyCode: string, sideCode?: string) => Promise<void>;
   readyHandler: (ready: boolean) => void;
   pickHandler: (championName: string, isPickPhase: boolean, isBanPhase: boolean) => void;
+  fixRequestData: RequestDataProps | null;
+  setFixRequestData: React.Dispatch<React.SetStateAction<RequestDataProps | null>>;
   sendFixRequest: (sideRequesting: string, sourceChampion: string, replacementChampion: string, replacementSource: string, lobbyCode: string) => void;
   sendFixResponse: (
     status: boolean,
@@ -54,6 +56,7 @@ export const DraftProvider: React.FC = () => {
   // UI states
   const [chosenChamp, setChosenChamp] = useState<string | undefined>();
   const [currentHover, setCurrentHover] = useState<string | null>(null);
+  const [fixRequestData, setFixRequestData] = useState<RequestDataProps | null>(null);
 
   const isInitializing = useRef(false);
   const currentLobbyCode = useRef<string | null>(null);
@@ -384,6 +387,8 @@ export const DraftProvider: React.FC = () => {
         initializeDraft,
         readyHandler,
         pickHandler,
+        fixRequestData,
+        setFixRequestData,
         sendFixRequest,
         sendFixResponse,
         championList,

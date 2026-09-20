@@ -43,11 +43,18 @@ export interface ReplacementChampProps {
   replacementChampion: {
     source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
     champion: string;
-  }
+  };
   championToReplace: {
     source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
     champion: string;
   };
+}
+
+export interface RequestDataProps {
+  sideRequesting: string;
+  sourceChampion: string;
+  replacementChampion: string;
+  lobbyCode: string;
 }
 
 export interface DraftExportObjectProps {
@@ -101,4 +108,3 @@ export interface FearlessStateProps {
   draftLobbyCodes: string[] | null;
   initialTournamentCode?: string;
 }
-
