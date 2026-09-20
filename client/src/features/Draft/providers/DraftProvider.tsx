@@ -5,7 +5,7 @@ import { Champion, DraftProps, RequestDataProps } from "../interfaces/draftInter
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import { pastDraftHandler, PastLobbyProps } from "../api/pastDraftHandler";
 import { useQuery } from "@tanstack/react-query";
 import getChampionData from "../api/getChampionData";
@@ -61,6 +61,7 @@ export const DraftProvider: React.FC = () => {
   const isInitializing = useRef(false);
   const currentLobbyCode = useRef<string | null>(null);
   const connectionAttempts = useRef(0);
+  const sideCode = sessionStorage.getItem("activeSideCode");
 
   // Socket context
   const { createSocket, disconnectSocket, clientId, setFixAccepted, setShowFixPopup } = useSocketContext();
