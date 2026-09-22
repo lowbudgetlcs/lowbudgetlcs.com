@@ -1,11 +1,11 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { Champion, DraftProps, RequestDataProps } from "../interfaces/draftInterfaces";
+import { Champion, DraftProps, RequestDataProps, ResponseDataProps } from "../interfaces/draftInterfaces";
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { pastDraftHandler, PastLobbyProps } from "../api/pastDraftHandler";
 import { useQuery } from "@tanstack/react-query";
 import getChampionData from "../api/getChampionData";
@@ -29,14 +29,9 @@ interface DraftContextProps {
   pickHandler: (championName: string, isPickPhase: boolean, isBanPhase: boolean) => void;
   fixRequestData: RequestDataProps | null;
   setFixRequestData: React.Dispatch<React.SetStateAction<RequestDataProps | null>>;
-  sendFixRequest: (sideRequesting: string, sourceChampion: string, replacementChampion: string, replacementSource: string, lobbyCode: string) => void;
+  sendFixRequest: (fixRequestData: RequestDataProps) => void;
   sendFixResponse: (
-    status: boolean,
-    sideRequesting: string,
-    sourceChampion: string,
-    replacementChampion: string,
-    replacementSource: string,
-    lobbyCode: string,
+    response: ResponseDataProps
   ) => void;
   championList: Champion[];
 }
@@ -198,27 +193,14 @@ export const DraftProvider: React.FC = () => {
     }
   };
 
-  const sendFixRequest = (
-    sideRequesting: string,
-    sourceChampion: string,
-    replacementChampion: string,
-    replacementSource: string,
-    lobbyCode: string,
-  ): void => {
+  const sendFixRequest = (fixRequestData: RequestDataProps): void => {
     if (!draftSocket) return;
-    draftSocket.emit("fixRequest", { sideRequesting, sourceChampion, replacementChampion, replacementSource, lobbyCode });
+    draftSocket.emit("fixRequest", fixRequestData);
   };
 
-  const sendFixResponse = (
-    status: boolean,
-    sideRequesting: string,
-    sourceChampion: string,
-    replacementChampion: string,
-    replacementSource: string,
-    lobbyCode: string,
-  ): void => {
+  const sendFixResponse = (fixResponseData: ResponseDataProps): void => {
     if (!draftSocket) return;
-    draftSocket.emit("fixResponse", { status, sideRequesting, sourceChampion, replacementChampion, replacementSource, lobbyCode });
+    draftSocket.emit("fixResponse", fixResponseData);
   };
 
   // Socket event listeners for draft state updates

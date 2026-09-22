@@ -52,9 +52,16 @@ export interface ReplacementChampProps {
 
 export interface RequestDataProps {
   sideRequesting: string;
+  sideCode: string;
   sourceChampion: string;
-  replacementChampion: string;
+  replacementChampion: string | null;
   lobbyCode: string;
+}
+export interface ResponseDataProps {
+  sideRequesting: string;
+  sideCode: string;
+  lobbyCode: string;
+  status: boolean;
 }
 
 export interface DraftExportObjectProps {

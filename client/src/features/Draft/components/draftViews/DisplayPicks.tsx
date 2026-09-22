@@ -11,6 +11,7 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
   const { draftState, currentHover, setFixRequestData, fixRequestData } = useDraftContext();
 
   const sideCode = sessionStorage.getItem("activeSideCode");
+  const lobbyCode = sessionStorage.getItem("lobbyCode");
   const currentPhase = draftState.activePhase;
   const playerTurn = draftState.displayTurn;
   const picks = playerSide === "blue" ? draftState.bluePicks : draftState.redPicks;
@@ -43,6 +44,18 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
     }
   }
 
+  const handleEditChampion = (index: number) => {
+    if (!sideCode) return;
+    if (!lobbyCode) return;
+    setFixRequestData({
+      sideRequesting: playerSide,
+      sourceChampion: picks[index],
+      replacementChampion: null,
+      sideCode: sideCode,
+      lobbyCode: lobbyCode,
+    });
+  };
+
   return (
     <>
       {/* Pick Phase 1 */}
@@ -57,8 +70,10 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
                 : "border-border"
           } bg-bg rounded-xl`}>
           {/* Fix Request Icon */}
-          {sideCode && shouldRender(index) && (
-            <div className="absolute top-0 right-0 m-2 p-1 bg-bg-light text-white rounded-md cursor-pointer animate-fadeIn">
+          {sideCode && shouldRender(index) && playerSide && picks.length > index && (
+            <div
+              onClick={() => handleEditChampion(index)}
+              className="absolute top-0 right-0 m-2 p-1 bg-bg-light text-white rounded-md cursor-pointer animate-fadeIn">
               <MdEdit />
             </div>
           )}
