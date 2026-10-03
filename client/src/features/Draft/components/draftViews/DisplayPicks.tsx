@@ -8,7 +8,7 @@ import { MdEdit } from "react-icons/md";
 const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]; playerSide: string }) => {
   const { pickBanSplit } = useSettingsContext();
   const [sidePick, setSidePick] = useState<number>();
-  const { draftState, currentHover, setFixRequestData, fixRequestData } = useDraftContext();
+  const { draftState, currentHover, setFixRequestData, setShowFixChampionList } = useDraftContext();
 
   const sideCode = sessionStorage.getItem("activeSideCode");
   const lobbyCode = sessionStorage.getItem("lobbyCode");
@@ -54,6 +54,7 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
       sideCode: sideCode,
       lobbyCode: lobbyCode,
     });
+    setShowFixChampionList(true);
   };
 
   return (

@@ -29,6 +29,8 @@ interface DraftContextProps {
   pickHandler: (championName: string, isPickPhase: boolean, isBanPhase: boolean) => void;
   fixRequestData: RequestDataProps | null;
   setFixRequestData: React.Dispatch<React.SetStateAction<RequestDataProps | null>>;
+  showFixChampionList: boolean;
+  setShowFixChampionList: React.Dispatch<React.SetStateAction<boolean>>;
   sendFixRequest: (fixRequestData: RequestDataProps) => void;
   sendFixResponse: (
     response: ResponseDataProps
@@ -47,6 +49,7 @@ export const DraftProvider: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [championList, setChampionList] = useState<Champion[]>([]);
+  const [showFixChampionList, setShowFixChampionList] = useState<boolean>(false);
 
   // UI states
   const [chosenChamp, setChosenChamp] = useState<string | undefined>();
@@ -56,7 +59,6 @@ export const DraftProvider: React.FC = () => {
   const isInitializing = useRef(false);
   const currentLobbyCode = useRef<string | null>(null);
   const connectionAttempts = useRef(0);
-  const sideCode = sessionStorage.getItem("activeSideCode");
 
   // Socket context
   const { createSocket, disconnectSocket, clientId, setFixAccepted, setShowFixPopup } = useSocketContext();
@@ -373,6 +375,8 @@ export const DraftProvider: React.FC = () => {
         fixRequestData,
         setFixRequestData,
         sendFixRequest,
+        showFixChampionList,
+        setShowFixChampionList,
         sendFixResponse,
         championList,
       }}>
