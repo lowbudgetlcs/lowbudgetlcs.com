@@ -47,16 +47,6 @@ const readySocketHandler = async ({
 
   const draftPhases = () => {
     const defaultPhases = ["banPhase1", "pickPhase1", "banPhase2", "pickPhase2", "finished"];
-    if (state.addedPhases.length > 0) {
-      return [
-        "banPhase1",
-        "pickPhase1",
-        "banPhase2",
-        "pickPhase2",
-        ...state.addedPhases,
-        "finished",
-      ];
-    }
     return defaultPhases;
   };
 
