@@ -1,13 +1,14 @@
 import { useSocketContext } from "../../providers/SocketProvider";
 import { useDraftContext } from "../../providers/DraftProvider";
 import Button from "../../../../components/Button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 const FixPopup = () => {
-  const { showFixPopup, setShowFixPopup, setFixAccepted, fixAccepted } = useSocketContext();
+  const { showFixPopup, setShowFixPopup } = useSocketContext();
   const { draftState, playerSide, sendFixResponse } = useDraftContext();
   const { lobbyCode } = useParams();
+  const [timeRemaining, setTimeRemaining] = useState(0);
 
   const incomingRequest =
     playerSide === "red" && draftState.blueChampionReplacementRequest
@@ -16,34 +17,42 @@ const FixPopup = () => {
         ? { requestingSide: "red", request: draftState.redChampionReplacementRequest }
         : null;
   const iconLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/`;
+  const expiresAt = incomingRequest?.requestingSide === "blue" ? draftState.blueTimeToFix : draftState.redTimeToFix;
 
   useEffect(() => {
-    if (showFixPopup) {
-      setFixAccepted(null);
+    if (!showFixPopup || !expiresAt) {
+      setTimeRemaining(0);
+      return;
     }
 
-    if (fixAccepted !== null) {
+    const updateTimer = () => {
+      setTimeRemaining(Math.max(0, expiresAt - Date.now()));
+    };
+    updateTimer();
+    const timer = window.setInterval(updateTimer, 100);
+    return () => window.clearInterval(timer);
+  }, [expiresAt, showFixPopup]);
+
+  useEffect(() => {
+    if (showFixPopup && expiresAt && Date.now() >= expiresAt) {
       setShowFixPopup(false);
     }
-  }, [fixAccepted, setFixAccepted, setShowFixPopup, showFixPopup]);
+  }, [expiresAt, setShowFixPopup, showFixPopup, timeRemaining]);
 
   if (!showFixPopup || !incomingRequest || !lobbyCode) return null;
 
   const { requestingSide, request } = incomingRequest;
   const respondToRequest = (accepted: boolean) => {
-    setFixAccepted(accepted);
-    sendFixResponse(
-      accepted,
-      requestingSide,
-      request.championToReplace.champion,
-      request.replacementChampion.champion,
-      request.championToReplace.source ?? "",
-      lobbyCode,
-    );
+    const sideCode = sessionStorage.getItem("activeSideCode");
+    if (!sideCode) return;
+
+    setShowFixPopup(false);
+    sendFixResponse({ status: accepted, sideCode, lobbyCode });
   };
+  const timerWidth = Math.min(100, (timeRemaining / 30000) * 100);
 
   return (
-    <div className="fix-popup w-full">
+    <div className="fix-popup fixed bottom-6 left-1/2 z-50 w-[min(100%-2rem,36rem)] -translate-x-1/2 overflow-hidden rounded-md border border-border bg-bg shadow-2xl">
       <div className="fixHeader">
         <h3>
           <span className={`${requestingSide === "blue" ? "text-blue" : "text-red"}`}>
@@ -82,6 +91,9 @@ const FixPopup = () => {
         >
           Decline
         </Button>
+      </div>
+      <div className="mt-4 h-1 w-full bg-bg-light">
+        <div className="h-full bg-orange transition-width duration-100 ease-linear" style={{ width: `${timerWidth}%` }} />
       </div>
     </div>
   );

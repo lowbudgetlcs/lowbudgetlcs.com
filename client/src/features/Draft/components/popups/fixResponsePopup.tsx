@@ -1,71 +1,44 @@
 import { useSocketContext } from "../../providers/SocketProvider";
-import { useDraftContext } from "../../providers/DraftProvider";
 import { useEffect, useState } from "react";
 
 const FixResponsePopup = () => {
-  const { fixAccepted, setFixAccepted } = useSocketContext();
-  const { draftState, playerSide } = useDraftContext();
+  const { fixResponse, setFixResponse } = useSocketContext();
   const [hidden, setHidden] = useState(true);
   const [hideAnimation, setHideAnimation] = useState(false);
 
   useEffect(() => {
-    if (fixAccepted !== null) {
-      setHidden(false);
-      setHideAnimation(false);
-
-      const timer = setTimeout(() => {
-        setHideAnimation(true);
-        const hideTimer = setTimeout(() => setHidden(true), 450);
-        return () => clearTimeout(hideTimer);
-      }, 1500);
-
-      return () => {
-        clearTimeout(timer);
-        setFixAccepted(null);
-      };
+    if (!fixResponse) {
+      return;
     }
-  }, [fixAccepted]);
 
-  if (hidden) {
-    return null;
-  }
+    setHidden(false);
+    setHideAnimation(false);
+    const hideTimer = window.setTimeout(() => setHideAnimation(true), 1500);
+    const clearTimer = window.setTimeout(() => {
+      setHidden(true);
+      setFixResponse(null);
+    }, 1950);
 
-  if (fixAccepted === null) return null;
+    return () => {
+      window.clearTimeout(hideTimer);
+      window.clearTimeout(clearTimer);
+    };
+  }, [fixResponse, setFixResponse]);
 
-  const blueSideRequesting = draftState.blueChampionReplacementRequest && playerSide == "red";
-  const redSideRequesting = draftState.redChampionReplacementRequest && playerSide == "blue";
+  if (hidden || !fixResponse) return null;
+
   const iconLink = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/`;
 
-  if (!draftState.blueChampionReplacementRequest && !draftState.redChampionReplacementRequest) return null;
-  if (!blueSideRequesting && !redSideRequesting) return null;
   return (
     <div
-      className={`popup fixed top-10 right-2 w-64 h-12 flex flex-col items-start justify-center px-4 ${fixAccepted ? "bg-green" : "bg-red"} border-2 ${fixAccepted ? "border-green" : "border-red"} rounded-md z-50 animate-slide-in-left transition-opacity duration-300 ${
+      className={`popup fixed top-10 right-2 z-50 flex w-64 flex-col items-start justify-center rounded-md border-2 px-4 py-2 ${fixResponse.status ? "bg-green border-green" : "bg-red border-red"} animate-slide-in-left transition-opacity duration-300 ${
         hideAnimation ? "animate-slideOut" : ""
       }`}>
-      <h3 className="text-lg font-bold text-white">{fixAccepted ? "Fix Accepted!" : "Fix Rejected!"}</h3>
+      <h3 className="text-lg font-bold text-white">{fixResponse.status ? "Fix Accepted!" : "Fix Rejected!"}</h3>
       <div className="flex gap-2 items-center">
-        <img
-          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.championToReplace.champion : redSideRequesting ? draftState.redChampionReplacementRequest?.championToReplace.champion : ""}`}
-          alt={
-            blueSideRequesting
-              ? draftState.blueChampionReplacementRequest?.championToReplace.champion
-              : redSideRequesting
-                ? draftState.redChampionReplacementRequest?.championToReplace.champion
-                : ""
-          }
-        />
+        <img src={`${iconLink}${fixResponse.sourceChampion}`} alt={fixResponse.sourceChampion} />
         <p>With</p>
-        <img
-          src={`${iconLink}${blueSideRequesting ? draftState.blueChampionReplacementRequest?.replacementChampion.champion : redSideRequesting ? draftState.redChampionReplacementRequest?.replacementChampion.champion : ""}`}
-          alt={
-            blueSideRequesting
-              ? draftState.blueChampionReplacementRequest?.replacementChampion.champion
-              : redSideRequesting
-                ? draftState.redChampionReplacementRequest?.replacementChampion.champion
-                : ""
-          }
-        />
+        <img src={`${iconLink}${fixResponse.replacementChampion}`} alt={fixResponse.replacementChampion} />
       </div>
     </div>
   );
