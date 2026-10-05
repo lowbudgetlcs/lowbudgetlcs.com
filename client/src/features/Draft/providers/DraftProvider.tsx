@@ -1,7 +1,7 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { Champion, DraftProps, RequestDataProps, ResponseDataProps } from "../interfaces/draftInterfaces";
+import { Champion, DraftProps, FixResponsePayload, RequestDataProps, ResponseDataProps } from "../interfaces/draftInterfaces";
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
@@ -61,7 +61,7 @@ export const DraftProvider: React.FC = () => {
   const connectionAttempts = useRef(0);
 
   // Socket context
-  const { createSocket, disconnectSocket, clientId, setFixAccepted, setShowFixPopup } = useSocketContext();
+  const { createSocket, disconnectSocket, clientId, setFixResponse, setShowFixPopup } = useSocketContext();
 
   const championQuery = useQuery({
     queryKey: ["championList"],
@@ -262,21 +262,30 @@ export const DraftProvider: React.FC = () => {
       }));
     };
 
-    // Handles incominng fix requests and displays popup
+    // Handles incoming fix requests and displays the approval panel only for the opposing side.
     const handleFixRequest = (state: DraftProps) => {
-      setShowFixPopup(true);
       setDraftState((prevState) => ({
         ...prevState,
         ...state,
       }));
+      const hasIncomingRequest =
+        (playerSide === "red" && Boolean(state.blueChampionReplacementRequest)) ||
+        (playerSide === "blue" && Boolean(state.redChampionReplacementRequest));
+      setShowFixPopup(hasIncomingRequest);
     };
 
-    const handleFixResponse = (status: boolean, state: DraftProps) => {
-      setFixAccepted(status);
+    const handleFixResponse = ({ currentDraftState, response }: FixResponsePayload) => {
       setDraftState((prevState) => ({
         ...prevState,
-        ...state,
+        ...currentDraftState,
       }));
+      const hasIncomingRequest =
+        (playerSide === "red" && Boolean(currentDraftState.blueChampionReplacementRequest)) ||
+        (playerSide === "blue" && Boolean(currentDraftState.redChampionReplacementRequest));
+      setShowFixPopup(hasIncomingRequest);
+      if (response.requestingSide === playerSide) {
+        setFixResponse(response);
+      }
     };
 
     // All the beautiful socket event listeners
@@ -318,7 +327,7 @@ export const DraftProvider: React.FC = () => {
       draftSocket.off("fixResponse", handleFixResponse);
       draftSocket.off("fixTimer", handleStateUpdate);
     };
-  }, [draftSocket]);
+  }, [draftSocket, playerSide, setFixResponse, setShowFixPopup]);
 
   // Effect to send champion hover updates to server
   // Then gets sent from server to clients

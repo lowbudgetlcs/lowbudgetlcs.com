@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 import { Socket, io } from "socket.io-client";
 import { getClientId } from "../../../utils/clientId";
 import { Outlet } from "react-router-dom";
+import { FixResponseProps } from "../interfaces/draftInterfaces";
 
 interface SocketContextProps {
   createSocket: (namespace: string) => Socket;
@@ -16,8 +17,8 @@ interface SocketContextProps {
   setShowErrorPopup: React.Dispatch<React.SetStateAction<boolean>>;
   showFixPopup: boolean;
   setShowFixPopup: React.Dispatch<React.SetStateAction<boolean>>;
-  fixAccepted: boolean | null;
-  setFixAccepted: React.Dispatch<React.SetStateAction<boolean | null>>;
+  fixResponse: FixResponseProps | null;
+  setFixResponse: React.Dispatch<React.SetStateAction<FixResponseProps | null>>;
 }
 
 const SocketContext = createContext<SocketContextProps | undefined>(undefined);
@@ -28,7 +29,7 @@ export const SocketProvider: React.FC = () => {
   const [showErrorPopup, setShowErrorPopup] = useState<boolean>(false);
   const [showConnectedPopup, setShowConnectedPopup] = useState<boolean>(false);
   const [showFixPopup, setShowFixPopup] = useState<boolean>(false);
-  const [fixAccepted, setFixAccepted] = useState<boolean | null>(null);
+  const [fixResponse, setFixResponse] = useState<FixResponseProps | null>(null);
 
   const clientId = getClientId();
 
@@ -110,8 +111,8 @@ export const SocketProvider: React.FC = () => {
         setShowErrorPopup,
         showFixPopup,
         setShowFixPopup,
-        fixAccepted,
-        setFixAccepted,
+        fixResponse,
+        setFixResponse,
       }}>
       <Outlet />
     </SocketContext.Provider>
