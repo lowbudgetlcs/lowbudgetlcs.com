@@ -3,6 +3,7 @@ import { Champion } from "../../interfaces/draftInterfaces";
 import { useDraftContext } from "../../providers/DraftProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import DisplayPickImage from "../draftViews/DisplayPickImage";
+import FixChampionButton from "../draftViews/FixChampionButton";
 
 const DisplayPicksMobile = ({
   championRoles,
@@ -77,8 +78,9 @@ const DisplayPicksMobile = ({
                 sidePick === index
               ? "border-red transition-all "
               : "border-gray"
-          } bg-gray/60 rounded-md`}
+          } bg-gray/60 rounded-md group`}
         >
+          {picks[index] && <FixChampionButton sourceChampion={picks[index]} compact />}
           {shouldRender(index) && (
             <DisplayPickImage
               playerSide={playerSide}
@@ -125,8 +127,9 @@ const DisplayPicksMobile = ({
                 sidePick === index
               ? "border-red transition-all delay-20 "
               : "border-gray"
-          } bg-gray/60 rounded-md`}
+          } bg-gray/60 rounded-md group`}
         >
+          {picks[index] && <FixChampionButton sourceChampion={picks[index]} compact />}
           {shouldRender(index) && (
             <DisplayPickImage
               playerSide={playerSide}
