@@ -5,11 +5,15 @@ import { useSettingsContext } from "../../providers/SettingsProvider";
 interface LoadChampIconsProps {
   searchValue: string;
   selectedRole: string;
+  selectedChampion?: string | null;
+  onChampionSelected?: (championName: string) => void;
 }
 
 export function LoadChampIcons({
   searchValue,
   selectedRole,
+  selectedChampion,
+  onChampionSelected,
 }: LoadChampIconsProps) {
   const { draftState, chosenChamp, setChosenChamp, draftSocket, championList } =
     useDraftContext();
@@ -20,8 +24,15 @@ export function LoadChampIcons({
   const nothingIconLink =
     "https://raw.communitydragon.org/10.1/plugins/rcp-fe-lol-item-sets/global/default/icon-helmet.png";
   const { animationToggle } = useSettingsContext();
+  const isReplacementSelection = Boolean(onChampionSelected);
+  const activeChampion = selectedChampion ?? chosenChamp;
   const handlePick = useCallback(
     (championName: string) => {
+      if (onChampionSelected) {
+        onChampionSelected(championName);
+        return;
+      }
+
       if (
         (!pickedChampions.includes(championName) &&
           !bannedChampions.includes(championName)) ||
@@ -33,7 +44,7 @@ export function LoadChampIcons({
         }
       }
     },
-    [bannedChampions, draftSocket, pickedChampions, setChosenChamp]
+    [bannedChampions, draftSocket, onChampionSelected, pickedChampions, setChosenChamp]
   );
 
   const championRoleList = useMemo(() => {
@@ -75,26 +86,28 @@ export function LoadChampIcons({
             }}
             className={`border border-border rounded-md transition duration-75 ease-linear bg-bg-dark group
               ${
-                (pickedChampions.includes(champion.name) ||
-                  bannedChampions.includes(champion.name)) &&
+                (!isReplacementSelection &&
+                  (pickedChampions.includes(champion.name) ||
+                    bannedChampions.includes(champion.name))) &&
                 champion.name !== "nothing"
                   ? ""
                   : "hover:scale-105"
               } 
-              ${chosenChamp === champion.name && "scale-105 border-primary-light"}
+              ${activeChampion === champion.name && "scale-105 border-primary-light"}
               `}
           >
             <img
               className={`
             ${
-              (pickedChampions.includes(champion.name) ||
-                bannedChampions.includes(champion.name)) &&
+              (!isReplacementSelection &&
+                (pickedChampions.includes(champion.name) ||
+                  bannedChampions.includes(champion.name))) &&
               champion.name !== "nothing"
                 ? "grayscale"
                 : "hover:cursor-pointer group-hover:brightness-110"
             } 
             ${
-              chosenChamp === champion.name
+              activeChampion === champion.name
                 ? `brightness-110 ${
                     animationToggle &&
                     (champion.name === "Katarina" ||
@@ -121,8 +134,9 @@ export function LoadChampIcons({
             />
             <p
               className={`text-center w-full ${
-                (pickedChampions.includes(champion.name) ||
-                  bannedChampions.includes(champion.name)) &&
+                (!isReplacementSelection &&
+                  (pickedChampions.includes(champion.name) ||
+                    bannedChampions.includes(champion.name))) &&
                 champion.name !== "nothing"
                   ? ""
                   : "hover:cursor-pointer"
@@ -143,8 +157,9 @@ export function LoadChampIcons({
     pickedChampions,
     bannedChampions,
     dDragonIconLink,
-    chosenChamp,
+    activeChampion,
     handlePick,
+    isReplacementSelection,
     iconSize,
     champNamesVisible,
     animationToggle,
