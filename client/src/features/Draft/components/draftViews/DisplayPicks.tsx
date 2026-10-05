@@ -3,15 +3,12 @@ import { Champion } from "../../interfaces/draftInterfaces";
 import DisplayPickImage from "./DisplayPickImage";
 import { useDraftContext } from "../../providers/DraftProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
-import { MdEdit } from "react-icons/md";
+import FixChampionButton from "./FixChampionButton";
 
 const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]; playerSide: string }) => {
   const { pickBanSplit } = useSettingsContext();
   const [sidePick, setSidePick] = useState<number>();
-  const { draftState, currentHover, setFixRequestData, setShowFixChampionList } = useDraftContext();
-
-  const sideCode = sessionStorage.getItem("activeSideCode");
-  const lobbyCode = sessionStorage.getItem("lobbyCode");
+  const { draftState, currentHover } = useDraftContext();
   const currentPhase = draftState.activePhase;
   const playerTurn = draftState.displayTurn;
   const picks = playerSide === "blue" ? draftState.bluePicks : draftState.redPicks;
@@ -44,19 +41,6 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
     }
   }
 
-  const handleEditChampion = (index: number) => {
-    if (!sideCode) return;
-    if (!lobbyCode) return;
-    setFixRequestData({
-      sideRequesting: playerSide,
-      sourceChampion: picks[index],
-      replacementChampion: null,
-      sideCode: sideCode,
-      lobbyCode: lobbyCode,
-    });
-    setShowFixChampionList(true);
-  };
-
   return (
     <>
       {/* Pick Phase 1 */}
@@ -69,15 +53,8 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
               : playerTurn === playerSide && playerSide === "red" && currentPhase === "pickPhase1" && sidePick === index
                 ? "border-red transition-all "
                 : "border-border"
-          } bg-bg rounded-xl`}>
-          {/* Fix Request Icon */}
-          {sideCode && shouldRender(index) && playerSide && picks.length > index && (
-            <div
-              onClick={() => handleEditChampion(index)}
-              className="absolute top-0 right-0 m-2 p-1 bg-bg-light text-white rounded-md cursor-pointer animate-fadeIn">
-              <MdEdit />
-            </div>
-          )}
+          } bg-bg rounded-xl group`}>
+          {picks[index] && <FixChampionButton sourceChampion={picks[index]} />}
 
           {shouldRender(index) && (
             <DisplayPickImage
@@ -112,7 +89,8 @@ const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]
               : playerTurn === playerSide && playerSide === "red" && currentPhase === "pickPhase2" && sidePick === index
                 ? "border-red transition-all delay-20 "
                 : "border-border"
-          } bg-bg rounded-xl`}>
+          } bg-bg rounded-xl group`}>
+          {picks[index] && <FixChampionButton sourceChampion={picks[index]} />}
           {shouldRender(index) && (
             <DisplayPickImage
               playerSide={playerSide}
