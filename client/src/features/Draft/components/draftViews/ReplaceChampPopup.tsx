@@ -14,7 +14,7 @@ const ReplaceChampPopup = () => {
   const [selectedRole, setSelectedRole] = useState<string>("All");
   const [searchValue, setSearchValue] = useState<string>("");
   const [replacementChampion, setReplacementChampion] = useState<string | null>(null);
-
+  const backendIconUrl = `${import.meta.env.VITE_BACKEND_URL}/images/api/champion/`;
   useEffect(() => {
     if (showFixChampionList) {
       setSelectedRole("All");
@@ -50,12 +50,16 @@ const ReplaceChampPopup = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4" role="dialog" aria-modal="true">
-      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-md border border-border bg-bg shadow-2xl">
+      <div className="flex max-h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-md border border-border bg-bg-light text-text-primary shadow-2xl">
         <div className="header flex items-center justify-between border-b border-border px-6 py-4">
-          <div>
-            <h2>Choose a champion to replace {fixRequestData.sourceChampion}</h2>
+          <div className="flex items-center gap-2">
+            <h2>Replacing: {fixRequestData.sourceChampion}</h2>
+            <img src={backendIconUrl + fixRequestData.sourceChampion + "/square"} alt={fixRequestData.sourceChampion} className="h-6 w-6 bg-green" />
           </div>
-          <button className="p-1 text-2xl text-text-secondary hover:text-text-primary" onClick={closePopup} aria-label="Close replacement selector">
+          <button
+            className="p-1 text-2xl text-text-secondary hover:text-text-primary cursor-pointer"
+            onClick={closePopup}
+            aria-label="Close replacement selector">
             <IoMdClose />
           </button>
         </div>
@@ -92,7 +96,7 @@ const ReplaceChampPopup = () => {
           </div>
         </div>
         {/* List of Champion Images */}
-        <div className="relative max-h-[60vh] overflow-y-scroll bg-transparent">
+        <div className="relative h-[48vh] overflow-y-scroll bg-transparent">
           <div className="relative">
             <ul className="relative champions flex flex-wrap gap-2 justify-center z-10 py-2">
               <LoadChampIcons
@@ -110,7 +114,7 @@ const ReplaceChampPopup = () => {
             className="bg-green disabled:cursor-not-allowed disabled:opacity-50"
             onClick={sendRequest}
             disabled={!replacementChampion || replacementChampion === fixRequestData.sourceChampion}>
-            Confirm Swap
+            Send Request
           </Button>
         </div>
       </div>

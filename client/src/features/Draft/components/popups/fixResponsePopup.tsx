@@ -31,13 +31,14 @@ const FixResponsePopup = () => {
 
   return (
     <div
-      className={`popup fixed top-10 right-2 z-50 flex w-64 flex-col items-start justify-center rounded-md border-2 px-4 py-2 ${fixResponse.status ? "bg-green border-green" : "bg-red border-red"} animate-slide-in-left transition-opacity duration-300 ${
+      className={`popup fixed top-10 right-2 z-50 flex w-64 flex-col items-start justify-center rounded-md border-2 px-4 py-2 text-text-primary ${fixResponse.status ? "bg-green border-green/60" : "bg-red border-red/60"} animate-slide-in-left transition-opacity duration-500 ${
         hideAnimation ? "animate-slideOut" : ""
       }`}>
-      <h3 className="text-lg font-bold text-white">{fixResponse.status ? "Fix Accepted!" : "Fix Rejected!"}</h3>
+      <h3 className="text-lg font-bold">{fixResponse.status ? "Fix Accepted!" : "Fix Rejected!"}</h3>
       <div className="flex gap-2 items-center">
+        <p>{fixResponse.sourceChampion}</p>
         <img src={`${iconLink}${fixResponse.sourceChampion}`} alt={fixResponse.sourceChampion} />
-        <p>With</p>
+        <p>With <span>{fixResponse.replacementChampion}</span></p>
         <img src={`${iconLink}${fixResponse.replacementChampion}`} alt={fixResponse.replacementChampion} />
       </div>
     </div>

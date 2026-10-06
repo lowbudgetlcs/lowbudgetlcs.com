@@ -28,7 +28,7 @@ const FixChampionButton = ({ sourceChampion, compact = false }: FixChampionButto
   return (
     <button
       type="button"
-      className={`absolute right-1 top-1 z-20 rounded-md bg-bg-light p-1 text-white transition-opacity ${
+      className={`absolute right-1 top-1 z-20 rounded-md bg-bg-light p-1 text-white transition-opacity cursor-pointer ${
         compact ? "opacity-100 sm:opacity-0 sm:group-hover:opacity-100" : "opacity-0 group-hover:opacity-100"
       }`}
       onClick={openReplacementSelector}

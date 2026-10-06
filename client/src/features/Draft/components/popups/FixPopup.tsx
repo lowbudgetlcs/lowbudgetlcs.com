@@ -52,26 +52,18 @@ const FixPopup = () => {
   const timerWidth = Math.min(100, (timeRemaining / 30000) * 100);
 
   return (
-    <div className="fix-popup fixed bottom-6 left-1/2 z-50 w-[min(100%-2rem,36rem)] -translate-x-1/2 overflow-hidden rounded-md border border-border bg-bg shadow-2xl">
-      <div className="fixHeader">
+    <div className="fix-popup fixed bottom-6 left-1/2 z-50 w-[min(100%-2rem,36rem)] -translate-x-1/2 overflow-hidden rounded-md border border-border bg-bg shadow-2xl text-text-primary">
+      <div className="fixHeader px-6 py-4">
         <h3>
-          <span className={`${requestingSide === "blue" ? "text-blue" : "text-red"}`}>
-            {requestingSide === "blue" ? "Blue Side" : "Red Side"}
-          </span>
+          <span className={`${requestingSide === "blue" ? "text-blue" : "text-red"}`}>{requestingSide === "blue" ? "Blue Side" : "Red Side"} </span>
           Swap Request
         </h3>
       </div>
       <div className="fixChampion flex gap-4 items-center justify-center">
-        <p>{requestingSide === "blue" ? "Blue Side" : "Red Side"} is requesting to swap</p>
-        <img
-          src={`${iconLink}${request.championToReplace.champion}`}
-          alt={request.championToReplace.champion}
-        />
-        <p>With</p>
-        <img
-          src={`${iconLink}${request.replacementChampion.champion}`}
-          alt={request.replacementChampion.champion}
-        />
+        <p>{requestingSide === "blue" ? draftState.blueDisplayName : draftState.redDisplayName} is requesting to swap <span>{request.championToReplace.champion}</span></p>
+        <img src={`${iconLink}${request.championToReplace.champion}`} alt={request.championToReplace.champion} />
+        <p>With <span>{request.replacementChampion.champion}</span></p>
+        <img src={`${iconLink}${request.replacementChampion.champion}`} alt={request.replacementChampion.champion} />
       </div>
 
       <div className="fixActions flex gap-4 justify-center">
@@ -79,16 +71,14 @@ const FixPopup = () => {
           className="acceptBtn bg-green"
           onClick={() => {
             respondToRequest(true);
-          }}
-        >
+          }}>
           Accept
         </Button>
         <Button
-          className="declineBtn"
+          className="declineBtn bg-red"
           onClick={() => {
             respondToRequest(false);
-          }}
-        >
+          }}>
           Decline
         </Button>
       </div>
