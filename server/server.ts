@@ -54,9 +54,11 @@ const apiLimiter = rateLimit({
 });
 
 app.use(cors(corsOptions));
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-}));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -96,14 +98,16 @@ draftSocket(draftNamespace);
 fearlessSocket(fearlessNamespace);
 
 // Cron Jobs
-schedulePlayerDbUpdate()
-  .then(() => {
-    return scheduleGameStatsUpdate();
-  })
-  .catch((error) => {
-    console.error("[schedulePlayerDbUpdate] ❌ Failed to schedule player DB update:", error);
-    return scheduleGameStatsUpdate();
-  });
+if (isProduction) {
+  schedulePlayerDbUpdate()
+    .then(() => {
+      return scheduleGameStatsUpdate();
+    })
+    .catch((error) => {
+      console.error("[schedulePlayerDbUpdate] ❌ Failed to schedule player DB update:", error);
+      return scheduleGameStatsUpdate();
+    });
+}
 scheduleImageFetch();
 
 server.listen(port, () => {
