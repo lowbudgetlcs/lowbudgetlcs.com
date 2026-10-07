@@ -12,6 +12,9 @@ import { useSettingsContext } from "../../providers/SettingsProvider";
 import ConnectPopup from "../../components/popups/ConnectPopup";
 import ReconnectPopup from "../../components/popups/ReconnectPopup";
 import ErrorPopup from "../../components/popups/ErrorPopup";
+import FixPopup from "../../components/popups/FixPopup";
+import FixResponsePopup from "../../components/popups/fixResponsePopup";
+import ReplaceChampPopup from "../../components/draftViews/ReplaceChampPopup";
 
 function FearlessDraftPage() {
   const { draftState, draftSocket, isPastDraft, loading, error, initializeDraft } =
@@ -71,6 +74,9 @@ function FearlessDraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
+        <FixPopup />
+        <FixResponsePopup />
+        <ReplaceChampPopup />
         <StreamDisplay championRoles={championRoles} />
       </>
     );
@@ -80,6 +86,9 @@ function FearlessDraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
+        <FixPopup />
+        <FixResponsePopup />
+        <ReplaceChampPopup />
         <DraftDisplay championRoles={championRoles} />
       </>
     ) : (
@@ -87,6 +96,9 @@ function FearlessDraftPage() {
         <ErrorPopup />
         <ConnectPopup />
         <ReconnectPopup />
+        <FixPopup />
+        <FixResponsePopup />
+        <ReplaceChampPopup />
         <MobileDraftDisplay championRoles={championRoles} />
       </>
     );
