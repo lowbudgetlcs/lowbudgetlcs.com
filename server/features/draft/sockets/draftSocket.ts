@@ -77,8 +77,23 @@ export const draftSocket = (io: Namespace) => {
     socket.on("pick", ({ lobbyCode, sideCode, chosenChamp }) =>
       pickHandler({ lobbyCode, sideCode, chosenChamp, getDraftState, lobbyEmitters, socket }),
     );
-  // Handles all fix requests and responses throughout the draft
-  handleFixes(socket, io, (lobbyCode) => draftState[lobbyCode] ?? null);
+
+    socket.on("finalizeDraft", ({ lobbyCode, sideCode, ready }) => {
+      const state = getDraftState(lobbyCode);
+      if (!state || state.activePhase !== "editPhase") {
+        return;
+      }
+
+      if ((sideCode !== state.blueUser && sideCode !== state.redUser) || typeof ready !== "boolean") {
+        socket.emit("error", { invalidSideCode: true });
+        return;
+      }
+
+      lobbyEmitters.get(lobbyCode)?.emit("finalizeDraft", sideCode, ready);
+    });
+
+    // Handles all fix requests and responses throughout the draft
+    handleFixes(socket, io, (lobbyCode) => draftState[lobbyCode] ?? null);
 
     // Listens for disconnections for logging
     socket.on("disconnect", () => {

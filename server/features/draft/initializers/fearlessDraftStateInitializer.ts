@@ -25,6 +25,8 @@ const fearlessDraftStateInitializer = ({
       redDisplayName: redDisplayName,
       blueReady: false,
       redReady: false,
+      blueFinalizeReady: false,
+      redFinalizeReady: false,
       timer: 34,
       bansArray: [],
       picksArray: [...fearlessState[fearlessCode].allPicks],
@@ -43,9 +45,12 @@ const fearlessDraftStateInitializer = ({
       currentHover: null,
       bluePick: null,
       redPick: null,
+      blueTimeToFix: null,
+      redTimeToFix: null,
+      blueChampionReplacementRequest: null,
+      redChampionReplacementRequest: null,
       draftComplete: false,
       fearlessCode: fearlessCode,
-      addedPhases: [],
     };
     setTimeout(() => {
       if (draftState[lobbyCode]) {

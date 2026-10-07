@@ -142,7 +142,7 @@ export const respondToFix = (response: fixProps) => {
     (pending) => pending.lobbyCode === response.lobbyCode && pending.sideResponding === response.sideCode,
   );
 
-  if (pendingFix) {
+  if (pendingFix && pendingFix.currentDraftState.activePhase && pendingFix.currentDraftState.activePhase !== "finished") {
     finishFix(pendingFix, response.status);
   }
 };

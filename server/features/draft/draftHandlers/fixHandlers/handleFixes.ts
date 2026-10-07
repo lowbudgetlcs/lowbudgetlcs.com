@@ -24,6 +24,11 @@ const handleFixes = async (socket: Socket, io: Namespace, getDraftState: (lobbyC
       return;
     }
 
+    if (!currentDraftState.activePhase || currentDraftState.activePhase === "finished") {
+      console.error("Fix requests are not available after the draft is finished: ", data.lobbyCode);
+      return;
+    }
+
     if (data.sideCode !== currentDraftState.blueUser && data.sideCode !== currentDraftState.redUser) {
       console.error("Invalid side code received when requesting fix: ", data.lobbyCode);
       return;

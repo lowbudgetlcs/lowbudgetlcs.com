@@ -13,6 +13,8 @@ export const setClientDraftState = (state: DraftStateProps) => {
     redDisplayName: state.redDisplayName,
     blueReady: state.blueReady,
     redReady: state.redReady,
+    blueFinalizeReady: state.blueFinalizeReady,
+    redFinalizeReady: state.redFinalizeReady,
     timer: state.timer,
     bansArray: state.bansArray,
     picksArray: state.picksArray,

@@ -42,11 +42,12 @@ const readySocketHandler = async ({
     "pickPhase1",
     "banPhase2",
     "pickPhase2",
+    "editPhase",
     "finished",
   ];
 
   const draftPhases = () => {
-    const defaultPhases = ["banPhase1", "pickPhase1", "banPhase2", "pickPhase2", "finished"];
+    const defaultPhases = ["banPhase1", "pickPhase1", "banPhase2", "pickPhase2", "editPhase", "finished"];
     return defaultPhases;
   };
 
