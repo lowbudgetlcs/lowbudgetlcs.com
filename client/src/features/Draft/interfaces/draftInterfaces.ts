@@ -7,12 +7,14 @@ export interface Champion {
 
 export interface DraftProps {
   draftStarted: boolean;
-  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | null | undefined;
-  phaseType: "pick" | "ban" | null;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "editPhase" | "finished" | null | undefined;
+  phaseType: "pick" | "ban" | "edit" | null;
   blueDisplayName: string;
   redDisplayName: string;
   blueReady: boolean;
   redReady: boolean;
+  blueFinalizeReady: boolean;
+  redFinalizeReady: boolean;
   timer: number;
   bansArray: string[];
   picksArray: string[];

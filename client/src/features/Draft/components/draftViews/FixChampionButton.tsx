@@ -7,11 +7,11 @@ interface FixChampionButtonProps {
 }
 
 const FixChampionButton = ({ sourceChampion, compact = false }: FixChampionButtonProps) => {
-  const { playerSide, setFixRequestData, setShowFixChampionList } = useDraftContext();
+  const { draftState, playerSide, setFixRequestData, setShowFixChampionList } = useDraftContext();
   const sideCode = sessionStorage.getItem("activeSideCode");
   const lobbyCode = sessionStorage.getItem("activeLobbyCode");
 
-  if ((playerSide !== "blue" && playerSide !== "red") || !sideCode || !lobbyCode) {
+  if (!draftState.activePhase || draftState.activePhase === "finished" || (playerSide !== "blue" && playerSide !== "red") || !sideCode || !lobbyCode) {
     return null;
   }
 

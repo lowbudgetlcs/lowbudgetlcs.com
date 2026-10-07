@@ -10,11 +10,7 @@ const Timer = ({
 }) => {
   const [currentTime, setCurrentTime] = useState<number>(30);
   useEffect(() => {
-    if (timer > 30) {
-      setCurrentTime(30);
-    } else {
-      setCurrentTime(timer);
-    }
+    setCurrentTime(Math.max(timer, 0));
   }, [timer]);
   return (
     <p

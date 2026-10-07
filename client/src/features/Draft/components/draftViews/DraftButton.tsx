@@ -22,10 +22,12 @@ function DraftButton() {
     setChosenChamp,
     readyHandler,
     pickHandler,
+    finalizeDraft,
   } = useDraftContext();
 
   const { fearlessState } = useSafeFearlessContext();
   const [ready, setReady] = useState<boolean>(false);
+  const [finalizeReady, setFinalizeReady] = useState<boolean>(false);
   const [banPhase, setBanPhase] = useState<boolean>(false);
   const [pickPhase, setPickPhase] = useState<boolean>(false);
 
@@ -46,6 +48,14 @@ function DraftButton() {
       setReady(false);
     }
   }, [draftState.blueReady, draftState.redReady, playerSide]);
+
+  useEffect(() => {
+    if (playerSide === "blue") {
+      setFinalizeReady(draftState.blueFinalizeReady);
+    } else if (playerSide === "red") {
+      setFinalizeReady(draftState.redFinalizeReady);
+    }
+  }, [draftState.blueFinalizeReady, draftState.redFinalizeReady, playerSide]);
 
   useEffect(() => {
     if (draftState.phaseType === "ban") {
@@ -73,6 +83,24 @@ function DraftButton() {
     pickHandler(chosenChamp, pickPhase, banPhase);
     setChosenChamp("");
   };
+
+  const toggleFinalize = () => {
+    const nextFinalizeReady = !finalizeReady;
+    setFinalizeReady(nextFinalizeReady);
+    finalizeDraft(nextFinalizeReady);
+  };
+
+  if (draftState.activePhase === "editPhase") {
+    return (
+      <Button
+        onClick={toggleFinalize}
+        className={`p-4 ${finalizeReady ? "bg-gray" : "bg-orange"} max-h-16 flex items-center justify-center hover:cursor-pointer rounded-md transition duration-300 ${
+          playerSide === "spectator" ? "hidden" : ""
+        }`}>
+        {finalizeReady ? "Waiting" : "Finalize Draft"}
+      </Button>
+    );
+  }
 
   // Display Next Draft Btn
   if (draftState.draftComplete && 

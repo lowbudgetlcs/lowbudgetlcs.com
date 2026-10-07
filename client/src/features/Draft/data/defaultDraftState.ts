@@ -8,6 +8,8 @@ export const defaultDraftState: DraftProps = {
   redDisplayName: "Red Team",
   blueReady: false,
   redReady: false,
+  blueFinalizeReady: false,
+  redFinalizeReady: false,
   timer: 34,
   bansArray: [],
   picksArray: [],

@@ -25,11 +25,17 @@ export function LoadChampIcons({
     "https://raw.communitydragon.org/10.1/plugins/rcp-fe-lol-item-sets/global/default/icon-helmet.png";
   const { animationToggle } = useSettingsContext();
   const isReplacementSelection = Boolean(onChampionSelected);
+  const isEditingPhase = draftState.activePhase === "editPhase";
+  const isRegularSelectionDisabled = !isReplacementSelection && isEditingPhase;
   const activeChampion = selectedChampion ?? chosenChamp;
   const handlePick = useCallback(
     (championName: string) => {
       if (onChampionSelected) {
         onChampionSelected(championName);
+        return;
+      }
+
+      if (isRegularSelectionDisabled) {
         return;
       }
 
@@ -44,7 +50,7 @@ export function LoadChampIcons({
         }
       }
     },
-    [bannedChampions, draftSocket, onChampionSelected, pickedChampions, setChosenChamp]
+    [bannedChampions, draftSocket, isRegularSelectionDisabled, onChampionSelected, pickedChampions, setChosenChamp]
   );
 
   const championRoleList = useMemo(() => {
@@ -86,11 +92,12 @@ export function LoadChampIcons({
             }}
             className={`border border-border rounded-md transition duration-75 ease-linear bg-bg-dark group
               ${
-                (!isReplacementSelection &&
+                (isRegularSelectionDisabled ||
+                  (!isReplacementSelection &&
                   (pickedChampions.includes(champion.name) ||
-                    bannedChampions.includes(champion.name))) &&
+                    bannedChampions.includes(champion.name)))) &&
                 champion.name !== "nothing"
-                  ? ""
+                  ? "opacity-50"
                   : "hover:scale-105"
               } 
               ${activeChampion === champion.name && "scale-105 border-primary-light"}
@@ -99,11 +106,12 @@ export function LoadChampIcons({
             <img
               className={`
             ${
-              (!isReplacementSelection &&
+              (isRegularSelectionDisabled ||
+                (!isReplacementSelection &&
                 (pickedChampions.includes(champion.name) ||
-                  bannedChampions.includes(champion.name))) &&
+                  bannedChampions.includes(champion.name)))) &&
               champion.name !== "nothing"
-                ? "grayscale"
+                ? "grayscale cursor-not-allowed"
                 : "hover:cursor-pointer group-hover:brightness-110"
             } 
             ${
@@ -134,11 +142,12 @@ export function LoadChampIcons({
             />
             <p
               className={`text-center w-full ${
-                (!isReplacementSelection &&
+                (isRegularSelectionDisabled ||
+                  (!isReplacementSelection &&
                   (pickedChampions.includes(champion.name) ||
-                    bannedChampions.includes(champion.name))) &&
+                    bannedChampions.includes(champion.name)))) &&
                 champion.name !== "nothing"
-                  ? ""
+                  ? "cursor-not-allowed"
                   : "hover:cursor-pointer"
               } select-none ${iconSize <= 80 ? "text-xs" : "text-sm font-bold"} ${
                 champNamesVisible ? "" : "hidden"
@@ -160,6 +169,7 @@ export function LoadChampIcons({
     activeChampion,
     handlePick,
     isReplacementSelection,
+    isRegularSelectionDisabled,
     iconSize,
     champNamesVisible,
     animationToggle,

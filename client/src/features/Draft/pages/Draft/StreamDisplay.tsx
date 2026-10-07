@@ -23,7 +23,8 @@ function StreamDisplay({ championRoles }: { championRoles: Champion[] }) {
   const isFearless = location.pathname.includes("/fearless");
 
   // calculate width of timer bar
-  const timerWidth = (timeLeft / 30) * 100;
+  const phaseDuration = draftState.activePhase === "editPhase" ? 120 : 30;
+  const timerWidth = (timeLeft / phaseDuration) * 100;
 
   useEffect(() => {
     if (draftState.displayTurn || draftState.phaseType) {
