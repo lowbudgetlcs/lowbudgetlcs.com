@@ -37,9 +37,9 @@ const FixResponsePopup = () => {
       <h3 className="text-lg font-bold">{fixResponse.status ? "Fix Accepted!" : "Fix Rejected!"}</h3>
       <div className="flex gap-2 items-center">
         <p>{fixResponse.sourceChampion}</p>
-        <img src={`${iconLink}${fixResponse.sourceChampion}`} alt={fixResponse.sourceChampion} />
+        <img src={`${iconLink}${fixResponse.sourceChampion}/square`} alt={fixResponse.sourceChampion} />
         <p>With <span>{fixResponse.replacementChampion}</span></p>
-        <img src={`${iconLink}${fixResponse.replacementChampion}`} alt={fixResponse.replacementChampion} />
+        <img src={`${iconLink}${fixResponse.replacementChampion}/square`} alt={fixResponse.replacementChampion} />
       </div>
     </div>
   );
