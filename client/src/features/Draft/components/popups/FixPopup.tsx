@@ -61,9 +61,9 @@ const FixPopup = () => {
       </div>
       <div className="fixChampion flex gap-4 items-center justify-center">
         <p>{requestingSide === "blue" ? draftState.blueDisplayName : draftState.redDisplayName} is requesting to swap <span>{request.championToReplace.champion}</span></p>
-        <img src={`${iconLink}${request.championToReplace.champion}/square`} alt={request.championToReplace.champion} />
+        <img className="h-6 w-6 shrink-0" src={`${iconLink}${request.championToReplace.champion}/square`} alt={request.championToReplace.champion} />
         <p>With <span>{request.replacementChampion.champion}</span></p>
-        <img src={`${iconLink}${request.replacementChampion.champion}/square`} alt={request.replacementChampion.champion} />
+        <img className="h-6 w-6 shrink-0" src={`${iconLink}${request.replacementChampion.champion}/square`} alt={request.replacementChampion.champion} />
       </div>
 
       <div className="fixActions flex gap-4 justify-center">
