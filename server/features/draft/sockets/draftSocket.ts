@@ -6,8 +6,6 @@ import pickHandler from "../draftHandlers/pickBanHandlers/pickHandler";
 import clientHoverHandler from "../draftHandlers/pickBanHandlers/clientHoverHandler";
 import readySocketHandler from "../draftHandlers/startHandlers/readyHandler";
 import joinDraftHandler from "../draftHandlers/startHandlers/joinDraftHandler";
-import fixPickHandler from "../draftHandlers/pickBanHandlers/fixPickHandler";
-import acceptFixPickHandler from "../draftHandlers/pickBanHandlers/acceptFixPickHandler";
 import handleFixes from "../draftHandlers/fixHandlers/handleFixes";
 export interface DraftUsersProps {
   blue: string;
