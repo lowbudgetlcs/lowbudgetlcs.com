@@ -27,7 +27,7 @@ const ConnectPopup = () => {
 
   return (
     <div
-      className={`popup fixed top-10 right-2 w-64 h-12 flex flex-col items-start justify-center px-4 bg-green border-2 border-green rounded-md z-50 animate-slide-in-left transition-opacity duration-300 ${
+      className={`popup fixed top-10 right-2 w-64 h-12 flex flex-col items-start justify-center px-4 bg-green border-2 border-green/60 rounded-md z-50 animate-slide-in-left transition-opacity duration-300 ${
         hideAnimation ? "animate-slideOut" : ""
       }`}>
       <h3 className="text-lg font-bold text-white">Connected to Server!</h3>

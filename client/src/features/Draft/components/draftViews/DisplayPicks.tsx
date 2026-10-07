@@ -3,24 +3,16 @@ import { Champion } from "../../interfaces/draftInterfaces";
 import DisplayPickImage from "./DisplayPickImage";
 import { useDraftContext } from "../../providers/DraftProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
+import FixChampionButton from "./FixChampionButton";
 
-const DisplayPicks = ({
-  championRoles,
-  playerSide,
-}: {
-  championRoles: Champion[];
-  playerSide: string;
-}) => {
+const DisplayPicks = ({ championRoles, playerSide }: { championRoles: Champion[]; playerSide: string }) => {
   const { pickBanSplit } = useSettingsContext();
   const [sidePick, setSidePick] = useState<number>();
   const { draftState, currentHover } = useDraftContext();
-
   const currentPhase = draftState.activePhase;
   const playerTurn = draftState.displayTurn;
-  const picks =
-    playerSide === "blue" ? draftState.bluePicks : draftState.redPicks;
-  const enemyPicks =
-    playerSide === "blue" ? draftState.redPicks : draftState.bluePicks;
+  const picks = playerSide === "blue" ? draftState.bluePicks : draftState.redPicks;
+  const enemyPicks = playerSide === "blue" ? draftState.redPicks : draftState.bluePicks;
 
   useEffect(() => {
     if (playerSide === "blue") {
@@ -28,11 +20,7 @@ const DisplayPicks = ({
     } else if (playerSide === "red") {
       setSidePick(draftState.currentRedPick);
     }
-  }, [
-    draftState.currentTurn,
-    draftState.currentRedPick,
-    draftState.currentBluePick,
-  ]);
+  }, [draftState.currentTurn, draftState.currentRedPick, draftState.currentBluePick]);
 
   const shouldRender = (pickIndex: number) => {
     if (picks[pickIndex]) {
@@ -40,25 +28,19 @@ const DisplayPicks = ({
     }
 
     const isSlotActive = sidePick === pickIndex;
-    const previousSlotsFilled = Array.from(
-      { length: pickIndex },
-      (_, i) => picks[i]
-    ).every(Boolean);
+    const previousSlotsFilled = Array.from({ length: pickIndex }, (_, i) => picks[i]).every(Boolean);
 
     return isSlotActive && previousSlotsFilled;
   };
   let correctSideHover: string | null = null;
   if (currentPhase === "pickPhase1" || currentPhase === "pickPhase2") {
-    if (
-      playerSide !== playerTurn ||
-      currentHover === null ||
-      picks.concat(enemyPicks).includes(currentHover)
-    ) {
+    if (playerSide !== playerTurn || currentHover === null || picks.concat(enemyPicks).includes(currentHover)) {
       correctSideHover = null;
     } else {
       correctSideHover = currentHover;
     }
   }
+
   return (
     <>
       {/* Pick Phase 1 */}
@@ -66,19 +48,14 @@ const DisplayPicks = ({
         <div
           key={index}
           className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border ${
-            playerTurn === playerSide &&
-            playerSide === "blue" &&
-            currentPhase === "pickPhase1" &&
-            sidePick === index
+            playerTurn === playerSide && playerSide === "blue" && currentPhase === "pickPhase1" && sidePick === index
               ? "border-blue transition-all "
-              : playerTurn === playerSide &&
-                playerSide === "red" &&
-                currentPhase === "pickPhase1" &&
-                sidePick === index
-              ? "border-red transition-all "
-              : "border-border"
-          } bg-bg rounded-xl`}
-        >
+              : playerTurn === playerSide && playerSide === "red" && currentPhase === "pickPhase1" && sidePick === index
+                ? "border-red transition-all "
+                : "border-border"
+          } bg-bg rounded-xl group`}>
+          {picks[index] && <FixChampionButton sourceChampion={picks[index]} />}
+
           {shouldRender(index) && (
             <DisplayPickImage
               playerSide={playerSide}
@@ -91,19 +68,12 @@ const DisplayPicks = ({
           <div
             className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
-                playerTurn === playerSide &&
-                playerSide === "blue" &&
-                currentPhase === "pickPhase1" &&
-                sidePick === index
+                playerTurn === playerSide && playerSide === "blue" && currentPhase === "pickPhase1" && sidePick === index
                   ? "to-blue"
-                  : playerTurn === playerSide &&
-                    playerSide === "red" &&
-                    currentPhase === "pickPhase1" &&
-                    sidePick === index
-                  ? "to-red"
-                  : "hidden"
-              }`}
-          ></div>
+                  : playerTurn === playerSide && playerSide === "red" && currentPhase === "pickPhase1" && sidePick === index
+                    ? "to-red"
+                    : "hidden"
+              }`}></div>
         </div>
       ))}
 
@@ -113,20 +83,14 @@ const DisplayPicks = ({
       {[3, 4].map((index) => (
         <div
           key={index}
-          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border ${ 
-            playerTurn === playerSide &&
-            playerSide === "blue" &&
-            currentPhase === "pickPhase2" &&
-            sidePick === index
+          className={`relative w-64 draftMd:w-96 h-28 draftMd:h-34 min-[1922px]:w-full min-[1922px]:h-64 overflow-hidden border ${
+            playerTurn === playerSide && playerSide === "blue" && currentPhase === "pickPhase2" && sidePick === index
               ? "border-blue transition-all delay-20 "
-              : playerTurn === playerSide &&
-                playerSide === "red" &&
-                currentPhase === "pickPhase2" &&
-                sidePick === index
-              ? "border-red transition-all delay-20 "
-              : "border-border"
-          } bg-bg rounded-xl`}
-        >
+              : playerTurn === playerSide && playerSide === "red" && currentPhase === "pickPhase2" && sidePick === index
+                ? "border-red transition-all delay-20 "
+                : "border-border"
+          } bg-bg rounded-xl group`}>
+          {picks[index] && <FixChampionButton sourceChampion={picks[index]} />}
           {shouldRender(index) && (
             <DisplayPickImage
               playerSide={playerSide}
@@ -139,19 +103,12 @@ const DisplayPicks = ({
           <div
             className={`gradientAnimation absolute w-full h-full top-0 bg-linear-to-b from-transparent via-transparent animate-pulse 
               ${
-                playerTurn === playerSide &&
-                playerSide === "blue" &&
-                currentPhase === "pickPhase2" &&
-                sidePick === index
+                playerTurn === playerSide && playerSide === "blue" && currentPhase === "pickPhase2" && sidePick === index
                   ? "to-blue"
-                  : playerTurn === playerSide &&
-                    playerSide === "red" &&
-                    currentPhase === "pickPhase2" &&
-                    sidePick === index
-                  ? "to-red"
-                  : "hidden"
-              }`}
-          ></div>
+                  : playerTurn === playerSide && playerSide === "red" && currentPhase === "pickPhase2" && sidePick === index
+                    ? "to-red"
+                    : "hidden"
+              }`}></div>
         </div>
       ))}
     </>

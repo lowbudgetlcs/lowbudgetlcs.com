@@ -1,7 +1,7 @@
 // client/src/components/DraftTool/providers/DraftInstanceProvider.tsx
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
-import { Champion, DraftProps } from "../interfaces/draftInterfaces";
+import { Champion, DraftProps, FixResponsePayload, RequestDataProps, ResponseDataProps } from "../interfaces/draftInterfaces";
 import { defaultDraftState } from "../data/defaultDraftState";
 import { handleBanPhase, handlePickPhase } from "../socket/clientDraftHandler";
 import { useSocketContext } from "./SocketProvider";
@@ -27,6 +27,15 @@ interface DraftContextProps {
   initializeDraft: (lobbyCode: string, sideCode?: string) => Promise<void>;
   readyHandler: (ready: boolean) => void;
   pickHandler: (championName: string, isPickPhase: boolean, isBanPhase: boolean) => void;
+  fixRequestData: RequestDataProps | null;
+  setFixRequestData: React.Dispatch<React.SetStateAction<RequestDataProps | null>>;
+  showFixChampionList: boolean;
+  setShowFixChampionList: React.Dispatch<React.SetStateAction<boolean>>;
+  sendFixRequest: (fixRequestData: RequestDataProps) => void;
+  sendFixResponse: (
+    response: ResponseDataProps
+  ) => void;
+  finalizeDraft: (ready: boolean) => void;
   championList: Champion[];
 }
 
@@ -41,17 +50,19 @@ export const DraftProvider: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [championList, setChampionList] = useState<Champion[]>([]);
+  const [showFixChampionList, setShowFixChampionList] = useState<boolean>(false);
 
   // UI states
   const [chosenChamp, setChosenChamp] = useState<string | undefined>();
   const [currentHover, setCurrentHover] = useState<string | null>(null);
+  const [fixRequestData, setFixRequestData] = useState<RequestDataProps | null>(null);
 
   const isInitializing = useRef(false);
   const currentLobbyCode = useRef<string | null>(null);
   const connectionAttempts = useRef(0);
 
   // Socket context
-  const { createSocket, disconnectSocket, clientId } = useSocketContext();
+  const { createSocket, disconnectSocket, clientId, setFixResponse, setShowFixPopup } = useSocketContext();
 
   const championQuery = useQuery({
     queryKey: ["championList"],
@@ -63,7 +74,7 @@ export const DraftProvider: React.FC = () => {
       setChampionList(championQuery.data);
     }
   }, [championQuery.data]);
-  
+
   const initializeDraft = async (lobbyCode: string, sideCode?: string) => {
     if (isInitializing.current || currentLobbyCode.current === lobbyCode) {
       return;
@@ -185,6 +196,26 @@ export const DraftProvider: React.FC = () => {
     }
   };
 
+  const sendFixRequest = (fixRequestData: RequestDataProps): void => {
+    if (!draftSocket) return;
+    draftSocket.emit("fixRequest", fixRequestData);
+  };
+
+  const sendFixResponse = (fixResponseData: ResponseDataProps): void => {
+    if (!draftSocket) return;
+    draftSocket.emit("fixResponse", fixResponseData);
+  };
+
+  const finalizeDraft = (ready: boolean): void => {
+    if (!draftSocket) return;
+
+    const lobbyCode = sessionStorage.getItem("activeLobbyCode");
+    const sideCode = sessionStorage.getItem("activeSideCode");
+    if (!lobbyCode || !sideCode) return;
+
+    draftSocket.emit("finalizeDraft", { lobbyCode, sideCode, ready });
+  };
+
   // Socket event listeners for draft state updates
   useEffect(() => {
     if (!draftSocket) return;
@@ -234,12 +265,47 @@ export const DraftProvider: React.FC = () => {
 
       handlePickPhase(draftSocket, state, setDraftState);
     };
+    const startEditPhase = (state: DraftProps) => {
+      setChosenChamp(undefined);
+      setCurrentHover(null);
+      setDraftState((prevState) => ({
+        ...prevState,
+        ...state,
+        timer: Math.max(state.timer - 4, 0),
+      }));
+    };
     const handleTimerUpdate = (timer: number) => {
       const fixedTimer = Math.max(timer - 4, 0);
       setDraftState((prevState) => ({
         ...prevState,
         timer: fixedTimer,
       }));
+    };
+
+    // Handles incoming fix requests and displays the approval panel only for the opposing side.
+    const handleFixRequest = (state: DraftProps) => {
+      setDraftState((prevState) => ({
+        ...prevState,
+        ...state,
+      }));
+      const hasIncomingRequest =
+        (playerSide === "red" && Boolean(state.blueChampionReplacementRequest)) ||
+        (playerSide === "blue" && Boolean(state.redChampionReplacementRequest));
+      setShowFixPopup(hasIncomingRequest);
+    };
+
+    const handleFixResponse = ({ currentDraftState, response }: FixResponsePayload) => {
+      setDraftState((prevState) => ({
+        ...prevState,
+        ...currentDraftState,
+      }));
+      const hasIncomingRequest =
+        (playerSide === "red" && Boolean(currentDraftState.blueChampionReplacementRequest)) ||
+        (playerSide === "blue" && Boolean(currentDraftState.redChampionReplacementRequest));
+      setShowFixPopup(hasIncomingRequest);
+      if (response.requestingSide === playerSide) {
+        setFixResponse(response);
+      }
     };
 
     // All the beautiful socket event listeners
@@ -249,12 +315,19 @@ export const DraftProvider: React.FC = () => {
     draftSocket.on("pickHover", handleHover);
     draftSocket.on("banPhase", startBanPhase);
     draftSocket.on("pickPhase", startPickPhase);
+    draftSocket.on("editPhase", startEditPhase);
     draftSocket.on("draftComplete", handleStateUpdate);
     draftSocket.on("blueReady", handleStateUpdate);
     draftSocket.on("redReady", handleStateUpdate);
+    draftSocket.on("finalizeReady", handleStateUpdate);
     draftSocket.on("setPick", handleStateUpdate);
     draftSocket.on("setBan", handleStateUpdate);
     draftSocket.on("timer", handleTimerUpdate);
+    draftSocket.on("fixTimerStarted", handleStateUpdate);
+    draftSocket.on("endFixTime", handleStateUpdate);
+    draftSocket.on("requestFix", handleFixRequest);
+    draftSocket.on("fixResponse", handleFixResponse);
+    draftSocket.on("fixTimer", handleStateUpdate);
 
     // Clean up every. event. listener.
     return () => {
@@ -264,14 +337,21 @@ export const DraftProvider: React.FC = () => {
       draftSocket.off("pickHover", handleHover);
       draftSocket.off("banPhase", startBanPhase);
       draftSocket.off("pickPhase", startPickPhase);
+      draftSocket.off("editPhase", startEditPhase);
       draftSocket.off("draftComplete", handleStateUpdate);
       draftSocket.off("blueReady", handleStateUpdate);
       draftSocket.off("redReady", handleStateUpdate);
+      draftSocket.off("finalizeReady", handleStateUpdate);
       draftSocket.off("setPick", handleStateUpdate);
       draftSocket.off("setBan", handleStateUpdate);
       draftSocket.off("timer", handleTimerUpdate);
+      draftSocket.off("fixTimerStarted", handleStateUpdate);
+      draftSocket.off("endFixTime", handleStateUpdate);
+      draftSocket.off("requestFix", handleFixRequest);
+      draftSocket.off("fixResponse", handleFixResponse);
+      draftSocket.off("fixTimer", handleStateUpdate);
     };
-  }, [draftSocket]);
+  }, [draftSocket, playerSide, setFixResponse, setShowFixPopup]);
 
   // Effect to send champion hover updates to server
   // Then gets sent from server to clients
@@ -325,6 +405,13 @@ export const DraftProvider: React.FC = () => {
         initializeDraft,
         readyHandler,
         pickHandler,
+        fixRequestData,
+        setFixRequestData,
+        sendFixRequest,
+        showFixChampionList,
+        setShowFixChampionList,
+        sendFixResponse,
+        finalizeDraft,
         championList,
       }}>
       <Outlet />

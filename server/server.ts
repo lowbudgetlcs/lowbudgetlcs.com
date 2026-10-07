@@ -7,8 +7,8 @@ import twitchRoutes from "./routes/twitchRoutes";
 import { getTwitchConfig } from "./utils/twitchConfig";
 import rosterRoutes from "./routes/rosterRoutes";
 import { Server } from "socket.io";
-import { draftSocket } from "./draftTool/sockets/draftSocket";
-import { fearlessSocket } from "./draftTool/sockets/fearlessSocket";
+import { draftSocket } from "./features/draft/sockets/draftSocket";
+import { fearlessSocket } from "./features/draft/sockets/fearlessSocket";
 import matchRoutes from "./routes/matchRoutes";
 import allStarsRoutes from "./routes/allStarsRoutes";
 import schedulePlayerDbUpdate from "./cronJobs/schedulePlayerDbUpdate";
@@ -54,9 +54,11 @@ const apiLimiter = rateLimit({
 });
 
 app.use(cors(corsOptions));
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-}));
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  }),
+);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -96,14 +98,16 @@ draftSocket(draftNamespace);
 fearlessSocket(fearlessNamespace);
 
 // Cron Jobs
-schedulePlayerDbUpdate()
-  .then(() => {
-    return scheduleGameStatsUpdate();
-  })
-  .catch((error) => {
-    console.error("[schedulePlayerDbUpdate] ❌ Failed to schedule player DB update:", error);
-    return scheduleGameStatsUpdate();
-  });
+if (isProduction) {
+  schedulePlayerDbUpdate()
+    .then(() => {
+      return scheduleGameStatsUpdate();
+    })
+    .catch((error) => {
+      console.error("[schedulePlayerDbUpdate] ❌ Failed to schedule player DB update:", error);
+      return scheduleGameStatsUpdate();
+    });
+}
 scheduleImageFetch();
 
 server.listen(port, () => {

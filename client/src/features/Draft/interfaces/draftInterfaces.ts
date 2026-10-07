@@ -7,12 +7,14 @@ export interface Champion {
 
 export interface DraftProps {
   draftStarted: boolean;
-  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "finished" | null | undefined;
-  phaseType: "pick" | "ban" | null;
+  activePhase: "banPhase1" | "pickPhase1" | "banPhase2" | "pickPhase2" | "editPhase" | "finished" | null | undefined;
+  phaseType: "pick" | "ban" | "edit" | null;
   blueDisplayName: string;
   redDisplayName: string;
   blueReady: boolean;
   redReady: boolean;
+  blueFinalizeReady: boolean;
+  redFinalizeReady: boolean;
   timer: number;
   bansArray: string[];
   picksArray: string[];
@@ -33,6 +35,45 @@ export interface DraftProps {
   redPick: string;
   draftComplete: boolean;
   fearlessCode: string | null;
+  blueTimeToFix: number | null;
+  redTimeToFix: number | null;
+  blueChampionReplacementRequest: ReplacementChampProps | null;
+  redChampionReplacementRequest: ReplacementChampProps | null;
+}
+
+export interface ReplacementChampProps {
+  replacementChampion: {
+    source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    champion: string;
+  };
+  championToReplace: {
+    source: "blueBans" | "redBans" | "bluePicks" | "redPicks" | null;
+    champion: string;
+  };
+}
+
+export interface RequestDataProps {
+  sideCode: string;
+  sourceChampion: string;
+  replacementChampion: string | null;
+  lobbyCode: string;
+}
+export interface ResponseDataProps {
+  sideCode: string;
+  lobbyCode: string;
+  status: boolean;
+}
+
+export interface FixResponseProps {
+  status: boolean;
+  requestingSide: "blue" | "red";
+  sourceChampion: string;
+  replacementChampion: string;
+}
+
+export interface FixResponsePayload {
+  currentDraftState: DraftProps;
+  response: FixResponseProps;
 }
 
 export interface DraftExportObjectProps {

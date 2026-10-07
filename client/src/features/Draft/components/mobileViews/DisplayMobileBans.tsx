@@ -2,6 +2,7 @@ import { memo, useEffect, useState } from "react";
 import { useDraftContext } from "../../providers/DraftProvider";
 import { useSettingsContext } from "../../providers/SettingsProvider";
 import DisplayBanImage from "../draftViews/DisplayBanImage";
+import FixChampionButton from "../draftViews/FixChampionButton";
 
 const DisplayMobileBans = ({ playerSide }: { playerSide: string }) => {
   const [sideBan, setSideBan] = useState<number>();
@@ -84,8 +85,9 @@ const DisplayMobileBans = ({ playerSide }: { playerSide: string }) => {
                   !bans[index]
                 ? "border-red"
                 : "border-gray"
-            } border-2 bg-gray/60 rounded-md overflow-hidden transition-all`}
+            } border-2 bg-gray/60 rounded-md overflow-hidden transition-all group`}
           >
+            {bans[index] && <FixChampionButton sourceChampion={bans[index]} compact />}
             {shouldRender(index) && (
               <DisplayBanImage
                 banIndex={index}
@@ -144,8 +146,9 @@ const DisplayMobileBans = ({ playerSide }: { playerSide: string }) => {
                   !bans[index]
                 ? "border-red"
                 : "border-gray"
-            } bg-gray/60 rounded-md overflow-hidden transition-all`}
+            } bg-gray/60 rounded-md overflow-hidden transition-all group`}
           >
+            {bans[index] && <FixChampionButton sourceChampion={bans[index]} compact />}
             {shouldRender(index) && (
               <DisplayBanImage
                 banIndex={index}
