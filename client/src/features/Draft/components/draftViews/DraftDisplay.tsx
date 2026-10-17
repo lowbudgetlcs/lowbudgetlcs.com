@@ -18,6 +18,7 @@ import DraftTurnAudio from "../DraftAudio";
 import FearlessBansBar from "../Navbars/FearlessBansBar";
 import { IoMdRefresh } from "react-icons/io";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import SideSwapControl from "./SideSwapControl";
 
 function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
@@ -70,6 +71,7 @@ function DraftDisplay({ championRoles }: { championRoles: Champion[] }) {
       <div className="timer flex w-full justify-center items-center text-2xl font-bold mt-2">
         <Timer timer={draftState.timer} displayTurn={draftState.displayTurn} />
       </div>
+      <SideSwapControl />
       {/* Main Container */}
       <div className="mainDraftContainer relative flex flex-1 gap-4 h-[70vh]">
         {/* Blue Side Picks */}

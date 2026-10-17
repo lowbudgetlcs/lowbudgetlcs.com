@@ -13,6 +13,7 @@ import LoadChampIcons from "../../components/draftViews/LoadChampIcons";
 import DisplayPicksMobile from "../../components/mobileViews/DisplayPicksMobile";
 import MobileDraftFooter from "../../components/mobileViews/MobileDraftFooter";
 import DisplayMobileBans from "../../components/mobileViews/DisplayMobileBans";
+import SideSwapControl from "../../components/draftViews/SideSwapControl";
 
 function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
   const [selectedRole, setSelectedRole] = useState<string>("All");
@@ -187,6 +188,7 @@ function MobileDraftDisplay({ championRoles }: { championRoles: Champion[] }) {
           </div>
         </div>
       </div>
+      <SideSwapControl />
       {/* Main Container */}
       <div className="relative mainDraftContainer flex h-[70vh] justify-between">
         {/* Blue Side Picks */}
