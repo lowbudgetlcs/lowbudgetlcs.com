@@ -46,6 +46,7 @@ const joinDraftHandler = ({
       lobbyCode,
       sideDisplay,
     });
+    socket.data.sideCode = sideDisplay === "spectator" ? null : sideCode;
 
     socket.emit("state", updateClientState(lobbyCode));
   } catch (error) {

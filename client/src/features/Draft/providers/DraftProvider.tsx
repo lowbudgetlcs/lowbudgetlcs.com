@@ -35,8 +35,24 @@ interface DraftContextProps {
   sendFixResponse: (
     response: ResponseDataProps
   ) => void;
+  incomingSideSwapRequest: SideSwapRequestProps | null;
+  sideSwapPending: boolean;
+  requestSideSwap: () => void;
+  respondToSideSwap: (accepted: boolean) => void;
   finalizeDraft: (ready: boolean) => void;
   championList: Champion[];
+}
+
+interface SideSwapRequestProps {
+  requestingSide: "blue" | "red";
+  requestingDisplayName: string;
+  expiresAt: number;
+}
+
+interface SideSwapResolvedProps {
+  accepted: boolean;
+  requestingSide: "blue" | "red";
+  currentDraftState?: DraftProps;
 }
 
 const DraftContext = createContext<DraftContextProps | undefined>(undefined);
@@ -56,6 +72,8 @@ export const DraftProvider: React.FC = () => {
   const [chosenChamp, setChosenChamp] = useState<string | undefined>();
   const [currentHover, setCurrentHover] = useState<string | null>(null);
   const [fixRequestData, setFixRequestData] = useState<RequestDataProps | null>(null);
+  const [incomingSideSwapRequest, setIncomingSideSwapRequest] = useState<SideSwapRequestProps | null>(null);
+  const [sideSwapPending, setSideSwapPending] = useState(false);
 
   const isInitializing = useRef(false);
   const currentLobbyCode = useRef<string | null>(null);
@@ -206,6 +224,24 @@ export const DraftProvider: React.FC = () => {
     draftSocket.emit("fixResponse", fixResponseData);
   };
 
+  const requestSideSwap = (): void => {
+    if (!draftSocket) return;
+    const lobbyCode = sessionStorage.getItem("activeLobbyCode");
+    const sideCode = sessionStorage.getItem("activeSideCode");
+    if (!lobbyCode || !sideCode) return;
+
+    draftSocket.emit("requestSideSwap", { lobbyCode, sideCode });
+  };
+
+  const respondToSideSwap = (accepted: boolean): void => {
+    if (!draftSocket) return;
+    const lobbyCode = sessionStorage.getItem("activeLobbyCode");
+    const sideCode = sessionStorage.getItem("activeSideCode");
+    if (!lobbyCode || !sideCode) return;
+
+    draftSocket.emit("respondToSideSwap", { lobbyCode, sideCode, accepted });
+  };
+
   const finalizeDraft = (ready: boolean): void => {
     if (!draftSocket) return;
 
@@ -226,6 +262,10 @@ export const DraftProvider: React.FC = () => {
         ...prevState,
         ...state,
       }));
+      if (state.draftStarted) {
+        setIncomingSideSwapRequest(null);
+        setSideSwapPending(false);
+      }
     };
 
     // Champion hover handler
@@ -308,6 +348,23 @@ export const DraftProvider: React.FC = () => {
       }
     };
 
+    const handleSideSwapRequested = (request: SideSwapRequestProps) => {
+      setSideSwapPending(true);
+      setIncomingSideSwapRequest(request.requestingSide === playerSide ? null : request);
+    };
+
+    const handleSideSwapResolved = ({ accepted, currentDraftState }: SideSwapResolvedProps) => {
+      if (accepted && currentDraftState) {
+        setDraftState((prevState) => ({
+          ...prevState,
+          ...currentDraftState,
+        }));
+        setPlayerSide((side) => (side === "blue" ? "red" : side === "red" ? "blue" : side));
+      }
+      setIncomingSideSwapRequest(null);
+      setSideSwapPending(false);
+    };
+
     // All the beautiful socket event listeners
     draftSocket.on("state", handleStateUpdate);
     draftSocket.on("currentTurn", handleCurrentTurn);
@@ -328,6 +385,8 @@ export const DraftProvider: React.FC = () => {
     draftSocket.on("requestFix", handleFixRequest);
     draftSocket.on("fixResponse", handleFixResponse);
     draftSocket.on("fixTimer", handleStateUpdate);
+    draftSocket.on("sideSwapRequested", handleSideSwapRequested);
+    draftSocket.on("sideSwapResolved", handleSideSwapResolved);
 
     // Clean up every. event. listener.
     return () => {
@@ -350,6 +409,8 @@ export const DraftProvider: React.FC = () => {
       draftSocket.off("requestFix", handleFixRequest);
       draftSocket.off("fixResponse", handleFixResponse);
       draftSocket.off("fixTimer", handleStateUpdate);
+      draftSocket.off("sideSwapRequested", handleSideSwapRequested);
+      draftSocket.off("sideSwapResolved", handleSideSwapResolved);
     };
   }, [draftSocket, playerSide, setFixResponse, setShowFixPopup]);
 
@@ -411,6 +472,10 @@ export const DraftProvider: React.FC = () => {
         showFixChampionList,
         setShowFixChampionList,
         sendFixResponse,
+        incomingSideSwapRequest,
+        sideSwapPending,
+        requestSideSwap,
+        respondToSideSwap,
         finalizeDraft,
         championList,
       }}>
