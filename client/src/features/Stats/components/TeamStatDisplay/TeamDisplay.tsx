@@ -39,7 +39,8 @@ function TeamDisplay() {
     return null;
   }
 
-  const teamName = decodeURIComponent(fullTeamName);
+  // useParams already decodes; decoding again throws on names containing "%".
+  const teamName = fullTeamName;
 
   const teamQuery = useTeamByNameQuery(teamName);
 
