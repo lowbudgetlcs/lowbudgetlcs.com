@@ -25,7 +25,7 @@ const getIndividualApiMatchData = async (game: SheetGameData) => {
     }
     return null;
   } catch (err) {
-    console.warn("[Game ID Grabber] No game found with matching ID: ", game.gameId);
+    console.warn("[Game ID Grabber] No game found with matching ID: ", game.gameId, "; ", err);
     return null;
   }
 };

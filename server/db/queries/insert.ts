@@ -172,20 +172,22 @@ const buildMatchValues = (gameData: ProcessedGameData) => {
 
 const buildTeamStatsValues = (game: ProcessedGameData) => {
   return game.matchData.info.teams.map((team) => {
-    // This is specifically for grubs and atakhan since the ObjectivesDTO is outdated 😢
-    const objectives = team.objectives as any;
+    const objectives = team.objectives as typeof team.objectives & {
+      horde?: { kills?: number };
+      atakhan?: { kills?: number };
+    };
     return {
       matchId: game.gameId,
       teamId: team.win ? game.winningTeamId : game.losingTeamId,
       riotTeamId: team.teamId,
       win: team.win,
-      baronKills: team.objectives.baron.kills,
-      dragonKills: team.objectives.dragon.kills,
-      inhibitorKills: team.objectives.inhibitor.kills,
-      riftHeraldKills: team.objectives.riftHerald.kills,
-      towerKills: team.objectives.tower.kills,
-      hordeKills: objectives.horde.kills,
-      atakhanKills: objectives.atakhan.kills,
+      baronKills: team.objectives.baron?.kills ?? 0,
+      dragonKills: team.objectives.dragon?.kills ?? 0,
+      inhibitorKills: team.objectives.inhibitor?.kills ?? 0,
+      riftHeraldKills: team.objectives.riftHerald?.kills ?? 0,
+      towerKills: team.objectives.tower?.kills ?? 0,
+      hordeKills: objectives.horde?.kills ?? 0,
+      atakhanKills: objectives.atakhan?.kills ?? 0,
     };
   });
 };
