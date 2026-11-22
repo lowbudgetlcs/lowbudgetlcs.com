@@ -10,6 +10,7 @@ import LoadingIcon from "../../../../components/LoadingIcon";
 import ChampionTopImage from "./ChampionTopImage";
 import ChampionStatCard from "../cards/ChampionStatCard";
 import PlayerGameCard from "../cards/PlayerGameCard";
+import StatsTrendChart from "../StatsTrendChart";
 import usePlayerOverallStatsQuery from "../../api/queries/usePlayerOverallStatsQuery";
 import usePlayerGamesQuery from "../../api/queries/usePlayerGamesQuery";
 import usePlayerSeasonsQuery from "../../api/queries/usePlayerSeasonsQuery";
@@ -75,6 +76,9 @@ function StatsPlayer() {
     );
   }
 
+  const playerTrends = playerData.gameTrends ?? [];
+  const trendLabels = playerTrends.map((game) => `G${game.gameNumber} ${game.win ? "W" : "L"}`);
+
   return (
     <div className="relative bg-bg-dark text-text-primary font-serif pt-14 max-w-360 w-full mx-auto">
       <div className="relative flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
@@ -90,7 +94,7 @@ function StatsPlayer() {
           onSeasonChange={setSelectedSeasonId}
         />
         {/* Extended Stats */}
-        <div className="extendedStatsContainer flex flex-col gap-4 grow md:mt-48 px-2 py-4 md:px-4 border border-border bg-bg rounded-xl min-h-64 z-10">
+        <div className="extendedStatsContainer flex min-w-0 grow flex-col gap-5 md:mt-48 px-3 py-4 md:px-5 border border-border bg-bg rounded-xl min-h-64 z-10">
           <>
             {/* Achievements */}
             <AchievementsDisplay playerData={playerData} />
@@ -99,14 +103,58 @@ function StatsPlayer() {
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
             {activeLink === "Overview" ? (
               <>
-                <div className="performanceOverview flex flex-col sm:flex-row gap-2">
+                <div className="performanceOverview grid grid-cols-1 gap-6 xl:grid-cols-2">
                   <CombatPerformance playerData={playerData} />
                   <EconPerformance playerData={playerData} />
                 </div>
+                <section className="flex flex-col gap-4">
+                  <h2 className="text-2xl font-bold border-b-2 border-border pb-2">Match Trends</h2>
+                  <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                    <StatsTrendChart
+                      title="Combat trends"
+                      labels={trendLabels}
+                      series={[
+                        {
+                          label: "KDA",
+                          values: playerTrends.map((game) => game.kda),
+                          color: "#60a5fa",
+                          decimals: 2,
+                        },
+                        {
+                          label: "Kill participation",
+                          values: playerTrends.map((game) => game.killParticipation),
+                          color: "#f87171",
+                          unit: "%",
+                          decimals: 0,
+                          axis: "y1",
+                        },
+                      ]}
+                    />
+                    <StatsTrendChart
+                      title="Resource trends"
+                      labels={trendLabels}
+                      series={[
+                        {
+                          label: "CS/min",
+                          values: playerTrends.map((game) => game.csPerMin),
+                          color: "#4ade80",
+                          decimals: 1,
+                        },
+                        {
+                          label: "Damage/min",
+                          values: playerTrends.map((game) => game.damagePerMin),
+                          color: "#facc15",
+                          decimals: 0,
+                          axis: "y1",
+                        },
+                      ]}
+                    />
+                  </div>
+                </section>
                 {/* Champion Stats */}
                 <div className="specificChampStats">
                   <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Champion Stats</h2>
-                  <div className="champStats grid grid-cols-1 lg:grid-cols-2 gap-4 overflow-y-auto">
+                  <div className="champStats grid grid-cols-1 xl:grid-cols-2 gap-4">
                     {/* Champion Box */}
                     {/* Make it autofill with information from data */}
                     {playerData.championPool
