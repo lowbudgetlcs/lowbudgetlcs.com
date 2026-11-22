@@ -50,6 +50,30 @@ export interface BestGameStat {
   championName: string;
 }
 
+export interface PlayerTeamAverage {
+  winrate: number;
+  kda: number;
+  avgDeaths: number;
+  avgCsPerMin: number;
+  avgGoldPerMin: number;
+  avgVisionScore: number;
+  avgDamagePerMin: number;
+  avgKillParticipation: number;
+  avgGoldShare: number;
+  avgDamageShare: number;
+}
+
+export interface PlayerGameTrend {
+  gameNumber: number;
+  matchId: string;
+  championName: string;
+  win: boolean;
+  kda: number;
+  killParticipation: number;
+  csPerMin: number;
+  damagePerMin: number;
+}
+
 export interface TeamShareTotals {
   kills: number;
   deaths: number;
@@ -110,6 +134,8 @@ export interface PlayerOverallStats {
   avgDamageTakenShare: number; // Player Roles
   roles: string[]; // Champion Pool
   championPool: ChampionStat[];
+  teamAverage: PlayerTeamAverage | null;
+  gameTrends: PlayerGameTrend[];
   uniqueChampions: number; // Best Game Performances
   highestKills: BestGameStat;
   highestAssists: BestGameStat;

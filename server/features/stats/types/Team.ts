@@ -23,6 +23,37 @@ export interface LaneDistribution {
   vision: number;
 }
 
+export type ChampionPoolRole = "TOP" | "JUNGLE" | "MIDDLE" | "BOTTOM" | "SUPPORT";
+
+export interface TeamChampionStat {
+  championName: string;
+  championId: number;
+  games: number;
+  wins: number;
+  winrate: number;
+  kda: number;
+}
+
+export interface TeamChampionPlayerPool {
+  playerKey: string;
+  playerName: string;
+  tagLine: string;
+  roles: ChampionPoolRole[];
+  games: number;
+  champions: TeamChampionStat[];
+}
+
+export interface TeamGameTrend {
+  gameNumber: number;
+  matchId: string;
+  win: boolean;
+  goldPerMin: number;
+  damagePerMin: number;
+  dragons: number;
+  barons: number;
+  towers: number;
+}
+
 export interface TeamOverallStats {
   totalGames: number;
   wins: number;
@@ -56,6 +87,9 @@ export interface TeamOverallStats {
   goldDistribution?: Record<string, number>;
   damageDistribution?: Record<string, number>;
   visionDistribution?: Record<string, number>;
+  championPoolByRole: Record<ChampionPoolRole, TeamChampionStat[]>;
+  championPoolByPlayer: TeamChampionPlayerPool[];
+  gameTrends: TeamGameTrend[];
   roster: RosterPlayerStat[];
   customAchievements?: number[];
 }
