@@ -136,7 +136,7 @@ export const getPlayer = async (summonerName: string, tagline: string, seasonId?
         .leftJoin(teamsInWebsite, eq(playerTeamHistoryInWebsite.teamId, teamsInWebsite.id))
         .leftJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
         .where(and(nameCondition, eq(divisionsInWebsite.seasonId, seasonId)))
-        .orderBy(desc(playerTeamHistoryInWebsite.startDate))
+        .orderBy(desc(playerTeamHistoryInWebsite.startDate), desc(playerTeamHistoryInWebsite.id))
         .limit(1);
       if (player[0]) return player[0];
 
@@ -162,6 +162,7 @@ export const getPlayer = async (summonerName: string, tagline: string, seasonId?
       )
       .leftJoin(teamsInWebsite, eq(playerTeamHistoryInWebsite.teamId, teamsInWebsite.id))
       .where(and(nameCondition))
+      .orderBy(desc(playerTeamHistoryInWebsite.startDate), desc(playerTeamHistoryInWebsite.id))
       .limit(1);
     return player[0] || null;
   } catch (err) {

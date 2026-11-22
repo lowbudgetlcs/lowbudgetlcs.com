@@ -529,7 +529,7 @@ export async function getTeamSeasonsByName(teamName: string) {
 export async function getPlayerSeasonsByPuuid(puuid: string) {
   try {
     const playerSeasons = await db
-      .select({
+      .selectDistinctOn([seasonsInWebsite.id], {
         teamId: teamsInWebsite.id,
         seasonId: seasonsInWebsite.id,
         seasonName: seasonsInWebsite.seasonName,
@@ -541,7 +541,11 @@ export async function getPlayerSeasonsByPuuid(puuid: string) {
       .innerJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
       .innerJoin(seasonsInWebsite, eq(divisionsInWebsite.seasonId, seasonsInWebsite.id))
       .where(eq(playerTeamHistoryInWebsite.playerPuuid, puuid))
-      .orderBy(desc(seasonsInWebsite.id));
+      .orderBy(
+        desc(seasonsInWebsite.id),
+        desc(playerTeamHistoryInWebsite.startDate),
+        desc(playerTeamHistoryInWebsite.id),
+      );
 
     return playerSeasons;
   } catch (error) {
