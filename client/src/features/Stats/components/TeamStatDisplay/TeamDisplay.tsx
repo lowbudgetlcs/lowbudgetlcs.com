@@ -5,9 +5,11 @@ import LoadingIcon from "../../../../components/LoadingIcon";
 import { TeamOverallStats } from "../../../../types/StatTypes";
 import TeamAchievementsDisplay from "./TeamAchievementsDisplay";
 import TeamStatSidebar from "./TeamStatSidebar";
+import TeamChampionPool from "./TeamChampionPool";
 import SidePerformance from "./SidePerformance";
 import ObjectiveControl from "./ObjectiveControl";
 import DistributionCard from "./DistributionCard";
+import StatsTrendChart from "../StatsTrendChart";
 import { FaCrown, FaCoins } from "react-icons/fa";
 import { LuSwords } from "react-icons/lu";
 import { IoLogoGameControllerA } from "react-icons/io";
@@ -26,7 +28,7 @@ function TeamDisplay() {
   const fullTeamName = params.teamName;
 
   // NavList code
-  const navItems = ["Overview", "Recent Games"];
+  const navItems = ["Overview", "Recent Games", "Champion Pool"];
   const [activeLink, setActiveLink] = useState<string>("Overview");
   const [selectedTeamId, setSelectedTeamId] = useState<number | null>(null);
 
@@ -82,6 +84,9 @@ function TeamDisplay() {
     );
   }
 
+  const teamTrends = teamData.gameTrends ?? [];
+  const trendLabels = teamTrends.map((game) => `G${game.gameNumber} ${game.win ? "W" : "L"}`);
+
   return (
     <div className="relative bg-bg-dark text-text-primary font-serif pt-14 max-w-360 w-full mx-auto">
       <div className="flex flex-col md:flex-row md:p-4 gap-4 lg:gap-8">
@@ -93,14 +98,14 @@ function TeamDisplay() {
           selectedTeamId={activeTeamId}
           onSeasonChange={setSelectedTeamId}
         />
-        <div className="extendedStatsContainer flex flex-col gap-4 grow px-2 py-4 md:px-4 border border-border bg-bg rounded-xl min-h-64">
+        <div className="extendedStatsContainer flex min-w-0 grow flex-col gap-5 px-3 py-4 md:px-5 border border-border bg-bg rounded-xl min-h-64">
           <>
             <NavList activeLink={activeLink} toggleActive={toggleActive} navItems={navItems} />
             {activeLink === "Overview" ? (
               <>
                 <TeamAchievementsDisplay teamData={teamData} />
                 <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Performance Overview</h2>
-                <div className="smallStatBoxes grid lg:grid-cols-3 gap-4">
+                <div className="smallStatBoxes grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                   <IndividualStatCard
                     icon={<FaCrown className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-purple/70"
@@ -121,7 +126,7 @@ function TeamDisplay() {
                     value={teamData.totalGames}
                   />
                 </div>
-                <div className="objectiveStats grid lg:grid-cols-3 gap-4 my-4">
+                <div className="objectiveStats grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 my-4">
                   <IndividualStatCard
                     icon={<GiMineExplosion className="text-white w-6.25 h-6.25" />}
                     iconBgColor="bg-red/70"
@@ -143,7 +148,7 @@ function TeamDisplay() {
                 </div>
 
                 <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Stat Distribution</h2>
-                <div className="distributionGrid grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="distributionGrid grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                   <DistributionCard title="Gold" icon={<FaCoins />} iconBgColor="bg-yellow/70" data={goldDistribution} />
                   <DistributionCard title="Damage" icon={<GiMineExplosion />} iconBgColor="bg-red/70" data={damageDistribution} />
                   <DistributionCard title="Vision" icon={<IoEye />} iconBgColor="bg-cyan-500/70" data={visionDistribution} />
@@ -157,7 +162,62 @@ function TeamDisplay() {
 
                 <h2 className="text-2xl font-bold border-b-2 border-border mb-4 mt-6">Objective Control</h2>
                 <ObjectiveControl teamData={teamData} />
+                <section className="flex flex-col gap-4">
+                  <h2 className="text-2xl font-bold border-b-2 border-border pb-2">Match Trends</h2>
+                  <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+                    <StatsTrendChart
+                      title="Team economy and damage"
+                      labels={trendLabels}
+                      series={[
+                        {
+                          label: "Gold/min",
+                          values: teamTrends.map((game) => game.goldPerMin),
+                          color: "#facc15",
+                          decimals: 0,
+                          unit: "gold/min",
+                        },
+                        {
+                          label: "Damage/min",
+                          values: teamTrends.map((game) => game.damagePerMin),
+                          color: "#f87171",
+                          decimals: 0,
+                          unit: "damage/min",
+                          axis: "y1",
+                        },
+                      ]}
+                    />
+                    <StatsTrendChart
+                      title="Objectives per game"
+                      labels={trendLabels}
+                      series={[
+                        {
+                          label: "Dragons",
+                          values: teamTrends.map((game) => game.dragons),
+                          color: "#f87171",
+                          decimals: 0,
+                          unit: "objectives",
+                        },
+                        {
+                          label: "Barons",
+                          values: teamTrends.map((game) => game.barons),
+                          color: "#a78bfa",
+                          decimals: 0,
+                          unit: "objectives",
+                        },
+                        {
+                          label: "Towers",
+                          values: teamTrends.map((game) => game.towers),
+                          color: "#94a3b8",
+                          decimals: 0,
+                          unit: "objectives",
+                        },
+                      ]}
+                    />
+                  </div>
+                </section>
               </>
+            ) : activeLink === "Champion Pool" ? (
+              <TeamChampionPool teamData={teamData} />
             ) : activeLink === "Recent Games" ? (
               <div className="recentGames">
                 <div className="border-b-2 border-border mb-4">
