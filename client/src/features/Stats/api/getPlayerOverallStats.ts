@@ -6,7 +6,7 @@ const getPlayerOverallStats = async (
   seasonId?: number
 ) => {
   const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
-  let url = `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/summoner/${summonerName}/${tagline}`;
+  let url = `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/summoner/${encodeURIComponent(summonerName)}/${encodeURIComponent(tagline)}`;
 
   if (seasonId) {
     url += `?seasonId=${seasonId}`;

@@ -21,7 +21,7 @@ const getTeamStatsById = async (req: Request, res: Response, next: Function) => 
 
 const getTeamStatsByName = async (req: Request, res: Response, next: Function) => {
 	try {
-		const teamName: string = decodeURIComponent(req.params.teamName);
+		const teamName: string = req.params.teamName;
 		if (!teamName) {
 			return res.status(400).json({ error: "Invalid team name" });
 		}
@@ -57,7 +57,7 @@ const getTeamStatsByName = async (req: Request, res: Response, next: Function) =
 
 const getTeamSeasons = async (req: Request, res: Response, next: Function) => {
 	try {
-		const teamName = decodeURIComponent(req.params.teamName);
+		const teamName = req.params.teamName;
 		const seasons = await getTeamSeasonsByName(teamName);
 		res.json(seasons);
 	} catch (err) {

@@ -8,7 +8,7 @@ const getPlayerGames = async (
   const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
   let url = `${
     import.meta.env.VITE_BACKEND_URL
-  }/stats/api/games/player/${summonerName}/${tagline}`;
+  }/stats/api/games/player/${encodeURIComponent(summonerName)}/${encodeURIComponent(tagline)}`;
 
   if (seasonId) {
     url += `?seasonId=${seasonId}`;

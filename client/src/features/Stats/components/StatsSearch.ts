@@ -13,7 +13,7 @@ export const handlePlayerSearch = async (
       const tagLine = splitSummoner[1]
   
       const gameResponse = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/check/${actualSummonerName.toLowerCase()}/${tagLine.toLowerCase()}`,
+        `${import.meta.env.VITE_BACKEND_URL}/stats/api/player/check/${encodeURIComponent(actualSummonerName.toLowerCase())}/${encodeURIComponent(tagLine.toLowerCase())}`,
         {
           headers: {
             "x-api-key": apiKey,
@@ -33,7 +33,7 @@ export const handlePlayerSearch = async (
         }
       }
   
-      navigate(`/stats/player/${encodeURIComponent(actualSummonerName)}-${encodeURIComponent(tagLine)}`);
+      navigate(`/stats/player/${encodeURIComponent(actualSummonerName)}?tagLine=${encodeURIComponent(tagLine)}`);
     } catch (err: any) {
        setError(err.message || "An unexpected error occurred");   
     }
