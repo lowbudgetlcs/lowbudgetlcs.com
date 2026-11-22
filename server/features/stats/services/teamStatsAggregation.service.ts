@@ -1,5 +1,6 @@
 import { getCurrentRosterForTeam, getGamesForTeam, getTeamDetails } from "../../../db/queries/statQueries/select";
 import { AggregationAccumulator, LaneDistribution, LaneRole, TeamOverallStats, LANE_ROLES, RosterAccumulator } from "../types/Team";
+import teamStatsInsights from "./teamStatsInsights.service";
 
 const safeDivide = (numerator: number, denominator: number) => (denominator > 0 ? numerator / denominator : 0);
 
@@ -181,6 +182,7 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
 
   const totalGames = stats.totalGames;
   const totalDurationMinutes = safeDivide(stats.totalGameDuration, 60);
+  const insights = teamStatsInsights(games, teamId);
 
   const roster = Object.values(stats.rosterStats)
     .map((player) => {
@@ -267,6 +269,7 @@ const teamStatsAggregation = async (teamId: number): Promise<TeamOverallStats | 
     goldDistribution,
     damageDistribution,
     visionDistribution,
+    ...insights,
     roster,
     customAchievements: teamDetails?.customAchievements ?? [],
   };

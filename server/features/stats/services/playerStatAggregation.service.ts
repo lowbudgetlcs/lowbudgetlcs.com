@@ -1,5 +1,6 @@
 import { getGamesForPlayer } from "../../../db/queries/statQueries/select";
 import { BestGameStat, ChampionStat, ChampionStatAccumulator, PlayerAggregationAccumulator, PlayerOverallStats, TeamShareTotals } from "../types/Player"; 
+import playerStatsInsights from "./playerStatsInsights.service";
 
 const createBestGameStat = (): BestGameStat => ({ value: -1, matchId: "", championName: "" });
 
@@ -179,6 +180,7 @@ const playerStatsAggregation = async (puuid: string, seasonId?: number): Promise
 
   const totalGames = stats.totalGames;
   const totalDurationMinutes = games.reduce((total, game) => total + game.gameDuration / 60, 0);
+  const insights = playerStatsInsights(puuid, games);
 
   const finalRoles = Object.entries(stats.roleCounts)
     .sort(([, a], [, b]) => b - a)
@@ -240,6 +242,7 @@ const playerStatsAggregation = async (puuid: string, seasonId?: number): Promise
     roles: finalRoles,
     uniqueChampions: championPool.length,
     championPool,
+    ...insights,
     highestKills: stats.highestKills,
     highestAssists: stats.highestAssists,
     highestDamageToChamps: stats.highestDamageToChamps,
