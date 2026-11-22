@@ -36,7 +36,7 @@ const TeamStatSidebar = ({
   const logo = propLogo ?? teamMeta?.logo ?? null;
 
   return (
-    <div className="statSideBar sticky w-full md:w-72 shrink-0 mb-4 md:mb-0 left-0 md:top-16 self-start">
+    <div className="statSideBar sticky w-full shrink-0 mb-4 md:mb-0 left-0 md:top-16 md:w-72 xl:w-80 self-start">
       <div className="flex flex-col p-4 gap-2 bg-bg border border-border rounded-xl grow md:min-w-64 max-h-fit">
         <div className="flex flex-col items-center justify-center">
           {logo ? (
