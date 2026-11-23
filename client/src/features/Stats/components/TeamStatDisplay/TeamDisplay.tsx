@@ -41,7 +41,7 @@ function TeamDisplay() {
     return null;
   }
 
-  const teamName = decodeURIComponent(fullTeamName);
+  const teamName = fullTeamName;
 
   const teamQuery = useTeamByNameQuery(teamName);
 
