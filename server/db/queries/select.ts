@@ -33,6 +33,20 @@ export const getLatestSeasonMatchesSpreadsheet = async () => {
   return latestSeason?.matchesSpreadsheet ?? null;
 };
 
+export const getTeamMatchReportSheet = async (teamId: number) => {
+  const [teamMatchSheet] = await db
+    .select({
+      matchesSpreadsheet: seasonsInWebsite.matchesSpreadsheet,
+    })
+    .from(teamsInWebsite)
+    .innerJoin(divisionsInWebsite, eq(teamsInWebsite.divisionId, divisionsInWebsite.id))
+    .innerJoin(seasonsInWebsite, eq(divisionsInWebsite.seasonId, seasonsInWebsite.id))
+    .where(eq(teamsInWebsite.id, teamId))
+    .limit(1);
+
+  return teamMatchSheet ?? null;
+};
+
 export async function getPlayersByPuuid(puuids: string[]) {
   if (puuids.length === 0) {
     return [];

@@ -336,6 +336,9 @@ export interface MatchTeam {
 export interface RecentGame {
   // data from the 'website.matches' table
   matchId: string;
+  seriesId?: string | null;
+  seriesGameNumber?: number | null;
+  seriesGameCount?: number | null;
   divisionId: number | null;
   gameVersion: string | null;
   gameCreation: bigint;
@@ -349,6 +352,13 @@ export interface RecentGame {
   tournamentCode: string | null;
   draftCode: string | null;
   fearlessCode: string | null;
+}
+
+export interface TeamGame extends RecentGame {
+  seriesId: string | null;
+  seriesGameNumber: number | null;
+  seriesGameCount: number | null;
+  seriesMetadataAvailable: boolean;
 }
 
 export interface TeamByNameResponse {

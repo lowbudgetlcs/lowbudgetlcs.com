@@ -1,6 +1,6 @@
-import { RecentGame } from "../../../types/StatTypes";
+import { TeamGame } from "../../../types/StatTypes";
 
-const getTeamGames = async (teamId: number): Promise<RecentGame[]> => {
+const getTeamGames = async (teamId: number): Promise<TeamGame[]> => {
   const apiKey = import.meta.env.VITE_BACKEND_API_KEY || "";
   const url = `${import.meta.env.VITE_BACKEND_URL}/stats/api/games/team/${teamId}`;
 

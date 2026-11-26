@@ -16,11 +16,11 @@ import { IoLogoGameControllerA } from "react-icons/io";
 import { GiMineExplosion } from "react-icons/gi";
 import { IoEye, IoPieChart } from "react-icons/io5";
 import IndividualStatCard from "../cards/IndividualStatCard";
-import MiniGameCard from "../cards/MiniGameCard";
 import useTeamByNameQuery from "../../api/queries/useTeamByNameQuery";
 import useTeamSeasonsQuery from "../../api/queries/useTeamSeasonsQuery";
 import useTeamStatsByIdQuery from "../../api/queries/useTeamStatsByIdQuery";
 import useTeamGamesQuery from "../../api/queries/useTeamGamesQuery";
+import TeamSeriesList from "./TeamSeriesList";
 
 function TeamDisplay() {
   const params = useParams();
@@ -221,9 +221,10 @@ function TeamDisplay() {
             ) : activeLink === "Recent Games" ? (
               <div className="recentGames">
                 <div className="border-b-2 border-border mb-4">
-                  <h2 className="text-2xl font-bold">Games - {teamData?.totalGames}</h2>
-                  <p className="text-text-secondary">Wins: {teamData?.wins}</p>
-                  <p className="text-text-secondary">Losses: {teamData?.losses}</p>
+                  <h2 className="text-2xl font-bold">Series &amp; Games</h2>
+                  <p className="text-text-secondary">Games played: {teamData?.totalGames}</p>
+                  <p className="text-text-secondary">Game wins: {teamData?.wins}</p>
+                  <p className="text-text-secondary">Game losses: {teamData?.losses}</p>
                 </div>
 
                 <div className="flex flex-col gap-2 items-center min-h-64">
@@ -231,10 +232,15 @@ function TeamDisplay() {
                     <LoadingIcon />
                   ) : teamGamesQuery.error ? (
                     <p className="text-center text-red">Failed to load games. Please try again later.</p>
-                  ) : teamGames && teamGames.length > 0 ? (
-                    teamGames.map((game, index) => <MiniGameCard key={index} game={game} teamName={fullTeamName} />)
+                  ) : teamGames?.length && activeTeamId ? (
+                    <TeamSeriesList
+                      games={teamGames}
+                      teamId={activeTeamId}
+                      teamName={fullTeamName}
+                      seriesMetadataAvailable={teamGames[0].seriesMetadataAvailable}
+                    />
                   ) : (
-                    <p className="text-xl text-text-primary">No recent games found.</p>
+                    <p className="text-xl text-text-primary">No recent series found.</p>
                   )}
                 </div>
               </div>

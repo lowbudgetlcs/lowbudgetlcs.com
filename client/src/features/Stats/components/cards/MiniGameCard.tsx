@@ -6,7 +6,15 @@ import SubdomainLink from "../../../../components/SubdomainLink";
 import MainLink from "../../../../components/MainLink";
 import { FaCrown } from "react-icons/fa";
 
-const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string }) => {
+const MiniGameCard = ({
+  game,
+  teamName,
+  showChampionNames = false,
+}: {
+  game: RecentGame;
+  teamName?: string;
+  showChampionNames?: boolean;
+}) => {
   const { teams: team1Info } = game.teams[0];
   const { teams: team2Info } = game.teams[1];
   const { match_team_stats: team1Stats } = game.teams[0];
@@ -28,8 +36,10 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
     .sort((a, b) => roleOrder.indexOf(a.teamPosition ?? "") - roleOrder.indexOf(b.teamPosition ?? ""));
 
   const gameDurationMs = game.gameDuration * 1000;
-  const getPlayerKey = (player: any, idx: number) =>
+  const getPlayerKey = (player: RecentGame["participants"][number], idx: number) =>
     player.riotIdGameName || player.summonerName || `${player.championName}-${player.teamPosition}-${player.teamId}-${idx}`;
+  const getPlayerName = (player: RecentGame["participants"][number]) =>
+    player.riotIdGameName || player.summonerName || "Unknown player";
   return (
     <div
       className={`flex flex-col justify-center box-border border-l-4 ${
@@ -93,11 +103,11 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
         <div className="players flex items-center gap-2">
           <div className="flex flex-col items-start gap-0.5">
             {sortedTeam1.map((player, index) => (
-              <div key={getPlayerKey(player, index)} className="flex items-center">
+              <div key={getPlayerKey(player, index)} className="flex min-w-0 items-center">
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName || ""}
-                  className="w-4 h-4 mr-2"
+                  className="w-4 h-4 mr-2 shrink-0"
                 />
                 <Link
                   to={(() => {
@@ -109,18 +119,23 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                     return `/stats/player/${encodeURIComponent(gameName)}`;
                   })()}
                   className="flex truncate  hover:text-text-primary hover:underline text-text-secondary">
-                  <span className="text-xs">{player.riotIdGameName}</span>
+                  <span className="text-xs">{getPlayerName(player)}</span>
                 </Link>
+                {showChampionNames && (
+                  <span className="ml-1 max-w-24 truncate text-[10px] text-text-secondary" title={player.championName ?? undefined}>
+                    {player.championName || "Unknown champion"}
+                  </span>
+                )}
               </div>
             ))}
           </div>
           <div className="flex flex-col items-start ml-6 gap-0.5">
             {sortedTeam2.map((player, index) => (
-              <div key={getPlayerKey(player, index)} className="flex items-center">
+              <div key={getPlayerKey(player, index)} className="flex min-w-0 items-center">
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}/images/api/champion/${player.championName}/square`}
                   alt={player.championName || ""}
-                  className="w-4 h-4 mr-2"
+                  className="w-4 h-4 mr-2 shrink-0"
                 />
                 <Link
                   to={(() => {
@@ -132,8 +147,13 @@ const MiniGameCard = ({ game, teamName }: { game: RecentGame; teamName?: string 
                     return `/stats/player/${encodeURIComponent(gameName)}`;
                   })()}
                   className="flex truncate hover:text-text-primary hover:underline text-text-secondary">
-                  <span className="text-xs">{player.riotIdGameName}</span>
+                  <span className="text-xs">{getPlayerName(player)}</span>
                 </Link>
+                {showChampionNames && (
+                  <span className="ml-1 max-w-24 truncate text-[10px] text-text-secondary" title={player.championName ?? undefined}>
+                    {player.championName || "Unknown champion"}
+                  </span>
+                )}
               </div>
             ))}
           </div>
