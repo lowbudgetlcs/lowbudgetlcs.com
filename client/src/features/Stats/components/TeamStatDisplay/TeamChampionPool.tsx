@@ -147,12 +147,9 @@ const TeamChampionPool = ({ teamData }: { teamData: TeamOverallStats }) => {
                       ) : null;
                     })}
                   </span>
-                  <span className="min-w-0 flex-1 truncate text-sm">
+                  <span className="min-w-0 flex-1 truncate text-sm inline-flex align-middle">
                     {player.playerName}{player.tagLine ? ` #${player.tagLine}` : ""}
                   </span>
-                </span>
-                <span className="ml-2 inline-flex whitespace-nowrap text-xs font-normal text-text-secondary">
-                  {player.games}G · {player.champions.length} champs
                 </span>
               </summary>
               <ChampionRows champions={player.champions} />

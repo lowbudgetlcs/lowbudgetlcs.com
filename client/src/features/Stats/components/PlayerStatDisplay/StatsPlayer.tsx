@@ -39,7 +39,9 @@ function StatsPlayer() {
   const tagLine = fullSummonerName.split("-")[1];
 
   const playerStatsQuery = usePlayerOverallStatsQuery(summonerName, tagLine, selectedSeasonId ?? undefined);
-  const playerGamesQuery = usePlayerGamesQuery(summonerName, tagLine, selectedSeasonId ?? undefined);
+  const playerGamesQuery = usePlayerGamesQuery(summonerName, tagLine, selectedSeasonId ?? undefined, {
+    enabled: activeLink === "Recent Games",
+  });
 
   const seasonsQuery = usePlayerSeasonsQuery(playerStatsQuery.data?.puuid ?? "", {
     enabled: !!playerStatsQuery.data?.puuid,
@@ -54,10 +56,9 @@ function StatsPlayer() {
   const awaitingInitialSeason = selectedSeasonId === null && (seasonsQuery.data?.length ?? 0) > 0;
   const loading =
     playerStatsQuery.isPending ||
-    playerGamesQuery.isPending ||
     (seasonsQuery.isPending && !!playerStatsQuery.data?.puuid) ||
     awaitingInitialSeason;
-  const error = playerStatsQuery.error || playerGamesQuery.error;
+  const error = playerStatsQuery.error;
 
   const playerData = playerStatsQuery.data;
   const playerGames = playerGamesQuery.data;
@@ -68,7 +69,7 @@ function StatsPlayer() {
     return null;
   }
 
-  if (loading || !playerData || !playerGames) {
+  if (loading || !playerData) {
     return (
       <div className="loading min-w-64 flex items-center justify-center h-screen">
         <LoadingIcon />
@@ -170,7 +171,11 @@ function StatsPlayer() {
               <div className="recentGames">
                 <h2 className="text-2xl font-bold border-b-2 border-border mb-4">Games</h2>
                 <div className="flex flex-col gap-2 items-center min-h-64">
-                  {playerGames.length > 0 ? (
+                  {playerGamesQuery.isPending ? (
+                    <LoadingIcon />
+                  ) : playerGamesQuery.error ? (
+                    <p className="text-center text-red">Failed to load games. Please try again later.</p>
+                  ) : playerGames && playerGames.length > 0 ? (
                     playerGames.map((game, index) => <PlayerGameCard key={index} game={game} puuid={playerData.puuid} />)
                   ) : (
                     <p className="text-xl text-text-primary">No recent games found.</p>

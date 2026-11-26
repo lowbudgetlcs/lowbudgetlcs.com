@@ -29,24 +29,23 @@ const getTeamStatsByName = async (req: Request, res: Response, next: Function) =
 		if (!teamId) {
 			return res.status(404).json({ error: "Team Not Found" });
 		}
-		const overallStats = await teamStatsAggregation(teamId);
-		if (!overallStats) {
-			return res.status(404).json({ error: "Team Stats Not Found" });
-		}
-
-		let teamLogo: string | null = null;
-		try {
-			const divisions = await getDivisionsForSeason();
-			const teamLogos = await getTeamLogosFromSheets();
-			for (const div of divisions) {
-				const logo = teamLogos.get(getTeamLogoLookupKey(div.name, teamName));
-				if (logo) {
-					teamLogo = logo;
-					break;
+		const [overallStats, teamLogo] = await Promise.all([
+			teamStatsAggregation(teamId),
+			(async () => {
+				try {
+					const [divisions, teamLogos] = await Promise.all([getDivisionsForSeason(), getTeamLogosFromSheets()]);
+					for (const div of divisions) {
+						const logo = teamLogos.get(getTeamLogoLookupKey(div.name, teamName));
+						if (logo) return logo;
+					}
+				} catch (err) {
+					console.warn("Error getting divisions or logos from Sheets:", err);
 				}
-			}
-		} catch (err) {
-			console.warn("Error getting divisions or logos from Sheets:", err);
+				return null;
+			})(),
+		]);
+		if (!overallStats) {
+			return res.status(404).json({ error: "Team Stats Not Found" }); 
 		}
 
 		return res.json({ teamId, overallStats, logo: teamLogo });

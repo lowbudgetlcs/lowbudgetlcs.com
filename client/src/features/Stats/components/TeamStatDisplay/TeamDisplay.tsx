@@ -55,11 +55,11 @@ function TeamDisplay() {
   });
 
   const teamGamesQuery = useTeamGamesQuery(activeTeamId ?? 0, {
-    enabled: !!activeTeamId,
+    enabled: !!activeTeamId && activeLink === "Recent Games",
   });
 
-  const loading = teamQuery.isPending || teamGamesQuery.isPending || seasonsQuery.isPending || (shouldFetchStatsById && statsByIdQuery.isPending);
-  const error = teamQuery.error || teamGamesQuery.error || seasonsQuery.error || statsByIdQuery.error;
+  const loading = teamQuery.isPending || seasonsQuery.isPending || (shouldFetchStatsById && statsByIdQuery.isPending);
+  const error = teamQuery.error || seasonsQuery.error || statsByIdQuery.error;
 
   const teamPayload = teamQuery.data;
   const teamData = shouldFetchStatsById ? statsByIdQuery.data : (teamPayload?.overallStats as TeamOverallStats);
@@ -227,7 +227,11 @@ function TeamDisplay() {
                 </div>
 
                 <div className="flex flex-col gap-2 items-center min-h-64">
-                  {teamGames && teamGames.length > 0 ? (
+                  {teamGamesQuery.isPending ? (
+                    <LoadingIcon />
+                  ) : teamGamesQuery.error ? (
+                    <p className="text-center text-red">Failed to load games. Please try again later.</p>
+                  ) : teamGames && teamGames.length > 0 ? (
                     teamGames.map((game, index) => <MiniGameCard key={index} game={game} teamName={fullTeamName} />)
                   ) : (
                     <p className="text-xl text-text-primary">No recent games found.</p>
